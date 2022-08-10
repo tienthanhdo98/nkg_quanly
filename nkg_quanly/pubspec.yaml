@@ -46,6 +46,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
   syncfusion_flutter_charts: ^20.1.58
+  intl: ^0.17.0
 
 
 # For information on the generic Dart part of this file, see the

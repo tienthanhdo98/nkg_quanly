@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const.dart';
 import 'package:nkg_quanly/ui/home/work_schedule_detail.dart';
+import 'package:nkg_quanly/ui/home/work_schedule_info.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../model/ChartModel.dart';
@@ -104,13 +105,21 @@ class WorkSchedule extends StatelessWidget {
                         ],
                       ),
                       Expanded(
-                          child: Align(
-                              alignment: Alignment.topRight,
-                              child: Image.asset(
-                                "assets/icons/ic_more.png",
-                                width: 20,
-                                height: 20,
-                              )))
+                          child: InkWell(
+                            onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => WorkScheduleInfo()));
+                            },
+                            child: Align(
+                                alignment: Alignment.topRight,
+                                child: Image.asset(
+                                  "assets/icons/ic_more.png",
+                                  width: 20,
+                                  height: 20,
+                                )),
+                          ))
                     ],
                   ),
                 ),

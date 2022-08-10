@@ -11,6 +11,7 @@ const kLoginButton = Color(0xFF5149ef);
 const kBlueChart = Color(0xFF16bfd6);
 const kRedChart = Color(0xFFf94144);
 const kBlueButton = Color(0xFF0060ff);
+const kLightBlue = Color(0xFFdbeafe);
 const kLightBlueButton = Color(0xFF3797fb);
 
 final kUnActiveButtonStyle =
