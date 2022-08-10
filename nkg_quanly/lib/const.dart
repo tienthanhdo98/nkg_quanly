@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const kBackGround = Color(0xFFf0f2f5);
@@ -13,6 +12,10 @@ const kBlueChart = Color(0xFF16bfd6);
 const kRedChart = Color(0xFFf94144);
 const kBlueButton = Color(0xFF0060ff);
 const kLightBlueButton = Color(0xFF3797fb);
+
+final kUnActiveButtonStyle =
+    ElevatedButton.styleFrom(primary: kWhite, onPrimary: Colors.black);
+final kActiveButtonStyle = ElevatedButton.styleFrom(primary: kBlueButton);
 
 Widget borderText(String value, Color color) {
   return Padding(
@@ -40,25 +43,30 @@ Widget borderInputText(String value) {
       autofocus: true,
       cursorColor: kBlueButton,
       decoration: InputDecoration(
-        focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: kSecondText,width: 1)),
-        enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: kLightGray2,width: 1)),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: kSecondText, width: 1)),
+        enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: kLightGray2, width: 1)),
         hintText: value,
       ),
     ),
   );
 }
-Widget legendChart(String value,Color color){
+
+Widget legendChart(String value, Color color) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
-    child: Row(children: [
-      Container(
-        height: 15,
-        width: 30,
-        color: color,
-      ),
-      const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
-      Text(value)
-    ],),
+    child: Row(
+      children: [
+        Container(
+          height: 15,
+          width: 30,
+          color: color,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
+        Text(value)
+      ],
+    ),
   );
 }
 
@@ -93,15 +101,15 @@ Widget headerChartTable(String header, String value) {
               ),
               Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Align(
-                        alignment: Alignment.topRight,
-                        child: Image.asset(
-                          "assets/icons/ic_more.png",
-                          width: 20,
-                          height: 20,
-                        )),
-                  ))
+                padding: const EdgeInsets.all(8),
+                child: Align(
+                    alignment: Alignment.topRight,
+                    child: Image.asset(
+                      "assets/icons/ic_more.png",
+                      width: 20,
+                      height: 20,
+                    )),
+              ))
             ],
           ),
         ),
