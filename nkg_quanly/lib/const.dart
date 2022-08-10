@@ -148,4 +148,8 @@ class CustomTextStyle {
     color: kSecondText,
     fontSize: 15,
   );
+  static const textStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 15,
+  );
 }

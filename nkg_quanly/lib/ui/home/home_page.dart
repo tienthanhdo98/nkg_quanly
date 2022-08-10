@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const.dart';
+import 'package:nkg_quanly/ui/home/work_schedule_detail.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../model/ChartModel.dart';
@@ -59,7 +60,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
 
 class WorkSchedule extends StatelessWidget {
   const WorkSchedule({
@@ -160,116 +160,90 @@ class WorkSchedule extends StatelessWidget {
                     thickness: 2,
                   ),
                 ),
-                //iteam1
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 100,
-                        child: Center(
-                          child: Text("08:00 - 09:00"),
-                        ),
-                      ),
-                      const Padding(padding: const EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh",
-                                style: CustomTextStyle.header2TextStyle,
+                SizedBox(
+                  height: 300,
+                  child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 3,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
                               ),
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
-                              const Text(
-                                "Phòng họp  lớn 01",
-                                style: CustomTextStyle.secondTextStyle,
-                              ),
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    "assets/icons/ic_camera.png",
-                                    height: 20,
-                                    width: 20,
-                                    fit: BoxFit.fill,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return WorkScheduleDetail();
+                              },
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            child: Row(
+                              children: [
+                                const SizedBox(
+                                  width: 100,
+                                  child: Center(
+                                    child: Text("08:00 - 09:00"),
                                   ),
-                                  const Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
-                                  const Text("Họp online",
-                                      style: CustomTextStyle.secondTextStyle)
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
-                  child: Divider(
-                    color: kBackGround,
-                    thickness: 2,
-                  ),
-                ),
-                //item2
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 100,
-                        child: Center(
-                          child: Text("08:00 - 09:00"),
-                        ),
-                      ),
-                      const Padding(padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh",
-                                style: CustomTextStyle.header2TextStyle,
-                              ),
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
-                              const Text(
-                                "Phòng họp  lớn 01",
-                                style: CustomTextStyle.secondTextStyle,
-                              ),
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    "assets/icons/ic_camera.png",
-                                    height: 20,
-                                    width: 20,
-                                    fit: BoxFit.fill,
+                                ),
+                                const Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          "Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh",
+                                          style:
+                                              CustomTextStyle.header2TextStyle,
+                                        ),
+                                        const Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0, 5, 0, 0)),
+                                        const Text(
+                                          "Phòng họp  lớn 01",
+                                          style:
+                                              CustomTextStyle.secondTextStyle,
+                                        ),
+                                        const Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0, 5, 0, 0)),
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              "assets/icons/ic_camera.png",
+                                              height: 20,
+                                              width: 20,
+                                              fit: BoxFit.fill,
+                                            ),
+                                            const Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0, 0, 5, 0)),
+                                            const Text("Họp online",
+                                                style: CustomTextStyle
+                                                    .secondTextStyle)
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  const Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
-                                  const Text("Họp online",
-                                      style: CustomTextStyle.secondTextStyle)
-                                ],
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
+                        );
+                      }),
                 ),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 20))
+                const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 15))
               ],
             ),
           ),
@@ -278,12 +252,3 @@ class WorkSchedule extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-

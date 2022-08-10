@@ -1,0 +1,88 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:nkg_quanly/const.dart';
+
+class WorkScheduleDetail extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => WorkScheduleInfoState();
+}
+
+class WorkScheduleInfoState extends State<WorkScheduleDetail> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kWhite,
+      resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    child: Align(
+                        alignment: Alignment.topRight,
+                        child: Image.asset(
+                          "assets/icons/ic_close.png",
+                          width: 40,
+                          height: 40,
+                        )),
+                  ),
+                ),
+                const Text("Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh",style: CustomTextStyle.header1TextStyle,),
+                const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
+                const Text("Phòng họp lớp 01"),
+                const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
+                const Text("https://meet.google.com/xxa-kjeh-kjc",style: TextStyle(color: kBlueButton),),
+                const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
+                const Divider(thickness: 1,),
+                const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
+                Row(
+                  children: [
+                    Image.asset(
+                      "assets/icons/ic_camera.png",
+                      height: 20,
+                      width: 20,
+                      fit: BoxFit.fill,
+                    ),
+                    const Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            0, 0, 5, 0)),
+                    const Text("Họp online",
+                        style: CustomTextStyle
+                            .secondTextStyle)
+                  ],
+                ),
+                const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
+                const Divider(thickness: 1,),
+                const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
+                const Text("Thành viên tham gia",style: CustomTextStyle.textStyle),
+                SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      itemBuilder: (context,index){
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          child: Row(children: [
+                              Image.asset("assets/icons/ic_user.png",width: 24,height: 24,),
+                              const Text("Trần Tuấn Anh(GĐ SGD HUNG YEN)",style: CustomTextStyle.textStyle,)
+                          ],),
+                        );
+
+                  }),
+                )
+
+
+              ],
+            )),
+        ),
+    );
+  }
+}
