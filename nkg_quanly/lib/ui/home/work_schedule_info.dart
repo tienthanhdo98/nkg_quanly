@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const.dart';
@@ -91,7 +89,7 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                               child: Column(children: [
                                 Text(listDay[index],
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 15,
                                         color: selected == index
                                             ? kBlueButton
                                             : kSecondText)),
@@ -111,7 +109,7 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                                       child: Text(
                                         "${listDate[index]}",
                                         style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 15,
                                             fontWeight: FontWeight.bold,
                                             color: (selected == index)
                                                 ? kWhite
@@ -282,10 +280,10 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                                   color: kLightBlue,
                                   borderRadius: BorderRadius.circular(50),
                                 )
-                              : BoxDecoration(),
+                              : const BoxDecoration(),
                           height: 40,
                           width: 40,
-                          child: Center(child: Text("Ngày" , style: TextStyle(color: (selectedButton == 0) ? kBlueButton : Colors.black)))),
+                          child: Center(child: Text("Ngày" , style: TextStyle(fontWeight: FontWeight.bold,color: (selectedButton == 0) ? kBlueButton : Colors.black)))),
                     ),
                   ),
                   Expanded(
@@ -301,13 +299,13 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                                   color: kLightBlue,
                                   borderRadius: BorderRadius.circular(50),
                                 )
-                              : BoxDecoration(),
+                              : const BoxDecoration(),
                           height: 40,
                           width: 40,
                           child: Center(
                               child: Text(
                             "Tuần",
-                            style: TextStyle(color: (selectedButton == 1) ? kBlueButton : Colors.black),
+                            style: TextStyle(fontWeight: FontWeight.bold,color: (selectedButton == 1) ? kBlueButton : Colors.black),
                           ))),
                     ),
                   ),
@@ -324,10 +322,10 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                                   color: kLightBlue,
                                   borderRadius: BorderRadius.circular(50),
                                 )
-                              : BoxDecoration(),
+                              : const BoxDecoration(),
                           height: 40,
                           width: 40,
-                          child: Center(child: Text("Tháng",  style: TextStyle(color: (selectedButton == 2) ? kBlueButton : Colors.black)))),
+                          child: Center(child: Text("Tháng",  style: TextStyle(fontWeight: FontWeight.bold,color: (selectedButton == 2) ? kBlueButton : Colors.black)))),
                     ),
                   )
                 ],

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WorkScheduleDetail extends StatefulWidget {
   @override
@@ -38,7 +39,12 @@ class WorkScheduleInfoState extends State<WorkScheduleDetail> {
                 const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
                 const Text("Phòng họp lớp 01"),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
-                const Text("https://meet.google.com/xxa-kjeh-kjc",style: TextStyle(color: kBlueButton),),
+                InkWell(
+                    onTap: () {
+                      launch("https://meet.google.com/xxa-kjeh-kjc");
+                    },
+                    child: const Text("https://meet.google.com/xxa-kjeh-kjc",style: TextStyle(color: kBlueButton)
+                      ,)),
                 const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
                 const Divider(thickness: 1,),
                 const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),

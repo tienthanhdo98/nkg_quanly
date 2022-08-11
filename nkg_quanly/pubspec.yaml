@@ -47,6 +47,7 @@ dev_dependencies:
   flutter_lints: ^1.0.0
   syncfusion_flutter_charts: ^20.1.58
   intl: ^0.17.0
+  url_launcher: ^6.1.5
 
 
 # For information on the generic Dart part of this file, see the
