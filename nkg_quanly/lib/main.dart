@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:nkg_quanly/ui/theme/theme_data.dart';
+import 'package:nkg_quanly/ui/chart/chart_screen.dart';
 import 'package:nkg_quanly/ui/home/home_page.dart';
 import 'package:nkg_quanly/ui/login/login_screen.dart';
 import 'package:nkg_quanly/ui/setup/setting_screen.dart';
+import 'package:provider/provider.dart';
 
 import 'const.dart';
 
@@ -15,14 +18,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: Consumer<ThemeProvider>(builder: (context, ThemeProvider themeProvider ,child){
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: themeProvider.darkTheme! ? ThemeClass.darkTheme :ThemeClass.lightTheme,
+          home: const LoginScreen(),
+        );
+      },),
 
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        scaffoldBackgroundColor: kBackGround,
-      ),
-      home: const LoginScreen(),
     );
   }
 }
@@ -41,9 +46,9 @@ class HomeScreenStage extends State<HomeScreen> {
 
   static  final List<Widget> _widgetOptions = <Widget>[
     const HomePage(),
-    const SettingScreen(),
-    const SettingScreen(),
-    const SettingScreen()
+    const ChartScreen(),
+     SettingScreen(),
+     SettingScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -59,38 +64,25 @@ class HomeScreenStage extends State<HomeScreen> {
       body: SafeArea(child: _widgetOptions.elementAt(_selectedIndex)),
       //bottom
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColor,
         currentIndex: _selectedIndex,
-        selectedItemColor: kBlueButton,
-        unselectedItemColor: Colors.black,
-        showUnselectedLabels: true,
+
         onTap: _onItemTapped,
-        items: <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/ic_home.png',
-              height: 20,
-            ),
+            icon: Icon(Icons.home),
             label: 'Trang chủ',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/ic_chart.png',
-              height: 20,
-            ),
+            icon: Icon(Icons.bar_chart),
             label: 'Biểu đồ',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/ic_bell.png',
-              height: 20,
-            ),
+            icon: Icon(Icons.notifications),
             label: 'Thông báo',
           ),
           BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/icons/ic_menu.png',
-              height: 20,
-            ),
+            icon: Icon(Icons.menu),
             label: 'Cài đặt',
           ),
         ],

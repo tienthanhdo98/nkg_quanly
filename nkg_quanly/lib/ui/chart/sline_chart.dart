@@ -40,7 +40,7 @@ class SlineChartState extends State<SLineChart>{
       padding: const EdgeInsets.all(15),
       child: borderItem(Column(
         children: [
-          headerChartTable("Nhiệm vụ", "5.987"),
+          headerChartTable("Nhiệm vụ", "5.987",context),
           SizedBox(
             height: 55,
             child: ListView.builder(
@@ -53,7 +53,7 @@ class SlineChartState extends State<SLineChart>{
           ),
           _buildDefaultSplineChart()
         ],
-      )),
+      ),context),
     );
   }
   Widget buttonItem(int index){

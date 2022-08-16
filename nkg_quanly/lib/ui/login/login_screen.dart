@@ -25,9 +25,9 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     const Text("Xin chào"),
                     const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
-                    const Text(
+                    Text(
                       "Đăng nhập tài khoản",
-                      style: CustomTextStyle.header1TextStyle,
+                      style: Theme.of(context).textTheme.headline1,
                     ),
                     const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
                     const Text("Email"),
@@ -59,7 +59,7 @@ class LoginScreen extends StatelessWidget {
                     )
                   ],
                 ),
-              )),
+              ),context),
               const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 20)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -4,13 +4,13 @@ import '../../const.dart';
 import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class ColumnChart extends StatefulWidget {
-  const ColumnChart({
+class ColumnChart2 extends StatefulWidget {
+  const ColumnChart2({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => ColumnChartState();
+  State<StatefulWidget> createState() => ColumnChart2State();
 
 
   // final TooltipBehavior? _tooltipBehavior =
@@ -18,8 +18,9 @@ class ColumnChart extends StatefulWidget {
 
 
 }
-class ColumnChartState extends State<ColumnChart>{
+class ColumnChart2State extends State<ColumnChart2>{
   var selected = 0;
+  String dropdownValue = 'Trạng thái';
   List<ChartSampleData> listCharData = [];
   @override
   void initState() {
@@ -35,48 +36,62 @@ class ColumnChartState extends State<ColumnChart>{
     return Padding(
       padding: const EdgeInsets.all(15),
       child: borderItem(Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          headerChartTable("Hồ sơ trình", "5.987",context),
-          Row(
-            children: [
-              Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: ElevatedButton(
-                      style: selected == 0 ? kActiveButtonStyle : kUnActiveButtonStyle,
-                      onPressed: () {
-                        setState(() {
-                          selected = 0;
+          headerChartTable2(context),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+            child: Row(children: [
+              const Expanded(child: Text("Biểu đồ theo dõi",style:  CustomTextStyle.secondTextStyle)),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  height: 40,
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(0),
+                    border: Border.all(
+                        color: kDLine, style: BorderStyle.solid, width: 0.80),
+                  ),
+                  child: DropdownButton<String>(
+                    style: CustomTextStyle.secondTextStyle,
+                    value: dropdownValue,
+                    icon: const Icon(Icons.arrow_drop_down),
+                    elevation: 16,
+                    underline: DropdownButtonHideUnderline(child: Container()),
+                    onChanged: (String? newValue,) {
+                      setState(() {
+                        if(newValue == "Mức độ")
+                        {
                           listCharData = <ChartSampleData>[
                             ChartSampleData(x: 'Thấp', y: 760, color: kViolet),
                             ChartSampleData(x: 'Trung bình', y: 1240, color: kBlueChart),
                             ChartSampleData(x: 'Cao', y: 1369, color: kOrange),
                           ];
-                        });
-                      },
-                      child: const Text("Mức độ"),
-                    ),
-                  )),
-              Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: ElevatedButton(
-                      style: selected == 1 ? kActiveButtonStyle : kUnActiveButtonStyle,
-                      onPressed: () {
-                        setState(() {
-                          selected = 1;
+                        }
+                        else
+                        {
                           listCharData = <ChartSampleData>[
                             ChartSampleData(x: 'Thấp', y: 560, color: kViolet),
                             ChartSampleData(x: 'Trung bình', y: 1540, color: kBlueChart),
                             ChartSampleData(x: 'Cao', y: 9369, color: kOrange),
                           ];
-                        });
+                        }
 
-                      },
-                      child: const Text("Trạng thái"),
-                    ),
-                  ))
-            ],
+                      });
+                      dropdownValue = newValue!;
+                    },
+                    items: <String>['Trạng thái', 'Mức độ']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ],),
           ),
           _buildDefaultColumnChart()
         ],

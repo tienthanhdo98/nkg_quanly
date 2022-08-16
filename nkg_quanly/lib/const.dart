@@ -14,6 +14,17 @@ const kBlueButton = Color(0xFF0060ff);
 const kLightBlue = Color(0xFFdbeafe);
 const kLightBlueButton = Color(0xFF3797fb);
 
+//chart
+const kBlueLineChart2 = Color(0xFF61a9f3);
+
+//Dark Mode
+const kDBackGround = Color(0xFF1b1c30);
+const kDBackgroundItem = Color(0xFF2a2b40);
+const kDTable = Color(0xFF5b5c6e);
+const kDLine = Color(0xFF727586);
+
+//
+
 final kUnActiveButtonStyle =
     ElevatedButton.styleFrom(primary: kWhite, onPrimary: Colors.black);
 final kActiveButtonStyle = ElevatedButton.styleFrom(primary: kBlueButton);
@@ -65,13 +76,13 @@ Widget legendChart(String value, Color color) {
           color: color,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
-        Text(value)
+        Flexible(child: Text(value))
       ],
     ),
   );
 }
 
-Widget headerChartTable(String header, String value) {
+Widget headerChartTable(String header, String value, BuildContext context) {
   return Column(
     children: [
       Padding(
@@ -85,7 +96,7 @@ Widget headerChartTable(String header, String value) {
                   children: [
                     Text(
                       header,
-                      style: CustomTextStyle.header1TextStyle,
+                      style: Theme.of(context).textTheme.headline1,
                     ),
                     const Padding(padding: EdgeInsets.fromLTRB(0, 3, 0, 3)),
                     const Text(
@@ -95,21 +106,17 @@ Widget headerChartTable(String header, String value) {
                     const Padding(padding: EdgeInsets.fromLTRB(0, 3, 0, 3)),
                     Text(
                       value,
-                      style: CustomTextStyle.header1TextStyle,
+                      style: Theme.of(context).textTheme.headline1,
                     )
                   ],
                 ),
               ),
-              Expanded(
+              const Expanded(
                   child: Padding(
-                padding: const EdgeInsets.all(8),
+                padding: EdgeInsets.all(8),
                 child: Align(
                     alignment: Alignment.topRight,
-                    child: Image.asset(
-                      "assets/icons/ic_more.png",
-                      width: 20,
-                      height: 20,
-                    )),
+                    child: Icon(Icons.more_horiz)),
               ))
             ],
           ),
@@ -123,11 +130,45 @@ Widget headerChartTable(String header, String value) {
   );
 }
 
-Widget borderItem(Widget widget) {
+Widget headerChartTable2(BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: EdgeInsets.all(15),
+        child: Row(
+          children:  const [
+            Text("Nhiệm vụ",style: TextStyle(color: kLightBlueButton),),
+            Expanded(
+                child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Text("Xem chi tiết",style: CustomTextStyle.secondTextStyle))),
+            Align(
+                alignment: Alignment.centerRight,
+                child: Icon(Icons.add))
+          ],
+        ),
+      ),
+      const Divider(
+        thickness: 2,
+        color: kDLine,
+      ),
+      Padding(
+          padding: EdgeInsets.all(15),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text("Tổng văn bản", style:  CustomTextStyle.secondTextStyle,),
+            Text("2,846",style:  Theme.of(context).textTheme.headline1,),
+          ])),
+    ],
+  );
+}
+
+Widget borderItem(Widget widget, BuildContext context) {
   return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(6),
           boxShadow: [
             BoxShadow(
@@ -141,16 +182,8 @@ Widget borderItem(Widget widget) {
 }
 
 class CustomTextStyle {
-  static const header1TextStyle =
-      TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold);
-  static const header2TextStyle =
-      TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold);
   static const secondTextStyle = TextStyle(
     color: kSecondText,
-    fontSize: 15,
-  );
-  static const textStyle = TextStyle(
-    color: Colors.black,
     fontSize: 15,
   );
 }

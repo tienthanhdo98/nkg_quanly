@@ -46,9 +46,9 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                       ),
                     ),
                     const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                    const Text(
+                    Text(
                       "Lịch làm việc",
-                      style: CustomTextStyle.header1TextStyle,
+                      style: Theme.of(context).textTheme.headline1,
                     ),
                     Expanded(
                         child: Align(
@@ -74,13 +74,14 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                   children: [
                     Text(
                       "${dateNow.year} Tháng ${dateNow.month}",
-                      style: CustomTextStyle.header1TextStyle,
+                      style: Theme.of(context).textTheme.headline1,
                     ),
                     //date header
                     SizedBox(
                       height: 100,
                       width: double.infinity,
                       child: ListView.builder(
+
                           scrollDirection: Axis.horizontal,
                           itemCount: listDay.length,
                           itemBuilder: (context, index) {
@@ -120,6 +121,7 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                             );
                           }),
                     ),
+
                     //list work
                   ],
                 ),
@@ -140,13 +142,13 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                       ),
                       height: 40,
                       child: Row(
-                        children: const [
+                        children: [
                           SizedBox(
                             width: 100,
                             child: Center(
                               child: Text(
                                 "Cả ngày",
-                                style: CustomTextStyle.header2TextStyle,
+                                style: Theme.of(context).textTheme.headline2,
                               ),
                             ),
                           ),
@@ -157,7 +159,7 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text("Lịch làm việc",
-                                  style: CustomTextStyle.header2TextStyle),
+                                  style: Theme.of(context).textTheme.headline2),
                             ),
                           )
                         ],
@@ -212,10 +214,9 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const Text(
+                                           Text(
                                             "Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh",
-                                            style: CustomTextStyle
-                                                .header2TextStyle,
+                                            style: Theme.of(context).textTheme.headline2,
                                           ),
                                           const Padding(
                                               padding: EdgeInsets.fromLTRB(

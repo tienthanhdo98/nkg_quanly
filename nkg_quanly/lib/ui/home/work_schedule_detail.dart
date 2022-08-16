@@ -35,7 +35,7 @@ class WorkScheduleInfoState extends State<WorkScheduleDetail> {
                         )),
                   ),
                 ),
-                const Text("Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh",style: CustomTextStyle.header1TextStyle,),
+                Text("Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh",style: Theme.of(context).textTheme.headline1,),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
                 const Text("Phòng họp lớp 01"),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
@@ -67,7 +67,7 @@ class WorkScheduleInfoState extends State<WorkScheduleDetail> {
                 const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
                 const Divider(thickness: 1,),
                 const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
-                const Text("Thành viên tham gia",style: CustomTextStyle.textStyle),
+                Text("Thành viên tham gia",style: Theme.of(context).textTheme.headline3),
                 SizedBox(
                   height: 200,
                   child: ListView.builder(
@@ -78,7 +78,7 @@ class WorkScheduleInfoState extends State<WorkScheduleDetail> {
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                           child: Row(children: [
                               Image.asset("assets/icons/ic_user.png",width: 24,height: 24,),
-                              const Text("Trần Tuấn Anh(GĐ SGD HUNG YEN)",style: CustomTextStyle.textStyle,)
+                              Text("Trần Tuấn Anh(GĐ SGD HUNG YEN)",style: Theme.of(context).textTheme.headline3,)
                           ],),
                         );
 

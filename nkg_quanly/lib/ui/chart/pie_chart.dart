@@ -36,7 +36,7 @@ class PieChartState extends State<PieChart>{
       padding: const EdgeInsets.all(15),
       child: borderItem(Column(
         children: [
-          headerChartTable("Văn bản đến chưa bút phê", "5.987"),
+          headerChartTable("Văn bản đến chưa bút phê", "5.987",context),
           Row(
             children: [
               Expanded(
@@ -92,7 +92,7 @@ class PieChartState extends State<PieChart>{
             ),
           )
         ],
-      )),
+      ),context),
     );
   }
 

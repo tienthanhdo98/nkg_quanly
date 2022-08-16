@@ -33,7 +33,7 @@ class ColumnRedChartState extends State<ColumnRedChart> {
       padding: const EdgeInsets.all(15),
       child: borderItem(Column(
         children: [
-          headerChartTable("Văn bản đến chưa xử lý", "5.987"),
+          headerChartTable("Văn bản đến chưa xử lý", "5.987",context),
           SizedBox(
             height: 55,
             child: ListView.builder(
@@ -46,7 +46,7 @@ class ColumnRedChartState extends State<ColumnRedChart> {
           ),
           _buildDefaultColumnChart()
         ],
-      )),
+      ),context),
     );
 
   }
