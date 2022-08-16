@@ -46,6 +46,9 @@ class ThemeClass {
     colorScheme: const ColorScheme.light(),
     cardColor: kWhite,
     primaryColor: kWhite,
+    splashColor: kWhite,
+
+    dividerColor: kBackGround,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       selectedItemColor: kBlueButton,
       unselectedItemColor: Colors.black,
@@ -68,6 +71,12 @@ class ThemeClass {
       colorScheme: const ColorScheme.dark(),
       primaryColor: kDBackGround,
       cardColor: kDBackgroundItem,
+      splashColor: kDTable,
+      switchTheme: SwitchThemeData(
+        thumbColor: MaterialStateProperty.all(kBlueButton),
+        trackColor: MaterialStateProperty.all(kLightBlueButton),
+      ),
+      dividerColor: kDLine,
       iconTheme: const IconThemeData(color: Colors.white),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor:  kBlueLineChart2,

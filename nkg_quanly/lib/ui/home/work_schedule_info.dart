@@ -30,7 +30,7 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
           children: [
             //header
             Container(
-              color: kWhite,
+              color: Theme.of(context).cardColor,
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Row(
@@ -39,25 +39,17 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                       onTap: (){
                         Navigator.pop(context);
                       },
-                      child: Image.asset(
-                        "assets/icons/ic_back.png",
-                        width: 24,
-                        height: 24,
-                      ),
+                      child: const Icon(Icons.arrow_back_ios_outlined),
                     ),
                     const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                     Text(
                       "Lịch làm việc",
                       style: Theme.of(context).textTheme.headline1,
                     ),
-                    Expanded(
+                    const Expanded(
                         child: Align(
                             alignment: Alignment.centerRight,
-                            child: Image.asset(
-                              "assets/icons/ic_search.png",
-                              width: 24,
-                              height: 24,
-                            )))
+                            child: Icon(Icons.search)))
                   ],
                 ),
               ),
@@ -66,7 +58,7 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
             Container(
               width: double.infinity,
               height: 155,
-              color: kBackGround,
+              color: Theme.of(context).primaryColor,
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Column(
@@ -81,7 +73,6 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                       height: 100,
                       width: double.infinity,
                       child: ListView.builder(
-
                           scrollDirection: Axis.horizontal,
                           itemCount: listDay.length,
                           itemBuilder: (context, index) {
@@ -131,13 +122,13 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
             Padding(
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               child: Container(
-                color: kWhite,
+                color: Theme.of(context).cardColor,
                 child: Column(children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: kWhite,
+                        color: Theme.of(context).splashColor,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       height: 40,
@@ -152,9 +143,9 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                               ),
                             ),
                           ),
-                          VerticalDivider(
-                              width: 1, color: kBackGround, thickness: 1),
-                          Padding(padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
+                          const VerticalDivider(
+                              width: 1, thickness: 1),
+                          const Padding(padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
                           Expanded(
                             child: Align(
                               alignment: Alignment.centerLeft,
@@ -166,10 +157,9 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
                       ),
                     ),
                   ),
-                  const Padding(
+                   const Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Divider(
-                      color: kBackGround,
                       thickness: 2,
                     ),
                   ),
@@ -261,9 +251,9 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
             ),
             Expanded(
                 child: Container(
-              decoration: const BoxDecoration(
-                  color: kWhite,
-                  border: Border(top: BorderSide(color: kLightGray))),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  border:  Border(top: BorderSide(color: Theme.of(context).dividerColor))),
               height: 50,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,

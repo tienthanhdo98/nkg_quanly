@@ -48,7 +48,6 @@ class WorkSchedule extends StatelessWidget {
                 ),
               ),
               const Divider(
-                color: kBackGround,
                 thickness: 2,
               ),
               //table
@@ -56,7 +55,7 @@ class WorkSchedule extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
+                    color: Theme.of(context).splashColor,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   width: double.infinity,
@@ -73,7 +72,7 @@ class WorkSchedule extends StatelessWidget {
                         ),
                       ),
                       const VerticalDivider(
-                          width: 1, color: kBackGround, thickness: 1),
+                          width: 1, thickness: 1),
                       const Padding(padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
                       Expanded(
                         child: Align(
@@ -89,7 +88,6 @@ class WorkSchedule extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
                 child: Divider(
-                  color: kBackGround,
                   thickness: 2,
                 ),
               ),

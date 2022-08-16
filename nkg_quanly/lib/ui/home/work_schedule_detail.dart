@@ -12,7 +12,6 @@ class WorkScheduleInfoState extends State<WorkScheduleDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kWhite,
       resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
           child: Padding(

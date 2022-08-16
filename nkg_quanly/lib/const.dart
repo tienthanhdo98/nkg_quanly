@@ -123,7 +123,6 @@ Widget headerChartTable(String header, String value, BuildContext context) {
         ),
       ),
       const Divider(
-        color: kBackGround,
         thickness: 2,
       ),
     ],
@@ -151,7 +150,6 @@ Widget headerChartTable2(BuildContext context) {
       ),
       const Divider(
         thickness: 2,
-        color: kDLine,
       ),
       Padding(
           padding: EdgeInsets.all(15),
