@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/home/menu_screen.dart';
+
 import '../../const.dart';
+import '../documentin/document_in_screen.dart';
 import 'list_all_item.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => HomeScreenState();
-}
-
-class HomeScreenState extends State<HomeScreen> {
+class HomeScreen extends GetView {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -76,7 +73,7 @@ class HomeScreenState extends State<HomeScreen> {
                           children: [
                             Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(15, 15, 5, 15),
+                                const EdgeInsets.fromLTRB(15, 15, 5, 15),
                                 child: Text(
                                   'Thông báo khẩn',
                                   style: Theme.of(context).textTheme.headline2,
@@ -104,7 +101,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   child: Text(
                                     'Nam Định, Bình Dương nằm top 3 cao nhất điểm môn Toán tốt nghiệp THPT',
                                     style:
-                                        Theme.of(context).textTheme.headline3,
+                                    Theme.of(context).textTheme.headline3,
                                   ),
                                 ),
                               )
@@ -129,7 +126,7 @@ class HomeScreenState extends State<HomeScreen> {
                               onTap: () {
                                 Get.to(ListAllItem());
                               },
-                              child: Text(
+                              child: const Text(
                                 'Xem tất cả',
                                 style: TextStyle(color: kBlueButton),
                               ))))
@@ -150,7 +147,7 @@ class HomeScreenState extends State<HomeScreen> {
                   MenuItem item = list[index];
                   return InkWell(
                     onTap: () {
-                      Get.to(() => MenuScreen(header: item.title,icon: item.img,));
+                      Get.to(() => DocumentInScreen(header: item.title,icon: item.img,));
                     },
                     child: Column(
                       children: [
@@ -200,21 +197,21 @@ class HomeScreenState extends State<HomeScreen> {
                   ),
                   Expanded(
                       child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 35, 15, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const Text('Hôm nay\n25° / 30°',
-                            style: TextStyle(color: kWhite)),
-                        Image.asset(
-                          'assets/icons/ic_rain.png',
-                          fit: BoxFit.cover,
-                          height: 80,
-                          width: 80,
-                        )
-                      ],
-                    ),
-                  ))
+                        padding: const EdgeInsets.fromLTRB(0, 35, 15, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const Text('Hôm nay\n25° / 30°',
+                                style: TextStyle(color: kWhite)),
+                            Image.asset(
+                              'assets/icons/ic_rain.png',
+                              fit: BoxFit.cover,
+                              height: 80,
+                              width: 80,
+                            )
+                          ],
+                        ),
+                      ))
                 ]) /* add child content here */,
               ),
             )
@@ -225,20 +222,23 @@ class HomeScreenState extends State<HomeScreen> {
   }
 }
 
+
+
 class MenuItem {
   String? title;
   String? img;
+  String? url;
 
-  MenuItem(this.title, this.img);
+  MenuItem(this.title, this.img,this.url);
 }
 
 List<MenuItem> list = [
-  MenuItem('Lịch làm việc', 'assets/icons/ic_job.png'),
-  MenuItem('Báo cáo', 'assets/icons/ic_report.png'),
-  MenuItem('Văn bản chưa xử lý', 'assets/icons/ic_doc.png'),
-  MenuItem('Văn bản đến chưa bút phê', 'assets/icons/ic_doc_sign.png'),
-  MenuItem('Văn bản đi chờ phát hành', 'assets/icons/ic_doc_push.png'),
-  MenuItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png'),
-  MenuItem('Lịch họp', 'assets/icons/ic_meet.png'),
-  MenuItem('Nhiệm vụ', 'assets/icons/ic_mission.png'),
+  MenuItem('Lịch làm việc', 'assets/icons/ic_job.png',""),
+  MenuItem('Báo cáo', 'assets/icons/ic_report.png',""),
+  MenuItem('Văn bản chưa xử lý', 'assets/icons/ic_doc.png',""),
+  MenuItem('Văn bản đến chưa bút phê', 'assets/icons/ic_doc_sign.png',""),
+  MenuItem('Văn bản đi chờ phát hành', 'assets/icons/ic_doc_push.png',""),
+  MenuItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png',""),
+  MenuItem('Lịch họp', 'assets/icons/ic_meet.png',""),
+  MenuItem('Nhiệm vụ', 'assets/icons/ic_mission.png',""),
 ];

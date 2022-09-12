@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/documentin/document_in_search.dart';
 
 const kBackGround = Color(0xFFf0f2f5);
 const kLightGray = Color(0xFFfafafa);
@@ -53,6 +55,30 @@ Widget borderText(String value, Color color) {
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Text(value),
+      ),
+    ),
+  );
+}
+Widget headerWidget(String header,BuildContext context){
+  return Container(
+    color: Theme.of(context).cardColor,
+    child: Padding(
+      padding: const EdgeInsets.all(15),
+      child: Row(
+        children: [
+          InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: const Icon(Icons.arrow_back_ios_outlined),
+          ),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+          Text(
+            header,
+            style: Theme.of(context).textTheme.headline1,
+          ),
+        ],
       ),
     ),
   );

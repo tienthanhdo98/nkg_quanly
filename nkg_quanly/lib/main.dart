@@ -9,9 +9,11 @@ import 'package:nkg_quanly/ui/setup/setting_screen.dart';
 import 'package:nkg_quanly/ui/theme/theme_data.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  runApp(const MyApp());
+  initializeDateFormatting().then((_) => runApp(MyApp()));
+  //runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

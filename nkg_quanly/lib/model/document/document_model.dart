@@ -1,18 +1,18 @@
-class Document {
+class DocumentModel {
   List<Items>? items;
   int? pageIndex;
   int? pageSize;
   int? totalRecords;
   int? pageCount;
 
-  Document(
+  DocumentModel(
       {this.items,
         this.pageIndex,
         this.pageSize,
         this.totalRecords,
         this.pageCount});
 
-  Document.fromJson(Map<String, dynamic> json) {
+  DocumentModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
       items = <Items>[];
       json['items'].forEach((v) {
