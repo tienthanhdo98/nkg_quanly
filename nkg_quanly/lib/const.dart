@@ -5,12 +5,14 @@ const kLightGray = Color(0xFFfafafa);
 const kLightGray2 = Color(0xFFdedede);
 const kSecondText = Color(0xFFa4a4a4);
 const kWhite = Color(0xFFffffff);
+const kPink = Color(0xFF6510B4);
+const kBlueButton = Color(0xFF3D34FF);
 const kOrange = Color(0xFFf3722c);
 const kViolet = Color(0xFFa155b9);
 const kLoginButton = Color(0xFF5149ef);
 const kBlueChart = Color(0xFF16bfd6);
 const kRedChart = Color(0xFFf94144);
-const kBlueButton = Color(0xFF0060ff);
+// const kBlueButton = Color(0xFF0060ff);
 const kLightBlue = Color(0xFFdbeafe);
 const kLightBlueButton = Color(0xFF3797fb);
 
@@ -24,6 +26,14 @@ const kDTable = Color(0xFF5b5c6e);
 const kDLine = Color(0xFF727586);
 
 //
+const kgray = Color(0xFFF0F2F5);
+const kGrayPriority= Color(0xFFBBBBBB);
+const kBluePriority= Color(0xFF3D9DF6);
+const kRedPriority= Color(0xFFF63D3D);
+const kGreenSign= Color(0xFF30A32E);
+const kOrangeSign= Color(0xFFFF9D0B);
+const kVioletButton= Color(0xFF3D34FF);
+const kVioletBg= Color(0xFFEDECFF);
 
 final kUnActiveButtonStyle =
     ElevatedButton.styleFrom(primary: kWhite, onPrimary: Colors.black);
@@ -65,7 +75,7 @@ Widget borderInputText(String value) {
   );
 }
 
-Widget legendChart(String value, Color color) {
+Widget  legendChart(String value, Color color) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
@@ -76,7 +86,7 @@ Widget legendChart(String value, Color color) {
           color: color,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
-        Flexible(child: Text(value))
+        Text(value)
       ],
     ),
   );
@@ -152,10 +162,10 @@ Widget headerChartTable2(BuildContext context) {
         thickness: 2,
       ),
       Padding(
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("Tổng văn bản", style:  CustomTextStyle.secondTextStyle,),
+            const Text("Tổng văn bản", style:  CustomTextStyle.secondTextStyle,),
             Text("2,846",style:  Theme.of(context).textTheme.headline1,),
           ])),
     ],
@@ -168,6 +178,23 @@ Widget borderItem(Widget widget, BuildContext context) {
       decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(6),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 1,
+              offset: const Offset(0, 5), // changes position of shadow
+            ),
+          ]),
+      child: widget);
+}
+
+Widget border(Widget widget, BuildContext context) {
+  return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.1),

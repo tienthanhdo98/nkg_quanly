@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/ui/theme/theme_data.dart';
+import 'package:nkg_quanly/const.dart';
 import 'package:nkg_quanly/ui/chart/chart_screen.dart';
 import 'package:nkg_quanly/ui/home/home_page.dart';
+import 'package:nkg_quanly/ui/home/home_screen.dart';
 import 'package:nkg_quanly/ui/login/login_screen.dart';
+import 'package:nkg_quanly/ui/login/login_screen2.dart';
 import 'package:nkg_quanly/ui/setup/setting_screen.dart';
+import 'package:nkg_quanly/ui/theme/theme_data.dart';
 import 'package:provider/provider.dart';
-
-import 'const.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,10 +23,10 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(builder: (context, ThemeProvider themeProvider ,child){
-        return MaterialApp(
+        return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           theme: themeProvider.darkTheme! ? ThemeClass.darkTheme :ThemeClass.lightTheme,
-          home: const LoginScreen(),
+          home: MainScreen(),
         );
       },),
 
@@ -34,20 +36,20 @@ class MyApp extends StatelessWidget {
 
 
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => HomeScreenStage();
+  State<StatefulWidget> createState() => MainScreenStage();
 }
 
-class HomeScreenStage extends State<HomeScreen> {
+class MainScreenStage extends State<MainScreen> {
   int _selectedIndex = 0;
 
   static  final List<Widget> _widgetOptions = <Widget>[
-    const HomePage(),
+    HomeScreen(),
     const ChartScreen(),
-     SettingScreen(),
+     HomePage(),
      SettingScreen()
   ];
 
@@ -66,7 +68,6 @@ class HomeScreenStage extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
         currentIndex: _selectedIndex,
-
         onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

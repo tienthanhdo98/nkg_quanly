@@ -3,18 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class WorkScheduleDetail extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => WorkScheduleInfoState();
-}
-
-class WorkScheduleInfoState extends State<WorkScheduleDetail> {
+class WorkScheduleDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: Padding(
+      body: SingleChildScrollView(
+        child: Padding(
             padding: const EdgeInsets.all(15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,18 +71,19 @@ class WorkScheduleInfoState extends State<WorkScheduleDetail> {
                         return Padding(
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                           child: Row(children: [
-                              Image.asset("assets/icons/ic_user.png",width: 24,height: 24,),
-                              Text("Trần Tuấn Anh(GĐ SGD HUNG YEN)",style: Theme.of(context).textTheme.headline3,)
+                            Image.asset("assets/icons/ic_user.png",width: 24,height: 24,),
+                            Text("Trần Tuấn Anh(GĐ SGD HUNG YEN)",style: Theme.of(context).textTheme.headline3,)
                           ],),
                         );
 
-                  }),
+                      }),
                 )
 
 
               ],
             )),
-        ),
+      ),
     );
   }
 }
+

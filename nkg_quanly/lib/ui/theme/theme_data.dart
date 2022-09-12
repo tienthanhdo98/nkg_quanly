@@ -42,7 +42,7 @@ class ThemeProvider extends ChangeNotifier {
 
 class ThemeClass {
   static ThemeData lightTheme = ThemeData(
-    scaffoldBackgroundColor: kBackGround,
+    scaffoldBackgroundColor: kWhite,
     colorScheme: const ColorScheme.light(),
     cardColor: kWhite,
     primaryColor: kWhite,
