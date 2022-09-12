@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/const.dart';
+import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:nkg_quanly/ui/chart/chart_screen.dart';
 import 'package:nkg_quanly/ui/home/home_page.dart';
 import 'package:nkg_quanly/ui/home/home_screen.dart';
-import 'package:nkg_quanly/ui/login/login_screen.dart';
-import 'package:nkg_quanly/ui/login/login_screen2.dart';
 import 'package:nkg_quanly/ui/setup/setting_screen.dart';
 import 'package:nkg_quanly/ui/theme/theme_data.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));

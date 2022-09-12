@@ -54,7 +54,7 @@ dev_dependencies:
   flutter_inappwebview: ^5.4.3+7
   http: ^0.13.4
   table_calendar: ^3.0.7
-  intlt: ^0.17.0
+
 
 
 # For information on the generic Dart part of this file, see the

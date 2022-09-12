@@ -36,6 +36,7 @@ const kGreenSign= Color(0xFF30A32E);
 const kOrangeSign= Color(0xFFFF9D0B);
 const kVioletButton= Color(0xFF3D34FF);
 const kVioletBg= Color(0xFFEDECFF);
+const kGrayButton= Color(0xFFD9D9D9);
 
 final kUnActiveButtonStyle =
     ElevatedButton.styleFrom(primary: kWhite, onPrimary: Colors.black);
@@ -238,3 +239,5 @@ class CustomTextStyle {
     fontSize: 15,
   );
 }
+
+

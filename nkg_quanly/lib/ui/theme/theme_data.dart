@@ -47,7 +47,6 @@ class ThemeClass {
     cardColor: kWhite,
     primaryColor: kWhite,
     splashColor: kWhite,
-
     dividerColor: kBackGround,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       selectedItemColor: kBlueButton,
@@ -79,7 +78,7 @@ class ThemeClass {
       dividerColor: kDLine,
       iconTheme: const IconThemeData(color: Colors.white),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        selectedItemColor:  kBlueLineChart2,
+        selectedItemColor: kBlueLineChart2,
         unselectedItemColor: kWhite,
         showUnselectedLabels: true,
       ),
@@ -94,3 +93,30 @@ class ThemeClass {
         ),
       ));
 }
+
+final unActiveButtonStyle = ElevatedButton.styleFrom(
+    primary: kWhite, //change background color of button
+    onPrimary: Colors.black, //change text color of button
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(color: kGrayButton)));
+final activeButtonStyle = ElevatedButton.styleFrom(
+    primary: kVioletBg, //change background color of button
+    onPrimary: kBlueButton, //change text color of button
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: const BorderSide(color: kVioletButton)));
+final bottomButtonStyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.pressed)) {
+          return kBlueButton;
+        } else {
+          return kBlueButton;
+        } // Use the component's default.
+      },
+    ),
+    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(18.0),
+    )));

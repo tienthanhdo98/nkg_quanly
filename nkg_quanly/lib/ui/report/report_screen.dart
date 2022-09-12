@@ -9,13 +9,13 @@ import '../chart2/pie_chart.dart';
 import '../theme/theme_data.dart';
 
 
-class DocumentInScreen extends GetView {
+class ReportScreen extends GetView {
   String? header;
   String? icon;
 
   final homeController = Get.put(HomeViewModel());
 
-  DocumentInScreen({Key? key, this.header, this.icon}) : super(key: key);
+  ReportScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +76,7 @@ class DocumentInScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Chưa bút phê'),
+                                      const Text('Hoàn thành'),
                                       Text(
                                           snapshot.data!.chuaButPhe!.toString(),
                                           style: const TextStyle(
@@ -91,7 +91,7 @@ class DocumentInScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Đã bút phê'),
+                                      const Text('Chưa hoàn thành'),
                                       Text(
                                         snapshot.data!.daButPhe.toString(),
                                         style: const TextStyle(
@@ -124,7 +124,7 @@ class DocumentInScreen extends GetView {
                               header: header,
                             ));
                           },
-                          child: const Text('Xem danh sách VB đến chưa bút phê'),
+                          child: Text('Xem danh sách $header'),
                           style: bottomButtonStyle,
                         ),
                       ),

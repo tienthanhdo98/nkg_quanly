@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/chart2/collum_red_chart.dart';
 import 'package:nkg_quanly/ui/documentin/document_in_list.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
@@ -9,13 +10,13 @@ import '../chart2/pie_chart.dart';
 import '../theme/theme_data.dart';
 
 
-class DocumentInScreen extends GetView {
+class DocumentScreen extends GetView {
   String? header;
   String? icon;
 
   final homeController = Get.put(HomeViewModel());
 
-  DocumentInScreen({Key? key, this.header, this.icon}) : super(key: key);
+  DocumentScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class DocumentInScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Tổng văn bản'),
+                                      const Text('Tổng văn bản chưa xử lý'),
                                       Text(
                                         snapshot.data!.tong.toString(),
                                         style: const TextStyle(
@@ -64,44 +65,6 @@ class DocumentInScreen extends GetView {
                                   )
                                 ],
                               ),
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                                child: Divider(
-                                  thickness: 1,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Chưa bút phê'),
-                                      Text(
-                                          snapshot.data!.chuaButPhe!.toString(),
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20))
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Đã bút phê'),
-                                      Text(
-                                        snapshot.data!.daButPhe.toString(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              )
                             ]),
                           ),
                           context),
@@ -110,7 +73,7 @@ class DocumentInScreen extends GetView {
                 ),
                 const Padding(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: PieChart2()),
+                    child: ColumnRedChart2()),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -124,7 +87,7 @@ class DocumentInScreen extends GetView {
                               header: header,
                             ));
                           },
-                          child: const Text('Xem danh sách VB đến chưa bút phê'),
+                          child: Text('Xem danh sách $header'),
                           style: bottomButtonStyle,
                         ),
                       ),

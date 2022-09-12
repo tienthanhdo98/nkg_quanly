@@ -22,7 +22,6 @@ class ColumnChart2 extends StatefulWidget {
 }
 class ColumnChart2State extends State<ColumnChart2>{
   var selected = 0;
-  String dropdownValue = 'Trạng thái';
   List<ChartSampleData> listCharData = [];
   @override
   void initState() {
@@ -38,8 +37,8 @@ class ColumnChart2State extends State<ColumnChart2>{
     return Padding(
       padding: const EdgeInsets.all(15),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          headerChartTable("Hồ sơ trình", "5.987",context),
           Row(
             children: [
               Expanded(
@@ -48,7 +47,14 @@ class ColumnChart2State extends State<ColumnChart2>{
                     child: ElevatedButton(
                       style: selected == 0 ? activeButtonStyle : unActiveButtonStyle,
                       onPressed: () {
-
+                        setState(() {
+                          selected = 0;
+                          listCharData = <ChartSampleData>[
+                            ChartSampleData(x: 'Thấp', y: 760, color: kViolet),
+                            ChartSampleData(x: 'Trung bình', y: 1240, color: kBlueChart),
+                            ChartSampleData(x: 'Cao', y: 1369, color: kOrange),
+                          ];
+                        });
                       },
                       child: const Text("Mức độ"),
                     ),
@@ -57,21 +63,24 @@ class ColumnChart2State extends State<ColumnChart2>{
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                     child: ElevatedButton(
-                      style: selected == 1 ? kActiveButtonStyle : kUnActiveButtonStyle,
+                      style: selected == 1 ? activeButtonStyle : unActiveButtonStyle,
                       onPressed: () {
                         setState(() {
                           selected = 1;
+                          listCharData = <ChartSampleData>[
+                            ChartSampleData(x: 'Thấp', y: 560, color: kViolet),
+                            ChartSampleData(x: 'Trung bình', y: 1540, color: kBlueChart),
+                            ChartSampleData(x: 'Cao', y: 9369, color: kOrange),
+                          ];
                         });
+
                       },
                       child: const Text("Trạng thái"),
                     ),
                   ))
             ],
           ),
-          SizedBox(
-              height: 230,
-              child: _buildDefaultColumnChart()),
-          Center(child: Text('Biểu đồ minh họa'))
+          _buildDefaultColumnChart()
         ],
       ),
     );

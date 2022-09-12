@@ -4,6 +4,8 @@ import '../../const.dart';
 import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../theme/theme_data.dart';
+
 class PieChart2 extends StatefulWidget {
   const PieChart2({
     Key? key,
@@ -38,7 +40,7 @@ class PieChartState extends State<PieChart2>{
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                     child: ElevatedButton(
-                      style: selected == 0 ? kActiveButtonStyle : kUnActiveButtonStyle,
+                      style: selected == 0 ? activeButtonStyle : unActiveButtonStyle,
                       onPressed: () {
                         setState(() {
                           selected = 0;
@@ -71,7 +73,7 @@ class PieChartState extends State<PieChart2>{
             ],
           ),
           SizedBox(
-              height: 210, width: 210, child: _buildGroupingPieChart()),
+              height: 190, width: 210, child: _buildGroupingPieChart()),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,6 +82,7 @@ class PieChartState extends State<PieChart2>{
               legendChart("Đã bút phê",kOrange),
             ],
           ),
+          Text('Biểu đồ minh họa')
 
         ],
       ),

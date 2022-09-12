@@ -18,6 +18,7 @@ class DocumentInList extends GetView {
   List<int> listDate = [7, 8, 9, 10, 11, 12, 13];
   final MenuController menuController = Get.put(MenuController());
   final homeController = Get.put(HomeViewModel());
+  int selectedButton = 0;
 
   DocumentInList({this.header});
 
@@ -84,11 +85,12 @@ class DocumentInList extends GetView {
                       ),
                       //date header
                       TableCalendar(
-                        calendarStyle:  CalendarStyle(
-                          todayTextStyle: TextStyle(color: kWhite),
-                          todayDecoration: BoxDecoration(color: kBlueButton,
-                            borderRadius: BorderRadius.circular(20),)
-                        ),
+                        calendarStyle: CalendarStyle(
+                            todayTextStyle: TextStyle(color: kWhite),
+                            todayDecoration: BoxDecoration(
+                              color: kBlueButton,
+                              borderRadius: BorderRadius.circular(20),
+                            )),
                         calendarBuilders: CalendarBuilders(
                             selectedBuilder: (context, day, focusday) {
                           return Container(
@@ -177,7 +179,86 @@ class DocumentInList extends GetView {
                               },
                               child:
                                   DocItem(index, snapshot.data!.items![index]));
-                        }))
+                        })),
+                //bottom
+                Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      border: Border(
+                          top: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  height: 50,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {},
+                          child: Container(
+                              decoration: (selectedButton == 0)
+                                  ? BoxDecoration(
+                                      color: kLightBlue,
+                                      borderRadius: BorderRadius.circular(50),
+                                    )
+                                  : const BoxDecoration(),
+                              height: 40,
+                              width: 40,
+                              child: Center(
+                                  child: Text("Ngày",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: (selectedButton == 0)
+                                              ? kBlueButton
+                                              : Colors.black)))),
+                        ),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {},
+                          child: Container(
+                              decoration: (selectedButton == 1)
+                                  ? BoxDecoration(
+                                      color: kLightBlue,
+                                      borderRadius: BorderRadius.circular(50),
+                                    )
+                                  : const BoxDecoration(),
+                              height: 40,
+                              width: 40,
+                              child: Center(
+                                  child: Text(
+                                "Tuần",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: (selectedButton == 1)
+                                        ? kBlueButton
+                                        : Colors.black),
+                              ))),
+                        ),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {},
+                          child: Container(
+                              decoration: (selectedButton == 2)
+                                  ? BoxDecoration(
+                                      color: kLightBlue,
+                                      borderRadius: BorderRadius.circular(50),
+                                    )
+                                  : const BoxDecoration(),
+                              height: 40,
+                              width: 40,
+                              child: Center(
+                                  child: Text("Tháng",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: (selectedButton == 2)
+                                              ? kBlueButton
+                                              : Colors.black)))),
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ],
             );
           } else if (snapshot.hasError) {
@@ -307,26 +388,56 @@ class filterBottomSheet extends StatelessWidget {
                       child: filterItem(index, context, menuController!));
                 }),
           ),
-          ElevatedButton(
-              onPressed: () {
-                // if (menuController!.listStatePriority.contains(0) &&
-                //     menuController!.listStatePriority.contains(4)) {
-                //   // menuController!.initData();
-                // }
-                // // else if(menuController!.listStatePriority.contains(1))
-                // //   {
-                // //     menuController!.listDemo.value = listDocDemo.where((element) => element.priority == 3).toList();
-                // //   }
-                // else if (menuController!.listStatePriority.contains(2) ||
-                //     menuController!.listStatePriority.contains(1)) {
-                //   menuController!.listDemo.value = listDocDemo
-                //       .where((element) =>
-                //           element.priority == 2 || element.priority == 3)
-                //       .toList();
-                // }
-                // Get.back();
-              },
-              child: Text('click'))
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: kWhite,//change background color of button
+                        onPrimary: kBlueButton,//change text color of button
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                            side: const BorderSide(
+                                color: kVioletButton)
+                        ),
+                      ),
+
+                      child: Text('Đóng')),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.pressed)) {
+                                return kBlueButton;
+                              } else {
+                                return kBlueButton;
+                              } // Use the component's default.
+                            },
+                          ),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          ))),
+                      child: Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
         ]),
       ),
     );

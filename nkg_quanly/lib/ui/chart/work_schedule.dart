@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../const.dart';
-import '../home/work_schedule_detail.dart';
-import '../home/work_schedule_info.dart';
+import '../workschelude/work_schedule_detail.dart';
+import '../workschelude/work_schedule_info.dart';
 class WorkSchedule extends StatelessWidget {
   const WorkSchedule({
     Key? key,

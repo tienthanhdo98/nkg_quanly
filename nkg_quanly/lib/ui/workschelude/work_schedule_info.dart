@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const.dart';
-import 'package:nkg_quanly/ui/home/work_schedule_detail.dart';
-
+import 'package:nkg_quanly/ui/workschelude/work_schedule_detail.dart';
+import 'package:table_calendar/table_calendar.dart';
 class WorkScheduleInfo extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => WorkScheduleInfoState();
@@ -59,63 +59,40 @@ class WorkScheduleInfoState extends State<WorkScheduleInfo> {
               width: double.infinity,
               height: 155,
               color: Theme.of(context).primaryColor,
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Text(
                       "${dateNow.year} Tháng ${dateNow.month}",
                       style: Theme.of(context).textTheme.headline1,
                     ),
-                    //date header
-                    SizedBox(
-                      height: 100,
-                      width: double.infinity,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: listDay.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 15, 35, 0),
-                              child: Column(children: [
-                                Text(listDay[index],
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: selected == index
-                                            ? kBlueButton
-                                            : kSecondText)),
-                                const Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                                Container(
-                                    decoration: (selected == index)
-                                        ? BoxDecoration(
-                                            color: kBlueButton,
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                          )
-                                        : const BoxDecoration(),
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10, 10, 10, 10),
-                                      child: Text(
-                                        "${listDate[index]}",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: (selected == index)
-                                                ? kWhite
-                                                : Colors.black),
-                                      ),
-                                    )),
-                              ]),
-                            );
-                          }),
-                    ),
+                  ),
+                  //date header
+                  TableCalendar(
+                    calendarStyle: CalendarStyle(
+                        todayTextStyle: TextStyle(color: kWhite),
+                        todayDecoration: BoxDecoration(
+                          color: kBlueButton,
+                          borderRadius: BorderRadius.circular(20),
+                        )),
+                    calendarBuilders: CalendarBuilders(
+                        selectedBuilder: (context, day, focusday) {
+                          return Container(
+                            decoration: BoxDecoration(color: kBlueButton),
+                          );
+                        }),
+                    locale: 'vi_VN',
+                    headerVisible: false,
+                    calendarFormat: CalendarFormat.week,
+                    firstDay: DateTime.utc(2010, 10, 16),
+                    lastDay: DateTime.utc(2030, 3, 14),
+                    focusedDay: DateTime.now(),
+                  ),
 
-                    //list work
-                  ],
-                ),
+                  //list work
+                ],
               ),
             ),
             //list work

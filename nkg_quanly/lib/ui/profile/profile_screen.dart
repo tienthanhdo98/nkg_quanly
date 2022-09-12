@@ -5,17 +5,21 @@ import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../model/document/document_statistic_model.dart';
+import '../chart/column_chart2.dart';
+import '../chart/sline_chart2.dart';
+import '../chart2/collum_red_chart.dart';
 import '../chart2/pie_chart.dart';
+import '../chart2/sline_chart.dart';
 import '../theme/theme_data.dart';
 
 
-class DocumentInScreen extends GetView {
+class ProfileScreen extends GetView {
   String? header;
   String? icon;
 
   final homeController = Get.put(HomeViewModel());
 
-  DocumentInScreen({Key? key, this.header, this.icon}) : super(key: key);
+  ProfileScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,8 @@ class DocumentInScreen extends GetView {
           future: homeController.getDocumentStatistic(),
           builder: (context, AsyncSnapshot<DocumentStatisticModel> snapshot) {
             if (snapshot.hasData) {
-              return Column(children: [
+              return Column(
+                  children: [
                 Stack(
                   children: [
                     Image.asset("assets/bgtophome.png",
@@ -76,9 +81,9 @@ class DocumentInScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Chưa bút phê'),
+                                      const Text('Quá hạn'),
                                       Text(
-                                          snapshot.data!.chuaButPhe!.toString(),
+                                          '300',
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))
@@ -86,20 +91,54 @@ class DocumentInScreen extends GetView {
                                   ),
                                   const Padding(
                                       padding:
-                                          EdgeInsets.fromLTRB(20, 0, 0, 0)),
+                                          EdgeInsets.fromLTRB(5, 0, 0, 0)),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Đã bút phê'),
+                                      const Text('HT quá hạn'),
                                       Text(
-                                        snapshot.data!.daButPhe.toString(),
+                                        '204',
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
                                       )
                                     ],
-                                  )
+                                  ),
+                                  const Padding(
+                                      padding:
+                                      EdgeInsets.fromLTRB(5, 0, 0, 0)),
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('Hoàn thành'),
+                                      Text(
+                                        '400',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      )
+                                    ],
+                                  ),
+                                  const Padding(
+                                      padding:
+                                      EdgeInsets.fromLTRB(5, 0, 0, 0)),
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('Chưa HT'),
+                                      Text(
+                                       '700',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      )
+                                    ],
+                                  ),
+
+
                                 ],
                               )
                             ]),
@@ -110,7 +149,7 @@ class DocumentInScreen extends GetView {
                 ),
                 const Padding(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: PieChart2()),
+                    child: ColumnChart2()),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -121,8 +160,8 @@ class DocumentInScreen extends GetView {
                         child: ElevatedButton(
                           onPressed: () {
                             Get.to(() => DocumentInList(
-                              header: header,
-                            ));
+                                  header: header,
+                                ));
                           },
                           child: const Text('Xem danh sách VB đến chưa bút phê'),
                           style: bottomButtonStyle,
