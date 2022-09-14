@@ -4,18 +4,18 @@ import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../model/document/document_statistic_model.dart';
-import '../chart2/sline_chart.dart';
-import '../document_nonapproved/document_nonapproved_list.dart';
+import '../chart2/pie_chart.dart';
 import '../theme/theme_data.dart';
+import 'note_work_list.dart';
 
 
-class MissionScreen extends GetView {
+class NoteWorkScreen extends GetView {
   String? header;
   String? icon;
 
   final homeController = Get.put(HomeViewModel());
 
-  MissionScreen({Key? key, this.header, this.icon}) : super(key: key);
+  NoteWorkScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,7 @@ class MissionScreen extends GetView {
           future: homeController.getDocumentStatistic(),
           builder: (context, AsyncSnapshot<DocumentStatisticModel> snapshot) {
             if (snapshot.hasData) {
-              return Column(
-                  children: [
+              return Column(children: [
                 Stack(
                   children: [
                     Image.asset("assets/bgtophome.png",
@@ -45,7 +44,7 @@ class MissionScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Tổng văn bản'),
+                                      const Text('Tổng công việc'),
                                       Text(
                                         snapshot.data!.tong.toString(),
                                         style: const TextStyle(
@@ -77,9 +76,9 @@ class MissionScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Quá hạn'),
+                                      const Text('Hoàn thành'),
                                       Text(
-                                          '300',
+                                          snapshot.data!.chuaButPhe!.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))
@@ -87,54 +86,20 @@ class MissionScreen extends GetView {
                                   ),
                                   const Padding(
                                       padding:
-                                          EdgeInsets.fromLTRB(5, 0, 0, 0)),
+                                          EdgeInsets.fromLTRB(20, 0, 0, 0)),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('HT quá hạn'),
+                                      const Text('Đang xử lý'),
                                       Text(
-                                        '204',
+                                        snapshot.data!.daButPhe.toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
                                       )
                                     ],
-                                  ),
-                                  const Padding(
-                                      padding:
-                                      EdgeInsets.fromLTRB(5, 0, 0, 0)),
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Hoàn thành'),
-                                      Text(
-                                        '400',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      )
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding:
-                                      EdgeInsets.fromLTRB(5, 0, 0, 0)),
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Chưa HT'),
-                                      Text(
-                                       '700',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      )
-                                    ],
-                                  ),
-
-
+                                  )
                                 ],
                               )
                             ]),
@@ -143,9 +108,9 @@ class MissionScreen extends GetView {
                     )
                   ],
                 ),
-                const Padding(
+                 Padding(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: SLineChartRed()),
+                    child: PieChart2()),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -155,11 +120,11 @@ class MissionScreen extends GetView {
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => DocumentNonapprovedList(
-                                  header: header,
-                                ));
+                            Get.to(() => NoteWorkList(
+                              header: header,
+                            ));
                           },
-                          child: const Text('Xem danh sách VB đến chưa bút phê'),
+                          child: Text('Xem danh sách $header'),
                           style: bottomButtonStyle,
                         ),
                       ),

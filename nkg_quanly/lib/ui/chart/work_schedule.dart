@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
 
 import '../../const.dart';
-import '../workschelude/work_schedule_detail.dart';
-import '../workschelude/work_schedule_info.dart';
+import '../calendarwork/calendar_work_detail.dart';
 class WorkSchedule extends StatelessWidget {
   const WorkSchedule({
     Key? key,
@@ -38,7 +38,7 @@ class WorkSchedule extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => WorkScheduleInfo()));
+                                    builder: (context) => CalendarWorkScreen()));
                           },
                           child: const Align(
                               alignment: Alignment.topRight,
@@ -100,18 +100,18 @@ class WorkSchedule extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          showModalBottomSheet<void>(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return WorkScheduleDetail();
-                            },
-                          );
+                          // showModalBottomSheet<void>(
+                          //   shape: const RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.vertical(
+                          //       top: Radius.circular(20),
+                          //     ),
+                          //   ),
+                          //   clipBehavior: Clip.antiAliasWithSaveLayer,
+                          //   context: context,
+                          //   builder: (BuildContext context) {
+                          //     return CarlendarWorkDetail(n);
+                          //   },
+                          // );
                         },
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),

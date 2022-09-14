@@ -5,16 +5,16 @@ import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 import '../../const.dart';
 import '../../model/document/document_statistic_model.dart';
 import '../chart/column_chart2.dart';
-import '../document_nonapproved/document_nonapproved_list.dart';
 import '../theme/theme_data.dart';
+import 'admin_forma_list.dart';
 
-class ProfileWorkScreen extends GetView {
+class AdminFormaScreen extends GetView {
   String? header;
   String? icon;
 
   final homeController = Get.put(HomeViewModel());
 
-  ProfileWorkScreen({Key? key, this.header, this.icon}) : super(key: key);
+  AdminFormaScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +67,11 @@ class ProfileWorkScreen extends GetView {
                               const Padding(
                                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                               SizedBox(
-                                height: 120,
+                                height: 60,
                                 child: GridView.count(
-                                  childAspectRatio: 3/2,
-                                  crossAxisSpacing: 20,
+                                  crossAxisSpacing: 5,
                                   mainAxisSpacing: 1,
-                                  crossAxisCount: 3,
+                                  crossAxisCount: 4,
                                   children: [
                                     Column(
                                       crossAxisAlignment:
@@ -112,28 +111,6 @@ class ProfileWorkScreen extends GetView {
                                       CrossAxisAlignment.start,
                                       children: [
                                         const Text('Đã hoàn thành'),
-                                        Text('300',
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20))
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('Quá hạn xủ lý'),
-                                        Text('300',
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20))
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('Trong hạn xử lý'),
                                         Text('300',
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
@@ -211,7 +188,7 @@ class ProfileWorkScreen extends GetView {
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => DocumentNonapprovedList(
+                            Get.to(() => AdminFormaList(
                                   header: header,
                                 ));
                           },

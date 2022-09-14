@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/chart2/collum_red_chart.dart';
-import 'package:nkg_quanly/ui/documentin/document_in_list.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../model/document/document_statistic_model.dart';
 import '../chart2/pie_chart.dart';
 import '../theme/theme_data.dart';
+import 'book_car_list.dart';
 
 
-class DocumentScreen extends GetView {
+class BookCarScreen extends GetView {
   String? header;
   String? icon;
 
   final homeController = Get.put(HomeViewModel());
 
-  DocumentScreen({Key? key, this.header, this.icon}) : super(key: key);
+  BookCarScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class DocumentScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Tổng văn bản chưa xử lý'),
+                                      const Text('Tổng số phòng họp'),
                                       Text(
                                         snapshot.data!.tong.toString(),
                                         style: const TextStyle(
@@ -65,15 +64,53 @@ class DocumentScreen extends GetView {
                                   )
                                 ],
                               ),
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                child: Divider(
+                                  thickness: 1,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('Còn trống'),
+                                      Text(
+                                          snapshot.data!.chuaButPhe!.toString(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20))
+                                    ],
+                                  ),
+                                  const Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(20, 0, 0, 0)),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('Đã đặt'),
+                                      Text(
+                                        snapshot.data!.daButPhe.toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              )
                             ]),
                           ),
                           context),
                     )
                   ],
                 ),
-                const Padding(
+                 Padding(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: ColumnRedChart2()),
+                    child: PieChart2()),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -83,7 +120,7 @@ class DocumentScreen extends GetView {
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => DocumentInList(
+                            Get.to(() => BookCarList(
                               header: header,
                             ));
                           },

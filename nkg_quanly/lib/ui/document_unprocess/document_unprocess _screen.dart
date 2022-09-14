@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/profile/profile_chart.dart';
-import 'package:nkg_quanly/ui/profile/profile_list.dart';
+import 'package:nkg_quanly/ui/chart2/collum_red_chart.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../const/api.dart';
 import '../../model/document/document_statistic_model.dart';
 import '../../model/document_unprocess/document_filter.dart';
-import '../../model/proflie_model/profile_statistic.dart';
-import '../chart/column_chart2.dart';
+import '../chart2/pie_chart.dart';
 import '../document_nonapproved/document_nonapproved_list.dart';
 import '../theme/theme_data.dart';
+import 'document_unprocess_chart.dart';
 
-
-class ProfileScreen extends GetView {
-  String? header;
-  String? icon;
+class DocumentUnProcessScreen extends GetView {
+  final String? header;
+  final String? icon;
 
   final homeController = Get.put(HomeViewModel());
 
-  ProfileScreen({Key? key, this.header, this.icon}) : super(key: key);
+  DocumentUnProcessScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +26,11 @@ class ProfileScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getQuantityDocumentBuUrl(apiGetProfileFilter1),
-          builder: (context, AsyncSnapshot<List<DocumentFilterModel>> snapshot) {
+          future: homeController.getQuantityDocumentBuUrl(apitGetUnProcess0),
+          builder:
+              (context, AsyncSnapshot<List<DocumentFilterModel>> snapshot) {
             if (snapshot.hasData) {
-              return Column(
-                  children: [
+              return Column(children: [
                 Stack(
                   children: [
                     Image.asset("assets/bgtophome.png",
@@ -50,9 +48,9 @@ class ProfileScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Tổng văn bản'),
+                                      const Text('Tổng văn bản chưa xử lý'),
                                       Text(
-                                        snapshot.data!.first.quantity.toString(),
+                                        snapshot.data![0].quantity.toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -70,45 +68,18 @@ class ProfileScreen extends GetView {
                                   )
                                 ],
                               ),
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                                child: Divider(
-                                  thickness: 1,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 60,
-                                child: GridView.builder(
-                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 4,
-                                  ),
-                                  itemCount: snapshot.data!.length -1 ,
-                                  itemBuilder: (context,index)
-                                  {
-                                    return  Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(snapshot.data![index].name!),
-                                        Text(
-                                            snapshot.data![index].quantity.toString(),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20))
-                                      ],
-                                    );
-                                  },
-                                ),
-                              )
                             ]),
                           ),
                           context),
                     )
                   ],
                 ),
-                    Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: ProfileChart(homeViewModel: homeController,listBaseChart: snapshot.data!,)),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: DocumentUnChart(
+                      homeViewModel: homeController,
+                      listBaseChart: snapshot.data,
+                    )),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -118,11 +89,10 @@ class ProfileScreen extends GetView {
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => ProfileList(
-                                  header: header,
-                                ));
+                            Get.to(() => DocumentNonapprovedList(
+                                header: header, isNonapproved: false));
                           },
-                          child: const Text('Xem danh sách VB đến chưa bút phê'),
+                          child: Text('Xem danh sách $header'),
                           style: bottomButtonStyle,
                         ),
                       ),

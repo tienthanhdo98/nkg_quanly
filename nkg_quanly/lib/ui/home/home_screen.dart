@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
+import 'package:nkg_quanly/ui/document_nonapproved/document_nonapproved_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_screen.dart';
 import 'package:nkg_quanly/ui/report/report_screen.dart';
 
 import '../../const.dart';
-import '../document/document_screen.dart';
-import '../documentin/document_in_screen.dart';
+import '../administrative_formalities/admin_forma_screen.dart';
+import '../birthday/birthday_screen.dart';
+import '../book_car/book_car_screen.dart';
+import '../book_room_meet/book_meeting_screen.dart';
+import '../document_in_doc/doc_in_doc_screen.dart';
+import '../document_unprocess/document_unprocess _screen.dart';
 import '../misstion/mission_screen.dart';
+import '../note_work/note_worl_screen.dart';
 import '../profile_work/profile_work_screen.dart';
-import '../workschelude/work_schedule_info.dart';
 import 'list_all_item.dart';
 
 class HomeScreen extends GetView {
@@ -239,7 +245,7 @@ class MenuItem {
 List<MenuItem> list = [
   MenuItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1),
   MenuItem('Báo cáo', 'assets/icons/ic_report.png', "", 2),
-  MenuItem('Văn bản chưa xử lý', 'assets/icons/ic_doc.png', "", 3),
+  MenuItem('Văn bản đến chưa xử lý', 'assets/icons/ic_doc.png', "", 3),
   MenuItem('Văn bản đến chưa bút phê', 'assets/icons/ic_doc_sign.png', "", 4),
   MenuItem('Văn bản đi chờ phát hành', 'assets/icons/ic_doc_push.png', "", 5),
   MenuItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 6),
@@ -248,19 +254,24 @@ List<MenuItem> list = [
 ];
 List<MenuItem> list2 = [
   MenuItem('Sinh nhật', 'assets/icons/ic_birthday.png', "", 9),
-  MenuItem('Văn bản đến', 'assets/icons/ic_doc_in.png', "", 10),
-  MenuItem('Đặt lịch phòng họp', 'assets/icons/ic_meeting.png', "", 11),
-  MenuItem('Điều động bố trí ô tô', 'assets/icons/ic_car.png', "", 12),
-  MenuItem('Hồ sơ công việc', 'assets/icons/ic_hoso_cv.png', "", 13),
-  MenuItem('Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 14),
-  MenuItem('Sổ tay Công việc', 'assets/icons/ic_sotay.png', "", 15),
-  MenuItem('Báo cáo', 'assets/icons/ic_report2.png', "", 16),
+  MenuItem('Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 10),
+  MenuItem('Sổ tay Công việc', 'assets/icons/ic_sotay.png', "", 11),
 ];
+// List<MenuItem> list2 = [
+//   MenuItem('Sinh nhật', 'assets/icons/ic_birthday.png', "", 9),
+//   MenuItem('Văn bản đến', 'assets/icons/ic_doc_in.png', "", 10),
+//   MenuItem('Đặt lịch phòng họp', 'assets/icons/ic_meeting.png', "", 11),
+//   MenuItem('Điều động bố trí ô tô', 'assets/icons/ic_car.png', "", 12),
+//   MenuItem('Hồ sơ công việc', 'assets/icons/ic_hoso_cv.png', "", 13),
+//   MenuItem('Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 14),
+//   MenuItem('Sổ tay Công việc', 'assets/icons/ic_sotay.png', "", 15),
+//   MenuItem('Báo cáo', 'assets/icons/ic_report2.png', "", 16),
+// ];
 
 void toScreen(int type, String? header, String? icon) {
   switch (type) {
     case 1:
-      Get.to(() => WorkScheduleInfo());
+      Get.to(() => CalendarWorkScreen());
       break;
     case 2:
       Get.to(() => ReportScreen(
@@ -269,19 +280,19 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 3:
-      Get.to(() => DocumentScreen(
+      Get.to(() => DocumentUnProcessScreen(
             header: header,
             icon: icon,
           ));
       break;
     case 4:
-      Get.to(() => DocumentInScreen(
+      Get.to(() => DocumentNonApprovedScreen(
             header: header,
             icon: icon,
           ));
       break;
     case 5:
-      Get.to(() => DocumentInScreen(
+      Get.to(() => DocumentNonApprovedScreen(
             header: header,
             icon: icon,
           ));
@@ -293,7 +304,7 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 7:
-      Get.to(() => DocumentInScreen(
+      Get.to(() => DocumentNonApprovedScreen(
             header: header,
             icon: icon,
           ));
@@ -305,25 +316,25 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 9:
-      Get.to(() => MissionScreen(
+      Get.to(() => BirthDayScreen(
             header: header,
             icon: icon,
           ));
       break;
-    case 10:
-      Get.to(() => MissionScreen(
+    case 15:
+      Get.to(() => DocInDocScreen(
             header: header,
             icon: icon,
           ));
       break;
-    case 11:
-      Get.to(() => MissionScreen(
+    case 16:
+      Get.to(() => BookMeetingScreen(
             header: header,
             icon: icon,
           ));
       break;
     case 12:
-      Get.to(() => MissionScreen(
+      Get.to(() => BookCarScreen(
             header: header,
             icon: icon,
           ));
@@ -334,20 +345,20 @@ void toScreen(int type, String? header, String? icon) {
             icon: icon,
           ));
       break;
-    case 14:
-      Get.to(() => MissionScreen(
+    case 10:
+      Get.to(() => AdminFormaScreen(
             header: header,
             icon: icon,
           ));
       break;
-    case 15:
-      Get.to(() => MissionScreen(
+    case 11:
+      Get.to(() => NoteWorkScreen(
             header: header,
             icon: icon,
           ));
       break;
     case 16:
-      Get.to(() => MissionScreen(
+      Get.to(() => ReportScreen(
             header: header,
             icon: icon,
           ));

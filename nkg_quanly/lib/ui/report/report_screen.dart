@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/documentin/document_in_list.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../model/document/document_statistic_model.dart';
 import '../chart2/pie_chart.dart';
+import '../document_nonapproved/document_nonapproved_list.dart';
 import '../theme/theme_data.dart';
 
 
@@ -108,7 +108,7 @@ class ReportScreen extends GetView {
                     )
                   ],
                 ),
-                const Padding(
+                Padding(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: PieChart2()),
                 Expanded(
@@ -120,7 +120,7 @@ class ReportScreen extends GetView {
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => DocumentInList(
+                            Get.to(() => DocumentNonapprovedList(
                               header: header,
                             ));
                           },

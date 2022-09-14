@@ -64,21 +64,26 @@ class ListAllItem extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               // Generate 100 widgets that display their index in the List.
               children: List.generate(list.length, (index) {
-                return Column(
-                  children: [
-                    Image.asset(
-                      list[index].img!,
-                      width: 50,
-                      height: 50,
-                    ),
-                    Flexible(
-                      child: Text(
-                        list[index].title!,
-                        style: const TextStyle(fontSize: 12),
-                        textAlign: TextAlign.center,
+                return InkWell(
+                  onTap: () {
+                    toScreen(list[index].type!, list[index].title, list[index].img);
+                  },
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        list[index].img!,
+                        width: 50,
+                        height: 50,
                       ),
-                    )
-                  ],
+                      Flexible(
+                        child: Text(
+                          list[index].title!,
+                          style: const TextStyle(fontSize: 12),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    ],
+                  ),
                 );
               }),
             ),

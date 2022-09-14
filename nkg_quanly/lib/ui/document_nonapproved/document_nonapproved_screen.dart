@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/documentin/document_in_list.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
+import '../../const/api.dart';
 import '../../model/document/document_statistic_model.dart';
+import '../../model/document_unprocess/document_filter.dart';
 import '../chart2/pie_chart.dart';
 import '../theme/theme_data.dart';
+import 'document_nonapproved_list.dart';
 
 
-class DocumentInScreen extends GetView {
-  String? header;
-  String? icon;
+class DocumentNonApprovedScreen extends GetView {
+  final String? header;
+  final String? icon;
 
   final homeController = Get.put(HomeViewModel());
 
-  DocumentInScreen({Key? key, this.header, this.icon}) : super(key: key);
+  DocumentNonApprovedScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +25,8 @@ class DocumentInScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getDocumentStatistic(),
-          builder: (context, AsyncSnapshot<DocumentStatisticModel> snapshot) {
+          future: homeController.getQuantityDocumentBuUrl(apiGetDocumentNonApprove),
+          builder: (context, AsyncSnapshot<List<DocumentFilterModel>> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
                 Stack(
@@ -46,7 +48,7 @@ class DocumentInScreen extends GetView {
                                     children: [
                                       const Text('Tổng văn bản'),
                                       Text(
-                                        snapshot.data!.tong.toString(),
+                                        snapshot.data![0].quantity.toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -78,7 +80,7 @@ class DocumentInScreen extends GetView {
                                     children: [
                                       const Text('Chưa bút phê'),
                                       Text(
-                                          snapshot.data!.chuaButPhe!.toString(),
+                                          snapshot.data![1].quantity.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))
@@ -93,7 +95,7 @@ class DocumentInScreen extends GetView {
                                     children: [
                                       const Text('Đã bút phê'),
                                       Text(
-                                        snapshot.data!.daButPhe.toString(),
+                                        snapshot.data![2].quantity.toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
@@ -108,23 +110,23 @@ class DocumentInScreen extends GetView {
                     )
                   ],
                 ),
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: PieChart2()),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: PieChart2(listQuantity: snapshot.data,)),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => DocumentInList(
+                            Get.to(() => DocumentNonapprovedList(
                               header: header,
                             ));
                           },
-                          child: const Text('Xem danh sách VB đến chưa bút phê'),
+                          child: Text('Xem danh sách $header'),
                           style: bottomButtonStyle,
                         ),
                       ),

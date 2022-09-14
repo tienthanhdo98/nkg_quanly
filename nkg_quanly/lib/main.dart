@@ -4,7 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:nkg_quanly/ui/chart/chart_screen.dart';
 import 'package:nkg_quanly/ui/home/home_page.dart';
 import 'package:nkg_quanly/ui/home/home_screen.dart';
-import 'package:nkg_quanly/ui/setup/setting_screen.dart';
+import 'package:nkg_quanly/ui/setting/setting_screen.dart';
 import 'package:nkg_quanly/ui/theme/theme_data.dart';
 import 'package:provider/provider.dart';
 

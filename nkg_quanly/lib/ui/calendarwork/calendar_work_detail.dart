@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const.dart';
+import 'package:nkg_quanly/model/calendarwork_model/calendarwork_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class WorkScheduleDetail extends StatelessWidget {
+class CarlendarWorkDetail extends StatelessWidget {
+  CarlendarWorkDetail(this.item, {Key? key}) : super(key: key);
+  CalendarWorkListItems item;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,15 +32,15 @@ class WorkScheduleDetail extends StatelessWidget {
                         )),
                   ),
                 ),
-                Text("Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh",style: Theme.of(context).textTheme.headline1,),
+                Text(item.name!,style: Theme.of(context).textTheme.headline1,),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
-                const Text("Phòng họp lớp 01"),
+                Text(item.location!,style: Theme.of(context).textTheme.headline3),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
                 InkWell(
                     onTap: () {
                       launch("https://meet.google.com/xxa-kjeh-kjc");
                     },
-                    child: const Text("https://meet.google.com/xxa-kjeh-kjc",style: TextStyle(color: kBlueButton)
+                    child: Text(item.linkMeet!,style: TextStyle(color: kBlueButton)
                       ,)),
                 const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
                 const Divider(thickness: 1,),
@@ -53,7 +56,7 @@ class WorkScheduleDetail extends StatelessWidget {
                     const Padding(
                         padding: EdgeInsets.fromLTRB(
                             0, 0, 5, 0)),
-                    const Text("Họp online",
+                    Text(item.type!,
                         style: CustomTextStyle
                             .secondTextStyle)
                   ],
@@ -66,13 +69,15 @@ class WorkScheduleDetail extends StatelessWidget {
                   height: 200,
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 5,
+                      itemCount: item.participants!.length,
                       itemBuilder: (context,index){
+                        Participants participants = item.participants![index];
                         return Padding(
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                           child: Row(children: [
-                            Image.asset("assets/icons/ic_user.png",width: 24,height: 24,),
-                            Text("Trần Tuấn Anh(GĐ SGD HUNG YEN)",style: Theme.of(context).textTheme.headline3,)
+                            Image.asset("assets/icons/ic_group.png",width: 24,height: 24,),
+                            const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                            Text("${participants.name!} (${participants.position})",style: Theme.of(context).textTheme.headline3,)
                           ],),
                         );
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/documentin/document_in_search.dart';
 
 const kBackGround = Color(0xFFf0f2f5);
 const kLightGray = Color(0xFFfafafa);
@@ -29,14 +28,14 @@ const kDLine = Color(0xFF727586);
 
 //
 const kgray = Color(0xFFF0F2F5);
-const kGrayPriority= Color(0xFFBBBBBB);
-const kBluePriority= Color(0xFF3D9DF6);
-const kRedPriority= Color(0xFFF63D3D);
-const kGreenSign= Color(0xFF30A32E);
-const kOrangeSign= Color(0xFFFF9D0B);
-const kVioletButton= Color(0xFF3D34FF);
-const kVioletBg= Color(0xFFEDECFF);
-const kGrayButton= Color(0xFFD9D9D9);
+const kGrayPriority = Color(0xFFBBBBBB);
+const kBluePriority = Color(0xFF3D9DF6);
+const kRedPriority = Color(0xFFF63D3D);
+const kGreenSign = Color(0xFF30A32E);
+const kOrangeSign = Color(0xFFFF9D0B);
+const kVioletButton = Color(0xFF3D34FF);
+const kVioletBg = Color(0xFFEDECFF);
+const kGrayButton = Color(0xFFD9D9D9);
 
 final kUnActiveButtonStyle =
     ElevatedButton.styleFrom(primary: kWhite, onPrimary: Colors.black);
@@ -60,9 +59,14 @@ Widget borderText(String value, Color color) {
     ),
   );
 }
-Widget headerWidget(String header,BuildContext context){
+
+Widget headerWidget(String header, BuildContext context) {
   return Container(
-    color: Theme.of(context).cardColor,
+    decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        border: Border(bottom: BorderSide(width: 1
+        , color: Theme.of(context).dividerColor,
+        ))),
     child: Padding(
       padding: const EdgeInsets.all(15),
       child: Row(
@@ -71,10 +75,13 @@ Widget headerWidget(String header,BuildContext context){
             onTap: () {
               Get.back();
             },
-            child: const Icon(Icons.arrow_back_ios_outlined),
+            child: Image.asset(
+              'assets/icons/ic_arrow_back.png',
+              width: 18,
+              height: 18,
+            ),
           ),
-          const Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+          const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
           Text(
             header,
             style: Theme.of(context).textTheme.headline1,
@@ -102,7 +109,7 @@ Widget borderInputText(String value) {
   );
 }
 
-Widget  legendChart(String value, Color color) {
+Widget legendChart(String value, Color color) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Row(
@@ -173,15 +180,17 @@ Widget headerChartTable2(BuildContext context) {
       Padding(
         padding: EdgeInsets.all(15),
         child: Row(
-          children:  const [
-            Text("Nhiệm vụ",style: TextStyle(color: kLightBlueButton),),
+          children: const [
+            Text(
+              "Nhiệm vụ",
+              style: TextStyle(color: kLightBlueButton),
+            ),
             Expanded(
                 child: Align(
                     alignment: Alignment.centerRight,
-                    child: Text("Xem chi tiết",style: CustomTextStyle.secondTextStyle))),
-            Align(
-                alignment: Alignment.centerRight,
-                child: Icon(Icons.add))
+                    child: Text("Xem chi tiết",
+                        style: CustomTextStyle.secondTextStyle))),
+            Align(alignment: Alignment.centerRight, child: Icon(Icons.add))
           ],
         ),
       ),
@@ -192,8 +201,14 @@ Widget headerChartTable2(BuildContext context) {
           padding: const EdgeInsets.all(15),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text("Tổng văn bản", style:  CustomTextStyle.secondTextStyle,),
-            Text("2,846",style:  Theme.of(context).textTheme.headline1,),
+            const Text(
+              "Tổng văn bản",
+              style: CustomTextStyle.secondTextStyle,
+            ),
+            Text(
+              "2,846",
+              style: Theme.of(context).textTheme.headline1,
+            ),
           ])),
     ],
   );
@@ -239,5 +254,7 @@ class CustomTextStyle {
     fontSize: 15,
   );
 }
-
-
+String calcuPercen(int first, int total){
+  var res =  ((first/total)*100).toString();
+  return "$res%";
+}

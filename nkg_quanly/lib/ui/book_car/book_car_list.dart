@@ -1,26 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/documentin/document_in_search.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
+import 'package:nkg_quanly/ui/document_nonapproved/document_nonapproved_detail.dart';
 
-import '../../const.dart';
-import '../../const/ultils.dart';
-import '../../model/document/document_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
-import '../documentin/document_in_detail.dart';
+import 'package:nkg_quanly/ui/menu/MenuController.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class DocumentInList extends GetView {
+import '../../const.dart';
+import '../../model/document/document_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
+import '../document_nonapproved/document_nonapproved_search.dart';
+
+class BookCarList extends GetView {
   String? header;
   DateTime dateNow = DateTime.now();
-  List<String> listDay = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
-  List<int> listDate = [7, 8, 9, 10, 11, 12, 13];
   final MenuController menuController = Get.put(MenuController());
   final homeController = Get.put(HomeViewModel());
   int selectedButton = 0;
 
-  DocumentInList({this.header});
+  BookCarList({this.header});
 
   int selected = 0;
 
@@ -56,7 +54,7 @@ class DocumentInList extends GetView {
                         Expanded(
                             child: InkWell(
                           onTap: () {
-                            Get.to(() => DocumentInSearch(
+                            Get.to(() => DocumentnonapprovedSearch(
                                   header: header,
                                 ));
                           },
@@ -114,7 +112,7 @@ class DocumentInList extends GetView {
                   child: Row(
                     children: [
                       Text(
-                        'Tất cả VB',
+                        'Tất cả danh sách ô tô',
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       Expanded(
@@ -163,102 +161,153 @@ class DocumentInList extends GetView {
                     ],
                   ),
                 ),
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Divider(
-                      thickness: 1,
-                    )),
+
+                //
+               const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 20)),
                 Expanded(
-                    child: ListView.builder(
-                        itemCount: snapshot.data!.items!.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                              onTap: () {
-                                Get.to(() => DocumentInDetail(
-                                    id: snapshot.data!.items![index].id!));
-                              },
-                              child:
-                                  DocItem(index, snapshot.data!.items![index]));
-                        })),
-                //bottom
-                Container(
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
+                    child: Container(
+                  height: double.infinity,
+                  decoration: const BoxDecoration(
+                      color: kLightGray,
                       border: Border(
-                          top: BorderSide(
-                              color: Theme.of(context).dividerColor))),
-                  height: 50,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                              decoration: (selectedButton == 0)
-                                  ? BoxDecoration(
-                                      color: kLightBlue,
-                                      borderRadius: BorderRadius.circular(50),
-                                    )
-                                  : const BoxDecoration(),
-                              height: 40,
-                              width: 40,
-                              child: Center(
-                                  child: Text("Ngày",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: (selectedButton == 0)
-                                              ? kBlueButton
-                                              : Colors.black)))),
+                        top: BorderSide(
+                          color: kgray,
+                          width: 1,
+                        ),
+                      )),
+                  child: Column(children: [
+                    Column(children: [
+                      SizedBox(
+                        height: 40,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 100,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Cả ngày",
+                                  style: Theme.of(context).textTheme.headline2,
+                                ),
+                              ),
+                            ),
+                            const VerticalDivider(width: 1, thickness: 1),
+                            const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Danh sách bố trí ô tô",
+                                    style:
+                                        Theme.of(context).textTheme.headline2),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                              decoration: (selectedButton == 1)
-                                  ? BoxDecoration(
-                                      color: kLightBlue,
-                                      borderRadius: BorderRadius.circular(50),
-                                    )
-                                  : const BoxDecoration(),
-                              height: 40,
-                              width: 40,
-                              child: Center(
-                                  child: Text(
-                                "Tuần",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: (selectedButton == 1)
-                                        ? kBlueButton
-                                        : Colors.black),
-                              ))),
-                        ),
+                      const Divider(
+                        thickness: 2,
                       ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                              decoration: (selectedButton == 2)
-                                  ? BoxDecoration(
-                                      color: kLightBlue,
-                                      borderRadius: BorderRadius.circular(50),
-                                    )
-                                  : const BoxDecoration(),
-                              height: 40,
-                              width: 40,
-                              child: Center(
-                                  child: Text("Tháng",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: (selectedButton == 2)
-                                              ? kBlueButton
-                                              : Colors.black)))),
-                        ),
-                      )
-                    ],
-                  ),
-                )
+                    ]),
+                    //list car
+                    Expanded(
+                        child: SizedBox(
+                      height: double.infinity,
+                      child: ListView.builder(
+                          itemCount: listCar.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () {
+                                  Get.to(() => DocumentnonapprovedDetail(
+                                      id: snapshot.data!.items![index].id!));
+                                },
+                                child: BookCarItem(index, listCar[index]));
+                          }),
+                    )),
+                    //bottom
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          border: Border(
+                              top: BorderSide(
+                                  color: Theme.of(context).dividerColor))),
+                      height: 50,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {},
+                              child: Container(
+                                  decoration: (selectedButton == 0)
+                                      ? BoxDecoration(
+                                          color: kLightBlue,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                        )
+                                      : const BoxDecoration(),
+                                  height: 40,
+                                  width: 40,
+                                  child: Center(
+                                      child: Text("Ngày",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: (selectedButton == 0)
+                                                  ? kBlueButton
+                                                  : Colors.black)))),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {},
+                              child: Container(
+                                  decoration: (selectedButton == 1)
+                                      ? BoxDecoration(
+                                          color: kLightBlue,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                        )
+                                      : const BoxDecoration(),
+                                  height: 40,
+                                  width: 40,
+                                  child: Center(
+                                      child: Text(
+                                    "Tuần",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: (selectedButton == 1)
+                                            ? kBlueButton
+                                            : Colors.black),
+                                  ))),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {},
+                              child: Container(
+                                  decoration: (selectedButton == 2)
+                                      ? BoxDecoration(
+                                          color: kLightBlue,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                        )
+                                      : const BoxDecoration(),
+                                  height: 40,
+                                  width: 40,
+                                  child: Center(
+                                      child: Text("Tháng",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: (selectedButton == 2)
+                                                  ? kBlueButton
+                                                  : Colors.black)))),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ]),
+                )),
               ],
             );
           } else if (snapshot.hasError) {
@@ -271,68 +320,76 @@ class DocumentInList extends GetView {
   }
 }
 
-class DocItem extends StatelessWidget {
-  DocItem(this.index, this.docModel);
+class BookCarItem extends StatelessWidget {
+  BookCarItem(this.index, this.docModel);
 
   int? index;
-  Items? docModel;
+  CarItem? docModel;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      child: Column(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                "${index! + 1}.${docModel!.name}",
-                style: Theme.of(context).textTheme.headline2,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: SizedBox(
+              width: 90,
+              child: Column(
+                children: const [
+                  Align(alignment: Alignment.centerLeft, child: Text("08:00")),
+                  Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "1h",
+                        style: CustomTextStyle.secondTextStyle,
+                      )),
+                ],
               ),
-              Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: priorityWidget(docModel!))),
-            ],
+            ),
           ),
-          signWidget(docModel!),
-          SizedBox(
-            height: 100,
-            child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
-              primary: false,
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 0,
-              crossAxisCount: 3,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    const Text('Đơn vị ban hành'),
-                    Text(docModel!.departmentPublic!)
+                    Text(
+                      "${index! + 1}.${docModel!.name}",
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    Expanded(
+                        child: Align(
+                            alignment: Alignment.centerRight,
+                            child: priorityWidget(docModel!))),
                   ],
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày đến'),
-                    Text(formatDate(docModel!.toDate!))
-                  ],
+                const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                signWidget(docModel!),
+                const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
+                const Text(
+                  'Nội dung',
+                  style: CustomTextStyle.secondTextStyle,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                const Text('Đón đoàn đại biểu'),
+                const Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
+                Row(
                   children: [
-                    const Text('Thời hạn'),
-                    Text(formatDate(docModel!.endDate!))
+                    Image.asset(
+                      'assets/icons/ic_user.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                    const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                    const Text('Nguyễn Văn A')
                   ],
                 ),
               ],
             ),
           ),
-          const Divider(
-            thickness: 1.5,
-          )
         ],
       ),
     );
@@ -350,28 +407,32 @@ class filterBottomSheet extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
         child: Column(children: [
-          Row(
-            children: [
-              const Text(
-                'Tất cả văn bản đến chưa bút phê',
-                style: TextStyle(color: kVioletButton),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Checkbox(
-                    checkColor: Colors.white,
-                    value: false,
-                    shape: const CircleBorder(),
-                    onChanged: (bool? value) {
-                      // setState(() {
-                      //   isChecked = value!;
-                      // });
-                    },
-                  ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            child: Row(
+              children: [
+                const Text(
+                  'Tất cả danh sách ô tô',
+                  style: TextStyle(
+                      color: kVioletButton, fontWeight: FontWeight.bold),
                 ),
-              )
-            ],
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Checkbox(
+                      checkColor: Colors.white,
+                      value: false,
+                      shape: const CircleBorder(),
+                      onChanged: (bool? value) {
+                        // setState(() {
+                        //   isChecked = value!;
+                        // });
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           const Divider(
             thickness: 1,
@@ -381,7 +442,7 @@ class filterBottomSheet extends StatelessWidget {
             child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
                 shrinkWrap: false,
-                itemCount: listFilter.length,
+                itemCount: listCarFilter.length,
                 itemBuilder: (context, index) {
                   return Padding(
                       padding: const EdgeInsets.all(10),
@@ -398,15 +459,12 @@ class filterBottomSheet extends StatelessWidget {
                         Get.back();
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: kWhite,//change background color of button
-                        onPrimary: kBlueButton,//change text color of button
+                        primary: kWhite, //change background color of button
+                        onPrimary: kBlueButton, //change text color of button
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                            side: const BorderSide(
-                                color: kVioletButton)
-                        ),
+                            borderRadius: BorderRadius.circular(25),
+                            side: const BorderSide(color: kVioletButton)),
                       ),
-
                       child: Text('Đóng')),
                 ),
               ),
@@ -476,7 +534,7 @@ Widget filterItem(
         ),
         Row(
           children: [
-            Text(listFilter[index]),
+            Text(listCarFilter[index]),
             Obx(() => Expanded(
                   child: Align(
                     alignment: Alignment.centerRight,
@@ -497,42 +555,28 @@ Widget filterItem(
   }
 }
 
-Widget priorityWidget(Items docModel) {
-  if (docModel.level == "Thấp") {
-    return Container(
-        decoration: BoxDecoration(
-          color: kGrayPriority,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: const Padding(
-            padding: EdgeInsets.all(5),
-            child: Text('Thấp', style: TextStyle(color: kWhite))));
-  } else if (docModel.level == 'Trung bình') {
-    return Container(
-        decoration: BoxDecoration(
-          color: kBluePriority,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: const Padding(
-            padding: EdgeInsets.all(5),
-            child: Text(
-              'Trung bình',
-              style: TextStyle(color: kWhite),
-            )));
+Widget priorityWidget(CarItem docModel) {
+  if (docModel.status == 1) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+        child: Image.asset(
+          'assets/icons/ic_car_green.png',
+          height: 18,
+          width: 18,
+        ));
   } else {
-    return Container(
-        decoration: BoxDecoration(
-          color: kRedPriority,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: const Padding(
-            padding: EdgeInsets.all(5),
-            child: Text('Cao', style: TextStyle(color: kWhite))));
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+        child: Image.asset(
+          'assets/icons/ic_car_yellow.png',
+          height: 18,
+          width: 18,
+        ));
   }
 }
 
-Widget signWidget(Items docModel) {
-  if (docModel.approved == true) {
+Widget signWidget(CarItem docModel) {
+  if (docModel.status == 1) {
     return Row(
       children: [
         Image.asset(
@@ -542,7 +586,7 @@ Widget signWidget(Items docModel) {
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         const Text(
-          'Đã bút phê',
+          'Đã đặt lịch',
           style: TextStyle(color: kGreenSign),
         )
       ],
@@ -556,41 +600,29 @@ Widget signWidget(Items docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        const Text('Chưa bút phê', style: TextStyle(color: kOrangeSign))
+        const Text('Còn trống', style: TextStyle(color: kOrangeSign))
       ],
     );
   }
 }
 
-class DocModel {
-  String? title;
-  int? priority;
-  bool? isSign;
-
-  DocModel(this.title, this.priority, this.isSign);
-}
-
-class DocChildMode {
-  String? title;
-  String? value;
-
-  DocChildMode(this.title, this.value);
-}
-
-List<String> listFilter = [
-  'Tất cả mức độ',
-  'Cao',
-  'Trung bình',
-  'Thấp',
-  'Tất cả trạng thái',
-  'Đã bút phê',
-  'Chưa bút phê'
+List<String> listCarFilter = [
+  'Tất cả danh sách ô tô',
+  'Đã đặt lịch',
+  'Còn trống',
 ];
 
-List<DocChildMode> listDocChild = [
-  DocChildMode('Đơn vị phát hành', 'Bộ giáo dục'),
-  DocChildMode('Ngày đến', '20/02/2022'),
-  DocChildMode('Thời hạn', '22/02/2022'),
-  DocChildMode('Người xử lý', 'Trần Văn An'),
-  DocChildMode('Ngày xử lý', '20/02/2022'),
+class CarItem {
+  int? status;
+  String? name;
+
+  CarItem(this.status, this.name);
+}
+
+List<CarItem> listCar = [
+  CarItem(1, "Xe 001-29A-908070"),
+  CarItem(2, "Xe 001-29A-908070"),
+  CarItem(2, "Xe 001-29A-908070"),
+  CarItem(1, "Xe 001-29A-908070"),
+  CarItem(1, "Xe 001-29A-908070"),
 ];

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/document_nonapproved/document_nonapproved_list.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../model/document/document_statistic_model.dart';
 import '../chart/column_chart2.dart';
-import '../document_nonapproved/document_nonapproved_list.dart';
 import '../theme/theme_data.dart';
 
-class ProfileWorkScreen extends GetView {
+class DocInDocScreen extends GetView {
   String? header;
   String? icon;
 
   final homeController = Get.put(HomeViewModel());
 
-  ProfileWorkScreen({Key? key, this.header, this.icon}) : super(key: key);
+  DocInDocScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,10 +69,10 @@ class ProfileWorkScreen extends GetView {
                               SizedBox(
                                 height: 120,
                                 child: GridView.count(
-                                  childAspectRatio: 3/2,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 1,
-                                  crossAxisCount: 3,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  crossAxisSpacing: 5,
+                                  mainAxisSpacing: 0,
+                                  crossAxisCount: 4,
                                   children: [
                                     Column(
                                       crossAxisAlignment:
@@ -118,11 +118,12 @@ class ProfileWorkScreen extends GetView {
                                                 fontSize: 20))
                                       ],
                                     ),
+                                    //
                                     Column(
                                       crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                       children: [
-                                        const Text('Quá hạn xủ lý'),
+                                        const Text('Tạo mới'),
                                         Text('300',
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
@@ -133,66 +134,38 @@ class ProfileWorkScreen extends GetView {
                                       crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                       children: [
-                                        const Text('Trong hạn xử lý'),
+                                        const Text('Đã thu hồi'),
                                         Text('300',
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20))
                                       ],
                                     ),
-
-
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Đang xử lý'),
+                                        Text('300',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20))
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Đã hoàn thành'),
+                                        Text('300',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20))
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
-                              // Row(
-                              //   children: [
-                              //     Column(
-                              //       crossAxisAlignment:
-                              //       CrossAxisAlignment.start,
-                              //       children: [
-                              //         const Text('Đã HT'),
-                              //         Text(
-                              //             '300',
-                              //             style: const TextStyle(
-                              //                 fontWeight: FontWeight.bold,
-                              //                 fontSize: 20))
-                              //       ],
-                              //     ),
-                              //     const Padding(
-                              //         padding:
-                              //         EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                              //     Column(
-                              //       crossAxisAlignment:
-                              //       CrossAxisAlignment.start,
-                              //       children: [
-                              //         const Text('Quá hạn xủ lý'),
-                              //         Text(
-                              //           '204',
-                              //           style: const TextStyle(
-                              //               fontWeight: FontWeight.bold,
-                              //               fontSize: 20),
-                              //         )
-                              //       ],
-                              //     ),
-                              //     const Padding(
-                              //         padding:
-                              //         EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                              //     Column(
-                              //       crossAxisAlignment:
-                              //       CrossAxisAlignment.start,
-                              //       children: [
-                              //         const Text('Trong hạn xử lý'),
-                              //         Text(
-                              //           '400',
-                              //           style: const TextStyle(
-                              //               fontWeight: FontWeight.bold,
-                              //               fontSize: 20),
-                              //         )
-                              //       ],
-                              //     ),
-                              //   ],
-                              // ),
                             ]),
                           ),
                           context),
