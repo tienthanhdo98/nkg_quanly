@@ -5,18 +5,19 @@ import '../../const.dart';
 import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../model/meeting_room/meeting_room_statistic_model.dart';
 import '../theme/theme_data.dart';
 
-class PieChart2 extends StatefulWidget {
-  PieChart2({this.documentFilterModel});
+class RoomMeetingPieChart2 extends StatefulWidget {
+  RoomMeetingPieChart2({this.statisticModel});
 
-  final DocumentFilterModel? documentFilterModel;
+  final MeetingRoomStatisticModel? statisticModel;
 
   @override
-  State<StatefulWidget> createState() => PieChartState();
+  State<StatefulWidget> createState() => RoomMeetingPieChartState();
 }
 
-class PieChartState extends State<PieChart2> {
+class RoomMeetingPieChartState extends State<RoomMeetingPieChart2> {
   // final TooltipBehavior? _tooltipBehavior =
   //     TooltipBehavior(enable: true, format: 'point.x : point.y%');
   var selected = 0;
@@ -25,9 +26,9 @@ class PieChartState extends State<PieChart2> {
 
   @override
   void initState() {
-    var total = widget.documentFilterModel!.totalRecords!;
-    var num1 = widget.documentFilterModel!.items![0].quantity;
-    var num2 = widget.documentFilterModel!.items![1].quantity;
+    var total = widget.statisticModel!.total!;
+    var num1 = widget.statisticModel!.vacancy;
+    var num2 = widget.statisticModel!.booked;
     listChartData.add(PieCharData(title: calcuPercen(num1!,total),value: num1,color: kOrange));
     listChartData.add(PieCharData(title: calcuPercen(num2!,total),value: num2,color: kBlueChart));
     // listChartData = <PieCharData>[

@@ -6,13 +6,8 @@ import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../const/api.dart';
-import '../../model/document/document_statistic_model.dart';
 import '../../model/document_unprocess/document_filter.dart';
-import '../../model/proflie_model/profile_statistic.dart';
-import '../chart/column_chart2.dart';
-import '../document_nonapproved/document_nonapproved_list.dart';
 import '../theme/theme_data.dart';
-
 
 class ProfileScreen extends GetView {
   String? header;
@@ -29,10 +24,10 @@ class ProfileScreen extends GetView {
       body: SafeArea(
         child: FutureBuilder(
           future: homeController.getQuantityDocumentBuUrl(apiGetProfileFilter1),
-          builder: (context, AsyncSnapshot<List<DocumentFilterModel>> snapshot) {
+          builder:
+              (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
             if (snapshot.hasData) {
-              return Column(
-                  children: [
+              return Column(children: [
                 Stack(
                   children: [
                     Image.asset("assets/bgtophome.png",
@@ -52,7 +47,8 @@ class ProfileScreen extends GetView {
                                     children: [
                                       const Text('Tổng văn bản'),
                                       Text(
-                                        snapshot.data!.first.quantity.toString(),
+                                        snapshot.data!.totalRecords
+                                            .toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -78,27 +74,62 @@ class ProfileScreen extends GetView {
                               ),
                               SizedBox(
                                 height: 60,
-                                child: GridView.builder(
-                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                child: GridView.count(
                                     crossAxisCount: 4,
-                                  ),
-                                  itemCount: snapshot.data!.length -1 ,
-                                  itemBuilder: (context,index)
-                                  {
-                                    return  Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      children: [
-                                        Text(snapshot.data![index].name!),
-                                        Text(
-                                            snapshot.data![index].quantity.toString(),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20))
-                                      ],
-                                    );
-                                  },
-                                ),
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("HT"),
+                                          Text(
+                                              snapshot.data!.items![0].quantity
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20))
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Chưa HT"),
+                                          Text(
+                                              snapshot.data!.items![1].quantity
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20))
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("Quá hạn"),
+                                          Text(
+                                              snapshot.data!.items![2].quantity
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20))
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          const Text("HT quá hạn"),
+                                          Text(
+                                              snapshot.data!.items![3].quantity
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20))
+                                        ],
+                                      )
+                                    ]),
                               )
                             ]),
                           ),
@@ -106,9 +137,12 @@ class ProfileScreen extends GetView {
                     )
                   ],
                 ),
-                    Padding(
+                Padding(
                     padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: ProfileChart(homeViewModel: homeController,listBaseChart: snapshot.data!,)),
+                    child: ProfileChart(
+                      homeViewModel: homeController,
+                      listBaseChart: snapshot.data!.items,
+                    )),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -122,7 +156,8 @@ class ProfileScreen extends GetView {
                                   header: header,
                                 ));
                           },
-                          child: const Text('Xem danh sách VB đến chưa bút phê'),
+                          child:
+                              const Text('Xem danh sách VB đến chưa bút phê'),
                           style: bottomButtonStyle,
                         ),
                       ),

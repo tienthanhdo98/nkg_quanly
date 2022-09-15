@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/book_room_meet/room_meeting_pie_chart.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
-import '../../model/document/document_statistic_model.dart';
+import '../../model/meeting_room/meeting_room_statistic_model.dart';
 import '../chart2/pie_chart.dart';
 import '../theme/theme_data.dart';
 import 'book_room_list.dart';
@@ -23,8 +24,8 @@ class BookMeetingScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getDocumentStatistic(),
-          builder: (context, AsyncSnapshot<DocumentStatisticModel> snapshot) {
+          future: homeController.getMeetingRoomStatistic(),
+          builder: (context, AsyncSnapshot<MeetingRoomStatisticModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
                 Stack(
@@ -46,7 +47,7 @@ class BookMeetingScreen extends GetView {
                                     children: [
                                       const Text('Tổng số phòng họp'),
                                       Text(
-                                        snapshot.data!.tong.toString(),
+                                        snapshot.data!.total.toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -78,7 +79,7 @@ class BookMeetingScreen extends GetView {
                                     children: [
                                       const Text('Còn trống'),
                                       Text(
-                                          snapshot.data!.chuaButPhe!.toString(),
+                                          snapshot.data!.vacancy!.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))
@@ -93,7 +94,7 @@ class BookMeetingScreen extends GetView {
                                     children: [
                                       const Text('Đã đặt'),
                                       Text(
-                                        snapshot.data!.daButPhe.toString(),
+                                        snapshot.data!.booked.toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
@@ -110,7 +111,7 @@ class BookMeetingScreen extends GetView {
                 ),
                 Padding(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: PieChart2()),
+                    child: RoomMeetingPieChart2(statisticModel: snapshot.data,)),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,

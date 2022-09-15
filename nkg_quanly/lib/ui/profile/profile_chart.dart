@@ -15,14 +15,10 @@ class ProfileChart extends StatefulWidget {
   });
 
   final HomeViewModel? homeViewModel;
-  final List<DocumentFilterModel>? listBaseChart;
+  final List<FilterItems>? listBaseChart;
 
   @override
   State<StatefulWidget> createState() => ProfileChartState();
-
-
-// final TooltipBehavior? _tooltipBehavior =
-//     TooltipBehavior(enable: true, header: '', canShowMarker: false);
 
 
 }
@@ -30,25 +26,21 @@ class ProfileChart extends StatefulWidget {
 class ProfileChartState extends State<ProfileChart> {
   var selected = 0;
   List<ChartSampleData> listCharData = [];
-  List<DocumentFilterModel>? listData = [];
+  List<FilterItems>? listData = [];
 
   Future<void> getdata(String url) async {
-    listData = await widget.homeViewModel!.getQuantityDocumentBuUrl(url);
-    listData!.removeAt(0);
+    var res = await widget.homeViewModel!.getQuantityDocumentBuUrl(url);
+    listData = res.items;
   }
 
   @override
   void initState() {
-    widget.listBaseChart!.removeAt(0);
-    for (var element in widget.listBaseChart!) {
-      listCharData.add(ChartSampleData(x: element.name!, y: element.quantity!, color: kViolet),);
-    }
-    // listCharData = <ChartSampleData>[
-    //   ChartSampleData(x: 'Thấp', y: 760, color: kViolet),
-    //   ChartSampleData(x: 'Trung bình', y: 1240, color: kBlueChart),
-    //   ChartSampleData(x: 'Cao', y: 1369, color: kOrange),
-    // ];
-    getdata(apiGetProfileFilter1);
+    selected = 0;
+    listCharData.add(ChartSampleData(x:  widget.listBaseChart![0].name!, y: widget.listBaseChart![0].quantity!, color: kViolet),);
+    listCharData.add(ChartSampleData(x: 'Chưa HT', y: widget.listBaseChart![2].quantity!, color: kBlueChart),);
+    listCharData.add(ChartSampleData(x: widget.listBaseChart![3].name!, y: widget.listBaseChart![3].quantity!, color: kOrange),);
+    // // for (var element in widget.listBaseChart!) {
+    // getdata(apiGetProfileFilter1);
     super.initState();
   }
 
@@ -70,7 +62,7 @@ class ProfileChartState extends State<ProfileChart> {
                           : unActiveButtonStyle,
                       onPressed: () {
                         selected = 0;
-                        getdata(apiGetProfileFilter1);
+                      //  getdata(apiGetProfileFilter1);
                       },
                       child: const Text("Mức độ"),
                     ),
@@ -80,12 +72,12 @@ class ProfileChartState extends State<ProfileChart> {
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                     child: ElevatedButton(
                       style: selected == 1
-                          ? kActiveButtonStyle
-                          : kUnActiveButtonStyle,
+                          ? activeButtonStyle
+                          : unActiveButtonStyle,
                       onPressed: () {
                         setState(() {
                           selected = 1;
-                          getdata(apiGetProfileFilter0);
+                        //  getdata(apiGetProfileFilter0);
                         });
                       },
                       child: const Text("Trạng thái"),

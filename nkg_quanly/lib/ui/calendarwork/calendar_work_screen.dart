@@ -5,6 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:get/get.dart';
 import '../../viewmodel/home_viewmodel.dart';
 import 'calendar_work_detail.dart';
+import 'calendar_work_search.dart';
 
 class CalendarWorkScreen extends StatefulWidget {
   @override
@@ -58,10 +59,16 @@ class WorkScheduleInfoState extends State<CalendarWorkScreen> {
                             "Lịch làm việc",
                             style: Theme.of(context).textTheme.headline1,
                           ),
-                          const Expanded(
-                              child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Icon(Icons.search)))
+                          Expanded(
+                              child: InkWell(
+                                  onTap: () {
+                                    Get.to(() => CalendarWorkSearch(
+                                    ));
+                                  },
+                                child: const Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Icon(Icons.search)),
+                              ))
                         ],
                       ),
                     ),

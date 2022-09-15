@@ -11,6 +11,7 @@ import '../birthday/birthday_screen.dart';
 import '../book_car/book_car_screen.dart';
 import '../book_room_meet/book_meeting_screen.dart';
 import '../document_in_doc/doc_in_doc_screen.dart';
+import '../document_out/document_out_screen.dart';
 import '../document_unprocess/document_unprocess _screen.dart';
 import '../misstion/mission_screen.dart';
 import '../note_work/note_worl_screen.dart';
@@ -292,7 +293,7 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 5:
-      Get.to(() => DocumentNonApprovedScreen(
+      Get.to(() => DocumentOutScreen(
             header: header,
             icon: icon,
           ));
@@ -304,7 +305,7 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 7:
-      Get.to(() => DocumentNonApprovedScreen(
+      Get.to(() => BookMeetingScreen(
             header: header,
             icon: icon,
           ));

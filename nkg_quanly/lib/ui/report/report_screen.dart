@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/report/pie_chart_report.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
-import '../../model/document/document_statistic_model.dart';
+import '../../const/api.dart';
+import '../../model/document_unprocess/document_filter.dart';
 import '../chart2/pie_chart.dart';
 import '../document_nonapproved/document_nonapproved_list.dart';
 import '../theme/theme_data.dart';
@@ -23,8 +25,8 @@ class ReportScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getDocumentStatistic(),
-          builder: (context, AsyncSnapshot<DocumentStatisticModel> snapshot) {
+          future: homeController.getQuantityDocumentBuUrl(apiGetReportStatistic),
+          builder: (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
                 Stack(
@@ -46,7 +48,7 @@ class ReportScreen extends GetView {
                                     children: [
                                       const Text('Tổng văn bản'),
                                       Text(
-                                        snapshot.data!.tong.toString(),
+                                        snapshot.data!.totalRecords.toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -76,9 +78,9 @@ class ReportScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Hoàn thành'),
+                                      const Text('Đã tiếp nhận'),
                                       Text(
-                                          snapshot.data!.chuaButPhe!.toString(),
+                                          snapshot.data!.items![0].quantity.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))
@@ -91,9 +93,9 @@ class ReportScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Chưa hoàn thành'),
+                                      const Text('Đã giao'),
                                       Text(
-                                        snapshot.data!.daButPhe.toString(),
+                                        snapshot.data!.items![1].quantity.toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
@@ -109,8 +111,8 @@ class ReportScreen extends GetView {
                   ],
                 ),
                 Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: PieChart2()),
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: PieChartReport(total: snapshot.data!.totalRecords,num1: snapshot.data!.items![0].quantity,num2: snapshot.data!.items![1].quantity,)),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,

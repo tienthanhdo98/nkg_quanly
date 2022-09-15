@@ -14,7 +14,7 @@ class DocumentUnChart extends StatefulWidget {
   DocumentUnChart({this.homeViewModel,this.listBaseChart});
 
   final HomeViewModel? homeViewModel;
-  final List<DocumentFilterModel>? listBaseChart;
+  final List<FilterItems>? listBaseChart;
 
   @override
   State<StatefulWidget> createState() => DocumentUnChartState();
@@ -22,11 +22,11 @@ class DocumentUnChart extends StatefulWidget {
 
 class DocumentUnChartState extends State<DocumentUnChart> {
   var selected = 0;
-  List<DocumentFilterModel>? listData = [];
+  List<FilterItems>? listData = [];
 
   Future<void> getdata(String url ) async {
-    listData = await widget.homeViewModel!.getQuantityDocumentBuUrl(url);
-    listData!.removeAt(0);
+    DocumentFilterModel res = await widget.homeViewModel!.getQuantityDocumentBuUrl(url);
+    listData = res.items!;
   }
 
 
@@ -34,7 +34,6 @@ class DocumentUnChartState extends State<DocumentUnChart> {
   void initState() {
     selected = 0;
     getdata(apitGetUnProcess0);
-    widget.listBaseChart!.removeAt(0);
     listData = widget.listBaseChart;
     super.initState();
   }
@@ -102,14 +101,14 @@ class DocumentUnChartState extends State<DocumentUnChart> {
     );
   }
 
-  List<ColumnSeries<DocumentFilterModel, String>> _getDefaultColumnSeries() {
-    return <ColumnSeries<DocumentFilterModel, String>>[
-      ColumnSeries<DocumentFilterModel, String>(
+  List<ColumnSeries<FilterItems, String>> _getDefaultColumnSeries() {
+    return <ColumnSeries<FilterItems, String>>[
+      ColumnSeries<FilterItems, String>(
         dataSource: listData!,
         width: 0.2,
-        xValueMapper: (DocumentFilterModel sales, _) => sales.name,
-        yValueMapper: (DocumentFilterModel sales, _) => sales.quantity,
-        pointColorMapper: ((DocumentFilterModel sales, _) => kRedChart),
+        xValueMapper: (FilterItems sales, _) => sales.name,
+        yValueMapper: (FilterItems sales, _) => sales.quantity,
+        pointColorMapper: ((FilterItems sales, _) => kRedChart),
         dataLabelSettings: const DataLabelSettings(
             isVisible: false, textStyle: TextStyle(fontSize: 10)),
       )

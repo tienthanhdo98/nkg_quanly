@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../const.dart';
-import '../../model/document/document_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
-import '../note_work/note_work_list.dart';
-import 'document_nonapproved_detail.dart';
-import 'document_nonapproved_list.dart';
+import 'birthday_screen.dart';
 
-class DocumentnonapprovedSearch extends GetView{
 
-  final String? header;
-  final bool? isApprove;
-  final homeController = Get.put(HomeViewModel());
+class BirthDaySearch extends GetView {
+  final searchController = Get.put(SearchController());
 
-  DocumentnonapprovedSearch({Key? key,this.header,this.isApprove}) : super(key: key);
+  BirthDaySearch({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +64,11 @@ class DocumentnonapprovedSearch extends GetView{
                                       color: Colors.black),
                                   onSubmitted: (value){
                                     print(value);
-                                    homeController.searchData(value);
+                                    searchController.searchDataBirthDay(value);
                                   },
                                   onChanged: (value) {
                                     //print(value);
-                                    // searchController.searchData(value);
+                                   // searchController.searchData(value);
                                   },
                                 ),
                               )
@@ -86,23 +80,20 @@ class DocumentnonapprovedSearch extends GetView{
               ),
             ),
             Expanded(
-              child: Container(
-
+              child: SizedBox(
                 height: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
                   child: SizedBox(
                     height: 200,
                     child: Obx(() => ListView.builder(
-                        itemCount: homeController.listData.length,
+                        itemCount: searchController.listDataBirthDay.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () {
-                                Get.to(() => DocumentnonapprovedDetail(
-                                    id: homeController.listData[index].id!));
                               },
                               child:
-                              DocumentNonApproveListItem(index, homeController.listData[index],isApprove));
+                              BirthDayItem(index, searchController.listDataBirthDay[index]));
                         })),
                   ),
                 ),
@@ -113,5 +104,4 @@ class DocumentnonapprovedSearch extends GetView{
       ),
     );
   }
-
 }

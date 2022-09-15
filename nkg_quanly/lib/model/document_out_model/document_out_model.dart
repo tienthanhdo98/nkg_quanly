@@ -1,22 +1,22 @@
-class ProfileModel {
-  List<ProfileItems>? items;
+class DocumentOutModel {
+  List<DocumentOutItems>? items;
   int? pageIndex;
   int? pageSize;
   int? totalRecords;
   int? pageCount;
 
-  ProfileModel(
+  DocumentOutModel(
       {this.items,
         this.pageIndex,
         this.pageSize,
         this.totalRecords,
         this.pageCount});
 
-  ProfileModel.fromJson(Map<String, dynamic> json) {
+  DocumentOutModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
-      items = <ProfileItems>[];
+      items = <DocumentOutItems>[];
       json['items'].forEach((v) {
-        items!.add(ProfileItems.fromJson(v));
+        items!.add(new DocumentOutItems.fromJson(v));
       });
     }
     pageIndex = json['pageIndex'];
@@ -38,38 +38,47 @@ class ProfileModel {
   }
 }
 
-class ProfileItems {
+class DocumentOutItems {
   int? id;
   String? code;
   String? name;
-  String? deadline;
-  String? dateProcess;
-  String? handler;
-  String? level;
-  String? state;
+  String? toDate;
+  String? departmentPublic;
+  String? endDate;
   String? status;
+  bool? released;
+  String? dateDone;
+  String? state;
+  String? level;
+  String? detail;
 
-  ProfileItems(
+  DocumentOutItems(
       {this.id,
         this.code,
         this.name,
-        this.deadline,
-        this.dateProcess,
-        this.handler,
-        this.level,
+        this.toDate,
+        this.departmentPublic,
+        this.endDate,
+        this.status,
+        this.released,
+        this.dateDone,
         this.state,
-        this.status});
+        this.level,
+        this.detail});
 
-  ProfileItems.fromJson(Map<String, dynamic> json) {
+  DocumentOutItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     code = json['code'];
     name = json['name'];
-    deadline = json['deadline'];
-    dateProcess = json['dateProcess'];
-    handler = json['handler'];
-    level = json['level'];
-    state = json['state'];
+    toDate = json['toDate'];
+    departmentPublic = json['departmentPublic'];
+    endDate = json['endDate'];
     status = json['status'];
+    released = json['released'];
+    dateDone = json['dateDone'];
+    state = json['state'];
+    level = json['level'];
+    detail = json['detail'];
   }
 
   Map<String, dynamic> toJson() {
@@ -77,12 +86,15 @@ class ProfileItems {
     data['id'] = this.id;
     data['code'] = this.code;
     data['name'] = this.name;
-    data['deadline'] = this.deadline;
-    data['dateProcess'] = this.dateProcess;
-    data['handler'] = this.handler;
-    data['level'] = this.level;
-    data['state'] = this.state;
+    data['toDate'] = this.toDate;
+    data['departmentPublic'] = this.departmentPublic;
+    data['endDate'] = this.endDate;
     data['status'] = this.status;
+    data['released'] = this.released;
+    data['dateDone'] = this.dateDone;
+    data['state'] = this.state;
+    data['level'] = this.level;
+    data['detail'] = this.detail;
     return data;
   }
 }

@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/profile/profile_controller.dart';
+import 'package:nkg_quanly/ui/profile/profile_list.dart';
 
 import '../../const.dart';
-import '../../model/document/document_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
-import '../note_work/note_work_list.dart';
-import 'document_nonapproved_detail.dart';
-import 'document_nonapproved_list.dart';
+import '../document_nonapproved/document_nonapproved_detail.dart';
 
-class DocumentnonapprovedSearch extends GetView{
 
-  final String? header;
-  final bool? isApprove;
-  final homeController = Get.put(HomeViewModel());
+class DocumenOutSearch extends GetView {
+  String? header;
+  final profileController = Get.put(ProfileController());
 
-  DocumentnonapprovedSearch({Key? key,this.header,this.isApprove}) : super(key: key);
+  DocumenOutSearch({Key? key, this.header}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +67,11 @@ class DocumentnonapprovedSearch extends GetView{
                                       color: Colors.black),
                                   onSubmitted: (value){
                                     print(value);
-                                    homeController.searchData(value);
+                                    profileController.searchData(value);
                                   },
                                   onChanged: (value) {
                                     //print(value);
-                                    // searchController.searchData(value);
+                                   // searchController.searchData(value);
                                   },
                                 ),
                               )
@@ -94,15 +91,15 @@ class DocumentnonapprovedSearch extends GetView{
                   child: SizedBox(
                     height: 200,
                     child: Obx(() => ListView.builder(
-                        itemCount: homeController.listData.length,
+                        itemCount: profileController.listData.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () {
                                 Get.to(() => DocumentnonapprovedDetail(
-                                    id: homeController.listData[index].id!));
+                                    id: profileController.listData[index].id!));
                               },
                               child:
-                              DocumentNonApproveListItem(index, homeController.listData[index],isApprove));
+                              ProfileListItem(index, profileController.listData[index]));
                         })),
                   ),
                 ),
@@ -113,5 +110,4 @@ class DocumentnonapprovedSearch extends GetView{
       ),
     );
   }
-
 }

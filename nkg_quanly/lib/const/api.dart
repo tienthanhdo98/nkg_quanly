@@ -6,9 +6,9 @@ const apiGetDocumentDetail =
     "http://123.31.31.237:6002/api/documentin/get-by-id?";
 //mission
 const apiGetMissionStatistic =
-    "http://123.31.31.237:6002/api/mission/statistic";
+    "http://123.31.31.237:6002/api/mission/statistic-status";
 const apiGetMission =
-    "http://123.31.31.237:6002/api/mission?Keyword&Code&Name&Status&Level&FromDate&ToDate&PageInDex=1&PageSize=10";
+    "http://123.31.31.237:6002/api/mission";
 
 //calendar work
 const apiPostCalendarWork =
@@ -31,3 +31,21 @@ const apiGetProfileFilter1 =
     "http://123.31.31.237:6002/api/profiles/get-statistic-chart?filterChart=1";
 const apiGetProfileFilter0 =
     "http://123.31.31.237:6002/api/profiles/get-statistic-chart?filterChart=0";
+//doc out
+const apiGetDocumentOutFilter0 =
+    "http://123.31.31.237:6002/api/documentout/wait-release?filterWaitRelease=0";
+const apiGetDocumentOut=
+    "http://123.31.31.237:6002/api/documentout";
+//meeting room
+const apiGetMeetingroomStatistic=
+    "http://123.31.31.237:6002/api/meetingrooms/statistic";
+const apiPostAllMeetingroom=
+    "http://123.31.31.237:6002/api/meetingrooms/calendar";
+const apiPostAllMeetingroomSearch=
+    "http://123.31.31.237:6002/api/meetingrooms/search";
+
+//report
+const apiGetReportStatistic = "http://123.31.31.237:6002/api/reportapiclient/statistic";
+
+//birthday
+const apiPostBirthDay = "http://123.31.31.237:6002/api/birthday";

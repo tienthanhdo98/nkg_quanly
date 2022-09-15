@@ -11,7 +11,9 @@ import '../../viewmodel/home_viewmodel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../document_nonapproved/document_nonapproved_detail.dart';
+import '../document_nonapproved/document_nonapproved_list.dart';
 import '../document_nonapproved/document_nonapproved_search.dart';
+import '../document_out/document_out_search.dart';
 
 class ProfileList extends GetView {
   final String? header;
@@ -56,7 +58,7 @@ class ProfileList extends GetView {
                         Expanded(
                             child: InkWell(
                           onTap: () {
-                            Get.to(() => DocumentnonapprovedSearch(
+                            Get.to(() => DocumenOutSearch(
                                   header: header,
                                 ));
                           },
@@ -295,38 +297,38 @@ class ProfileListItem extends StatelessWidget {
                       child: priorityWidget(docModel!))),
             ],
           ),
-          signWidget(docModel!!),
+          signWidget(docModel!),
           SizedBox(
-            height: 100,
+            height: 70,
             child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               primary: false,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               crossAxisSpacing: 10,
               mainAxisSpacing: 0,
               crossAxisCount: 3,
               children: <Widget>[
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     const Text('Đơn vị ban hành',style: CustomTextStyle.secondTextStyle),
-                //     Text(docModel!.departmentPublic!)
-                //   ],
-                // ),
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     const Text('Ngày đến',style: CustomTextStyle.secondTextStyle),
-                //     Text(formatDate(docModel!.toDate!))
-                //   ],
-                // ),
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     const Text('Thời hạn',style: CustomTextStyle.secondTextStyle),
-                //     Text(formatDate(docModel!.endDate!))
-                //   ],
-                // ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Người xử lý',style: CustomTextStyle.secondTextStyle),
+                    Text(docModel!.handler!)
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Thời hạn',style: CustomTextStyle.secondTextStyle),
+                    Text(formatDate(docModel!.deadline!))
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Ngày xử lý',style: CustomTextStyle.secondTextStyle),
+                    Text(formatDate(docModel!.dateProcess!))
+                  ],
+                ),
               ],
             ),
           ),
@@ -592,35 +594,4 @@ Widget signWidget(ProfileItems docModel) {
 
 }
 
-class DocModel {
-  String? title;
-  int? priority;
-  bool? isSign;
 
-  DocModel(this.title, this.priority, this.isSign);
-}
-
-class DocChildMode {
-  String? title;
-  String? value;
-
-  DocChildMode(this.title, this.value);
-}
-
-List<String> listFilter = [
-  'Tất cả mức độ',
-  'Cao',
-  'Trung bình',
-  'Thấp',
-  'Tất cả trạng thái',
-  'Đã bút phê',
-  'Chưa bút phê'
-];
-
-List<DocChildMode> listDocChild = [
-  DocChildMode('Đơn vị phát hành', 'Bộ giáo dục'),
-  DocChildMode('Ngày đến', '20/02/2022'),
-  DocChildMode('Thời hạn', '22/02/2022'),
-  DocChildMode('Người xử lý', 'Trần Văn An'),
-  DocChildMode('Ngày xử lý', '20/02/2022'),
-];

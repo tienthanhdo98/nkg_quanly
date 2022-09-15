@@ -2,24 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/menu/MenuController.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../const.dart';
 import '../../const/ultils.dart';
-import '../../model/document/document_model.dart';
+import '../../model/misstion/mission_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
-import 'package:table_calendar/table_calendar.dart';
+import '../document_nonapproved/document_nonapproved_list.dart';
+import 'misstion_search.dart';
 
-import 'document_nonapproved_detail.dart';
-import 'document_nonapproved_search.dart';
-
-class DocumentNonapprovedList extends GetView {
+class MissionList extends GetView {
   final String? header;
-  DateTime dateNow = DateTime.now();
+  final DateTime dateNow = DateTime.now();
   final MenuController menuController = Get.put(MenuController());
   final homeController = Get.put(HomeViewModel());
-  int selectedButton = 0;
-  final bool isNonapproved;
-  DocumentNonapprovedList({this.header,this.isNonapproved = true});
+  final int selectedButton = 0;
+  MissionList({this.header});
 
   int selected = 0;
 
@@ -28,8 +26,8 @@ class DocumentNonapprovedList extends GetView {
     return Scaffold(
       body: SafeArea(
           child: FutureBuilder(
-        future: homeController.getDocument(),
-        builder: (context, AsyncSnapshot<DocumentModel> snapshot) {
+        future: homeController.getMissionModel(),
+        builder: (context, AsyncSnapshot<MissionModel> snapshot) {
           if (snapshot.hasData) {
             return Column(
               children: [
@@ -55,9 +53,8 @@ class DocumentNonapprovedList extends GetView {
                         Expanded(
                             child: InkWell(
                           onTap: () {
-                            Get.to(() => DocumentnonapprovedSearch(
+                            Get.to(() => MissionSearch(
                                   header: header,
-                              isApprove: isNonapproved,
                                 ));
                           },
                           child: const Align(
@@ -174,11 +171,11 @@ class DocumentNonapprovedList extends GetView {
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () {
-                                Get.to(() => DocumentnonapprovedDetail(
-                                    id: snapshot.data!.items![index].id!));
+                                // Get.to(() => DocumentnonapprovedDetail(
+                                //     id: snapshot.data!.items![index].id!));
                               },
                               child:
-                              DocumentNonApproveListItem(index, snapshot.data!.items![index],isNonapproved));
+                              MissionListItem(index, snapshot.data!.items![index]));
                         })),
                 //bottom
                 Container(
@@ -271,12 +268,11 @@ class DocumentNonapprovedList extends GetView {
   }
 }
 
-class DocumentNonApproveListItem extends StatelessWidget {
-  DocumentNonApproveListItem(this.index, this.docModel,this.isNonApprove);
+class MissionListItem extends StatelessWidget {
+  MissionListItem(this.index, this.docModel);
 
   final int? index;
-  final Items? docModel;
-  final bool? isNonApprove;
+  final MisstionItem? docModel;
 
   @override
   Widget build(BuildContext context) {
@@ -296,11 +292,11 @@ class DocumentNonApproveListItem extends StatelessWidget {
                       child: priorityWidget(docModel!))),
             ],
           ),
-          signWidget(docModel!,isNonApprove!),
+          signWidget(docModel!),
           SizedBox(
-            height: 100,
+            height: 70,
             child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               primary: false,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               crossAxisSpacing: 10,
@@ -310,22 +306,22 @@ class DocumentNonApproveListItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Đơn vị ban hành',style: CustomTextStyle.secondTextStyle),
-                    Text(docModel!.departmentPublic!)
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày đến',style: CustomTextStyle.secondTextStyle),
-                    Text(formatDate(docModel!.toDate!))
+                    const Text('Người xử lý',style: CustomTextStyle.secondTextStyle),
+                    Text(docModel!.organizationName!)
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('Thời hạn',style: CustomTextStyle.secondTextStyle),
-                    Text(formatDate(docModel!.endDate!))
+                    Text(formatDate(docModel!.deadline!))
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Ngày xử lý',style: CustomTextStyle.secondTextStyle),
+                    Text(formatDate(docModel!.processingDate!))
                   ],
                 ),
               ],
@@ -501,7 +497,7 @@ Widget filterItem(
   }
 }
 
-Widget priorityWidget(Items docModel) {
+Widget priorityWidget(MisstionItem docModel) {
   if (docModel.level == "Thấp") {
     return Container(
         decoration: BoxDecoration(
@@ -535,100 +531,62 @@ Widget priorityWidget(Items docModel) {
   }
 }
 
-Widget signWidget(Items docModel, bool isNonApprove) {
-  if(isNonApprove){
-    if (docModel.approved == true) {
-      return Row(
-        children: [
-          Image.asset(
-            'assets/icons/ic_sign.png',
-            height: 14,
-            width: 14,
-          ),
-          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-          const Text(
-            'Đã bút phê',
-            style: TextStyle(color: kGreenSign),
-          )
-        ],
-      );
-    } else {
-      return Row(
-        children: [
-          Image.asset(
-            'assets/icons/ic_not_sign.png',
-            height: 14,
-            width: 14,
-          ),
-          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-          const Text('Chưa bút phê', style: TextStyle(color: kOrangeSign))
-        ],
-      );
-    }
+Widget signWidget(MisstionItem docModel) {
+  if (docModel.status == "Hoàn thành") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(
+          docModel.status!,
+          style: TextStyle(color: kGreenSign),
+        )
+      ],
+    );
+  } else if (docModel.status == "Chưa hoàn thành") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_not_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text( docModel.status!, style: TextStyle(color: kOrangeSign))
+      ],
+    );
   }
-  else
-    {
-        return (docModel.status =="Đã xử lý") ? Row(
-          children: [
-            Image.asset(
-              'assets/icons/ic_sign.png',
-              height: 14,
-              width: 14,
-            ),
-            const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-             Text(
-              docModel.status!,
-              style: const TextStyle(color: kGreenSign),
-            )
-          ],
-        ) : Row(
-          children: [
-            Image.asset(
-              'assets/icons/ic_not_sign.png',
-              height: 14,
-              width: 14,
-            ),
-            const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-            Text(
-              docModel.status!,
-              style: const TextStyle(color: kOrangeSign),
-            )
-          ],
-        ) ;
-
-    }
+  else if (docModel.status == "Quá hạn") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_cancel_red.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+         Text(docModel.status!, style: TextStyle(color: kRedPriority))
+      ],
+    );
+  }
+  else {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_still.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+         Text(docModel.status!, style: TextStyle(color: Colors.black))
+      ],
+    );
+  }
 
 }
 
-class DocModel {
-  String? title;
-  int? priority;
-  bool? isSign;
 
-  DocModel(this.title, this.priority, this.isSign);
-}
-
-class DocChildMode {
-  String? title;
-  String? value;
-
-  DocChildMode(this.title, this.value);
-}
-
-List<String> listFilter = [
-  'Tất cả mức độ',
-  'Cao',
-  'Trung bình',
-  'Thấp',
-  'Tất cả trạng thái',
-  'Đã bút phê',
-  'Chưa bút phê'
-];
-
-List<DocChildMode> listDocChild = [
-  DocChildMode('Đơn vị phát hành', 'Bộ giáo dục'),
-  DocChildMode('Ngày đến', '20/02/2022'),
-  DocChildMode('Thời hạn', '22/02/2022'),
-  DocChildMode('Người xử lý', 'Trần Văn An'),
-  DocChildMode('Ngày xử lý', '20/02/2022'),
-];

@@ -26,7 +26,7 @@ class DocumentNonApprovedScreen extends GetView {
       body: SafeArea(
         child: FutureBuilder(
           future: homeController.getQuantityDocumentBuUrl(apiGetDocumentNonApprove),
-          builder: (context, AsyncSnapshot<List<DocumentFilterModel>> snapshot) {
+          builder: (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
                 Stack(
@@ -48,7 +48,7 @@ class DocumentNonApprovedScreen extends GetView {
                                     children: [
                                       const Text('Tổng văn bản'),
                                       Text(
-                                        snapshot.data![0].quantity.toString(),
+                                        snapshot.data!.totalRecords.toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -80,7 +80,7 @@ class DocumentNonApprovedScreen extends GetView {
                                     children: [
                                       const Text('Chưa bút phê'),
                                       Text(
-                                          snapshot.data![1].quantity.toString(),
+                                          snapshot.data!.items![0].quantity.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))
@@ -95,7 +95,7 @@ class DocumentNonApprovedScreen extends GetView {
                                     children: [
                                       const Text('Đã bút phê'),
                                       Text(
-                                        snapshot.data![2].quantity.toString(),
+                                        snapshot.data!.items![1].quantity.toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
@@ -112,7 +112,7 @@ class DocumentNonApprovedScreen extends GetView {
                 ),
                 Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: PieChart2(listQuantity: snapshot.data,)),
+                    child: PieChart2(documentFilterModel: snapshot.data!)),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,

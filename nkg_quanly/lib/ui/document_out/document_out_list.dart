@@ -2,24 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/menu/MenuController.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../const.dart';
 import '../../const/ultils.dart';
 import '../../model/document/document_model.dart';
+import '../../model/document_out_model/document_out_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
-import 'package:table_calendar/table_calendar.dart';
+import '../document_nonapproved/document_nonapproved_detail.dart';
+import '../document_nonapproved/document_nonapproved_search.dart';
+import 'document_out_search.dart';
 
-import 'document_nonapproved_detail.dart';
-import 'document_nonapproved_search.dart';
-
-class DocumentNonapprovedList extends GetView {
+class DocumentOutList extends GetView {
   final String? header;
   DateTime dateNow = DateTime.now();
   final MenuController menuController = Get.put(MenuController());
   final homeController = Get.put(HomeViewModel());
   int selectedButton = 0;
-  final bool isNonapproved;
-  DocumentNonapprovedList({this.header,this.isNonapproved = true});
+  DocumentOutList({this.header});
 
   int selected = 0;
 
@@ -28,8 +28,8 @@ class DocumentNonapprovedList extends GetView {
     return Scaffold(
       body: SafeArea(
           child: FutureBuilder(
-        future: homeController.getDocument(),
-        builder: (context, AsyncSnapshot<DocumentModel> snapshot) {
+        future: homeController.getDocumentOut(),
+        builder: (context, AsyncSnapshot<DocumentOutModel> snapshot) {
           if (snapshot.hasData) {
             return Column(
               children: [
@@ -55,9 +55,8 @@ class DocumentNonapprovedList extends GetView {
                         Expanded(
                             child: InkWell(
                           onTap: () {
-                            Get.to(() => DocumentnonapprovedSearch(
+                            Get.to(() => DocumenOutSearch(
                                   header: header,
-                              isApprove: isNonapproved,
                                 ));
                           },
                           child: const Align(
@@ -178,7 +177,7 @@ class DocumentNonapprovedList extends GetView {
                                     id: snapshot.data!.items![index].id!));
                               },
                               child:
-                              DocumentNonApproveListItem(index, snapshot.data!.items![index],isNonapproved));
+                              DocOutListItem(index, snapshot.data!.items![index],false));
                         })),
                 //bottom
                 Container(
@@ -271,11 +270,11 @@ class DocumentNonapprovedList extends GetView {
   }
 }
 
-class DocumentNonApproveListItem extends StatelessWidget {
-  DocumentNonApproveListItem(this.index, this.docModel,this.isNonApprove);
+class DocOutListItem extends StatelessWidget {
+  DocOutListItem(this.index, this.docModel,this.isNonApprove);
 
   final int? index;
-  final Items? docModel;
+  final DocumentOutItems? docModel;
   final bool? isNonApprove;
 
   @override
@@ -296,11 +295,11 @@ class DocumentNonApproveListItem extends StatelessWidget {
                       child: priorityWidget(docModel!))),
             ],
           ),
-          signWidget(docModel!,isNonApprove!),
+          signWidget(docModel!),
           SizedBox(
-            height: 100,
+            height: 80,
             child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               primary: false,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               crossAxisSpacing: 10,
@@ -501,7 +500,7 @@ Widget filterItem(
   }
 }
 
-Widget priorityWidget(Items docModel) {
+Widget priorityWidget(DocumentOutItems docModel) {
   if (docModel.level == "Thấp") {
     return Container(
         decoration: BoxDecoration(
@@ -535,9 +534,9 @@ Widget priorityWidget(Items docModel) {
   }
 }
 
-Widget signWidget(Items docModel, bool isNonApprove) {
-  if(isNonApprove){
-    if (docModel.approved == true) {
+Widget signWidget(DocumentOutItems docModel) {
+
+    if (docModel.released == true) {
       return Row(
         children: [
           Image.asset(
@@ -547,7 +546,7 @@ Widget signWidget(Items docModel, bool isNonApprove) {
           ),
           const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
           const Text(
-            'Đã bút phê',
+            'Đã phát hành',
             style: TextStyle(color: kGreenSign),
           )
         ],
@@ -561,43 +560,10 @@ Widget signWidget(Items docModel, bool isNonApprove) {
             width: 14,
           ),
           const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-          const Text('Chưa bút phê', style: TextStyle(color: kOrangeSign))
+          const Text('Chưa phát hành', style: TextStyle(color: kOrangeSign))
         ],
       );
     }
-  }
-  else
-    {
-        return (docModel.status =="Đã xử lý") ? Row(
-          children: [
-            Image.asset(
-              'assets/icons/ic_sign.png',
-              height: 14,
-              width: 14,
-            ),
-            const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-             Text(
-              docModel.status!,
-              style: const TextStyle(color: kGreenSign),
-            )
-          ],
-        ) : Row(
-          children: [
-            Image.asset(
-              'assets/icons/ic_not_sign.png',
-              height: 14,
-              width: 14,
-            ),
-            const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-            Text(
-              docModel.status!,
-              style: const TextStyle(color: kOrangeSign),
-            )
-          ],
-        ) ;
-
-    }
-
 }
 
 class DocModel {

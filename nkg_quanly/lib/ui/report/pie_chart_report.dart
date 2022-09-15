@@ -7,16 +7,18 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../theme/theme_data.dart';
 
-class PieChart2 extends StatefulWidget {
-  PieChart2({this.documentFilterModel});
+class PieChartReport extends StatefulWidget {
+  PieChartReport({this.total,this.num1,this.num2});
 
-  final DocumentFilterModel? documentFilterModel;
+  final int? total;
+  final int? num1;
+  final int? num2 ;
 
   @override
-  State<StatefulWidget> createState() => PieChartState();
+  State<StatefulWidget> createState() => PieChartReportState();
 }
 
-class PieChartState extends State<PieChart2> {
+class PieChartReportState extends State<PieChartReport> {
   // final TooltipBehavior? _tooltipBehavior =
   //     TooltipBehavior(enable: true, format: 'point.x : point.y%');
   var selected = 0;
@@ -25,11 +27,9 @@ class PieChartState extends State<PieChart2> {
 
   @override
   void initState() {
-    var total = widget.documentFilterModel!.totalRecords!;
-    var num1 = widget.documentFilterModel!.items![0].quantity;
-    var num2 = widget.documentFilterModel!.items![1].quantity;
-    listChartData.add(PieCharData(title: calcuPercen(num1!,total),value: num1,color: kOrange));
-    listChartData.add(PieCharData(title: calcuPercen(num2!,total),value: num2,color: kBlueChart));
+
+    listChartData.add(PieCharData(title: calcuPercen(widget.num1!,widget.total!),value: widget.num1!,color: kOrange));
+    listChartData.add(PieCharData(title: calcuPercen(widget.num2!,widget.total!),value: widget.num2!,color: kBlueChart));
     // listChartData = <PieCharData>[
     //   PieCharData(title: "44%", value: 44, color: kOrange),
     //   PieCharData(title: "56%", value: 56, color: kBlueChart),
@@ -88,8 +88,8 @@ class PieChartState extends State<PieChart2> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              legendChart("Đã bút phê", kBlueChart),
-              legendChart("Đã bút phê", kOrange),
+              legendChart("Đã tiếp nhận", kBlueChart),
+              legendChart("Đã giao", kOrange),
             ],
           ),
           Text('Biểu đồ minh họa')

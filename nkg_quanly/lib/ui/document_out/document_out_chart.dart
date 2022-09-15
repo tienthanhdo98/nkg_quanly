@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/model/document_unprocess/document_filter.dart';
+import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../model/ChartModel.dart';
@@ -7,16 +8,17 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../theme/theme_data.dart';
 
-class PieChart2 extends StatefulWidget {
-  PieChart2({this.documentFilterModel});
+class DocumentOutPieChart extends StatefulWidget {
+  DocumentOutPieChart({this.documentFilterModel,this.homeViewModel});
 
   final DocumentFilterModel? documentFilterModel;
+  final HomeViewModel? homeViewModel;
 
   @override
-  State<StatefulWidget> createState() => PieChartState();
+  State<StatefulWidget> createState() => DocumentOutPieChartState();
 }
 
-class PieChartState extends State<PieChart2> {
+class DocumentOutPieChartState extends State<DocumentOutPieChart> {
   // final TooltipBehavior? _tooltipBehavior =
   //     TooltipBehavior(enable: true, format: 'point.x : point.y%');
   var selected = 0;
@@ -25,10 +27,10 @@ class PieChartState extends State<PieChart2> {
 
   @override
   void initState() {
-    var total = widget.documentFilterModel!.totalRecords!;
+    var total = widget.documentFilterModel!.totalRecords;
     var num1 = widget.documentFilterModel!.items![0].quantity;
     var num2 = widget.documentFilterModel!.items![1].quantity;
-    listChartData.add(PieCharData(title: calcuPercen(num1!,total),value: num1,color: kOrange));
+    listChartData.add(PieCharData(title: calcuPercen(num1!,total!),value: num1,color: kOrange));
     listChartData.add(PieCharData(title: calcuPercen(num2!,total),value: num2,color: kBlueChart));
     // listChartData = <PieCharData>[
     //   PieCharData(title: "44%", value: 44, color: kOrange),
@@ -88,8 +90,8 @@ class PieChartState extends State<PieChart2> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              legendChart("Đã bút phê", kBlueChart),
-              legendChart("Đã bút phê", kOrange),
+              legendChart("Chưa phát hành", kBlueChart),
+              legendChart("Phát hành", kOrange),
             ],
           ),
           Text('Biểu đồ minh họa')

@@ -1,12 +1,12 @@
 class MissionModel {
-  List<MisstionItem>? misstionItem;
+  List<MisstionItem>? items;
   int? pageIndex;
   int? pageSize;
   int? totalRecords;
   int? pageCount;
 
   MissionModel(
-      {this.misstionItem,
+      {this.items,
         this.pageIndex,
         this.pageSize,
         this.totalRecords,
@@ -14,9 +14,9 @@ class MissionModel {
 
   MissionModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
-      misstionItem = <MisstionItem>[];
+      items = <MisstionItem>[];
       json['items'].forEach((v) {
-        misstionItem!.add(new MisstionItem.fromJson(v));
+        items!.add(new MisstionItem.fromJson(v));
       });
     }
     pageIndex = json['pageIndex'];
@@ -27,8 +27,8 @@ class MissionModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.misstionItem != null) {
-      data['items'] = this.misstionItem!.map((v) => v.toJson()).toList();
+    if (this.items != null) {
+      data['items'] = this.items!.map((v) => v.toJson()).toList();
     }
     data['pageIndex'] = this.pageIndex;
     data['pageSize'] = this.pageSize;

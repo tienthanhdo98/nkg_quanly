@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/book_room_meet/room_meeting_search.dart';
 import 'package:nkg_quanly/ui/menu/MenuController.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../const.dart';
 import '../../model/document/document_model.dart';
+import '../../model/meeting_room/meeting_room_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
+import '../book_car/book_car_list.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
 import '../document_nonapproved/document_nonapproved_search.dart';
 
@@ -26,8 +29,8 @@ class BookRoomList extends GetView {
     return Scaffold(
       body: SafeArea(
           child: FutureBuilder(
-        future: homeController.getDocument(),
-        builder: (context, AsyncSnapshot<DocumentModel> snapshot) {
+        future: homeController.getMeetingRoom(),
+        builder: (context, AsyncSnapshot<MeetingRoomModel> snapshot) {
           if (snapshot.hasData) {
             return Column(
               children: [
@@ -53,7 +56,7 @@ class BookRoomList extends GetView {
                         Expanded(
                             child: InkWell(
                           onTap: () {
-                            Get.to(() => DocumentnonapprovedSearch(
+                            Get.to(() => RoomMeetingSearch(
                                   header: header,
                                 ));
                           },
@@ -111,7 +114,7 @@ class BookRoomList extends GetView {
                   child: Row(
                     children: [
                       Text(
-                        'Tất cả danh sách ô tô',
+                        'Tất cả phòng họp',
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       Expanded(
@@ -196,7 +199,7 @@ class BookRoomList extends GetView {
                             Expanded(
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text("Danh sách bố trí ô tô",
+                                child: Text("Danh sách phòng họp",
                                     style:
                                         Theme.of(context).textTheme.headline2),
                               ),
@@ -211,18 +214,18 @@ class BookRoomList extends GetView {
                     //list car
                     Expanded(
                         child: SizedBox(
-                      height: double.infinity,
-                      child: ListView.builder(
-                          itemCount: listCar.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  Get.to(() => DocumentnonapprovedDetail(
-                                      id: snapshot.data!.items![index].id!));
-                                },
-                                child: BookCarItem(index, listCar[index]));
-                          }),
-                    )),
+                          height: double.infinity,
+                          child: ListView.builder(
+                              itemCount: snapshot.data!.items!.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                    onTap: () {
+                                      Get.to(() => DocumentnonapprovedDetail(
+                                          id: snapshot.data!.items![index].id!));
+                                    },
+                                    child: MeetingRoomItem(index, snapshot.data!.items![index]));
+                              }),
+                        )),
                     //bottom
                     Container(
                       decoration: BoxDecoration(
@@ -319,11 +322,11 @@ class BookRoomList extends GetView {
   }
 }
 
-class BookCarItem extends StatelessWidget {
-  BookCarItem(this.index, this.docModel);
+class MeetingRoomItem extends StatelessWidget {
+  MeetingRoomItem(this.index, this.docModel);
 
   int? index;
-  CarItem? docModel;
+  MeetingRoomItems? docModel;
 
   @override
   Widget build(BuildContext context) {
@@ -372,7 +375,7 @@ class BookCarItem extends StatelessWidget {
                     const Padding(
                         padding: EdgeInsets.fromLTRB(
                             0, 0, 5, 0)),
-                    const Text("Phòng họp lớn 01",
+                     Text(docModel!.roomName!,
                         style: CustomTextStyle
                             .secondTextStyle)
                   ],
@@ -386,7 +389,7 @@ class BookCarItem extends StatelessWidget {
                       height: 30,
                     ),
                     const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                    const Text('Nguyễn Văn A')
+                    Text(docModel!.registerUser!)
                   ],
                 ),
               ],
@@ -504,62 +507,9 @@ class filterBottomSheet extends StatelessWidget {
   }
 }
 
-Widget filterItem(
-    int index, BuildContext context, MenuController menuController) {
-  if (index == 0 || index == 4) {
-    return Row(
-      children: [
-        Text(
-          'Tất cả mức độ',
-          style: Theme.of(context).textTheme.headline2,
-        ),
-        Obx(() => Expanded(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Checkbox(
-                  checkColor: Colors.white,
-                  value: menuController.listStatePriority.contains(index),
-                  shape: const CircleBorder(),
-                  onChanged: (bool? value) {
-                    menuController.checkboxAllPriorityState(value!, index);
-                  },
-                ),
-              ),
-            ))
-      ],
-    );
-  } else {
-    return Column(
-      children: [
-        const Divider(
-          thickness: 1,
-        ),
-        Row(
-          children: [
-            Text(listCarFilter[index]),
-            Obx(() => Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Checkbox(
-                      checkColor: Colors.white,
-                      value: menuController.listStatePriority.contains(index),
-                      shape: const CircleBorder(),
-                      onChanged: (bool? value) {
-                        menuController.checkboxPriorityState(value!, index);
-                      },
-                    ),
-                  ),
-                ))
-          ],
-        ),
-      ],
-    );
-  }
-}
 
-
-Widget signWidget(CarItem docModel) {
-  if (docModel.status == 1) {
+Widget signWidget(MeetingRoomItems docModel) {
+  if (docModel.registerUser!.isNotEmpty) {
     return Row(
       children: [
         Image.asset(
@@ -588,24 +538,3 @@ Widget signWidget(CarItem docModel) {
     );
   }
 }
-
-List<String> listCarFilter = [
-  'Tất cả danh sách ô tô',
-  'Đã đặt lịch',
-  'Còn trống',
-];
-
-class CarItem {
-  int? status;
-  String? name;
-
-  CarItem(this.status, this.name);
-}
-
-List<CarItem> listCar = [
-  CarItem(1, "Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh"),
-  CarItem(2, "Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh"),
-  CarItem(2, "Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh"),
-  CarItem(1, "Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh"),
-  CarItem(1, "Hội thảo trực tuyến phòng ngừa thuốc lá cho học sinh"),
-];

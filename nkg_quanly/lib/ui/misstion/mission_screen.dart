@@ -3,11 +3,10 @@ import 'package:get/get.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
-import '../../model/document/document_statistic_model.dart';
+import '../../model/document_unprocess/document_filter.dart';
 import '../chart2/sline_chart.dart';
-import '../document_nonapproved/document_nonapproved_list.dart';
 import '../theme/theme_data.dart';
-
+import 'mission_list.dart';
 
 class MissionScreen extends GetView {
   String? header;
@@ -23,11 +22,10 @@ class MissionScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getDocumentStatistic(),
-          builder: (context, AsyncSnapshot<DocumentStatisticModel> snapshot) {
+          future: homeController.getMissionStatistic(),
+          builder: (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
             if (snapshot.hasData) {
-              return Column(
-                  children: [
+              return Column(children: [
                 Stack(
                   children: [
                     Image.asset("assets/bgtophome.png",
@@ -47,7 +45,7 @@ class MissionScreen extends GetView {
                                     children: [
                                       const Text('Tổng văn bản'),
                                       Text(
-                                        snapshot.data!.tong.toString(),
+                                        snapshot.data!.totalRecords!.toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -77,64 +75,63 @@ class MissionScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Quá hạn'),
+                                      const Text('Hoàn thành'),
                                       Text(
-                                          '300',
+                                          snapshot.data!.items![0].quantity
+                                              .toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))
                                     ],
                                   ),
                                   const Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(5, 0, 0, 0)),
+                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('HT quá hạn'),
-                                      Text(
-                                        '204',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      )
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding:
-                                      EdgeInsets.fromLTRB(5, 0, 0, 0)),
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Hoàn thành'),
-                                      Text(
-                                        '400',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      )
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding:
-                                      EdgeInsets.fromLTRB(5, 0, 0, 0)),
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
                                       const Text('Chưa HT'),
                                       Text(
-                                       '700',
+                                        snapshot.data!.items![1].quantity
+                                            .toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
                                       )
                                     ],
                                   ),
-
-
+                                  const Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('HT quá hạn '),
+                                      Text(
+                                        snapshot.data!.items![2].quantity
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      )
+                                    ],
+                                  ),
+                                  const Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('Quá hạn'),
+                                      Text(
+                                        snapshot.data!.items![3].quantity
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      )
+                                    ],
+                                  ),
                                 ],
                               )
                             ]),
@@ -155,11 +152,12 @@ class MissionScreen extends GetView {
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => DocumentNonapprovedList(
+                            Get.to(() => MissionList(
                                   header: header,
                                 ));
                           },
-                          child: const Text('Xem danh sách VB đến chưa bút phê'),
+                          child:
+                              const Text('Xem danh sách VB đến chưa bút phê'),
                           style: bottomButtonStyle,
                         ),
                       ),

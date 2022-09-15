@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/chart2/collum_red_chart.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
@@ -10,15 +9,18 @@ import '../../model/document_unprocess/document_filter.dart';
 import '../chart2/pie_chart.dart';
 import '../document_nonapproved/document_nonapproved_list.dart';
 import '../theme/theme_data.dart';
-import 'document_unprocess_chart.dart';
+import 'document_out_chart.dart';
+import 'document_out_list.dart';
 
-class DocumentUnProcessScreen extends GetView {
+
+
+class DocumentOutScreen extends GetView {
   final String? header;
   final String? icon;
 
   final homeController = Get.put(HomeViewModel());
 
-  DocumentUnProcessScreen({Key? key, this.header, this.icon}) : super(key: key);
+  DocumentOutScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +28,8 @@ class DocumentUnProcessScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getQuantityDocumentBuUrl(apitGetUnProcess0),
-          builder:
-              (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
+          future: homeController.getQuantityDocumentBuUrl(apiGetDocumentOutFilter0),
+          builder: (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
                 Stack(
@@ -48,7 +49,7 @@ class DocumentUnProcessScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Tổng văn bản chưa xử lý'),
+                                      const Text('Tổng văn bản'),
                                       Text(
                                         snapshot.data!.totalRecords.toString(),
                                         style: const TextStyle(
@@ -68,6 +69,44 @@ class DocumentUnProcessScreen extends GetView {
                                   )
                                 ],
                               ),
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                child: Divider(
+                                  thickness: 1,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('Phát hành'),
+                                      Text(
+                                          snapshot.data!.items![0].quantity.toString(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20))
+                                    ],
+                                  ),
+                                  const Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(20, 0, 0, 0)),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('Chưa phát hành'),
+                                      Text(
+                                        snapshot.data!.items![1].quantity.toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      )
+                                    ],
+                                  )
+                                ],
+                              )
                             ]),
                           ),
                           context),
@@ -76,21 +115,19 @@ class DocumentUnProcessScreen extends GetView {
                 ),
                 Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: DocumentUnChart(
-                      homeViewModel: homeController,
-                      listBaseChart: snapshot.data!.items,
-                    )),
+                    child: DocumentOutPieChart(homeViewModel: homeController,documentFilterModel: snapshot.data!)),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => DocumentNonapprovedList(
-                                header: header, isNonapproved: false));
+                            Get.to(() => DocumentOutList(
+                              header: header,
+                            ));
                           },
                           child: Text('Xem danh sách $header'),
                           style: bottomButtonStyle,

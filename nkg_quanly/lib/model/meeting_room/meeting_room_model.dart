@@ -1,22 +1,22 @@
-class ProfileModel {
-  List<ProfileItems>? items;
+class MeetingRoomModel {
+  List<MeetingRoomItems>? items;
   int? pageIndex;
   int? pageSize;
   int? totalRecords;
   int? pageCount;
 
-  ProfileModel(
+  MeetingRoomModel(
       {this.items,
         this.pageIndex,
         this.pageSize,
         this.totalRecords,
         this.pageCount});
 
-  ProfileModel.fromJson(Map<String, dynamic> json) {
+  MeetingRoomModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
-      items = <ProfileItems>[];
+      items = <MeetingRoomItems>[];
       json['items'].forEach((v) {
-        items!.add(ProfileItems.fromJson(v));
+        items!.add(new MeetingRoomItems.fromJson(v));
       });
     }
     pageIndex = json['pageIndex'];
@@ -38,51 +38,47 @@ class ProfileModel {
   }
 }
 
-class ProfileItems {
+class MeetingRoomItems {
   int? id;
   String? code;
+  String? roomName;
   String? name;
-  String? deadline;
-  String? dateProcess;
-  String? handler;
-  String? level;
-  String? state;
-  String? status;
+  String? registerUser;
+  String? date;
+  String? fromTime;
+  String? toTime;
 
-  ProfileItems(
+  MeetingRoomItems(
       {this.id,
         this.code,
+        this.roomName,
         this.name,
-        this.deadline,
-        this.dateProcess,
-        this.handler,
-        this.level,
-        this.state,
-        this.status});
+        this.registerUser,
+        this.date,
+        this.fromTime,
+        this.toTime});
 
-  ProfileItems.fromJson(Map<String, dynamic> json) {
+  MeetingRoomItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     code = json['code'];
+    roomName = json['roomName'];
     name = json['name'];
-    deadline = json['deadline'];
-    dateProcess = json['dateProcess'];
-    handler = json['handler'];
-    level = json['level'];
-    state = json['state'];
-    status = json['status'];
+    registerUser = json['registerUser'];
+    date = json['date'];
+    fromTime = json['fromTime'];
+    toTime = json['toTime'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['code'] = this.code;
+    data['roomName'] = this.roomName;
     data['name'] = this.name;
-    data['deadline'] = this.deadline;
-    data['dateProcess'] = this.dateProcess;
-    data['handler'] = this.handler;
-    data['level'] = this.level;
-    data['state'] = this.state;
-    data['status'] = this.status;
+    data['registerUser'] = this.registerUser;
+    data['date'] = this.date;
+    data['fromTime'] = this.fromTime;
+    data['toTime'] = this.toTime;
     return data;
   }
 }
