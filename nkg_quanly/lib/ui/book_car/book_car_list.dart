@@ -33,39 +33,9 @@ class BookCarList extends GetView {
             return Column(
               children: [
                 //header
-                Container(
-                  color: Theme.of(context).cardColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: const Icon(Icons.arrow_back_ios_outlined),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                        Text(
-                          header!,
-                          style: Theme.of(context).textTheme.headline1,
-                        ),
-                        Expanded(
-                            child: InkWell(
-                          onTap: () {
-                            Get.to(() => DocumentnonapprovedSearch(
-                                  header: header,
-                                ));
-                          },
-                          child: const Align(
-                              alignment: Alignment.centerRight,
-                              child: Icon(Icons.search)),
-                        ))
-                      ],
-                    ),
-                  ),
-                ),
+                headerWidgetSeatch(header!,DocumentnonapprovedSearch(
+                  header: header,
+                ),context),
                 //date table
                 Container(
                   width: double.infinity,
@@ -364,7 +334,7 @@ class BookCarItem extends StatelessWidget {
                     Expanded(
                         child: Align(
                             alignment: Alignment.centerRight,
-                            child: priorityWidget(docModel!))),
+                            child: priorityCarWidget(docModel!))),
                   ],
                 ),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
@@ -519,7 +489,6 @@ Widget filterItem(
                   value: menuController.listStatePriority.contains(index),
                   shape: const CircleBorder(),
                   onChanged: (bool? value) {
-                    menuController.checkboxAllPriorityState(value!, index);
                   },
                 ),
               ),
@@ -543,7 +512,7 @@ Widget filterItem(
                       value: menuController.listStatePriority.contains(index),
                       shape: const CircleBorder(),
                       onChanged: (bool? value) {
-                        menuController.checkboxPriorityState(value!, index);
+
                       },
                     ),
                   ),
@@ -555,7 +524,7 @@ Widget filterItem(
   }
 }
 
-Widget priorityWidget(CarItem docModel) {
+Widget priorityCarWidget(CarItem docModel) {
   if (docModel.status == 1) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),

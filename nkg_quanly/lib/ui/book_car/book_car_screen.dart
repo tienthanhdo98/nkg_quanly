@@ -4,7 +4,6 @@ import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../model/document/document_statistic_model.dart';
-import '../chart2/pie_chart.dart';
 import '../theme/theme_data.dart';
 import 'book_car_list.dart';
 
@@ -108,9 +107,9 @@ class BookCarScreen extends GetView {
                     )
                   ],
                 ),
-                 Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: PieChart2()),
+                 // Padding(
+                 //    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                 //    child: PieChart2()),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,

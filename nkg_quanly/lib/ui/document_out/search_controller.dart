@@ -9,13 +9,20 @@ import '../../model/birthday_model/birthday_model.dart';
 import '../../model/calendarwork_model/calendarwork_model.dart';
 import '../../model/document_out_model/document_out_model.dart';
 import '../../model/meeting_room/meeting_room_model.dart';
+import '../../model/profile_procedure_model/profile_procedure_model.dart';
+import '../../model/proflie_model/profile_model.dart';
+import '../../model/report_model/report_model.dart';
 
 class SearchController extends GetxController {
   RxList<DocumentOutItems> listDataDocOut = <DocumentOutItems>[].obs;
-  RxList<MisstionItem> listDataMission = <MisstionItem>[].obs;
+  RxList<MissionItem> listDataMission = <MissionItem>[].obs;
   RxList<MeetingRoomItems> listDataRoomMeeting = <MeetingRoomItems>[].obs;
   RxList<CalendarWorkListItems> listDataCalendarWork = <CalendarWorkListItems>[].obs;
   RxList<BirthDayListItems> listDataBirthDay = <BirthDayListItems>[].obs;
+  RxList<ProfileItems> listDataProfile = <ProfileItems>[].obs;
+  RxList<ReportListItems> listDataReport= <ReportListItems>[].obs;
+  RxList<ProfileProcedureListItems> listDataProfileProc = <ProfileProcedureListItems>[].obs;
+
 
   Map<String, String> headers = {"Content-type": "application/json"};
   void searchDataDocOut(String keyword) async {
@@ -60,5 +67,30 @@ class SearchController extends GetxController {
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
     print(res.totalRecords);
     listDataBirthDay.value = res.items!;
+  }
+
+  void searchDataProfile(String keyword) async {
+    final url = Uri.parse(apiGetProfile);
+    String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+    print('loading');
+    http.Response response = await http.post(url, headers: headers, body: json);
+    ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
+    listDataProfile.value = res.items!;
+  }
+  void searchDataReport(String keyword) async {
+    final url = Uri.parse(apiGetReportModel);
+    String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+    print('loading');
+    http.Response response = await http.post(url,headers: headers,body: json);
+    print(response.body);
+    ReportModel reportModel =  ReportModel.fromJson(jsonDecode(response.body));
+    listDataReport.value = reportModel.items!;
+  }
+  void searchDataProfileProc(String keyword) async {
+    final url = Uri.parse(apiPostProfileProcedureModel);
+    String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+    http.Response response = await http.post(url,headers: headers,body: json);
+    ProfileProcedureModel reportModel =  ProfileProcedureModel.fromJson(jsonDecode(response.body));
+    listDataProfileProc.value = reportModel.items!;
   }
 }

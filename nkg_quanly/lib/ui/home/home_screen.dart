@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/const/ultils.dart';
 import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
 import 'package:nkg_quanly/ui/document_nonapproved/document_nonapproved_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_screen.dart';
 import 'package:nkg_quanly/ui/report/report_screen.dart';
-
 import '../../const.dart';
-import '../administrative_formalities/admin_forma_screen.dart';
+import '../../viewmodel/home_viewmodel.dart';
 import '../birthday/birthday_screen.dart';
 import '../book_car/book_car_screen.dart';
 import '../book_room_meet/book_meeting_screen.dart';
@@ -14,16 +14,19 @@ import '../document_in_doc/doc_in_doc_screen.dart';
 import '../document_out/document_out_screen.dart';
 import '../document_unprocess/document_unprocess _screen.dart';
 import '../misstion/mission_screen.dart';
-import '../note_work/note_worl_screen.dart';
+import '../profile_procedure_/profiles_procedure_screen.dart';
 import '../profile_work/profile_work_screen.dart';
-import 'list_all_item.dart';
+import '../workbook/workbook_list.dart';
+import 'list_all_item_kgs.dart';
 
 class HomeScreen extends GetView {
+  final homeController = Get.put(HomeViewModel());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(children: [
               Image.asset("assets/bgtophome.png"),
@@ -40,38 +43,34 @@ class HomeScreen extends GetView {
                           borderRadius: BorderRadius.circular(30),
                         )),
                     const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Xin chào",
-                          style: TextStyle(color: kWhite),
-                        ),
-                        Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
-                        Text(
-                          "dev_dev",
-                          style: TextStyle(color: kWhite, fontSize: 24),
-                        )
-                      ],
-                    ),
                     Expanded(
-                        child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Container(
-                              width: 44,
-                              height: 44,
-                              decoration: BoxDecoration(
-                                color: kPink,
-                                border: Border.all(
-                                  color: Colors.black,
-                                ),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: const Icon(
-                                Icons.search,
-                                color: kWhite,
-                              ),
-                            )))
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "Xin chào",
+                            style: TextStyle(color: kWhite),
+                          ),
+                          Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
+                          Text(
+                            "dev_dev",
+                            style: TextStyle(color: kWhite, fontSize: 24),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: kPink,
+                        border: Border.all(
+                          color: Colors.black,
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child:Image.asset('assets/icons/ic_search_white.png',width: 44,height: 44,),
+                    )
                   ],
                 ),
               ),
@@ -88,7 +87,7 @@ class HomeScreen extends GetView {
                                     const EdgeInsets.fromLTRB(15, 15, 5, 15),
                                 child: Text(
                                   'Thông báo khẩn',
-                                  style: Theme.of(context).textTheme.headline2,
+                                  style: Theme.of(context).textTheme.headline3,
                                 )),
                             Image.asset(
                               'assets/icons/ic_speaker.png',
@@ -109,11 +108,11 @@ class HomeScreen extends GetView {
                               ),
                               Flexible(
                                 child: Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                   child: Text(
                                     'Nam Định, Bình Dương nằm top 3 cao nhất điểm môn Toán tốt nghiệp THPT',
                                     style:
-                                        Theme.of(context).textTheme.headline3,
+                                        Theme.of(context).textTheme.headline4,
                                   ),
                                 ),
                               )
@@ -127,39 +126,24 @@ class HomeScreen extends GetView {
             ]),
             Padding(
               padding: const EdgeInsets.all(20),
-              child: Row(
-                children: [
-                  Text('Không gian số',
-                      style: Theme.of(context).textTheme.headline1),
-                  Expanded(
-                      child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: InkWell(
-                              onTap: () {
-                                Get.to(ListAllItem());
-                              },
-                              child: const Text(
-                                'Xem tất cả',
-                                style: TextStyle(color: kBlueButton),
-                              ))))
-                ],
-              ),
+              child: Text('Menu chức năng',
+                  style: Theme.of(context).textTheme.headline2),
             ),
             SizedBox(
-              height: 180,
               child: GridView.count(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 // Create a grid with 2 columns. If you change the scrollDirection to
                 // horizontal, this produces 2 rows.
-                crossAxisCount: 4,
-                childAspectRatio: 0.9,
+                crossAxisCount: 3,
+                shrinkWrap: true,
+                childAspectRatio: 1.1,
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 // Generate 100 widgets that display their index in the List.
-                children: List.generate(list.length, (index) {
-                  MenuItem item = list[index];
+                children: List.generate(listMenuHome.length, (index) {
+                  MenuItem item = listMenuHome[index];
                   return InkWell(
                     onTap: () {
-                      toScreen(item.type!, item.title, item.img);
+                      menuToScreen(item.type!, item.title, item.img);
                     },
                     child: Column(
                       children: [
@@ -193,27 +177,28 @@ class HomeScreen extends GetView {
                   ),
                 ),
                 child: Row(children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10, 35, 10, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'Thứ 5,ngày 2 tháng 6\nNăm Nhâm dần',
-                          style: TextStyle(fontSize: 18, color: kWhite),
-                        ),
-                        Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                        Text("28/07/2022", style: TextStyle(color: kWhite))
-                      ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 35, 10, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:  [
+                          Text(
+                            convertDateToViDate(dateNow),
+                            style: const TextStyle(fontSize: 18, color: kWhite),
+                          ),
+                          const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                          Text(formatDateToStringtype2(dateNow), style: const TextStyle(color: kWhite))
+                        ],
+                      ),
                     ),
                   ),
-                  Expanded(
-                      child: Padding(
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(0, 35, 15, 0),
-                    child: Column(
+                    child:Obx(() =>  Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text('Hôm nay\n25° / 30°',
+                         Text('Hôm nay\n${homeController.rxWeatherModel.value.temperature?.toStringAsFixed(2)}°',
                             style: TextStyle(color: kWhite)),
                         Image.asset(
                           'assets/icons/ic_rain.png',
@@ -222,8 +207,8 @@ class HomeScreen extends GetView {
                           width: 80,
                         )
                       ],
-                    ),
-                  ))
+                    )),
+                  )
                 ]) /* add child content here */,
               ),
             )
@@ -242,6 +227,23 @@ class MenuItem {
 
   MenuItem(this.title, this.img, this.url, this.type);
 }
+class MenuHomeItem {
+  String? title;
+  String? img;
+  String? url;
+  int? type;
+
+  MenuHomeItem(this.title, this.img, this.url, this.type);
+}
+
+List<MenuItem> listMenuHome = [
+  MenuItem('Không gian số', 'assets/icons/ic_kgs.png', "", 1),
+  MenuItem('Hệ thống E-Office', 'assets/icons/ic_eoffice.png', "", 2),
+  MenuItem('Hệ thống PMis', 'assets/icons/ic_pmis.png', "", 3),
+  MenuItem('Dịch vụ công hành chính', 'assets/icons/ic_dichvucong.png', "", 4),
+  MenuItem('Phân tích hiển thị số', 'assets/icons/ic_phantich.png', "", 5),
+  MenuItem('Báo cáo bộ', 'assets/icons/ic_report_bo.png', "", 6),
+];
 
 List<MenuItem> list = [
   MenuItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1),
@@ -252,12 +254,11 @@ List<MenuItem> list = [
   MenuItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 6),
   MenuItem('Lịch họp', 'assets/icons/ic_meet.png', "", 7),
   MenuItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 8),
-];
-List<MenuItem> list2 = [
   MenuItem('Sinh nhật', 'assets/icons/ic_birthday.png', "", 9),
   MenuItem('Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 10),
   MenuItem('Sổ tay Công việc', 'assets/icons/ic_sotay.png', "", 11),
 ];
+
 // List<MenuItem> list2 = [
 //   MenuItem('Sinh nhật', 'assets/icons/ic_birthday.png', "", 9),
 //   MenuItem('Văn bản đến', 'assets/icons/ic_doc_in.png', "", 10),
@@ -347,22 +348,29 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 10:
-      Get.to(() => AdminFormaScreen(
+      Get.to(() => ProfilesProcedureScreen(
             header: header,
             icon: icon,
           ));
       break;
     case 11:
-      Get.to(() => NoteWorkScreen(
-            header: header,
-            icon: icon,
+      Get.to(() => WorkBookList(
+            header: header
           ));
       break;
-    case 16:
-      Get.to(() => ReportScreen(
-            header: header,
-            icon: icon,
-          ));
+    // case 16:
+    //   Get.to(() => ReportScreen(
+    //         header: header,
+    //         icon: icon,
+    //       ));
+    //   break;
+  }
+}
+
+void menuToScreen(int type, String? header, String? icon) {
+  switch (type) {
+    case 1:
+      Get.to(() => ListAllItemKGS());
       break;
   }
 }

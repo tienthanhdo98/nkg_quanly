@@ -4,19 +4,19 @@ import 'package:get/get.dart';
 
 import '../../const.dart';
 import '../../model/document/document_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
+import 'document_nonapproved_viewmodel.dart';
 
 class DocumentnonapprovedDetail extends GetView{
   int? id;
 
-  final homeController = Get.put(HomeViewModel());
+  final documentNonApproveViewModel = Get.put(DocumentNonApproveViewModel());
 
   DocumentnonapprovedDetail({Key? key,this.id}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: SafeArea(
       child: FutureBuilder(
-        future: homeController.getDocumentDetail(id!),
+        future: documentNonApproveViewModel.getDocumentDetail(id!),
         builder: (context,AsyncSnapshot<Items> snapshot)
         {
           if(snapshot.hasData)

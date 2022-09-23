@@ -1,22 +1,24 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/menu/MenuController.dart';
 
 import '../../const.dart';
+import '../../const/style.dart';
 import '../../const/ultils.dart';
+import '../../const/widget.dart';
 import '../../model/document/document_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
-import 'package:table_calendar/table_calendar.dart';
-
+import '../theme/theme_data.dart';
 import 'document_nonapproved_detail.dart';
 import 'document_nonapproved_search.dart';
+import 'document_nonapproved_viewmodel.dart';
 
 class DocumentNonapprovedList extends GetView {
   final String? header;
   DateTime dateNow = DateTime.now();
   final MenuController menuController = Get.put(MenuController());
-  final homeController = Get.put(HomeViewModel());
+  final documentNonApproveViewModel = Get.put(DocumentNonApproveViewModel());
   int selectedButton = 0;
   final bool isNonapproved;
   DocumentNonapprovedList({this.header,this.isNonapproved = true});
@@ -27,246 +29,185 @@ class DocumentNonapprovedList extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: FutureBuilder(
-        future: homeController.getDocument(),
-        builder: (context, AsyncSnapshot<DocumentModel> snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: [
-                //header
-                Container(
-                  color: Theme.of(context).cardColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: const Icon(Icons.arrow_back_ios_outlined),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                        Text(
-                          header!,
-                          style: Theme.of(context).textTheme.headline1,
-                        ),
-                        Expanded(
-                            child: InkWell(
-                          onTap: () {
-                            Get.to(() => DocumentnonapprovedSearch(
-                                  header: header,
-                              isApprove: isNonapproved,
-                                ));
-                          },
-                          child: const Align(
-                              alignment: Alignment.centerRight,
-                              child: Icon(Icons.search)),
-                        ))
-                      ],
-                    ),
-                  ),
-                ),
-                //date table
-                Container(
-                  width: double.infinity,
-                  height: 155,
-                  color: kgray,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Text(
-                          "${dateNow.year} Tháng ${dateNow.month}",
-                          style: Theme.of(context).textTheme.headline1,
-                        ),
+          child: Column(
+            children: [
+              //header
+              headerWidgetSeatch(header!,DocumentnonapprovedSearch(
+                header: header,
+                isApprove: isNonapproved,
+              ),context),
+              //date table
+              Container(
+                color: kgray,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        "${dateNow.year} Tháng ${dateNow.month}",
+                        style: Theme.of(context).textTheme.headline1,
                       ),
-                      //date header
-                      TableCalendar(
-                        calendarStyle: CalendarStyle(
-                            todayTextStyle: TextStyle(color: kWhite),
-                            todayDecoration: BoxDecoration(
-                              color: kBlueButton,
-                              borderRadius: BorderRadius.circular(20),
-                            )),
-                        calendarBuilders: CalendarBuilders(
-                            selectedBuilder: (context, day, focusday) {
-                          return Container(
-                            decoration: BoxDecoration(color: kBlueButton),
-                          );
-                        }),
+                    ),
+                    //date header
+                    Obx(() =>  TableCalendar(
                         locale: 'vi_VN',
                         headerVisible: false,
-                        calendarFormat: CalendarFormat.week,
+                        calendarFormat:  documentNonApproveViewModel.rxCalendarFormat.value,
                         firstDay: DateTime.utc(2010, 10, 16),
                         lastDay: DateTime.utc(2030, 3, 14),
-                        focusedDay: DateTime.now(),
-                      ),
-                      //list work
-                    ],
-                  ),
-                ),
-                //list
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Tất cả VB',
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
-                      Expanded(
-                        child: Align(
-                            alignment: Alignment.centerRight,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.pressed)) {
-                                        return kVioletBg;
-                                      } else {
-                                        return kWhite;
-                                      } // Use the component's default.
-                                    },
-                                  ),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          side: const BorderSide(
-                                              color: kVioletButton)))),
-                              onPressed: () {
-                                showModalBottomSheet<void>(
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20),
-                                    ),
-                                  ),
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return filterBottomSheet(menuController);
-                                  },
-                                );
-                              },
-                              child: const Text(
-                                'Bộ lọc',
-                                style: TextStyle(color: kVioletButton),
-                              ),
-                            )),
-                      ),
-                    ],
-                  ),
-                ),
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Divider(
-                      thickness: 1,
+                        focusedDay: documentNonApproveViewModel.rxSelectedDay.value,
+                        selectedDayPredicate: (day) {
+                          return isSameDay(
+                              documentNonApproveViewModel
+                                  .rxSelectedDay.value,
+                              day);
+                        },
+                        onDaySelected: (selectedDay, focusedDay) async {
+                          if (!isSameDay(
+                              documentNonApproveViewModel
+                                  .rxSelectedDay.value,
+                              selectedDay)) {
+                            documentNonApproveViewModel.onSelectDay(selectedDay);
+                          }
+                        },
+                        onFormatChanged: (format) {
+                          if (documentNonApproveViewModel.rxCalendarFormat.value != format) {
+                            // Call `setState()` when updating calendar format
+                            documentNonApproveViewModel.rxCalendarFormat.value = format;
+                          }
+                        }
                     )),
-                Expanded(
-                    child: ListView.builder(
-                        itemCount: snapshot.data!.items!.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                              onTap: () {
-                                Get.to(() => DocumentnonapprovedDetail(
-                                    id: snapshot.data!.items![index].id!));
-                              },
-                              child:
-                              DocumentNonApproveListItem(index, snapshot.data!.items![index],isNonapproved));
-                        })),
-                //bottom
-                Container(
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      border: Border(
-                          top: BorderSide(
-                              color: Theme.of(context).dividerColor))),
-                  height: 50,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                              decoration: (selectedButton == 0)
-                                  ? BoxDecoration(
-                                      color: kLightBlue,
-                                      borderRadius: BorderRadius.circular(50),
-                                    )
-                                  : const BoxDecoration(),
-                              height: 40,
-                              width: 40,
-                              child: Center(
-                                  child: Text("Ngày",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: (selectedButton == 0)
-                                              ? kBlueButton
-                                              : Colors.black)))),
-                        ),
+                    Center(child: InkWell(
+                      onTap: (){
+                        if(documentNonApproveViewModel.rxCalendarFormat.value != CalendarFormat.month)
+                        {
+                          documentNonApproveViewModel.switchFormat(CalendarFormat.month);
+                        }
+                        else
+                        {
+                          documentNonApproveViewModel.switchFormat(CalendarFormat.week);
+                        }
+                      },
+                      child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Image.asset("assets/icons/ic_showmore.png",height: 15,width: 80,)),
+                    ))
+                    //list work
+                  ],
+                ),
+              ),
+              //list
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Tất cả văn bản chưa xử lý',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    Expanded(
+                      child: Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            style: elevetedButtonWhite,
+                            onPressed: () {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: 600,
+                                      child:
+                                      FilterDocNonprocessBottomSheet(menuController,documentNonApproveViewModel));
+                                },
+                              );
+                            },
+                            child: const Text(
+                              'Bộ lọc',
+                              style: TextStyle(color: kVioletButton),
+                            ),
+                          )),
+                    )
+
+                  ],
+                ),
+              ),
+              const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Divider(
+                    thickness: 1,
+                  )),
+              Expanded(
+                  child: Obx(()=> (documentNonApproveViewModel.rxItems.isNotEmpty) ? ListView.builder(
+                      itemCount: documentNonApproveViewModel.rxItems.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                            onTap: () {
+                              Get.to(() => DocumentnonapprovedDetail(
+                                  id: documentNonApproveViewModel.rxItems[index].id!));
+                            },
+                            child:
+                            DocumentNonApproveListItem(index, documentNonApproveViewModel.rxItems[index],isNonapproved));
+                      }) :const Text("Hôm nay không có văn bản đến nào") )),
+              //bottom
+              Obx(() =>  Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    border: Border(
+                        top: BorderSide(
+                            color: Theme.of(context).dividerColor))),
+                height: 50,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          documentNonApproveViewModel.rxSelectedDay.value = DateTime.now();
+                          documentNonApproveViewModel.onSelectDay(DateTime.now());
+                          documentNonApproveViewModel.swtichBottomButton(0);
+                        },
+                        child:bottomDateButton("Ngày",
+                            documentNonApproveViewModel.selectedBottomButton.value, 0),
                       ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                              decoration: (selectedButton == 1)
-                                  ? BoxDecoration(
-                                      color: kLightBlue,
-                                      borderRadius: BorderRadius.circular(50),
-                                    )
-                                  : const BoxDecoration(),
-                              height: 40,
-                              width: 40,
-                              child: Center(
-                                  child: Text(
-                                "Tuần",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: (selectedButton == 1)
-                                        ? kBlueButton
-                                        : Colors.black),
-                              ))),
-                        ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          DateTime dateTo =  dateNow.add(const Duration(days: 7));
+                          String strdateFrom = formatDateToString(dateNow);
+                          String strdateTo = formatDateToString(dateTo);
+                          print(strdateFrom);
+                          print(strdateTo);
+                          documentNonApproveViewModel.getDocumentByWeek(strdateFrom,strdateTo);
+                          documentNonApproveViewModel.swtichBottomButton(1);
+                        },
+                        child: bottomDateButton("Tuần",
+                            documentNonApproveViewModel.selectedBottomButton.value, 1),
                       ),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                              decoration: (selectedButton == 2)
-                                  ? BoxDecoration(
-                                      color: kLightBlue,
-                                      borderRadius: BorderRadius.circular(50),
-                                    )
-                                  : const BoxDecoration(),
-                              height: 40,
-                              width: 40,
-                              child: Center(
-                                  child: Text("Tháng",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: (selectedButton == 2)
-                                              ? kBlueButton
-                                              : Colors.black)))),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            );
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      )),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          documentNonApproveViewModel.getDocumentByMonth();
+                          documentNonApproveViewModel.swtichBottomButton(2);
+                        },
+                        child: bottomDateButton("Tháng",
+                          documentNonApproveViewModel.selectedBottomButton.value, 2),
+                      ),
+                    )
+                  ],
+                ),
+              ))
+            ],
+          )),
     );
   }
 }
@@ -340,198 +281,653 @@ class DocumentNonApproveListItem extends StatelessWidget {
   }
 }
 
-class filterBottomSheet extends StatelessWidget {
-  filterBottomSheet(this.menuController, {Key? key}) : super(key: key);
-  MenuController? menuController;
+class FilterDocNonprocessBottomSheet extends StatelessWidget {
+  const FilterDocNonprocessBottomSheet(this.menuController,this.reportViewModel, {Key? key}) : super(key: key);
+  final MenuController? menuController;
+  final DocumentNonApproveViewModel? reportViewModel;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-            child: Row(
-              children: [
-                const Text(
-                  'Tất cả văn bản đến chưa bút phê',
-                  style: TextStyle(color: kVioletButton,fontWeight: FontWeight.bold),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Checkbox(
-                      checkColor: Colors.white,
-                      value: false,
-                      shape: const CircleBorder(),
-                      onChanged: (bool? value) {
-                        // setState(() {
-                        //   isChecked = value!;
-                        // });
-                      },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+          child: Column(children: [
+            //tatca
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Tất cả văn bản chưa xử lý',
+                      style: TextStyle(
+                          color: kBlueButton,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Roboto',
+                          fontSize: 16),
                     ),
                   ),
-                )
-              ],
-            ),
-          ),
-          const Divider(
-            thickness: 1,
-            color: kVioletButton,
-          ),
-          Expanded(
-            child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                shrinkWrap: false,
-                itemCount: listFilter.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: filterItem(index, context, menuController!));
-                }),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Get.back();
+                  Obx(() => (menuController!.listPriorityStatus.containsKey(0))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!.checkboxPriorityState(false, 0, "");
                       },
-                      style: ElevatedButton.styleFrom(
-                        primary: kWhite,//change background color of button
-                        onPrimary: kBlueButton,//change text color of button
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                            side: const BorderSide(
-                                color: kVioletButton)
-                        ),
-                      ),
-
-                      child: Text('Đóng')),
-                ),
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!.checkboxPriorityState(true, 0, "");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Get.back();
+            ),
+            // tat ca muc do
+            const Divider(
+              thickness: 1,
+              color: kBlueButton,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Tất cả mức độ',
+                      style: CustomTextStyle.roboto700TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listPriorityStatus.containsKey(1))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!.checkboxPriorityState(
+                            false, 1, "Cao;Trung bình;Thấp;");
                       },
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.pressed)) {
-                                return kBlueButton;
-                              } else {
-                                return kBlueButton;
-                              } // Use the component's default.
-                            },
-                          ),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ))),
-                      child: Text('Áp dụng')),
-                ),
-              )
-            ],
-          )
-        ]),
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!.checkboxPriorityState(
+                            true, 1, "Cao;Trung bình;Thấp;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //cao
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Cao',
+                      style: CustomTextStyle.roboto400s16TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listPriorityStatus.containsKey(2))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxPriorityState(false, 2, "Cao;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxPriorityState(true, 2, "Cao;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //trung binf
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Trung bình',
+                      style: CustomTextStyle.roboto400s16TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listPriorityStatus.containsKey(3))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxPriorityState(false, 3, "Trung bình;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxPriorityState(true, 3, "Trung bình;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //thap
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Thấp',
+                      style: CustomTextStyle.roboto400s16TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listPriorityStatus.containsKey(4))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxPriorityState(false, 4, "Thấp;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxPriorityState(true, 4, "Thấp;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //
+            // Tất cả trạng thái
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Tất cả trạng thái',
+                      style: CustomTextStyle.roboto700TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listStateStatus.containsKey(0))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!.checkboxStatusState(
+                            false, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!.checkboxStatusState(
+                            true, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //chưa xử lý
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Chưa xử lý',
+                      style: CustomTextStyle.roboto400s16TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listStateStatus.containsKey(1))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxStatusState(false, 1, "Chưa xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxStatusState(true, 1, "Chưa xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //đang xử lý
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Đang xử lý',
+                      style: CustomTextStyle.roboto400s16TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listStateStatus.containsKey(2))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxStatusState(false, 2, "Đang xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxStatusState(true, 2, "Đang xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //đã xử lý
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Đã xử lý',
+                      style: CustomTextStyle.roboto400s16TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listStateStatus.containsKey(3))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxStatusState(false,3, "Đã xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxStatusState(true, 3, "Đã xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //chua but phe
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Chưa bút phê',
+                      style: CustomTextStyle.roboto400s16TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listStateStatus.containsKey(4))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxStatusState(false, 4, "Chưa bút phê;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxStatusState(true, 4, "Chưa bút phê;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //da but phe
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Đã bút phê',
+                      style: CustomTextStyle.roboto400s16TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listStateStatus.containsKey(5))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxStatusState(false, 5, "Đã bút phê;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxStatusState(true, 5, "Đã bút phê;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            // Tất cả don vi ban hanh
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Tất cả đơn vị ban hành',
+                      style: CustomTextStyle.roboto700TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listDepartmentStatus.containsKey(0))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!.checkboxDepartmentState(
+                            false, 0, "Bộ;Sở;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!.checkboxDepartmentState(
+                            true, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //bo
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Bộ',
+                      style: CustomTextStyle.roboto400s16TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listDepartmentStatus.containsKey(1))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxDepartmentState(false,1, "Bộ;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxDepartmentState(true, 1, "Bộ;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //so
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Sở',
+                      style: CustomTextStyle.roboto400s16TextStyle,
+                    ),
+                  ),
+                  Obx(() => (menuController!.listDepartmentStatus.containsKey(2))
+                      ? InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxDepartmentState(false,2, "Sở;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController!
+                            .checkboxDepartmentState(true, 2, "Sở");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            //
+            Align(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          style: buttonFilterWhite,
+                          child: const Text('Đóng')),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                            var status = "";
+                            var level = "";
+                            var department = "";
+                            if (menuController!.listPriorityStatus
+                                .containsKey(0)) {
+                              reportViewModel!
+                                  .getDocumentByFilter(status, level, department);
+                            } else {
+                              menuController!.listPriorityStatus
+                                  .forEach((key, value) {
+                                level += value;
+                              });
+                              menuController!.listStateStatus
+                                  .forEach((key, value) {
+                                status += value;
+                              });
+                              menuController!.listDepartmentStatus
+                                  .forEach((key, value) {
+                                department += value;
+                              });
+                            }
+                            print(status);
+                            print(level);
+                            print(department);
+                            reportViewModel!
+                                .getDocumentByFilter(status, level, department);
+                          },
+                          style: buttonFilterBlue,
+                          child: const Text('Áp dụng')),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ]),
+        ),
       ),
     );
-  }
-}
-
-Widget filterItem(
-    int index, BuildContext context, MenuController menuController) {
-  if (index == 0 || index == 4) {
-    return Row(
-      children: [
-        Text(
-          'Tất cả mức độ',
-          style: Theme.of(context).textTheme.headline2,
-        ),
-        Obx(() => Expanded(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Checkbox(
-                  checkColor: Colors.white,
-                  value: menuController.listStatePriority.contains(index),
-                  shape: const CircleBorder(),
-                  onChanged: (bool? value) {
-                    menuController.checkboxAllPriorityState(value!, index);
-                  },
-                ),
-              ),
-            ))
-      ],
-    );
-  } else {
-    return Column(
-      children: [
-        const Divider(
-          thickness: 1,
-        ),
-        Row(
-          children: [
-            Text(listFilter[index]),
-            Obx(() => Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Checkbox(
-                      checkColor: Colors.white,
-                      value: menuController.listStatePriority.contains(index),
-                      shape: const CircleBorder(),
-                      onChanged: (bool? value) {
-                        menuController.checkboxPriorityState(value!, index);
-                      },
-                    ),
-                  ),
-                ))
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-Widget priorityWidget(Items docModel) {
-  if (docModel.level == "Thấp") {
-    return Container(
-        decoration: BoxDecoration(
-          color: kGrayPriority,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: const Padding(
-            padding: EdgeInsets.all(5),
-            child: Text('Thấp', style: TextStyle(color: kWhite))));
-  } else if (docModel.level == 'Trung bình') {
-    return Container(
-        decoration: BoxDecoration(
-          color: kBluePriority,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: const Padding(
-            padding: EdgeInsets.all(5),
-            child: Text(
-              'Trung bình',
-              style: TextStyle(color: kWhite),
-            )));
-  } else {
-    return Container(
-        decoration: BoxDecoration(
-          color: kRedPriority,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: const Padding(
-            padding: EdgeInsets.all(5),
-            child: Text('Cao', style: TextStyle(color: kWhite))));
   }
 }
 
@@ -600,35 +996,4 @@ Widget signWidget(Items docModel, bool isNonApprove) {
 
 }
 
-class DocModel {
-  String? title;
-  int? priority;
-  bool? isSign;
 
-  DocModel(this.title, this.priority, this.isSign);
-}
-
-class DocChildMode {
-  String? title;
-  String? value;
-
-  DocChildMode(this.title, this.value);
-}
-
-List<String> listFilter = [
-  'Tất cả mức độ',
-  'Cao',
-  'Trung bình',
-  'Thấp',
-  'Tất cả trạng thái',
-  'Đã bút phê',
-  'Chưa bút phê'
-];
-
-List<DocChildMode> listDocChild = [
-  DocChildMode('Đơn vị phát hành', 'Bộ giáo dục'),
-  DocChildMode('Ngày đến', '20/02/2022'),
-  DocChildMode('Thời hạn', '22/02/2022'),
-  DocChildMode('Người xử lý', 'Trần Văn An'),
-  DocChildMode('Ngày xử lý', '20/02/2022'),
-];

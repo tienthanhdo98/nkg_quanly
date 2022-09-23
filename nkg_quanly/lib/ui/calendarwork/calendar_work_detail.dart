@@ -34,13 +34,14 @@ class CarlendarWorkDetail extends StatelessWidget {
                 ),
                 Text(item.name!,style: Theme.of(context).textTheme.headline1,),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
-                Text(item.location!,style: Theme.of(context).textTheme.headline3),
+                Text(item.location!,style: CustomTextStyle.roboto400s16TextStyle),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
+                if (item.linkMeet?.isNotEmpty == true)
                 InkWell(
                     onTap: () {
-                      launch("https://meet.google.com/xxa-kjeh-kjc");
+                      launch(item.linkMeet!);
                     },
-                    child: Text(item.linkMeet!,style: TextStyle(color: kBlueButton)
+                    child: Text(item.linkMeet!,style: const TextStyle(color: kBlueButton,fontFamily: 'Roboto',fontSize: 20)
                       ,)),
                 const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
                 const Divider(thickness: 1,),
@@ -58,13 +59,13 @@ class CarlendarWorkDetail extends StatelessWidget {
                             0, 0, 5, 0)),
                     Text(item.type!,
                         style: CustomTextStyle
-                            .secondTextStyle)
+                            .roboto400s16TextStyle)
                   ],
                 ),
                 const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
                 const Divider(thickness: 1,),
                 const  Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 5)),
-                Text("Thành viên tham gia",style: Theme.of(context).textTheme.headline3),
+                const Text("Thành viên tham gia",style: CustomTextStyle.roboto400s16TextStyle),
                 SizedBox(
                   height: 200,
                   child: ListView.builder(
@@ -77,7 +78,7 @@ class CarlendarWorkDetail extends StatelessWidget {
                           child: Row(children: [
                             Image.asset("assets/icons/ic_group.png",width: 24,height: 24,),
                             const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                            Text("${participants.name!} (${participants.position})",style: Theme.of(context).textTheme.headline3,)
+                            Text("${participants.name!} (${participants.position})",style: CustomTextStyle.robotow400s14TextStyle,)
                           ],),
                         );
 

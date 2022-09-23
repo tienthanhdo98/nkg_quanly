@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
+import 'const/ultils.dart';
 
 const kBackGround = Color(0xFFf0f2f5);
 const kLightGray = Color(0xFFfafafa);
@@ -14,7 +17,8 @@ const kLoginButton = Color(0xFF5149ef);
 const kBlueChart = Color(0xFF16bfd6);
 const kRedChart = Color(0xFFf94144);
 // const kBlueButton = Color(0xFF0060ff);
-const kLightBlue = Color(0xFFdbeafe);
+const kLightBlue = Color(0xFF3D34FF);
+// const kLightBlue = Color(0xFFdbeafe);
 const kLightBlueButton = Color(0xFF3797fb);
 
 //chart
@@ -28,6 +32,8 @@ const kDLine = Color(0xFF727586);
 
 //
 const kgray = Color(0xFFF0F2F5);
+const kgrayText = Color(0xFFAEAEAE);
+const kDarkGray = Color(0xFFD9D9D9);
 const kGrayPriority = Color(0xFFBBBBBB);
 const kBluePriority = Color(0xFF3D9DF6);
 const kRedPriority = Color(0xFFF63D3D);
@@ -37,29 +43,33 @@ const kVioletButton = Color(0xFF3D34FF);
 const kVioletBg = Color(0xFFEDECFF);
 const kGrayButton = Color(0xFFD9D9D9);
 
+var listColorChart = [kRedPriority,kGreenSign,kOrange,kViolet,kBlueChart,kBluePriority];
+//string
+String jsonGetByMonth = '{"pageIndex":1,"pageSize":10,"isMonth": true,"dateFrom":"${formatDateToString(dateNow)}"}';
+
 final kUnActiveButtonStyle =
     ElevatedButton.styleFrom(primary: kWhite, onPrimary: Colors.black);
 final kActiveButtonStyle = ElevatedButton.styleFrom(primary: kBlueButton);
 
-Widget borderText(String value, Color color) {
+Widget borderText(String value,BuildContext context) {
   return Padding(
-    padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
     child: Container(
       width: double.infinity,
       decoration: BoxDecoration(
+        color: kgray,
         border: Border.all(
-          color: color,
+          color: kDarkGray
         ),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Text(value),
+        padding: const EdgeInsets.all(15),
+        child: Text(value,style: Theme.of(context).textTheme.headline4,),
       ),
     ),
   );
 }
-
 Widget headerWidget(String header, BuildContext context) {
   return Container(
     decoration: BoxDecoration(
@@ -88,6 +98,66 @@ Widget headerWidget(String header, BuildContext context) {
           ),
         ],
       ),
+    ),
+  );
+}
+
+Widget headerWidgetSeatch(String header, GetView searchScreen, BuildContext context) {
+  return Container(
+    color: Theme.of(context).cardColor,
+    child: Padding(
+      padding: const EdgeInsets.all(15),
+      child: Row(
+        children: [
+          InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: const Icon(Icons.arrow_back_ios_outlined),
+          ),
+          const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+          Text(
+            header,
+            style: Theme.of(context).textTheme.headline1,
+          ),
+          Expanded(
+              child: InkWell(
+                onTap: () {
+                  Get.to(() => searchScreen);
+                },
+                child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      padding: const EdgeInsets.all(7),
+                        decoration:  BoxDecoration(
+                          color: kgray,
+                          borderRadius:
+                          BorderRadius.circular(50),
+                        ),
+                        child: Image.asset('assets/icons/ic_search.png',width: 20,height: 20,))),
+              ))
+        ],
+      ),
+    ),
+  );
+}
+
+Widget headerTableDate(Widget widget1, Widget widget2,BuildContext context){
+  return  Container(
+    color: kgray,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(15),
+          child: Text(
+            "${dateNow.year} Tháng ${dateNow.month}",
+            style: Theme.of(context).textTheme.headline2,
+          ),
+        ),
+        widget1,
+        widget2
+      ],
     ),
   );
 }
@@ -249,12 +319,53 @@ Widget border(Widget widget, BuildContext context) {
 }
 
 class CustomTextStyle {
+  static const grayColorTextStyle = TextStyle(
+    color: kgrayText,
+    fontSize: 12,
+  );
   static const secondTextStyle = TextStyle(
     color: kSecondText,
     fontSize: 15,
   );
+  static const robotow400s12TextStyle = TextStyle(
+      color: Colors.black,
+      fontSize:12,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400
+  );
+  static const robotow400s14TextStyle = TextStyle(
+      color: Colors.black,
+      fontSize:14,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400
+  );
+  static const roboto400s16TextStyle = TextStyle(
+      color: Colors.black,
+      fontSize:16,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400
+  );
+  static const roboto700TextStyle = TextStyle(
+    color: Colors.black,
+    fontSize:16,
+    fontFamily: 'Roboto',
+    fontWeight: FontWeight.w700
+  );
+  static const robotow700s24TextStyle = TextStyle(
+      color: Colors.black,
+      fontSize:24,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w700
+  );
+  static const robotow700s12TextStyle = TextStyle(
+      color: Colors.black,
+      fontSize:12,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w700
+  );
 }
 String calcuPercen(int first, int total){
-  var res =  ((first/total)*100).toString();
+  var f = NumberFormat("###.0#", "en_US");
+  var res = f.format ((first/total)*100).toString();
   return "$res%";
 }

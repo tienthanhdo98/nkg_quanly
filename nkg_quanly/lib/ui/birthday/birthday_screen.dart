@@ -2,13 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/const.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../../const/ultils.dart';
+import '../../const/widget.dart';
 import '../../model/birthday_model/birthday_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
-import '../document_nonapproved/document_nonapproved_search.dart';
 import 'birthday_search.dart';
+import 'birthday_viewmodel.dart';
 
 class BirthDayScreen extends GetView {
   DateTime dateNow = DateTime.now();
@@ -17,237 +16,171 @@ class BirthDayScreen extends GetView {
   String? header;
   String? icon;
 
-  final homeController = Get.put(HomeViewModel());
+  final birthDayViewModel = Get.put(BirthDayViewModel());
 
   BirthDayScreen({Key? key, this.header, this.icon}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: FutureBuilder(
-          future: homeController.postBirthDay(),
-          builder: (context, AsyncSnapshot<BirthDayModel> snapshot){
-            if(snapshot.hasData) {
-              BirthDayModel item = snapshot.data!;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //header
-                  Container(
-                    color: Theme
-                        .of(context)
-                        .cardColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Icon(Icons.arrow_back_ios_outlined),
-                          ),
-                          const Padding(padding: EdgeInsets.fromLTRB(
-                              10, 0, 0, 0)),
-                          Text(
-                            header!,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline1,
-                          ),
-                          Expanded(
-                              child: InkWell(
-                                onTap: () {
-                                  Get.to(() =>
-                                      BirthDaySearch(
-                                      ));
-                                },
-                                child: const Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Icon(Icons.search)),
-                              ))
-                        ],
-                      ),
-                    ),
-                  ),
-                  //date table
-                  Container(
-                    width: double.infinity,
-                    height: 155,
-                    color: kgray,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Text(
-                            "${dateNow.year} Tháng ${dateNow.month}",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline1,
-                          ),
-                        ),
-                        //date header
-                        TableCalendar(
-                          calendarStyle: CalendarStyle(
-                              todayTextStyle: const TextStyle(color: kWhite),
-                              todayDecoration: BoxDecoration(
-                                color: kBlueButton,
-                                borderRadius: BorderRadius.circular(20),
-                              )),
-                          calendarBuilders: CalendarBuilders(
-                              selectedBuilder: (context, day, focusday) {
-                                return Container(
-                                  decoration: BoxDecoration(color: kBlueButton),
-                                );
-                              }),
-                          locale: 'vi_VN',
-                          headerVisible: false,
-                          calendarFormat: CalendarFormat.week,
-                          firstDay: DateTime.utc(2010, 10, 16),
-                          lastDay: DateTime.utc(2030, 3, 14),
-                          focusedDay: DateTime.now(),
-                        ),
-                        //list work
-                      ],
-                    ),
-                  ),
-                  //
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(15, 15, 0, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Tổng sinh nhật'),
-                        Text(item.totalRecords!.toString(), style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline1,),
-                      ],),
-                  ),
-                  const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      child: Divider(
-                        thickness: 1,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //header
+            headerWidgetSeatch(header!, BirthDaySearch(), context),
+            //date table
+            headerTableDate(
+                Obx(() => TableCalendar(
+                    locale: 'vi_VN',
+                    headerVisible: false,
+                    calendarFormat: birthDayViewModel.rxCalendarFormat.value,
+                    firstDay: DateTime.utc(2010, 10, 16),
+                    lastDay: DateTime.utc(2030, 3, 14),
+                    focusedDay: birthDayViewModel.rxSelectedDay.value,
+                    selectedDayPredicate: (day) {
+                      return isSameDay(
+                          birthDayViewModel.rxSelectedDay.value, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) async {
+                      if (!isSameDay(
+                          birthDayViewModel.rxSelectedDay.value, selectedDay)) {
+                        birthDayViewModel.onSelectDay(selectedDay);
+                      }
+                    },
+                    onFormatChanged: (format) {
+                      if (birthDayViewModel.rxCalendarFormat.value != format) {
+                        // Call `setState()` when updating calendar format
+                        birthDayViewModel.rxCalendarFormat.value = format;
+                      }
+                    })),
+                Center(
+                    child: InkWell(
+                  onTap: () {
+                    if (birthDayViewModel.rxCalendarFormat.value !=
+                        CalendarFormat.month) {
+                      birthDayViewModel.switchFormat(CalendarFormat.month);
+                    } else {
+                      birthDayViewModel.switchFormat(CalendarFormat.week);
+                    }
+                  },
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                      child: Image.asset(
+                        "assets/icons/ic_showmore.png",
+                        height: 15,
+                        width: 80,
                       )),
-                  Flexible(
-                      child: ListView.builder(
-                          itemCount: item.items!.length,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                                onTap: () {
-                                  // Get.to(() => DocumentInDetail(
-                                  //     id: snapshot.data!.items![index].id!));
-                                },
-                                child:
-                                BirthDayItem(index,item.items![index]));
-                          })),
-                  //list work
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Theme
-                              .of(context)
-                              .cardColor,
-                          border: Border(top: BorderSide(color: Theme
-                              .of(context)
-                              .dividerColor))),
-                      height: 50,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-
-                              },
-                              child: Container(
-                                  decoration: (selectedButton == 0)
-                                      ? BoxDecoration(
-                                    color: kLightBlue,
-                                    borderRadius: BorderRadius.circular(50),
-                                  )
-                                      : const BoxDecoration(),
-                                  height: 40,
-                                  width: 40,
-                                  child: Center(child: Text("Ngày",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: (selectedButton == 0)
-                                              ? kBlueButton
-                                              : Colors.black)))),
+                )),
+                context),
+            //
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
+              child: Obx(() => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Tổng sinh nhật',style: Theme.of(context).textTheme.headline5,),
+                      (birthDayViewModel.rxBirthDayModel.value.totalRecords !=
+                              null)
+                          ? Text(
+                              birthDayViewModel
+                                  .rxBirthDayModel.value.totalRecords
+                                  .toString(),
+                              style: Theme.of(context).textTheme.headline1,
+                            )
+                          : Text(
+                              "0",
+                              style: Theme.of(context).textTheme.headline1,
                             ),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-
-                              },
-                              child: Container(
-                                  decoration: (selectedButton == 1)
-                                      ? BoxDecoration(
-                                    color: kLightBlue,
-                                    borderRadius: BorderRadius.circular(50),
-                                  )
-                                      : const BoxDecoration(),
-                                  height: 40,
-                                  width: 40,
-                                  child: Center(
-                                      child: Text(
-                                        "Tuần",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: (selectedButton == 1)
-                                                ? kBlueButton
-                                                : Colors.black),
-                                      ))),
-                            ),
-                          ),
-
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: (selectedButton == 2)
-                                      ? BoxDecoration(
-                                    color: kLightBlue,
-                                    borderRadius: BorderRadius.circular(50),
-                                  )
-                                      : const BoxDecoration(),
-                                  height: 40,
-                                  width: 40,
-                                  child: Center(child: Text("Tháng",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: (selectedButton == 2)
-                                              ? kBlueButton
-                                              : Colors.black)))),
-                            ),
-                          )
-                        ],
+                    ],
+                  )),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Divider(
+                  thickness: 1,
+                )),
+            Expanded(
+                child: Obx(() => ListView.builder(
+                    itemCount: birthDayViewModel.rxBirthDayListItems.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                          onTap: () {
+                            // Get.to(() => DocumentInDetail(
+                            //     id: snapshot.data!.items![index].id!));
+                          },
+                          child: BirthDayItem(index,
+                              birthDayViewModel.rxBirthDayListItems[index]));
+                    }))),
+            //list work
+            Obx(() => Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      border: Border(
+                          top: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  height: 50,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            birthDayViewModel.rxSelectedDay.value =
+                                DateTime.now();
+                            birthDayViewModel.onSelectDay(DateTime.now());
+                            birthDayViewModel.swtichBottomButton(0);
+                          },
+                          child: bottomDateButton("Ngày",
+                              birthDayViewModel
+                                  .selectedBottomButton.value, 0),
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            DateTime datefrom = DateTime.now();
+                            DateTime dateTo =
+                                datefrom.add(const Duration(days: 7));
+                            String strdateFrom = formatDateToString(datefrom);
+                            String strdateTo = formatDateToString(dateTo);
+                            print(strdateFrom);
+                            print(strdateTo);
+                            birthDayViewModel.postBirthDayByWeek(
+                                strdateFrom, strdateTo);
+                            birthDayViewModel.swtichBottomButton(1);
+                          },
+                          child: bottomDateButton("Tuần",
+                              birthDayViewModel
+                                  .selectedBottomButton.value, 1),
+                        ),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            birthDayViewModel.postBirthDayByMonth();
+                            birthDayViewModel.swtichBottomButton(2);
+                          },
+                          child: bottomDateButton("Tháng",
+                              birthDayViewModel
+                                  .selectedBottomButton.value, 2),
+                        ),
+                      )
+                    ],
                   ),
-
-
-                ],
-              );
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
+                ))
+          ],
         ),
       ),
     );
   }
 }
+
 class BirthDayItem extends StatelessWidget {
   BirthDayItem(this.index, this.docModel);
 
-  int? index;
-  BirthDayListItems? docModel;
+  final int? index;
+  final BirthDayListItems? docModel;
 
   @override
   Widget build(BuildContext context) {
@@ -259,18 +192,22 @@ class BirthDayItem extends StatelessWidget {
             children: [
               Text(
                 docModel!.employeeName!,
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.headline3,
               ),
               Expanded(
                   child: Align(
                       alignment: Alignment.centerRight,
-                      child: Image.asset('assets/icons/ic_round_birthday.png',width: 24,height: 24,))),
+                      child: Image.asset(
+                        'assets/icons/ic_round_birthday.png',
+                        width: 24,
+                        height: 24,
+                      ))),
             ],
           ),
           SizedBox(
             height: 80,
             child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               primary: false,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               crossAxisSpacing: 20,
@@ -280,22 +217,25 @@ class BirthDayItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Ngày sinh',style: CustomTextStyle.secondTextStyle),
-                    Text(formatDate(docModel!.dateOfBirth!))
+                    const Text('Ngày sinh',
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),child: Text(formatDate(docModel!.dateOfBirth!),style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Chức vụ',style: CustomTextStyle.secondTextStyle),
-                    Text(docModel!.position!)
+                    const Text('Chức vụ',
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),child: Text(docModel!.position!,style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Đơn vị',style: CustomTextStyle.secondTextStyle),
-                    Text(docModel!.organizationName!)
+                    const Text('Đơn vị',
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),child: Text(docModel!.organizationName!,style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
               ],
@@ -309,5 +249,3 @@ class BirthDayItem extends StatelessWidget {
     );
   }
 }
-
-

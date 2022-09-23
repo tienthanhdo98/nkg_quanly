@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/ui/report/pie_chart_report.dart';
-import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
+import 'package:nkg_quanly/ui/report/report_list.dart';
+import 'package:nkg_quanly/ui/report/report_viewmodel.dart';
 
 import '../../const.dart';
-import '../../const/api.dart';
-import '../../model/document_unprocess/document_filter.dart';
-import '../chart2/pie_chart.dart';
-import '../document_nonapproved/document_nonapproved_list.dart';
+import '../../model/report_model/report_statistic_model.dart';
 import '../theme/theme_data.dart';
-
+import 'collum_chart_report.dart';
 
 class ReportScreen extends GetView {
   String? header;
   String? icon;
 
-  final homeController = Get.put(HomeViewModel());
+  final homeController = Get.put(ReportViewModel());
 
   ReportScreen({Key? key, this.header, this.icon}) : super(key: key);
 
@@ -25,8 +24,8 @@ class ReportScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getQuantityDocumentBuUrl(apiGetReportStatistic),
-          builder: (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
+          future: homeController.getReportStatistic(),
+          builder: (context, AsyncSnapshot<ReportStatisticModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
                 Stack(
@@ -46,9 +45,9 @@ class ReportScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Tổng văn bản'),
+                                      const Text('Tổng báo cáo',style: CustomTextStyle.robotow400s12TextStyle),
                                       Text(
-                                        snapshot.data!.totalRecords.toString(),
+                                        snapshot.data!.tong.toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -67,7 +66,7 @@ class ReportScreen extends GetView {
                                 ],
                               ),
                               const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                                 child: Divider(
                                   thickness: 1,
                                 ),
@@ -78,9 +77,9 @@ class ReportScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Đã tiếp nhận'),
+                                      const Text('Đã tiếp nhận',style: CustomTextStyle.robotow400s12TextStyle),
                                       Text(
-                                          snapshot.data!.items![0].quantity.toString(),
+                                          snapshot.data!.daTiepNhan.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))
@@ -93,9 +92,9 @@ class ReportScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Đã giao'),
+                                      const Text('Đã giao',style: CustomTextStyle.robotow400s12TextStyle),
                                       Text(
-                                        snapshot.data!.items![1].quantity.toString(),
+                                        snapshot.data!.daGiao.toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
@@ -110,9 +109,58 @@ class ReportScreen extends GetView {
                     )
                   ],
                 ),
+                //button switch chart
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: PieChartReport(total: snapshot.data!.totalRecords,num1: snapshot.data!.items![0].quantity,num2: snapshot.data!.items![1].quantity,)),
+                  padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                        child: Obx(() => ElevatedButton(
+                              style: homeController.selectedChartButton.value == 0
+                                  ? activeButtonStyle
+                                  : unActiveButtonStyle,
+                              onPressed: () async {
+                                await homeController
+                                    .getFilterForChart(apiGetReportChart0);
+                                homeController.selectedChartButton(0);
+
+                              },
+                              child: const Text("Mức độ"),
+                            )),
+                      )),
+                      Expanded(
+                          child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                              child: Obx(
+                                () => ElevatedButton(
+                                  style:
+                                      homeController.selectedChartButton.value == 1
+                                          ? activeButtonStyle
+                                          : unActiveButtonStyle,
+                                  onPressed: ()  async {
+                                   await homeController
+                                        .getFilterForChart(apiGetReportChart1);
+                                    homeController.swtichChartButton(1);
+
+                                  },
+                                  child: const Text("Trạng thái"),
+                                ),
+                              )))
+                    ],
+                  ),
+                ),
+                //chart
+                Obx(() => (homeController.selectedChartButton.value == 0)
+                    ? Obx(() => CollumChartReport(
+                        documentFilterModel:
+                            homeController.rxDocumentFilterModel.value))
+                    : Obx(() =>PieChartReport(
+                        documentFilterModel:
+                            homeController.rxDocumentFilterModel.value,
+                      ))),
+                //bottom button
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -122,9 +170,9 @@ class ReportScreen extends GetView {
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => DocumentNonapprovedList(
-                              header: header,
-                            ));
+                            Get.to(() => ReportList(
+                                  header: header,
+                                ));
                           },
                           child: Text('Xem danh sách $header'),
                           style: bottomButtonStyle,

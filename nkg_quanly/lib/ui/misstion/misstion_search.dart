@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../const.dart';
+import 'mission_detail.dart';
 import 'mission_list.dart';
 
 
@@ -94,8 +95,8 @@ class MissionSearch extends GetView {
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () {
-                                // Get.to(() => DocumentnonapprovedDetail(
-                                //     id: searchController.listDataMission[index].id!));
+                                Get.to(() => MissionDetail(
+                                    id: int.parse(searchController.listDataMission[index].id!)));
                               },
                               child:
                               MissionListItem(index, searchController.listDataMission[index]));

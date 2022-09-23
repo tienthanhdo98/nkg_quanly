@@ -4,6 +4,7 @@ import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 import '../../const.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
 import 'book_room_list.dart';
+import 'meeting_room_detail.dart';
 
 class RoomMeetingSearch extends GetView {
   String? header;
@@ -91,7 +92,7 @@ class RoomMeetingSearch extends GetView {
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () {
-                                Get.to(() => DocumentnonapprovedDetail(
+                                Get.to(() => MeetingRoomDetail(
                                     id: searchController.listDataRoomMeeting[index].id!));
                               },
                               child:

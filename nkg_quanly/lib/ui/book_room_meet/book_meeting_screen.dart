@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_pie_chart.dart';
-import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
+import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
 
 import '../../const.dart';
 import '../../model/meeting_room/meeting_room_statistic_model.dart';
-import '../chart2/pie_chart.dart';
 import '../theme/theme_data.dart';
 import 'book_room_list.dart';
 
 
 class BookMeetingScreen extends GetView {
-  String? header;
-  String? icon;
+  final String? header;
+  final String? icon;
 
-  final homeController = Get.put(HomeViewModel());
+  final RoomMeetingViewModel roomMeetingViewModel = Get.put(RoomMeetingViewModel());
 
   BookMeetingScreen({Key? key, this.header, this.icon}) : super(key: key);
 
@@ -24,7 +23,7 @@ class BookMeetingScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getMeetingRoomStatistic(),
+          future: roomMeetingViewModel.getMeetingRoomStatistic(),
           builder: (context, AsyncSnapshot<MeetingRoomStatisticModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [

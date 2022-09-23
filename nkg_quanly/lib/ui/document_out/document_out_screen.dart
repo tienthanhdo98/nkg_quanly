@@ -4,10 +4,7 @@ import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../const/api.dart';
-import '../../model/document/document_statistic_model.dart';
 import '../../model/document_unprocess/document_filter.dart';
-import '../chart2/pie_chart.dart';
-import '../document_nonapproved/document_nonapproved_list.dart';
 import '../theme/theme_data.dart';
 import 'document_out_chart.dart';
 import 'document_out_list.dart';

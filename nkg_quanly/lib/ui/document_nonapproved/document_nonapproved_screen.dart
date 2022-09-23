@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
 import '../../const/api.dart';
-import '../../model/document/document_statistic_model.dart';
+import '../../const/widget.dart';
 import '../../model/document_unprocess/document_filter.dart';
-import '../chart2/pie_chart.dart';
+import '../char3/collum_chart_doc_nonprocess.dart';
+import '../char3/pie_chart.dart';
 import '../theme/theme_data.dart';
 import 'document_nonapproved_list.dart';
+import 'document_nonapproved_viewmodel.dart';
 
 
 class DocumentNonApprovedScreen extends GetView {
   final String? header;
   final String? icon;
 
-  final homeController = Get.put(HomeViewModel());
+  final documentNonApproveViewModel = Get.put(DocumentNonApproveViewModel());
 
   DocumentNonApprovedScreen({Key? key, this.header, this.icon}) : super(key: key);
 
@@ -25,7 +26,7 @@ class DocumentNonApprovedScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getQuantityDocumentBuUrl(apiGetDocumentNonApprove),
+          future: documentNonApproveViewModel.getQuantityDocumentBuUrl(apiGetDocumentNonApprove),
           builder: (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
@@ -35,7 +36,7 @@ class DocumentNonApprovedScreen extends GetView {
                         height: 220, width: double.infinity, fit: BoxFit.cover),
                     headerWidget(header!, context),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
                       child: border(
                           Padding(
                             padding: const EdgeInsets.all(15),
@@ -67,7 +68,7 @@ class DocumentNonApprovedScreen extends GetView {
                                 ],
                               ),
                               const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                 child: Divider(
                                   thickness: 1,
                                 ),
@@ -111,8 +112,41 @@ class DocumentNonApprovedScreen extends GetView {
                   ],
                 ),
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: PieChart2(documentFilterModel: snapshot.data!)),
+                  padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                  child:   Row(
+                    children: [
+                      Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                            child:Obx(() =>  ElevatedButton(
+                              style:
+                              documentNonApproveViewModel.selectedChartButton.value == 0 ? activeButtonStyle : unActiveButtonStyle,
+                              onPressed: () async {
+                                await documentNonApproveViewModel
+                                    .getFilterForChart("${apiGetDocumentApproveFilterChart}0");
+                                documentNonApproveViewModel.selectedChartButton(0);
+                              },
+                              child: const Text("Mức độ"),
+                            )),
+                          )),
+                      Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                            child: Obx(() =>ElevatedButton(
+                              style:
+                              documentNonApproveViewModel.selectedChartButton.value == 1 ? activeButtonStyle : unActiveButtonStyle,
+                              onPressed: () async {
+                                await documentNonApproveViewModel
+                                    .getFilterForChart("${apiGetDocumentApproveFilterChart}1");
+                                documentNonApproveViewModel.selectedChartButton(1);
+                              },
+                              child: const Text("Ngày đến"),
+                            ),)
+                          ))
+                    ],
+                  ),
+                ),
+                Obx(() => chartItemForDocApprove(documentNonApproveViewModel.selectedChartButton.value,documentNonApproveViewModel),),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -126,7 +160,7 @@ class DocumentNonApprovedScreen extends GetView {
                               header: header,
                             ));
                           },
-                          child: Text('Xem danh sách $header'),
+                          child: buttonShowListScreen("Xem danh sách VB đến chưa bút phê"),
                           style: bottomButtonStyle,
                         ),
                       ),
@@ -143,4 +177,23 @@ class DocumentNonApprovedScreen extends GetView {
       ),
     );
   }
+}
+Widget chartItemForDocApprove(int index,DocumentNonApproveViewModel documentNonApproveViewModel){
+  if(index == 0)
+  {
+    return Obx(() =>PieChartWidget(
+        key: UniqueKey(),
+        documentFilterModel:
+        documentNonApproveViewModel.rxDocumentFilterModel.value));
+  }
+  else
+  {
+    return  Obx(() => CollumChartWidget(
+        key: UniqueKey(),
+        documentFilterModel:
+        documentNonApproveViewModel.rxDocumentFilterModel.value));
+  }
+
+
+
 }

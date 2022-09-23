@@ -22,9 +22,7 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   _initPrefs() async {
-    if (pref == null) {
-      pref = await SharedPreferences.getInstance();
-    }
+    pref ??= await SharedPreferences.getInstance();
   }
 
   _loadFromShareFrefs() async {
@@ -43,6 +41,7 @@ class ThemeProvider extends ChangeNotifier {
 class ThemeClass {
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: kWhite,
+    fontFamily: 'Roboto',
     colorScheme: const ColorScheme.light(),
     cardColor: kWhite,
     primaryColor: kWhite,
@@ -55,14 +54,17 @@ class ThemeClass {
     ),
     iconTheme: const IconThemeData(color: Colors.black),
     textTheme: const TextTheme(
+        //header screen like so tay, nhien vu
         headline1: TextStyle(
-            color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+            color: Colors.black, fontSize: 20,  fontFamily: 'Inter',fontWeight: FontWeight.w500),
         headline2: TextStyle(
-            color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+            color: Colors.black, fontSize: 18, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
         headline3: TextStyle(
-          color: Colors.black,
-          fontSize: 15,
-        )),
+            color: Colors.black, fontSize: 16, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
+        headline4: TextStyle(
+            color: Colors.black, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w400),
+        headline5: TextStyle(
+            color: Colors.black, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w500),)
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -71,6 +73,7 @@ class ThemeClass {
       primaryColor: kDBackGround,
       cardColor: kDBackgroundItem,
       splashColor: kDTable,
+      fontFamily: 'Roboto',
       switchTheme: SwitchThemeData(
         thumbColor: MaterialStateProperty.all(kBlueButton),
         trackColor: MaterialStateProperty.all(kLightBlueButton),
@@ -83,15 +86,17 @@ class ThemeClass {
         showUnselectedLabels: true,
       ),
       textTheme: const TextTheme(
+        //header screen like so tay, nhien vu
         headline1: TextStyle(
-            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            color: Colors.white, fontSize: 20,  fontFamily: 'Inter',fontWeight: FontWeight.w500),
         headline2: TextStyle(
-            color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+            color:  Colors.white, fontSize: 18, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
         headline3: TextStyle(
-          color: Colors.white,
-          fontSize: 15,
-        ),
-      ));
+            color:  Colors.white, fontSize: 16, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
+        headline4: TextStyle(
+            color:  Colors.white, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w400),
+        headline5: TextStyle(
+            color:  Colors.white, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w500),));
 }
 
 final unActiveButtonStyle = ElevatedButton.styleFrom(
@@ -118,5 +123,54 @@ final bottomButtonStyle = ButtonStyle(
     ),
     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(18.0),
+      borderRadius: BorderRadius.circular(30.0),
     )));
+final elevetedButtonBlue = ButtonStyle(
+    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.pressed)) {
+          return kBlueButton;
+        } else {
+          return kBlueButton;
+        } // Use the component's default.
+      },
+    ),
+    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            side: const BorderSide(color: kVioletButton))));
+
+final elevetedButtonWhite = ButtonStyle(
+    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.pressed)) {
+          return kVioletBg;
+        } else {
+          return kWhite;
+        } // Use the component's default.
+      },
+    ),
+    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            side: const BorderSide(color: kVioletButton))));
+final decoTextField = InputDecoration(
+    enabledBorder: const OutlineInputBorder(
+      borderSide: BorderSide(color: kDarkGray, width: 1),
+    ),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    filled: true,
+    focusedBorder: const OutlineInputBorder(
+      borderSide: BorderSide(color: kBlueButton, width: 1),
+    ),
+    hintStyle: const TextStyle(color: Colors.black),
+    fillColor: kWhite);
+
+const blueTextStyle = TextStyle(
+    color: kBlueButton,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    fontFamily: 'Roboto');
+

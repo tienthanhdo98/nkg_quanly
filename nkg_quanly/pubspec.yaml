@@ -54,6 +54,7 @@ dev_dependencies:
   flutter_inappwebview: ^5.4.3+7
   http: ^0.13.4
   table_calendar: ^3.0.7
+  open_file: ^3.2.1
 
 
 
@@ -70,6 +71,16 @@ flutter:
   assets:
     - assets/icons/
     - assets/
+#
+fonts:
+  - family: Roboto
+    fonts:
+      - asset: assets/fonts/Roboto-Regular.ttf
+  - family: Inter
+    fonts:
+      - asset: assets/fonts/Roboto-Regular.ttf
+
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

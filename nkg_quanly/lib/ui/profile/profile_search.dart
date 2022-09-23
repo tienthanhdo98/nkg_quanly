@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/profile/profile_controller.dart';
 import 'package:nkg_quanly/ui/profile/profile_list.dart';
 
 import '../../const.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
+import '../document_out/search_controller.dart';
 
 
 class DocumenOutSearch extends GetView {
   String? header;
-  final profileController = Get.put(ProfileController());
+  final searchController = Get.put(SearchController());
 
   DocumenOutSearch({Key? key, this.header}) : super(key: key);
 
@@ -67,7 +67,7 @@ class DocumenOutSearch extends GetView {
                                       color: Colors.black),
                                   onSubmitted: (value){
                                     print(value);
-                                    profileController.searchData(value);
+                                    searchController.searchDataProfile(value);
                                   },
                                   onChanged: (value) {
                                     //print(value);
@@ -91,15 +91,15 @@ class DocumenOutSearch extends GetView {
                   child: SizedBox(
                     height: 200,
                     child: Obx(() => ListView.builder(
-                        itemCount: profileController.listData.length,
+                        itemCount: searchController.listDataProfile.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () {
                                 Get.to(() => DocumentnonapprovedDetail(
-                                    id: profileController.listData[index].id!));
+                                    id: searchController.listDataProfile[index].id!));
                               },
                               child:
-                              ProfileListItem(index, profileController.listData[index]));
+                              ProfileListItem(index, searchController.listDataProfile[index]));
                         })),
                   ),
                 ),

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../const.dart';
 import '../../model/document/document_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
-import '../note_work/note_work_list.dart';
 import 'document_nonapproved_detail.dart';
 import 'document_nonapproved_list.dart';
 

@@ -1,76 +1,39 @@
 class MissionStatisticModel {
-  List<StatisticMissionOverTimeByMonths>? statisticMissionOverTimeByMonths;
-  List<StatisticMissionByStatuses>? statisticMissionByStatuses;
+  int? tong;
+  int? chuaXuLy;
+  int? dangThucHien;
+  int? daHuy;
+  int? daTamDung;
+  int? quaHan;
+  int? trongHan;
 
-  MissionStatisticModel(
-      {this.statisticMissionOverTimeByMonths, this.statisticMissionByStatuses});
+  MissionStatisticModel({this.tong,
+    this.chuaXuLy,
+    this.dangThucHien,
+    this.daHuy,
+    this.daTamDung,
+    this.quaHan,
+    this.trongHan});
 
   MissionStatisticModel.fromJson(Map<String, dynamic> json) {
-    if (json['statisticMissionOverTimeByMonths'] != null) {
-      statisticMissionOverTimeByMonths = <StatisticMissionOverTimeByMonths>[];
-      json['statisticMissionOverTimeByMonths'].forEach((v) {
-        statisticMissionOverTimeByMonths!
-            .add(StatisticMissionOverTimeByMonths.fromJson(v));
-      });
-    }
-    if (json['statisticMissionByStatuses'] != null) {
-      statisticMissionByStatuses = <StatisticMissionByStatuses>[];
-      json['statisticMissionByStatuses'].forEach((v) {
-        statisticMissionByStatuses!
-            .add(StatisticMissionByStatuses.fromJson(v));
-      });
-    }
+    tong = json['tong'];
+    chuaXuLy = json['chuaXuLy'];
+    dangThucHien = json['dangThucHien'];
+    daHuy = json['daHuy'];
+    daTamDung = json['daTamDung'];
+    quaHan = json['quaHan'];
+    trongHan = json['trongHan'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (statisticMissionOverTimeByMonths != null) {
-      data['statisticMissionOverTimeByMonths'] = statisticMissionOverTimeByMonths!
-          .map((v) => v.toJson())
-          .toList();
-    }
-    if (statisticMissionByStatuses != null) {
-      data['statisticMissionByStatuses'] =
-          statisticMissionByStatuses!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class StatisticMissionOverTimeByMonths {
-  int? month;
-  int? quantity;
-
-  StatisticMissionOverTimeByMonths({this.month, this.quantity});
-
-  StatisticMissionOverTimeByMonths.fromJson(Map<String, dynamic> json) {
-    month = json['month'];
-    quantity = json['quantity'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['month'] = month;
-    data['quantity'] = quantity;
-    return data;
-  }
-}
-
-class StatisticMissionByStatuses {
-  String? status;
-  int? quantity;
-
-  StatisticMissionByStatuses({this.status, this.quantity});
-
-  StatisticMissionByStatuses.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    quantity = json['quantity'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['quantity'] = quantity;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['tong'] = this.tong;
+    data['chuaXuLy'] = this.chuaXuLy;
+    data['dangThucHien'] = this.dangThucHien;
+    data['daHuy'] = this.daHuy;
+    data['daTamDung'] = this.daTamDung;
+    data['quaHan'] = this.quaHan;
+    data['trongHan'] = this.trongHan;
     return data;
   }
 }

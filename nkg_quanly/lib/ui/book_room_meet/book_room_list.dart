@@ -1,23 +1,20 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_search.dart';
+import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
 import 'package:nkg_quanly/ui/menu/MenuController.dart';
-import 'package:table_calendar/table_calendar.dart';
-
 import '../../const.dart';
-import '../../model/document/document_model.dart';
+import '../../const/ultils.dart';
 import '../../model/meeting_room/meeting_room_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
 import '../book_car/book_car_list.dart';
-import '../document_nonapproved/document_nonapproved_detail.dart';
-import '../document_nonapproved/document_nonapproved_search.dart';
+import 'meeting_room_detail.dart';
 
 class BookRoomList extends GetView {
   String? header;
   DateTime dateNow = DateTime.now();
   final MenuController menuController = Get.put(MenuController());
-  final homeController = Get.put(HomeViewModel());
+  final roomMeetingViewModel = Get.put(RoomMeetingViewModel());
   int selectedButton = 0;
 
   BookRoomList({this.header});
@@ -28,296 +25,289 @@ class BookRoomList extends GetView {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: FutureBuilder(
-        future: homeController.getMeetingRoom(),
-        builder: (context, AsyncSnapshot<MeetingRoomModel> snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: [
-                //header
-                Container(
-                  color: Theme.of(context).cardColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: const Icon(Icons.arrow_back_ios_outlined),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                        Text(
-                          header!,
-                          style: Theme.of(context).textTheme.headline1,
-                        ),
-                        Expanded(
-                            child: InkWell(
-                          onTap: () {
-                            Get.to(() => RoomMeetingSearch(
-                                  header: header,
-                                ));
-                          },
-                          child: const Align(
-                              alignment: Alignment.centerRight,
-                              child: Icon(Icons.search)),
-                        ))
-                      ],
-                    ),
-                  ),
-                ),
-                //date table
-                Container(
-                  width: double.infinity,
-                  height: 155,
-                  color: kgray,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Text(
-                          "${dateNow.year} Tháng ${dateNow.month}",
-                          style: Theme.of(context).textTheme.headline1,
-                        ),
+          child: Column(
+            children: [
+              //header
+              headerWidgetSeatch(header!,RoomMeetingSearch(
+                header: header,
+              ),context),
+              //date table
+              Container(
+                color: kgray,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(
+                        "${dateNow.year} Tháng ${dateNow.month}",
+                        style: Theme.of(context).textTheme.headline1,
                       ),
-                      //date header
-                      TableCalendar(
-                        calendarStyle: CalendarStyle(
-                            todayTextStyle: TextStyle(color: kWhite),
-                            todayDecoration: BoxDecoration(
-                              color: kBlueButton,
-                              borderRadius: BorderRadius.circular(20),
-                            )),
-                        calendarBuilders: CalendarBuilders(
-                            selectedBuilder: (context, day, focusday) {
-                          return Container(
-                            decoration: BoxDecoration(color: kBlueButton),
-                          );
-                        }),
+                    ),
+                    //date header
+                    Obx(() =>  TableCalendar(
                         locale: 'vi_VN',
                         headerVisible: false,
-                        calendarFormat: CalendarFormat.week,
+                        calendarFormat:  roomMeetingViewModel.rxCalendarFormat.value,
                         firstDay: DateTime.utc(2010, 10, 16),
                         lastDay: DateTime.utc(2030, 3, 14),
-                        focusedDay: DateTime.now(),
-                      ),
-                      //list work
-                    ],
-                  ),
+                        focusedDay: roomMeetingViewModel.rxSelectedDay.value,
+                        selectedDayPredicate: (day) {
+                          return isSameDay(
+                              roomMeetingViewModel
+                                  .rxSelectedDay.value,
+                              day);
+                        },
+                        onDaySelected: (selectedDay, focusedDay) async {
+                          if (!isSameDay(
+                              roomMeetingViewModel
+                                  .rxSelectedDay.value,
+                              selectedDay)) {
+                            roomMeetingViewModel.onSelectDay(selectedDay);
+                          }
+                        },
+                        onFormatChanged: (format) {
+                          if (roomMeetingViewModel.rxCalendarFormat.value != format) {
+                            // Call `setState()` when updating calendar format
+                            roomMeetingViewModel.rxCalendarFormat.value = format;
+                          }
+                        }
+                    )),
+                    Center(child: InkWell(
+                      onTap: (){
+                        if(roomMeetingViewModel.rxCalendarFormat.value != CalendarFormat.month)
+                        {
+                          roomMeetingViewModel.switchFormat(CalendarFormat.month);
+                        }
+                        else
+                        {
+                          roomMeetingViewModel.switchFormat(CalendarFormat.week);
+                        }
+                      },
+                      child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Image.asset("assets/icons/ic_showmore.png",height: 15,width: 80,)),
+                    ))
+                    //list work
+                  ],
                 ),
-                //list
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Tất cả phòng họp',
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
-                      Expanded(
-                        child: Align(
-                            alignment: Alignment.centerRight,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.pressed)) {
-                                        return kVioletBg;
-                                      } else {
-                                        return kWhite;
-                                      } // Use the component's default.
-                                    },
-                                  ),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                          side: const BorderSide(
-                                              color: kVioletButton)))),
-                              onPressed: () {
-                                showModalBottomSheet<void>(
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20),
-                                    ),
-                                  ),
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return filterBottomSheet(menuController);
+              ),
+              //list
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Tất cả phòng họp',
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    Expanded(
+                      child: Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                    if (states
+                                        .contains(MaterialState.pressed)) {
+                                      return kVioletBg;
+                                    } else {
+                                      return kWhite;
+                                    } // Use the component's default.
                                   },
-                                );
-                              },
-                              child: const Text(
-                                'Bộ lọc',
-                                style: TextStyle(color: kVioletButton),
-                              ),
-                            )),
-                      ),
-                    ],
-                  ),
+                                ),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(12.0),
+                                        side: const BorderSide(
+                                            color: kVioletButton)))),
+                            onPressed: () {
+                              showModalBottomSheet<void>(
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return filterBottomSheet(menuController);
+                                },
+                              );
+                            },
+                            child: const Text(
+                              'Bộ lọc',
+                              style: TextStyle(color: kVioletButton),
+                            ),
+                          )),
+                    ),
+                  ],
                 ),
-
-                //
-               const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 20)),
-                Expanded(
-                    child: Container(
-                  height: double.infinity,
-                  decoration: const BoxDecoration(
-                      color: kLightGray,
-                      border: Border(
-                        top: BorderSide(
-                          color: kgray,
-                          width: 1,
-                        ),
-                      )),
-                  child: Column(children: [
-                    Column(children: [
-                      SizedBox(
-                        height: 40,
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 100,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Cả ngày",
-                                  style: Theme.of(context).textTheme.headline2,
+              ),
+              //
+              const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 20)),
+              Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        color: kLightGray,
+                        border: Border(
+                          top: BorderSide(
+                            color: kgray,
+                            width: 1,
+                          ),
+                        )),
+                    child: Column(children: [
+                      Column(children: [
+                        SizedBox(
+                          height: 40,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 100,
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Cả ngày",
+                                    style: Theme.of(context).textTheme.headline2,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const VerticalDivider(width: 1, thickness: 1),
-                            const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text("Danh sách phòng họp",
-                                    style:
-                                        Theme.of(context).textTheme.headline2),
-                              ),
-                            )
-                          ],
+                              const VerticalDivider(width: 1, thickness: 1),
+                              const Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text("Danh sách phòng họp",
+                                      style:
+                                      Theme.of(context).textTheme.headline2),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      const Divider(
-                        thickness: 2,
-                      ),
-                    ]),
-                    //list car
-                    Expanded(
-                        child: SizedBox(
-                          height: double.infinity,
-                          child: ListView.builder(
-                              itemCount: snapshot.data!.items!.length,
+                        const Divider(
+                          thickness: 2,
+                        ),
+                      ]),
+                      //list car
+                      Expanded(
+                          child: Obx(() => (roomMeetingViewModel.rxMeetingRoomItems.isNotEmpty) ?ListView.builder(
+                              itemCount:roomMeetingViewModel.rxMeetingRoomItems.length,
                               itemBuilder: (context, index) {
                                 return InkWell(
                                     onTap: () {
-                                      Get.to(() => DocumentnonapprovedDetail(
-                                          id: snapshot.data!.items![index].id!));
+                                      Get.to(() => MeetingRoomDetail(
+                                          id: roomMeetingViewModel.rxMeetingRoomItems[index].id!));
                                     },
-                                    child: MeetingRoomItem(index, snapshot.data!.items![index]));
-                              }),
-                        )),
-                    //bottom
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          border: Border(
-                              top: BorderSide(
-                                  color: Theme.of(context).dividerColor))),
-                      height: 50,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: (selectedButton == 0)
-                                      ? BoxDecoration(
-                                          color: kLightBlue,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                        )
-                                      : const BoxDecoration(),
-                                  height: 40,
-                                  width: 40,
-                                  child: Center(
-                                      child: Text("Ngày",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: (selectedButton == 0)
-                                                  ? kBlueButton
-                                                  : Colors.black)))),
-                            ),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: (selectedButton == 1)
-                                      ? BoxDecoration(
-                                          color: kLightBlue,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                        )
-                                      : const BoxDecoration(),
-                                  height: 40,
-                                  width: 40,
-                                  child: Center(
-                                      child: Text(
-                                    "Tuần",
+                                    child: MeetingRoomItem(index, roomMeetingViewModel.rxMeetingRoomItems[index]));
+                              }) : const Expanded(child: Text("Hôm nay không có lịch họp nào")))),
+                      //bottom
+
+                    ]),
+                  )),
+              Obx(() =>  Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    border: Border(
+                        top: BorderSide(
+                            color: Theme.of(context).dividerColor))),
+                height: 50,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          roomMeetingViewModel.rxSelectedDay.value = DateTime.now();
+                          roomMeetingViewModel.onSelectDay(DateTime.now());
+                          roomMeetingViewModel.swtichBottomButton(0);
+                        },
+                        child: Container(
+                            decoration: (roomMeetingViewModel.selectedBottomButton.value == 0)
+                                ? BoxDecoration(
+                              color: kLightBlue,
+                              borderRadius:
+                              BorderRadius.circular(50),
+                            )
+                                : const BoxDecoration(),
+                            height: 40,
+                            width: 40,
+                            child: Center(
+                                child: Text("Ngày",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: (selectedButton == 1)
+                                        color: (roomMeetingViewModel.selectedBottomButton.value  == 0)
                                             ? kBlueButton
-                                            : Colors.black),
-                                  ))),
-                            ),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: (selectedButton == 2)
-                                      ? BoxDecoration(
-                                          color: kLightBlue,
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                        )
-                                      : const BoxDecoration(),
-                                  height: 40,
-                                  width: 40,
-                                  child: Center(
-                                      child: Text("Tháng",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: (selectedButton == 2)
-                                                  ? kBlueButton
-                                                  : Colors.black)))),
-                            ),
-                          )
-                        ],
+                                            : Colors.black)))),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          DateTime datefrom =  DateTime.now();
+                          DateTime dateTo =  datefrom.add(const Duration(days: 7));
+                          String strdateFrom = formatDateToString(datefrom);
+                          String strdateTo = formatDateToString(dateTo);
+                          print(strdateFrom);
+                          print(strdateTo);
+                          roomMeetingViewModel.getMeetingRoomByWeek(strdateFrom,strdateTo);
+                          roomMeetingViewModel.swtichBottomButton(1);
+                        },
+                        child: Container(
+                            decoration: (roomMeetingViewModel.selectedBottomButton.value  == 1)
+                                ? BoxDecoration(
+                              color: kLightBlue,
+                              borderRadius:
+                              BorderRadius.circular(50),
+                            )
+                                : const BoxDecoration(),
+                            height: 40,
+                            width: 40,
+                            child: Center(
+                                child: Text(
+                                  "Tuần",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: (roomMeetingViewModel.selectedBottomButton.value  == 1)
+                                          ? kBlueButton
+                                          : Colors.black),
+                                ))),
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          roomMeetingViewModel.getMeetingRoomByMonth();
+                          roomMeetingViewModel.swtichBottomButton(2);
+                        },
+                        child: Container(
+                            decoration: (roomMeetingViewModel.selectedBottomButton.value  == 2)
+                                ? BoxDecoration(
+                              color: kLightBlue,
+                              borderRadius:
+                              BorderRadius.circular(50),
+                            )
+                                : const BoxDecoration(),
+                            height: 40,
+                            width: 40,
+                            child: Center(
+                                child: Text("Tháng",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: (roomMeetingViewModel.selectedBottomButton.value  == 2)
+                                            ? kBlueButton
+                                            : Colors.black)))),
                       ),
                     )
-                  ]),
-                )),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      )),
+                  ],
+                ),
+              ))
+            ],
+          )),
     );
   }
 }

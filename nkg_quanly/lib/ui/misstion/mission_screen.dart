@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
 import '../../const.dart';
-import '../../model/document_unprocess/document_filter.dart';
-import '../chart2/sline_chart.dart';
+import '../../const/api.dart';
+import '../../const/widget.dart';
+import '../../model/misstion/misstion_statistic.dart';
+import '../char3/line_char.dart';
 import '../theme/theme_data.dart';
 import 'mission_list.dart';
+import 'mission_viewmodel.dart';
 
 class MissionScreen extends GetView {
   String? header;
   String? icon;
 
-  final homeController = Get.put(HomeViewModel());
+  final missionController = Get.put(MissionViewModel());
 
   MissionScreen({Key? key, this.header, this.icon}) : super(key: key);
 
@@ -22,8 +24,8 @@ class MissionScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getMissionStatistic(),
-          builder: (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
+          future: missionController.getMissionStatistic(),
+          builder: (context, AsyncSnapshot<MissionStatisticModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
                 Stack(
@@ -32,10 +34,10 @@ class MissionScreen extends GetView {
                         height: 220, width: double.infinity, fit: BoxFit.cover),
                     headerWidget(header!, context),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
+                      padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
                       child: border(
                           Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                             child: Column(children: [
                               Row(
                                 children: [
@@ -43,9 +45,11 @@ class MissionScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Tổng văn bản'),
+                                      const Text('Tổng văn bản',
+                                          style: CustomTextStyle
+                                              .robotow400s12TextStyle),
                                       Text(
-                                        snapshot.data!.totalRecords!.toString(),
+                                        snapshot.data!.tong!.toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -64,75 +68,111 @@ class MissionScreen extends GetView {
                                 ],
                               ),
                               const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                 child: Divider(
                                   thickness: 1,
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Hoàn thành'),
-                                      Text(
-                                          snapshot.data!.items![0].quantity
+                              SizedBox(
+                                child: GridView.count(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  crossAxisSpacing: 10,
+                                  childAspectRatio: 3 / 2,
+                                  mainAxisSpacing: 0,
+                                  crossAxisCount: 3,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Chưa xử lý',
+                                            style: CustomTextStyle
+                                                .robotow400s12TextStyle),
+                                        Text(snapshot.data!.chuaXuLy.toString(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20))
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Đang thực hiện',
+                                            style: CustomTextStyle
+                                                .robotow400s12TextStyle),
+                                        Text(
+                                          snapshot.data!.dangThucHien
                                               .toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20))
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Chưa HT'),
-                                      Text(
-                                        snapshot.data!.items![1].quantity
-                                            .toString(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      )
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('HT quá hạn '),
-                                      Text(
-                                        snapshot.data!.items![2].quantity
-                                            .toString(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      )
-                                    ],
-                                  ),
-                                  const Padding(
-                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Quá hạn'),
-                                      Text(
-                                        snapshot.data!.items![3].quantity
-                                            .toString(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20),
-                                      )
-                                    ],
-                                  ),
-                                ],
+                                              fontSize: 20),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Đã hủy',
+                                            style: CustomTextStyle
+                                                .robotow400s12TextStyle),
+                                        Text(
+                                          snapshot.data!.daHuy.toString(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Đã tạm dưng',
+                                            style: CustomTextStyle
+                                                .robotow400s12TextStyle),
+                                        Text(
+                                          snapshot.data!.daTamDung.toString(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Quá hạn',
+                                            style: CustomTextStyle
+                                                .robotow400s12TextStyle),
+                                        Text(
+                                          snapshot.data!.quaHan.toString(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('Trong hạn',
+                                            style: CustomTextStyle
+                                                .robotow400s12TextStyle),
+                                        Text(
+                                          snapshot.data!.trongHan.toString(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
                               )
                             ]),
                           ),
@@ -140,13 +180,41 @@ class MissionScreen extends GetView {
                     )
                   ],
                 ),
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: SLineChartRed()),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                  child: SizedBox(
+                    height: 50,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listButtonChart.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                            child: Obx(() => ElevatedButton(
+                                  style: missionController
+                                              .selectedChartButton.value ==
+                                          index
+                                      ? activeButtonStyle
+                                      : unActiveButtonStyle,
+                                  onPressed: () async {
+                                    await missionController
+                                        .getFilterForChart("$apiGetMissionChart$index");
+                                    missionController
+                                        .selectedChartButton(index);
+                                  },
+                                  child: Text(listButtonChart[index]),
+                                )),
+                          );
+                        }),
+                  ),
+                ),
+                Obx(() => chartItemForMission(
+                    missionController.selectedChartButton.value,
+                    missionController)),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
@@ -156,8 +224,7 @@ class MissionScreen extends GetView {
                                   header: header,
                                 ));
                           },
-                          child:
-                              const Text('Xem danh sách VB đến chưa bút phê'),
+                          child: buttonShowListScreen("Xem danh sách nhiệm vụ"),
                           style: bottomButtonStyle,
                         ),
                       ),
@@ -167,6 +234,8 @@ class MissionScreen extends GetView {
               ]);
             } else if (snapshot.hasError) {
               return Text(snapshot.error.toString());
+              //print(Text(snapshot.error.toString());
+              // return const Center(child: CircularProgressIndicator());
             }
             return const Center(child: CircularProgressIndicator());
           },
@@ -175,3 +244,27 @@ class MissionScreen extends GetView {
     );
   }
 }
+
+Widget chartItemForMission(int index, MissionViewModel missionViewModel) {
+  if (index == 0) {
+    return Obx(() => LineCharWidget(
+        key: UniqueKey(),
+        documentFilterModel: missionViewModel.rxDocumentFilterModel.value));
+  }
+  if (index == 1) {
+    return Obx(() => LineCharWidget(
+        key: UniqueKey(),
+        documentFilterModel: missionViewModel.rxDocumentFilterModel.value));
+  }
+  if (index == 2) {
+    return Obx(() => LineCharWidget(
+        key: UniqueKey(),
+        documentFilterModel: missionViewModel.rxDocumentFilterModel.value));
+  } else {
+    return Obx(() => LineCharWidget(
+        key: UniqueKey(),
+        documentFilterModel: missionViewModel.rxDocumentFilterModel.value));
+  }
+}
+
+List listButtonChart = [ "Đơn vị ban hành","Mức độ", "Hạn xử lý", "Ngày đến"];
