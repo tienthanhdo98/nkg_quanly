@@ -5,20 +5,18 @@ import 'package:nkg_quanly/ui/menu/MenuController.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../const.dart';
+import '../../const/style.dart';
 import '../../const/ultils.dart';
 import '../../const/widget.dart';
-import '../../model/document/document_model.dart';
 import '../../model/document_out_model/document_out_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
-import '../document_nonapproved/document_nonapproved_list.dart';
-import '../document_nonapproved/document_nonapproved_search.dart';
+import '../theme/theme_data.dart';
 import 'doc_out_viewmodel.dart';
 import 'document_out_search.dart';
 
 class DocumentOutList extends GetView {
   final String? header;
-  DateTime dateNow = DateTime.now();
+
   final MenuController menuController = Get.put(MenuController());
   final documentOutViewModel = Get.put(DocumentOutViewModel());
   int selectedButton = 0;
@@ -37,75 +35,87 @@ class DocumentOutList extends GetView {
                 header: header,
               ),context),
               //date table
-              Container(
-                color: kgray,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Text(
-                        "${dateNow.year} Tháng ${dateNow.month}",
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                    ),
-                    //date header
-                    Obx(() =>  TableCalendar(
-                        locale: 'vi_VN',
-                        headerVisible: false,
-                        calendarFormat:  documentOutViewModel.rxCalendarFormat.value,
-                        firstDay: DateTime.utc(2010, 10, 16),
-                        lastDay: DateTime.utc(2030, 3, 14),
-                        focusedDay: documentOutViewModel.rxSelectedDay.value,
-                        selectedDayPredicate: (day) {
-                          return isSameDay(
-                              documentOutViewModel
-                                  .rxSelectedDay.value,
-                              day);
-                        },
-                        onDaySelected: (selectedDay, focusedDay) async {
-                          if (!isSameDay(
-                              documentOutViewModel
-                                  .rxSelectedDay.value,
-                              selectedDay)) {
-                            documentOutViewModel.onSelectDay(selectedDay);
-                          }
-                        },
-                        onFormatChanged: (format) {
-                          if (documentOutViewModel.rxCalendarFormat.value != format) {
-                            // Call `setState()` when updating calendar format
-                            documentOutViewModel.rxCalendarFormat.value = format;
-                          }
-                        }
-                    )),
-                    Center(child: InkWell(
-                      onTap: (){
-                        if(documentOutViewModel.rxCalendarFormat.value != CalendarFormat.month)
-                        {
-                          documentOutViewModel.switchFormat(CalendarFormat.month);
-                        }
-                        else
-                        {
-                          documentOutViewModel.switchFormat(CalendarFormat.week);
-                        }
-                      },
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                          child: Image.asset("assets/icons/ic_showmore.png",height: 15,width: 80,)),
-                    ))
-                    //list work
-                  ],
-                ),
-              ),
+          headerTableDate( Obx(() =>  TableCalendar(
+              locale: 'vi_VN',
+              headerVisible: false,
+              calendarFormat:  documentOutViewModel.rxCalendarFormat.value,
+              firstDay: DateTime.utc(2010, 10, 16),
+              lastDay: DateTime.utc(2030, 3, 14),
+              focusedDay: documentOutViewModel.rxSelectedDay.value,
+              selectedDayPredicate: (day) {
+                return isSameDay(
+                    documentOutViewModel
+                        .rxSelectedDay.value,
+                    day);
+              },
+              onDaySelected: (selectedDay, focusedDay) async {
+                if (!isSameDay(
+                    documentOutViewModel
+                        .rxSelectedDay.value,
+                    selectedDay)) {
+                  documentOutViewModel.onSelectDay(selectedDay);
+                }
+              },
+              onFormatChanged: (format) {
+                if (documentOutViewModel.rxCalendarFormat.value != format) {
+                  // Call `setState()` when updating calendar format
+                  documentOutViewModel.rxCalendarFormat.value = format;
+                }
+              }
+          )),
+              Center(child: InkWell(
+                onTap: (){
+                  if(documentOutViewModel.rxCalendarFormat.value != CalendarFormat.month)
+                  {
+                    documentOutViewModel.switchFormat(CalendarFormat.month);
+                  }
+                  else
+                  {
+                    documentOutViewModel.switchFormat(CalendarFormat.week);
+                  }
+                },
+                child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                    child: Image.asset("assets/icons/ic_showmore.png",height: 15,width: 80,)),
+              )),context),
               //list
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                 child: Row(
                   children: [
                     Text(
-                      'Tất cả VB',
-                      style: Theme.of(context).textTheme.headline2,
+                      'Tất cả văn bản đi chờ phát hành',
+                      style: Theme.of(context).textTheme.headline5,
                     ),
+                    Expanded(
+                      child: Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            style: elevetedButtonWhite,
+                            onPressed: () {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: 400,
+                                      child: FilterDocumentOutBottomSheet(
+                                          menuController, documentOutViewModel));
+                                },
+                              );
+                            },
+                            child: const Text(
+                              'Bộ lọc',
+                              style: TextStyle(color: kVioletButton),
+                            ),
+                          )),
+                    )
                   ],
                 ),
               ),
@@ -125,7 +135,7 @@ class DocumentOutList extends GetView {
                             },
                             child:
                             DocOutListItem(index, documentOutViewModel.rxDocumentOutItems[index],false));
-                      }) :   Expanded(child: Text("Hôm nay không có văn bản nào")))),
+                      }) :   const Text("Hôm nay không có văn bản nào"))),
               //bottom
               Obx(() =>  Container(
                 decoration: BoxDecoration(
@@ -144,23 +154,8 @@ class DocumentOutList extends GetView {
                           documentOutViewModel.onSelectDay(DateTime.now());
                           documentOutViewModel.swtichBottomButton(0);
                         },
-                        child: Container(
-                            decoration: (documentOutViewModel.selectedBottomButton.value == 0)
-                                ? BoxDecoration(
-                              color: kLightBlue,
-                              borderRadius:
-                              BorderRadius.circular(50),
-                            )
-                                : const BoxDecoration(),
-                            height: 40,
-                            width: 40,
-                            child: Center(
-                                child: Text("Ngày",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: (documentOutViewModel.selectedBottomButton.value  == 0)
-                                            ? kBlueButton
-                                            : Colors.black)))),
+                        child: bottomDateButton("Ngày",
+                            documentOutViewModel.selectedBottomButton.value, 0),
                       ),
                     ),
                     Expanded(
@@ -175,25 +170,8 @@ class DocumentOutList extends GetView {
                           documentOutViewModel.getDocumentOutByWeek(strdateFrom,strdateTo);
                           documentOutViewModel.swtichBottomButton(1);
                         },
-                        child: Container(
-                            decoration: (documentOutViewModel.selectedBottomButton.value  == 1)
-                                ? BoxDecoration(
-                              color: kLightBlue,
-                              borderRadius:
-                              BorderRadius.circular(50),
-                            )
-                                : const BoxDecoration(),
-                            height: 40,
-                            width: 40,
-                            child: Center(
-                                child: Text(
-                                  "Tuần",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: (documentOutViewModel.selectedBottomButton.value  == 1)
-                                          ? kBlueButton
-                                          : Colors.black),
-                                ))),
+                        child: bottomDateButton("Tuần",
+                            documentOutViewModel.selectedBottomButton.value, 1),
                       ),
                     ),
                     Expanded(
@@ -202,23 +180,8 @@ class DocumentOutList extends GetView {
                           documentOutViewModel.getDocumentOutByMonth();
                           documentOutViewModel.swtichBottomButton(2);
                         },
-                        child: Container(
-                            decoration: (documentOutViewModel.selectedBottomButton.value  == 2)
-                                ? BoxDecoration(
-                              color: kLightBlue,
-                              borderRadius:
-                              BorderRadius.circular(50),
-                            )
-                                : const BoxDecoration(),
-                            height: 40,
-                            width: 40,
-                            child: Center(
-                                child: Text("Tháng",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: (documentOutViewModel.selectedBottomButton.value  == 2)
-                                            ? kBlueButton
-                                            : Colors.black)))),
+                        child: bottomDateButton("Tháng",
+                          documentOutViewModel.selectedBottomButton.value, 2),
                       ),
                     )
                   ],
@@ -246,8 +209,8 @@ class DocOutListItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                "${index! + 1}.${docModel!.name}",
-                style: Theme.of(context).textTheme.headline2,
+                "${index! + 1}. ${docModel!.name}",
+                style: Theme.of(context).textTheme.headline3,
               ),
               Expanded(
                   child: Align(
@@ -269,22 +232,22 @@ class DocOutListItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Đơn vị ban hành',style: CustomTextStyle.secondTextStyle),
-                    Text(docModel!.departmentPublic!)
+                    const Text('Đơn vị ban hành',style: CustomTextStyle.grayColorTextStyle),
+                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0), child: Text(docModel!.departmentPublic!,style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Ngày đến',style: CustomTextStyle.secondTextStyle),
-                    Text(formatDate(docModel!.toDate!))
+                    const Text('Ngày đến',style: CustomTextStyle.grayColorTextStyle),
+                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0), child: Text(formatDate(docModel!.toDate!),style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Thời hạn',style: CustomTextStyle.secondTextStyle),
-                    Text(formatDate(docModel!.endDate!))
+                    const Text('Thời hạn',style: CustomTextStyle.grayColorTextStyle),
+                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0), child: Text(formatDate(docModel!.endDate!),style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
               ],
@@ -300,14 +263,221 @@ class DocOutListItem extends StatelessWidget {
 }
 
 
+class FilterDocumentOutBottomSheet extends StatelessWidget {
+  const FilterDocumentOutBottomSheet(this.menuController, this.documentOutViewModel,
+      {Key? key})
+      : super(key: key);
+  final MenuController? menuController;
+  final DocumentOutViewModel? documentOutViewModel;
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+          child: Column(children: [
+            //tatca
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Tất cả văn bản đi chờ phát hành',
+                      style: TextStyle(
+                          color: kBlueButton,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Roboto',
+                          fontSize: 16),
+                    ),
+                  ),
+                  Obx(() => (documentOutViewModel!.mapAllFilter.containsKey(0))
+                      ? InkWell(
+                      onTap: () {
+                        documentOutViewModel!.checkboxFilterAll(false, 0);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        documentOutViewModel!.checkboxFilterAll(true, 0);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Divider(
+              thickness: 1,
+              color: kBlueButton,
+            ),
+            // Tất cả trang thai
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Tất cả trạng thái',
+                      style: CustomTextStyle.roboto700TextStyle,
+                    ),
+                  ),
+                  Obx(() => (documentOutViewModel!.mapAllFilter.containsKey(3))
+                      ? InkWell(
+                      onTap: () {
+                        documentOutViewModel!.checkboxFilterAll(false, 3);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        documentOutViewModel!.checkboxFilterAll(true, 3);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            SizedBox(
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: lisStatus.length,
+                  itemBuilder: (context, index) {
+                    var item = lisStatus[index];
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  item,
+                                  style: CustomTextStyle.roboto400s16TextStyle,
+                                ),
+                              ),
+                              Obx(() => (documentOutViewModel!.mapStatusFilter
+                                  .containsKey(index))
+                                  ? InkWell(
+                                  onTap: () {
+                                    documentOutViewModel!
+                                        .checkboxStatus(
+                                        false, index, "$item;");
+                                  },
+                                  child: Image.asset(
+                                    'assets/icons/ic_checkbox_active.png',
+                                    width: 30,
+                                    height: 30,
+                                  ))
+                                  : InkWell(
+                                  onTap: () {
+                                    documentOutViewModel!
+                                        .checkboxStatus(
+                                        true, index, "$item;");
+                                  },
+                                  child: Image.asset(
+                                    'assets/icons/ic_checkbox_unactive.png',
+                                    width: 30,
+                                    height: 30,
+                                  )))
+                            ],
+                          ),
+                        ),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Divider(
+                              thickness: 1,
+                              color: kgray,
+                            )),
+                      ],
+                    );
+                  }),
+            ),
+
+            //bottom button
+            Align(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          style: buttonFilterWhite,
+                          child: const Text('Đóng')),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            var status = "";
+                            if (documentOutViewModel!.mapAllFilter.containsKey(0)) {
+                              documentOutViewModel!.postDocOutByFilter(
+                                status,
+                              );
+                            } else {
+                              if (documentOutViewModel!.mapAllFilter
+                                  .containsKey(3)) {
+                                status = "";
+                              }
+                              else
+                              {
+                                documentOutViewModel!.mapStatusFilter.forEach((key, value) {
+                                  status += value;
+                                });
+                              }
+                            }
+                            print(status);
+                            documentOutViewModel!.postDocOutByFilter(
+                                status,);
+                            Get.back();
+                          },
+                          style: buttonFilterBlue,
+                          child: const Text('Áp dụng')),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ]),
+        ),
+      ),
+    );
+  }
+}
+var lisStatus= ["Chưa xử lý","Đã xử lý"];
 
 
 
 
 Widget signWidget(DocumentOutItems docModel) {
 
-    if (docModel.released == true) {
+    if (docModel.status == "Đã xử lý") {
       return Row(
         children: [
           Image.asset(
@@ -316,9 +486,9 @@ Widget signWidget(DocumentOutItems docModel) {
             width: 14,
           ),
           const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-          const Text(
-            'Đã phát hành',
-            style: TextStyle(color: kGreenSign),
+           Text(
+            docModel.status!,
+            style: const TextStyle(color: kGreenSign),
           )
         ],
       );
@@ -331,7 +501,7 @@ Widget signWidget(DocumentOutItems docModel) {
             width: 14,
           ),
           const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-          const Text('Chưa phát hành', style: TextStyle(color: kOrangeSign))
+           Text(docModel.status!, style: const TextStyle(color: kOrangeSign))
         ],
       );
     }

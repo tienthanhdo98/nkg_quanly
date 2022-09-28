@@ -43,39 +43,77 @@ const kVioletButton = Color(0xFF3D34FF);
 const kVioletBg = Color(0xFFEDECFF);
 const kGrayButton = Color(0xFFD9D9D9);
 
-var listColorChart = [kRedPriority,kGreenSign,kOrange,kViolet,kBlueChart,kBluePriority];
+//list
+var listColorChart = [
+  kRedPriority,
+  kGreenSign,
+  kOrange,
+  kViolet,
+  kBlueChart,
+  kBluePriority
+];
+var listLevel = ["Thấp", "Trung bình", "Cao"];
+var listProfileWorkStatus = [
+  "Hoàn thành",
+  "Đang xử lý",
+  "Quá hạn xử lý",
+  "Đã thu hồi",
+  "Trong hạn xử lý",
+  "Được tạo mới"
+];
+var listDocInStatus = [
+  "Đã xử lý",
+  "Đang xử lý",
+  "Chưa xử lý",
+  "Đã bút phê",
+  "Chưa bút phê"
+];
+var listMissionStatus = [
+  "Chưa xử lý",
+  "Đang thực hiện",
+  "Đã hủy",
+  "Đã tạm dừng"
+];
+var listType = ["Trực tiếp", "Trực tuyến"];
+var listProblem = ["Giáo dục mầm non", "Giáo dục THCS", "Giáo dục THPT","Giáo dục Đại Học","Giáo dục Cao học","Giáo dục thường xuyên"];
+var listUnit = ["Phòng Hành Chính","Phòng Nội vụ","Phòng Công vụ","Phòng Chiến lược","Phòng Công tác đào taọ","Phòng tài chính"];
 //string
-String jsonGetByMonth = '{"pageIndex":1,"pageSize":10,"isMonth": true,"dateFrom":"${formatDateToString(dateNow)}"}';
+String jsonGetByMonth =
+    '{"pageIndex":1,"pageSize":10,"isMonth": true,"dateFrom":"${formatDateToString(dateNow)}"}';
 
 final kUnActiveButtonStyle =
     ElevatedButton.styleFrom(primary: kWhite, onPrimary: Colors.black);
 final kActiveButtonStyle = ElevatedButton.styleFrom(primary: kBlueButton);
 
-Widget borderText(String value,BuildContext context) {
+Widget borderText(String? value, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
     child: Container(
       width: double.infinity,
       decoration: BoxDecoration(
         color: kgray,
-        border: Border.all(
-          color: kDarkGray
-        ),
+        border: Border.all(color: kDarkGray),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Padding(
         padding: const EdgeInsets.all(15),
-        child: Text(value,style: Theme.of(context).textTheme.headline4,),
+        child: Text(
+          value!,
+          style: Theme.of(context).textTheme.headline4,
+        ),
       ),
     ),
   );
 }
+
 Widget headerWidget(String header, BuildContext context) {
   return Container(
     decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        border: Border(bottom: BorderSide(width: 1
-        , color: Theme.of(context).dividerColor,
+        border: Border(
+            bottom: BorderSide(
+          width: 1,
+          color: Theme.of(context).dividerColor,
         ))),
     child: Padding(
       padding: const EdgeInsets.all(15),
@@ -92,9 +130,11 @@ Widget headerWidget(String header, BuildContext context) {
             ),
           ),
           const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-          Text(
-            header,
-            style: Theme.of(context).textTheme.headline1,
+          Flexible(
+            child: Text(
+              header,
+              style: Theme.of(context).textTheme.headline1,
+            ),
           ),
         ],
       ),
@@ -102,7 +142,8 @@ Widget headerWidget(String header, BuildContext context) {
   );
 }
 
-Widget headerWidgetSeatch(String header, GetView searchScreen, BuildContext context) {
+Widget headerWidgetSeatch(
+    String header, GetView searchScreen, BuildContext context) {
   return Container(
     color: Theme.of(context).cardColor,
     child: Padding(
@@ -122,38 +163,48 @@ Widget headerWidgetSeatch(String header, GetView searchScreen, BuildContext cont
           ),
           Expanded(
               child: InkWell(
-                onTap: () {
-                  Get.to(() => searchScreen);
-                },
-                child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      padding: const EdgeInsets.all(7),
-                        decoration:  BoxDecoration(
-                          color: kgray,
-                          borderRadius:
-                          BorderRadius.circular(50),
-                        ),
-                        child: Image.asset('assets/icons/ic_search.png',width: 20,height: 20,))),
-              ))
+            onTap: () {
+              Get.to(() => searchScreen);
+            },
+            child: Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                    padding: const EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      color: kgray,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Image.asset(
+                      'assets/icons/ic_search.png',
+                      width: 20,
+                      height: 20,
+                    ))),
+          ))
         ],
       ),
     ),
   );
 }
 
-Widget headerTableDate(Widget widget1, Widget widget2,BuildContext context){
-  return  Container(
+Widget headerTableDate(Widget widget1, Widget widget2, BuildContext context) {
+  return Container(
     color: kgray,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text(
-            "${dateNow.year} Tháng ${dateNow.month}",
-            style: Theme.of(context).textTheme.headline2,
+        Row(children: [
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Text(
+              "${dateNow.year} Tháng ${dateNow.month}",
+              style: Theme.of(context).textTheme.headline2,
+            ),
           ),
+          const Spacer(),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+              child: Image.asset("assets/icons/ic_calendar.png",width: 20,height: 20,))
+        ],
         ),
         widget1,
         widget2
@@ -248,7 +299,7 @@ Widget headerChartTable2(BuildContext context) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Padding(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Row(
           children: const [
             Text(
@@ -329,43 +380,38 @@ class CustomTextStyle {
   );
   static const robotow400s12TextStyle = TextStyle(
       color: Colors.black,
-      fontSize:12,
+      fontSize: 12,
       fontFamily: 'Roboto',
-      fontWeight: FontWeight.w400
-  );
+      fontWeight: FontWeight.w400);
   static const robotow400s14TextStyle = TextStyle(
       color: Colors.black,
-      fontSize:14,
+      fontSize: 14,
       fontFamily: 'Roboto',
-      fontWeight: FontWeight.w400
-  );
+      fontWeight: FontWeight.w400);
   static const roboto400s16TextStyle = TextStyle(
       color: Colors.black,
-      fontSize:16,
+      fontSize: 16,
       fontFamily: 'Roboto',
-      fontWeight: FontWeight.w400
-  );
+      fontWeight: FontWeight.w400);
   static const roboto700TextStyle = TextStyle(
-    color: Colors.black,
-    fontSize:16,
-    fontFamily: 'Roboto',
-    fontWeight: FontWeight.w700
-  );
+      color: Colors.black,
+      fontSize: 16,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w700);
   static const robotow700s24TextStyle = TextStyle(
       color: Colors.black,
-      fontSize:24,
+      fontSize: 24,
       fontFamily: 'Roboto',
-      fontWeight: FontWeight.w700
-  );
+      fontWeight: FontWeight.w700);
   static const robotow700s12TextStyle = TextStyle(
       color: Colors.black,
-      fontSize:12,
+      fontSize: 12,
       fontFamily: 'Roboto',
-      fontWeight: FontWeight.w700
-  );
+      fontWeight: FontWeight.w700);
 }
-String calcuPercen(int first, int total){
+
+String calcuPercen(int first, int total) {
   var f = NumberFormat("###.0#", "en_US");
-  var res = f.format ((first/total)*100).toString();
+  var res = f.format((first / total) * 100).toString();
   return "$res%";
 }

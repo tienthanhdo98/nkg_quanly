@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
-import '../../const.dart';
-import '../../model/document/document_statistic_model.dart';
-import '../theme/theme_data.dart';
-import 'book_car_list.dart';
+import '../../../const.dart';
+import '../../../const/widget.dart';
+import '../../../model/booking_car/booking_car_statistic.dart';
+import '../../../model/meeting_room/meeting_room_statistic_model.dart';
+import '../../book_room_meet/pie_chart_room_meeting.dart';
+import '../../theme/theme_data.dart';
+import '../booking_car_list.dart';
+import '../booking_car_viewmodel.dart';
 
-
-class BookCarScreen extends GetView {
+class BookingCarScreen extends GetView {
   String? header;
   String? icon;
 
-  final homeController = Get.put(HomeViewModel());
+  final bookCarViewModel = Get.put(BookingCarViewModel());
 
-  BookCarScreen({Key? key, this.header, this.icon}) : super(key: key);
+  BookingCarScreen({Key? key, this.header, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +25,8 @@ class BookCarScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getDocumentStatistic(),
-          builder: (context, AsyncSnapshot<DocumentStatisticModel> snapshot) {
+          future: bookCarViewModel.getBookingCarStatistic(),
+          builder: (context, AsyncSnapshot<MeetingRoomStatisticModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
                 Stack(
@@ -32,7 +35,7 @@ class BookCarScreen extends GetView {
                         height: 220, width: double.infinity, fit: BoxFit.cover),
                     headerWidget(header!, context),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
+                      padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
                       child: border(
                           Padding(
                             padding: const EdgeInsets.all(15),
@@ -43,9 +46,9 @@ class BookCarScreen extends GetView {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text('Tổng số phòng họp'),
+                                      const Text('Tổng số ô tô'),
                                       Text(
-                                        snapshot.data!.tong.toString(),
+                                        snapshot.data!.total.toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -64,7 +67,7 @@ class BookCarScreen extends GetView {
                                 ],
                               ),
                               const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                                 child: Divider(
                                   thickness: 1,
                                 ),
@@ -77,7 +80,7 @@ class BookCarScreen extends GetView {
                                     children: [
                                       const Text('Còn trống'),
                                       Text(
-                                          snapshot.data!.chuaButPhe!.toString(),
+                                          snapshot.data!.vacancy!.toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))
@@ -92,7 +95,7 @@ class BookCarScreen extends GetView {
                                     children: [
                                       const Text('Đã đặt'),
                                       Text(
-                                        snapshot.data!.daButPhe.toString(),
+                                        snapshot.data!.booked.toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
@@ -107,9 +110,7 @@ class BookCarScreen extends GetView {
                     )
                   ],
                 ),
-                 // Padding(
-                 //    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                 //    child: PieChart2()),
+                PieChartRoomMeetingWidget(documentFilterModel: snapshot.data,),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -119,11 +120,11 @@ class BookCarScreen extends GetView {
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => BookCarList(
+                            Get.to(() => BookingCarList(
                               header: header,
                             ));
                           },
-                          child: Text('Xem danh sách $header'),
+                          child: buttonShowListScreen("Xem danh sách Bố trí ô tô"),
                           style: bottomButtonStyle,
                         ),
                       ),

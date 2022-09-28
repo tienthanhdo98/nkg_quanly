@@ -6,6 +6,7 @@ import '../../const.dart';
 import '../../const/style.dart';
 import '../../const/ultils.dart';
 import '../../const/widget.dart';
+import '../../model/misstion/mission_detail.dart';
 import '../../model/misstion/mission_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
 import '../document_nonapproved/document_nonapproved_list.dart';
@@ -16,7 +17,6 @@ import 'misstion_search.dart';
 
 class MissionList extends GetView {
   final String? header;
-  final DateTime dateNow = DateTime.now();
   final MenuController menuController = Get.put(MenuController());
   final missionViewModel = Get.put(MissionViewModel());
   final int selectedButton = 0;
@@ -206,7 +206,7 @@ class MissionListItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                "${index! + 1}.${docModel!.name}",
+                "${index! + 1}. ${docModel!.name}",
                 style: Theme.of(context).textTheme.headline3,
               ),
               Expanded(
@@ -262,7 +262,7 @@ class MissionListItem extends StatelessWidget {
 
 
 Widget signWidgetMission(MissionItem docModel) {
-  if (docModel.status == "Trong hạn") {
+  if (docModel.state == "Đang thực hiện") {
     return Row(
       children: [
         Image.asset(
@@ -272,12 +272,12 @@ Widget signWidgetMission(MissionItem docModel) {
         ),
         const Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
         Text(
-          docModel.status!,
+          docModel.state!,
           style: const TextStyle(color: kGreenSign,fontSize: 12),
         )
       ],
     );
-  } else if (docModel.status == "Chưa hoàn thành") {
+  } else if (docModel.state == "Chưa xử lý") {
     return Row(
       children: [
         Image.asset(
@@ -286,11 +286,11 @@ Widget signWidgetMission(MissionItem docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
-        Text( docModel.status!, style: const TextStyle(color: kOrangeSign,fontSize: 12))
+        Text( docModel.state!, style: const TextStyle(color: kOrangeSign,fontSize: 12))
       ],
     );
   }
-  else if (docModel.status == "Quá hạn") {
+  else if (docModel.state == "Đã hủy") {
     return Row(
       children: [
         Image.asset(
@@ -299,7 +299,7 @@ Widget signWidgetMission(MissionItem docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
-         Text(docModel.status!, style: const TextStyle(color: kRedPriority,fontSize: 12))
+         Text(docModel.state!, style: const TextStyle(color: kRedPriority,fontSize: 12))
       ],
     );
   }
@@ -312,7 +312,7 @@ Widget signWidgetMission(MissionItem docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
-         Text(docModel.status!, style: const TextStyle(color: Colors.black,fontSize: 12))
+         Text(docModel.state!, style: const TextStyle(color: Colors.black,fontSize: 12))
       ],
     );
   }
@@ -470,7 +470,7 @@ class FilterMissionBottomSheet extends StatelessWidget {
                     );
                   }),
             ),
-            // Tất cả van de trinh
+            // Tất cả muc do
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
               child: Row(
@@ -514,9 +514,9 @@ class FilterMissionBottomSheet extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: lisLevel.length,
+                  itemCount: listLevel.length,
                   itemBuilder: (context, index) {
-                    var item = lisLevel[index];
+                    var item = listLevel[index];
                     return Column(
                       children: [
                         Padding(
@@ -609,9 +609,9 @@ class FilterMissionBottomSheet extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: lisStatus.length,
+                  itemCount: listMissionStatus.length,
                   itemBuilder: (context, index) {
-                    var item = lisStatus[index];
+                    var item = listMissionStatus[index];
                     return Column(
                       children: [
                         Padding(
@@ -744,5 +744,4 @@ class FilterMissionBottomSheet extends StatelessWidget {
     );
   }
 }
-var lisLevel = ["Thấp","Trung bình","Cao"];
-var lisStatus= ["Chưa xử lý","Đang thực hiện","Đã hủy","Đã tạm dừng"];
+

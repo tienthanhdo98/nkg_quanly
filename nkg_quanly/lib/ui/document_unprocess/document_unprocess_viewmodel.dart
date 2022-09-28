@@ -29,7 +29,7 @@ class DocumentUnprocessViewModel extends GetxController {
   void onInit() {
     getFilterForChart("${apiGetDocumentUnprocessFilterChart}0");
     initCurrentDate();
-    print(rxDate.value);
+    getFilterDepartment();
     getDocumentByDay(rxDate.value);
     super.onInit();
   }
@@ -121,4 +121,55 @@ class DocumentUnprocessViewModel extends GetxController {
     print(response.body);
     return DocumentStatisticModel.fromJson(jsonDecode(response.body));
   }
+  //filter
+  final RxMap<int, String> mapDepartmentFilter = <int, String>{}.obs;
+  final RxMap<int, String> mapLevelFilter = <int, String>{}.obs;
+  final RxMap<int, String> mapStatusFilter= <int, String>{}.obs;
+  final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
+  RxList<String> rxListDepartmentFilter  = <String>[].obs;
+  RxList<String> rxListLevelFilter  = <String>[].obs;
+  RxList<String> rxListStatusFilter = <String>[].obs;
+  void checkboxFilterAll(bool value, int key) {
+    if (value == true) {
+      var map = {key: ""};
+      mapAllFilter.addAll(map);
+    } else {
+      mapAllFilter.remove(key);
+    }
+  }
+
+  void checkboxDepartment(bool value, int key, String filterValue) {
+    if (value == true) {
+      var map = {key: filterValue};
+      mapDepartmentFilter.addAll(map);
+    } else {
+      mapDepartmentFilter.remove(key);
+    }
+  }
+  void checkboxStatus(bool value, int key, String filterValue) {
+    if (value == true) {
+      var map = {key: filterValue};
+      mapStatusFilter.addAll(map);
+    } else {
+      mapStatusFilter.remove(key);
+    }
+  }
+  void checkboxLevel(bool value, int key, String filterValue) {
+    if (value == true) {
+      var map = {key: filterValue};
+      mapLevelFilter.addAll(map);
+    } else {
+      mapLevelFilter.remove(key);
+    }
+  }
+  Future<void> getFilterDepartment() async {
+    print('loading');
+    http.Response response = await http.get(
+        Uri.parse("http://123.31.31.237:6002/api/documentin/department-public"));
+    List<dynamic> listRes = jsonDecode(response.body);
+    List<String> listUnit = listRes.map((e) => e.toString()).toList();
+    rxListDepartmentFilter.value = listUnit;
+    print(rxListDepartmentFilter.value);
+  }
+
 }

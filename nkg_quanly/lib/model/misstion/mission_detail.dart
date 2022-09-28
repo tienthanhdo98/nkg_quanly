@@ -1,4 +1,4 @@
-class MissionDetailModel {
+class MissionItem {
   String? id;
   String? code;
   String? name;
@@ -14,7 +14,7 @@ class MissionDetailModel {
   String? state;
   List<Timelines>? timelines;
 
-  MissionDetailModel(
+  MissionItem(
       {this.id,
         this.code,
         this.name,
@@ -30,7 +30,7 @@ class MissionDetailModel {
         this.state,
         this.timelines});
 
-  MissionDetailModel.fromJson(Map<String, dynamic> json) {
+  MissionItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     code = json['code'];
     name = json['name'];

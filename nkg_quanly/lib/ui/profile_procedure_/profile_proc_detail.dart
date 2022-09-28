@@ -7,7 +7,7 @@ import '../../const.dart';
 import '../../model/profile_procedure_model/profile_procedure_model.dart';
 
 class ProfileProcDetail extends GetView{
-  final int? id;
+  final String? id;
 
   final profilesProcedureController = Get.put(ProfilesProcedureViewModel());
 

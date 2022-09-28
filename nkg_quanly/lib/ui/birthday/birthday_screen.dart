@@ -10,7 +10,7 @@ import 'birthday_search.dart';
 import 'birthday_viewmodel.dart';
 
 class BirthDayScreen extends GetView {
-  DateTime dateNow = DateTime.now();
+
   int selected = 0;
   int selectedButton = 0;
   String? header;
@@ -139,10 +139,9 @@ class BirthDayScreen extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            DateTime datefrom = DateTime.now();
                             DateTime dateTo =
-                                datefrom.add(const Duration(days: 7));
-                            String strdateFrom = formatDateToString(datefrom);
+                            dateNow.add(const Duration(days: 7));
+                            String strdateFrom = formatDateToString(dateNow);
                             String strdateTo = formatDateToString(dateTo);
                             print(strdateFrom);
                             print(strdateTo);

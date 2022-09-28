@@ -126,7 +126,7 @@ class DocumentNonApprovedScreen extends GetView {
                                     .getFilterForChart("${apiGetDocumentApproveFilterChart}0");
                                 documentNonApproveViewModel.selectedChartButton(0);
                               },
-                              child: const Text("Mức độ"),
+                              child: const Text("Trạng thái"),
                             )),
                           )),
                       Expanded(

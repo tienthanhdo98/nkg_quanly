@@ -8,7 +8,6 @@ import 'package:nkg_quanly/const/ultils.dart';
 import '../../model/calendarwork_model/calendarwork_model.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/proflie_model/profile_model.dart';
-import '../../model/proflie_model/profile_statistic.dart';
 
 class ProfileViewModel extends GetxController {
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
@@ -46,6 +45,7 @@ class ProfileViewModel extends GetxController {
     getFilterSubmissProblem();
     getFilterForChart("${apiGetProfileFilter}0");
     initCurrentDate();
+    getProfileStatisticEOffice();
     postProfileByDay(rxDate.value);
     super.onInit();
   }
@@ -124,6 +124,30 @@ class ProfileViewModel extends GetxController {
     }
   }
 
+  //by ui
+  //filter
+  final RxMap<int, String> mapLevelFilter = <int, String>{}.obs;
+  final RxMap<int, String> mapStatusFilter= <int, String>{}.obs;
+  RxList<String> rxListLevelFilter  = <String>[].obs;
+  RxList<String> rxListStatusFilter = <String>[].obs;
+
+  void checkboxStatus(bool value, int key, String filterValue) {
+    if (value == true) {
+      var map = {key: filterValue};
+      mapStatusFilter.addAll(map);
+    } else {
+      mapStatusFilter.remove(key);
+    }
+  }
+  void checkboxLevel(bool value, int key, String filterValue) {
+    if (value == true) {
+      var map = {key: filterValue};
+      mapLevelFilter.addAll(map);
+    } else {
+      mapLevelFilter.remove(key);
+    }
+  }
+
   //end filter
 
   void swtichBottomButton(int button) {
@@ -155,13 +179,13 @@ class ProfileViewModel extends GetxController {
     return DocumentFilterModel.fromJson(jsonDecode(response.body));
   }
 
-  Future<ProfileStatisticModel> getProfileStatistic() async {
-    final url = Uri.parse(apiGetProfileStatistic);
-    print('loading');
-    http.Response response = await http.get(url);
-    print(response.body);
-    return ProfileStatisticModel.fromJson(jsonDecode(response.body));
-  }
+  // Future<ProfileStatisticModel> getProfileStatistic() async {
+  //   final url = Uri.parse(apiGetProfileStatistic);
+  //   print('loading');
+  //   http.Response response = await http.get(url);
+  //   print(response.body);
+  //   return ProfileStatisticModel.fromJson(jsonDecode(response.body));
+  // }
 
   Future<void> postProfileByDay(String day) async {
     final url = Uri.parse(apiGetProfile);
@@ -201,5 +225,26 @@ class ProfileViewModel extends GetxController {
     print(response.body);
     ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileItems.value = res.items!;
+  }
+  Future<void> postProfileByFilterUi(String status, String level) async {
+    final url = Uri.parse(apiGetProfile);
+    print('loading');
+    String json = '{"pageIndex":1,"pageSize":10,"status":"$status","level":"$level"}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+    print(response.body);
+    ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
+    rxProfileItems.value = res.items!;
+  }
+  //eoffice
+ RxList<FilterItems> rxProfileStatisticModel = <FilterItems>[].obs;
+  Future<void> getProfileStatisticEOffice() async {
+    final url = Uri.parse(apiGetProfileStatistic);
+    print('loading');
+    http.Response response = await http.get(url);
+    print(response.body);
+    var listStatistic= <FilterItems>[];
+    List a = json.decode(response.body) as List;
+    listStatistic = a.map((e) => FilterItems.fromJson(e)).toList();
+    rxProfileStatisticModel.value = listStatistic;
   }
 }

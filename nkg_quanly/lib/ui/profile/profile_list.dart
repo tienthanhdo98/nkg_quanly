@@ -17,15 +17,12 @@ import '../theme/theme_data.dart';
 
 class ProfileList extends GetView {
   final String? header;
-  DateTime dateNow = DateTime.now();
+
   final MenuController menuController = Get.put(MenuController());
   final profileViewModel = Get.put(ProfileViewModel());
-  int selectedButton = 0;
-  final bool isNonapproved;
 
-  ProfileList({this.header, this.isNonapproved = true});
+  ProfileList({this.header});
 
-  int selected = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +212,7 @@ class ProfileListItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                "${index! + 1}.${docModel!.name}",
+                "${index! + 1}. ${docModel!.name}",
                 style: Theme.of(context).textTheme.headline2,
               ),
               Expanded(
@@ -271,6 +268,441 @@ class ProfileListItem extends StatelessWidget {
   }
 }
 
+// class FilterProfileBottomSheet extends StatelessWidget {
+//   const FilterProfileBottomSheet(this.menuController, this.profileViewModel,
+//       {Key? key})
+//       : super(key: key);
+//   final MenuController? menuController;
+//   final ProfileViewModel? profileViewModel;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       resizeToAvoidBottomInset: false,
+//       body: SingleChildScrollView(
+//         child: Padding(
+//           padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+//           child: Column(children: [
+//             //tatca
+//             Padding(
+//               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+//               child: Row(
+//                 children: [
+//                   const Expanded(
+//                     child: Text(
+//                       'Tất cả văn hồ sơ trình',
+//                       style: TextStyle(
+//                           color: kBlueButton,
+//                           fontWeight: FontWeight.w500,
+//                           fontFamily: 'Roboto',
+//                           fontSize: 16),
+//                     ),
+//                   ),
+//                   Obx(() => (profileViewModel!.mapAllFilter.containsKey(0))
+//                       ? InkWell(
+//                           onTap: () {
+//                             profileViewModel!.checkboxFilterAll(false, 0);
+//                           },
+//                           child: Image.asset(
+//                             'assets/icons/ic_checkbox_active.png',
+//                             width: 30,
+//                             height: 30,
+//                           ))
+//                       : InkWell(
+//                           onTap: () {
+//                             profileViewModel!.checkboxFilterAll(true, 0);
+//                           },
+//                           child: Image.asset(
+//                             'assets/icons/ic_checkbox_unactive.png',
+//                             width: 30,
+//                             height: 30,
+//                           )))
+//                 ],
+//               ),
+//             ),
+//             // tat ca muc do
+//             const Divider(
+//               thickness: 1,
+//               color: kBlueButton,
+//             ),
+//             //tat ca don vi
+//             Padding(
+//               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+//               child: Row(
+//                 children: [
+//                   const Expanded(
+//                     child: Text(
+//                       'Tất cả đơn vị soạn thảo',
+//                       style: CustomTextStyle.roboto700TextStyle,
+//                     ),
+//                   ),
+//                   Obx(() => (profileViewModel!.mapAllFilter.containsKey(1))
+//                       ? InkWell(
+//                           onTap: () {
+//                             profileViewModel!.checkboxFilterAll(false, 1);
+//                           },
+//                           child: Image.asset(
+//                             'assets/icons/ic_checkbox_active.png',
+//                             width: 30,
+//                             height: 30,
+//                           ))
+//                       : InkWell(
+//                           onTap: () {
+//                             profileViewModel!.checkboxFilterAll(true, 1);
+//                           },
+//                           child: Image.asset(
+//                             'assets/icons/ic_checkbox_unactive.png',
+//                             width: 30,
+//                             height: 30,
+//                           )))
+//                 ],
+//               ),
+//             ),
+//             const Padding(
+//                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+//                 child: Divider(
+//                   thickness: 1,
+//                   color: kgray,
+//                 )),
+//             SizedBox(
+//               child: ListView.builder(
+//                   shrinkWrap: true,
+//                   physics: BouncingScrollPhysics(),
+//                   itemCount: profileViewModel!.rxListUnitEditor.length,
+//                   itemBuilder: (context, index) {
+//                     var item = profileViewModel!.rxListUnitEditor[index];
+//                     return Column(
+//                       children: [
+//                         Padding(
+//                           padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+//                           child: Row(
+//                             children: [
+//                               Expanded(
+//                                 child: Text(
+//                                   item,
+//                                   style: CustomTextStyle.roboto400s16TextStyle,
+//                                 ),
+//                               ),
+//                               Obx(() => (profileViewModel!.mapUnitEditorFilter
+//                                       .containsKey(index))
+//                                   ? InkWell(
+//                                       onTap: () {
+//                                         profileViewModel!.checkboxUnitEditor(
+//                                             false, index, "$item;");
+//                                       },
+//                                       child: Image.asset(
+//                                         'assets/icons/ic_checkbox_active.png',
+//                                         width: 30,
+//                                         height: 30,
+//                                       ))
+//                                   : InkWell(
+//                                       onTap: () {
+//                                         profileViewModel!.checkboxUnitEditor(
+//                                             true, index, "$item;");
+//                                       },
+//                                       child: Image.asset(
+//                                         'assets/icons/ic_checkbox_unactive.png',
+//                                         width: 30,
+//                                         height: 30,
+//                                       )))
+//                             ],
+//                           ),
+//                         ),
+//                         const Padding(
+//                             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+//                             child: Divider(
+//                               thickness: 1,
+//                               color: kgray,
+//                             )),
+//                       ],
+//                     );
+//                   }),
+//             ),
+//             // Tất cả van de trinh
+//             Padding(
+//               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+//               child: Row(
+//                 children: [
+//                   const Expanded(
+//                     child: Text(
+//                       'Tất cả vấn đề trình',
+//                       style: CustomTextStyle.roboto700TextStyle,
+//                     ),
+//                   ),
+//                   Obx(() => (profileViewModel!.mapAllFilter.containsKey(2))
+//                       ? InkWell(
+//                           onTap: () {
+//                             profileViewModel!.checkboxFilterAll(false, 2);
+//                           },
+//                           child: Image.asset(
+//                             'assets/icons/ic_checkbox_active.png',
+//                             width: 30,
+//                             height: 30,
+//                           ))
+//                       : InkWell(
+//                           onTap: () {
+//                             profileViewModel!.checkboxFilterAll(true, 2);
+//                           },
+//                           child: Image.asset(
+//                             'assets/icons/ic_checkbox_unactive.png',
+//                             width: 30,
+//                             height: 30,
+//                           )))
+//                 ],
+//               ),
+//             ),
+//             const Padding(
+//                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+//                 child: Divider(
+//                   thickness: 1,
+//                   color: kgray,
+//                 )),
+//             //list van de trinh
+//             SizedBox(
+//               child: ListView.builder(
+//                   shrinkWrap: true,
+//                   physics: BouncingScrollPhysics(),
+//                   itemCount: profileViewModel!.rxListSubmissProblem.length,
+//                   itemBuilder: (context, index) {
+//                     var item = profileViewModel!.rxListSubmissProblem[index];
+//                     return Column(
+//                       children: [
+//                         Padding(
+//                           padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+//                           child: Row(
+//                             children: [
+//                               Expanded(
+//                                 child: Text(
+//                                   item,
+//                                   style: CustomTextStyle.roboto400s16TextStyle,
+//                                 ),
+//                               ),
+//                               Obx(() => (profileViewModel!.mapSubmissProblem
+//                                       .containsKey(index))
+//                                   ? InkWell(
+//                                       onTap: () {
+//                                         profileViewModel!
+//                                             .checkboxSubmissProblemr(
+//                                                 false, index, "$item;");
+//                                       },
+//                                       child: Image.asset(
+//                                         'assets/icons/ic_checkbox_active.png',
+//                                         width: 30,
+//                                         height: 30,
+//                                       ))
+//                                   : InkWell(
+//                                       onTap: () {
+//                                         profileViewModel!
+//                                             .checkboxSubmissProblemr(
+//                                                 true, index, "$item;");
+//                                       },
+//                                       child: Image.asset(
+//                                         'assets/icons/ic_checkbox_unactive.png',
+//                                         width: 30,
+//                                         height: 30,
+//                                       )))
+//                             ],
+//                           ),
+//                         ),
+//                         const Padding(
+//                             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+//                             child: Divider(
+//                               thickness: 1,
+//                               color: kgray,
+//                             )),
+//                       ],
+//                     );
+//                   }),
+//             ),
+//             // Tất cả loai phieu trinh
+//             Padding(
+//               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+//               child: Row(
+//                 children: [
+//                   const Expanded(
+//                     child: Text(
+//                       'Tất cả loại phiếu trình',
+//                       style: CustomTextStyle.roboto700TextStyle,
+//                     ),
+//                   ),
+//                   Obx(() => (profileViewModel!.mapAllFilter.containsKey(3))
+//                       ? InkWell(
+//                           onTap: () {
+//                             profileViewModel!.checkboxFilterAll(false, 3);
+//                           },
+//                           child: Image.asset(
+//                             'assets/icons/ic_checkbox_active.png',
+//                             width: 30,
+//                             height: 30,
+//                           ))
+//                       : InkWell(
+//                           onTap: () {
+//                             profileViewModel!.checkboxFilterAll(true, 3);
+//                           },
+//                           child: Image.asset(
+//                             'assets/icons/ic_checkbox_unactive.png',
+//                             width: 30,
+//                             height: 30,
+//                           )))
+//                 ],
+//               ),
+//             ),
+//             const Padding(
+//                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+//                 child: Divider(
+//                   thickness: 1,
+//                   color: kgray,
+//                 )),
+//             SizedBox(
+//               child: ListView.builder(
+//                   shrinkWrap: true,
+//                   physics: BouncingScrollPhysics(),
+//                   itemCount: profileViewModel!.rxListTypeSubmission.length,
+//                   itemBuilder: (context, index) {
+//                     var item = profileViewModel!.rxListTypeSubmission[index];
+//                     return Column(
+//                       children: [
+//                         Padding(
+//                           padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+//                           child: Row(
+//                             children: [
+//                               Expanded(
+//                                 child: Text(
+//                                   item,
+//                                   style: CustomTextStyle.roboto400s16TextStyle,
+//                                 ),
+//                               ),
+//                               Obx(() => (profileViewModel!.mapTypeSubmission
+//                                       .containsKey(index))
+//                                   ? InkWell(
+//                                       onTap: () {
+//                                         profileViewModel!
+//                                             .checkboxTypeSubmission(
+//                                                 false, index, "$item;");
+//                                       },
+//                                       child: Image.asset(
+//                                         'assets/icons/ic_checkbox_active.png',
+//                                         width: 30,
+//                                         height: 30,
+//                                       ))
+//                                   : InkWell(
+//                                       onTap: () {
+//                                         profileViewModel!
+//                                             .checkboxTypeSubmission(
+//                                                 true, index, "$item;");
+//                                       },
+//                                       child: Image.asset(
+//                                         'assets/icons/ic_checkbox_unactive.png',
+//                                         width: 30,
+//                                         height: 30,
+//                                       )))
+//                             ],
+//                           ),
+//                         ),
+//                         const Padding(
+//                             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+//                             child: Divider(
+//                               thickness: 1,
+//                               color: kgray,
+//                             )),
+//                       ],
+//                     );
+//                   }),
+//             ),
+//
+//             //bottom button
+//             Align(
+//               child: Row(
+//                 children: [
+//                   Expanded(
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(10),
+//                       child: ElevatedButton(
+//                           onPressed: () {
+//                             Get.back();
+//                           },
+//                           style: buttonFilterWhite,
+//                           child: const Text('Đóng')),
+//                     ),
+//                   ),
+//                   Expanded(
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(10),
+//                       child: ElevatedButton(
+//                           onPressed: () {
+//                             Get.back();
+//                             var status = "";
+//                             var level = "";
+//                             var department = "";
+//                             var submissionProblem = "";
+//                             var typeSubmission = "";
+//                             var unitEditor = "";
+//                             if (profileViewModel!.mapAllFilter.containsKey(0)) {
+//                               profileViewModel!.postProfileByFilter(
+//                                   status,
+//                                   level,
+//                                   department,
+//                                   submissionProblem,
+//                                   typeSubmission,
+//                                   unitEditor);
+//                             } else {
+//                               if (profileViewModel!.mapAllFilter
+//                                   .containsKey(1)) {
+//                                 unitEditor = "";
+//                               }
+//                               else
+//                                 {
+//                                   profileViewModel!.mapUnitEditorFilter.forEach((key, value) {
+//                                     unitEditor += value;
+//                                   });
+//                                 }
+//                               if (profileViewModel!.mapAllFilter
+//                                   .containsKey(2)) {
+//                                 submissionProblem = "";
+//                               }
+//                               else
+//                                 {
+//                                   profileViewModel!.mapSubmissProblem.forEach((key, value) {
+//                                     submissionProblem += value;
+//                                   });
+//                                 }
+//                               if (profileViewModel!.mapAllFilter
+//                                   .containsKey(3)) {
+//                                 typeSubmission = "";
+//                               }
+//                               else
+//                               {
+//                                 profileViewModel!.mapTypeSubmission.forEach((key, value) {
+//                                   typeSubmission += value;
+//                                 });
+//                               }
+//                             }
+//                             print(unitEditor);
+//                             print(submissionProblem);
+//                             print(typeSubmission);
+//                             profileViewModel!.postProfileByFilter(
+//                                 status,
+//                                 level,
+//                                 department,
+//                                 submissionProblem,
+//                                 typeSubmission,
+//                                 unitEditor);
+//                           },
+//                           style: buttonFilterBlue,
+//                           child: const Text('Áp dụng')),
+//                     ),
+//                   )
+//                 ],
+//               ),
+//             )
+//           ]),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+//filter by ui
 class FilterProfileBottomSheet extends StatelessWidget {
   const FilterProfileBottomSheet(this.menuController, this.profileViewModel,
       {Key? key})
@@ -293,7 +725,7 @@ class FilterProfileBottomSheet extends StatelessWidget {
                 children: [
                   const Expanded(
                     child: Text(
-                      'Tất cả văn hồ sơ trình',
+                      'Tất cả hồ sơ trình',
                       style: TextStyle(
                           color: kBlueButton,
                           fontWeight: FontWeight.w500,
@@ -303,23 +735,23 @@ class FilterProfileBottomSheet extends StatelessWidget {
                   ),
                   Obx(() => (profileViewModel!.mapAllFilter.containsKey(0))
                       ? InkWell(
-                          onTap: () {
-                            profileViewModel!.checkboxFilterAll(false, 0);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        profileViewModel!.checkboxFilterAll(false, 0);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            profileViewModel!.checkboxFilterAll(true, 0);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        profileViewModel!.checkboxFilterAll(true, 0);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -328,36 +760,36 @@ class FilterProfileBottomSheet extends StatelessWidget {
               thickness: 1,
               color: kBlueButton,
             ),
-            //tat ca don vi
+            // Tất cả muc do
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
               child: Row(
                 children: [
                   const Expanded(
                     child: Text(
-                      'Tất cả đơn vị soạn thảo',
+                      'Tất cả mức độ',
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
                   Obx(() => (profileViewModel!.mapAllFilter.containsKey(1))
                       ? InkWell(
-                          onTap: () {
-                            profileViewModel!.checkboxFilterAll(false, 1);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        profileViewModel!.checkboxFilterAll(false, 1);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            profileViewModel!.checkboxFilterAll(true, 1);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        profileViewModel!.checkboxFilterAll(true, 1);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -371,9 +803,9 @@ class FilterProfileBottomSheet extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: profileViewModel!.rxListUnitEditor.length,
+                  itemCount: lisLevel.length,
                   itemBuilder: (context, index) {
-                    var item = profileViewModel!.rxListUnitEditor[index];
+                    var item = lisLevel[index];
                     return Column(
                       children: [
                         Padding(
@@ -386,28 +818,30 @@ class FilterProfileBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (profileViewModel!.mapUnitEditorFilter
-                                      .containsKey(index))
+                              Obx(() => (profileViewModel!.mapLevelFilter
+                                  .containsKey(index))
                                   ? InkWell(
-                                      onTap: () {
-                                        profileViewModel!.checkboxUnitEditor(
-                                            false, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_active.png',
-                                        width: 30,
-                                        height: 30,
-                                      ))
+                                  onTap: () {
+                                    profileViewModel!
+                                        .checkboxLevel(
+                                        false, index, "$item;");
+                                  },
+                                  child: Image.asset(
+                                    'assets/icons/ic_checkbox_active.png',
+                                    width: 30,
+                                    height: 30,
+                                  ))
                                   : InkWell(
-                                      onTap: () {
-                                        profileViewModel!.checkboxUnitEditor(
-                                            true, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_unactive.png',
-                                        width: 30,
-                                        height: 30,
-                                      )))
+                                  onTap: () {
+                                    profileViewModel!
+                                        .checkboxLevel(
+                                        true, index, "$item;");
+                                  },
+                                  child: Image.asset(
+                                    'assets/icons/ic_checkbox_unactive.png',
+                                    width: 30,
+                                    height: 30,
+                                  )))
                             ],
                           ),
                         ),
@@ -421,132 +855,36 @@ class FilterProfileBottomSheet extends StatelessWidget {
                     );
                   }),
             ),
-            // Tất cả van de trinh
+            // Tất cả trang thai state
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
               child: Row(
                 children: [
                   const Expanded(
                     child: Text(
-                      'Tất cả vấn đề trình',
+                      'Tất cả trạng thái',
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
                   Obx(() => (profileViewModel!.mapAllFilter.containsKey(2))
                       ? InkWell(
-                          onTap: () {
-                            profileViewModel!.checkboxFilterAll(false, 2);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        profileViewModel!.checkboxFilterAll(false, 2);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            profileViewModel!.checkboxFilterAll(true, 2);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
-                ],
-              ),
-            ),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            //list van de trinh
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: profileViewModel!.rxListSubmissProblem.length,
-                  itemBuilder: (context, index) {
-                    var item = profileViewModel!.rxListSubmissProblem[index];
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item,
-                                  style: CustomTextStyle.roboto400s16TextStyle,
-                                ),
-                              ),
-                              Obx(() => (profileViewModel!.mapSubmissProblem
-                                      .containsKey(index))
-                                  ? InkWell(
-                                      onTap: () {
-                                        profileViewModel!
-                                            .checkboxSubmissProblemr(
-                                                false, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_active.png',
-                                        width: 30,
-                                        height: 30,
-                                      ))
-                                  : InkWell(
-                                      onTap: () {
-                                        profileViewModel!
-                                            .checkboxSubmissProblemr(
-                                                true, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_unactive.png',
-                                        width: 30,
-                                        height: 30,
-                                      )))
-                            ],
-                          ),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Divider(
-                              thickness: 1,
-                              color: kgray,
-                            )),
-                      ],
-                    );
-                  }),
-            ),
-            // Tất cả loai phieu trinh
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Tất cả loại phiếu trình',
-                      style: CustomTextStyle.roboto700TextStyle,
-                    ),
-                  ),
-                  Obx(() => (profileViewModel!.mapAllFilter.containsKey(3))
-                      ? InkWell(
-                          onTap: () {
-                            profileViewModel!.checkboxFilterAll(false, 3);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
-                      : InkWell(
-                          onTap: () {
-                            profileViewModel!.checkboxFilterAll(true, 3);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        profileViewModel!.checkboxFilterAll(true, 2);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -560,9 +898,9 @@ class FilterProfileBottomSheet extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: profileViewModel!.rxListTypeSubmission.length,
+                  itemCount: lisStatus.length,
                   itemBuilder: (context, index) {
-                    var item = profileViewModel!.rxListTypeSubmission[index];
+                    var item = lisStatus[index];
                     return Column(
                       children: [
                         Padding(
@@ -575,30 +913,30 @@ class FilterProfileBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (profileViewModel!.mapTypeSubmission
-                                      .containsKey(index))
+                              Obx(() => (profileViewModel!.mapStatusFilter
+                                  .containsKey(index))
                                   ? InkWell(
-                                      onTap: () {
-                                        profileViewModel!
-                                            .checkboxTypeSubmission(
-                                                false, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_active.png',
-                                        width: 30,
-                                        height: 30,
-                                      ))
+                                  onTap: () {
+                                    profileViewModel!
+                                        .checkboxStatus(
+                                        false, index, "$item;");
+                                  },
+                                  child: Image.asset(
+                                    'assets/icons/ic_checkbox_active.png',
+                                    width: 30,
+                                    height: 30,
+                                  ))
                                   : InkWell(
-                                      onTap: () {
-                                        profileViewModel!
-                                            .checkboxTypeSubmission(
-                                                true, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_unactive.png',
-                                        width: 30,
-                                        height: 30,
-                                      )))
+                                  onTap: () {
+                                    profileViewModel!
+                                        .checkboxStatus(
+                                        true, index, "$item;");
+                                  },
+                                  child: Image.asset(
+                                    'assets/icons/ic_checkbox_unactive.png',
+                                    width: 30,
+                                    height: 30,
+                                  )))
                             ],
                           ),
                         ),
@@ -636,60 +974,38 @@ class FilterProfileBottomSheet extends StatelessWidget {
                             Get.back();
                             var status = "";
                             var level = "";
-                            var department = "";
-                            var submissionProblem = "";
-                            var typeSubmission = "";
-                            var unitEditor = "";
                             if (profileViewModel!.mapAllFilter.containsKey(0)) {
-                              profileViewModel!.postProfileByFilter(
-                                  status,
-                                  level,
-                                  department,
-                                  submissionProblem,
-                                  typeSubmission,
-                                  unitEditor);
+                              profileViewModel!.postProfileByFilterUi(
+                                status,
+                                level,);
                             } else {
                               if (profileViewModel!.mapAllFilter
                                   .containsKey(1)) {
-                                unitEditor = "";
-                              }
-                              else
-                                {
-                                  profileViewModel!.mapUnitEditorFilter.forEach((key, value) {
-                                    unitEditor += value;
-                                  });
-                                }
-                              if (profileViewModel!.mapAllFilter
-                                  .containsKey(2)) {
-                                submissionProblem = "";
-                              }
-                              else
-                                {
-                                  profileViewModel!.mapSubmissProblem.forEach((key, value) {
-                                    submissionProblem += value;
-                                  });
-                                }
-                              if (profileViewModel!.mapAllFilter
-                                  .containsKey(3)) {
-                                typeSubmission = "";
+                                level = "";
                               }
                               else
                               {
-                                profileViewModel!.mapTypeSubmission.forEach((key, value) {
-                                  typeSubmission += value;
+                                profileViewModel!.mapLevelFilter.forEach((key, value) {
+                                  level += value;
+                                });
+                              }
+                              if (profileViewModel!.mapAllFilter
+                                  .containsKey(2)) {
+                                status = "";
+                              }
+                              else
+                              {
+                                profileViewModel!.mapStatusFilter.forEach((key, value) {
+                                  status += value;
                                 });
                               }
                             }
-                            print(unitEditor);
-                            print(submissionProblem);
-                            print(typeSubmission);
-                            profileViewModel!.postProfileByFilter(
-                                status,
-                                level,
-                                department,
-                                submissionProblem,
-                                typeSubmission,
-                                unitEditor);
+                            print(level);
+                            print(status);
+                            profileViewModel!.postProfileByFilterUi(
+                              status,
+                              level,
+                            );
                           },
                           style: buttonFilterBlue,
                           child: const Text('Áp dụng')),
@@ -704,7 +1020,8 @@ class FilterProfileBottomSheet extends StatelessWidget {
     );
   }
 }
-
+var lisLevel = ["Thấp","Trung bình","Cao"];
+var lisStatus= ["Tạo mới","Hoàn thành","Hoàn thành quá hạn","Quá hạn"];
 Widget signWidget(ProfileItems docModel) {
   if (docModel.status == "Hoàn thành") {
     return Row(
@@ -745,11 +1062,24 @@ Widget signWidget(ProfileItems docModel) {
         Text(docModel.status!, style: TextStyle(color: kRedPriority))
       ],
     );
-  } else {
+  } else if(docModel.status == "Hoàn thành quá hạn"){
     return Row(
       children: [
         Image.asset(
-          'assets/icons/ic_still.png',
+          'assets/icons/ic_done_black.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.status!, style: TextStyle(color: Colors.black))
+      ],
+    );
+  }
+  else {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_done_black.png',
           height: 14,
           width: 14,
         ),

@@ -41,6 +41,7 @@ class PieChartState extends State<PieChartWidget> {
       child: Column(
         children: [
           SizedBox(height: 200, width: 220, child: _buildGroupingPieChart()),
+          const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

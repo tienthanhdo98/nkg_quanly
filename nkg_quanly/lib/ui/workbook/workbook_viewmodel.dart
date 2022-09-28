@@ -6,6 +6,7 @@ import 'package:nkg_quanly/const.dart';
 import 'package:nkg_quanly/const/api.dart';
 
 import '../../const/ultils.dart';
+import '../../model/workbook/group_workbook_model.dart';
 import '../../model/workbook/workbook_model.dart';
 
 class WorkBookViewModel extends GetxController {
@@ -15,13 +16,17 @@ class WorkBookViewModel extends GetxController {
   Rx<DateTime> rxSelectedDay = dateNow.obs;
   Rx<CalendarFormat> rxCalendarFormat = CalendarFormat.week.obs;
   RxList<WorkBookListItems> rxWorkBookListItems = <WorkBookListItems>[].obs;
+  RxList<GroupWorkbookListItems> rxGroupWorkBookListItems = <GroupWorkbookListItems>[].obs;
   Rx<bool> rxSwitchState = false.obs;
 
 
   @override
   void onInit() {
     initCurrentDate();
-    postWorkBookByDay(rxDate.value);
+    // postWorkBookByDay(rxDate.value);
+    postGroupWorkBook();
+    postWorkBookAll();
+
     super.onInit();
   }
 
@@ -55,12 +60,10 @@ class WorkBookViewModel extends GetxController {
   Future<void> postWorkBookAll() async {
     final url = Uri.parse(apiPostWorkBookSearch);
     print('loading');
-    String json = '{"pageIndex":1,"pageSize":30}';
+    String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
     WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
     rxWorkBookListItems.value = res.items!;
-    print(res.items![0].worker);
   }
 
   Future<void> postWorkBookByDay(String date) async {
@@ -74,13 +77,13 @@ class WorkBookViewModel extends GetxController {
   }
 
   Future<void> deleteWorkBookItem(String id) async {
-    final url = Uri.parse(apiWorkBookDelete);
+    final url = Uri.parse("${apiWorkBookDelete}$id");
     print('loading');
-    String json = '["$id"]';
-    http.Response response = await http.post(url, headers: headers, body: json);
+    http.Response response = await http.delete(url, headers: headers);
     print(id);
     print(response.body);
     if (response.statusCode == 200) {
+      postWorkBookAll();
       Get.snackbar(
         "Thông báo",
         "Xóa công việc thành công",
@@ -91,48 +94,61 @@ class WorkBookViewModel extends GetxController {
   }
 
   Future<void> addWorkBookAll(String workName, String groupWorkName,
-      String description, String worker, bool status, bool important) async {
+      String description, String worker, String status, bool important,String groupWorkId) async {
     final url = Uri.parse(apiAddWorkBook);
     print('loading');
     String json = """{
       "workName": "$workName",
       "groupWorkName": "$groupWorkName",
-      "groupWorkId": "e22c45a7-d701-40c8-78de-08da970326d9",
+      "groupWorkId": "$groupWorkId",
       "description": "$description",
       "worker": "$worker",
-      "workBy": "Cao Sơn Cao",
-      "status": $status,
+      "workBy": "$worker",
+      "status": "$status",
       "important": $important
     }""";
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
     if (response.statusCode == 200) {
+      postWorkBookAll();
       Get.snackbar(
         "Thông báo",
-        "Xóa công việc thành công",
+        "Thêm công việc thành công",
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: kWhite,
       );
+
     }
+    else
+      {
+        Get.snackbar(
+          "Thông báo",
+          "Thêm công việc thất bại",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: kWhite,
+        );
+      }
   }
 
-  Future<void> updateWorkBook(String workName, String groupWorkName,
-      String description, String worker, bool status, bool important) async {
+  Future<void> updateWorkBook(String id,String workName, String groupWorkName,
+      String description, String worker, String status, bool important,String groupWorkId) async {
     final url = Uri.parse(apiAddWorkBook);
     print('loading');
     String json = """{
+      "id": "$id",
       "workName": "$workName",
       "groupWorkName": "$groupWorkName",
-      "groupWorkId": "e22c45a7-d701-40c8-78de-08da970326d9",
+      "groupWorkId": "$groupWorkId",
       "description": "$description",
       "worker": "$worker",
-      "workBy": "Cao Sơn Cao",
-      "status": $status,
+      "workBy": "$worker",
+      "status": "$status",
       "important": $important
     }""";
     http.Response response = await http.put(url, headers: headers, body: json);
     print(response.body);
     if (response.statusCode == 200) {
+      postWorkBookAll();
       Get.snackbar(
         "Thông báo",
         "Cập nhật công việc thành công",
@@ -149,11 +165,9 @@ class WorkBookViewModel extends GetxController {
   }
 
   //filter
-  final RxMap<int, String> mapDepartmentFilter = <int, String>{}.obs;
-  final RxMap<int, String> mapLevelFilter = <int, String>{}.obs;
+  final RxMap<int, String> mapImportantFilter = <int, String>{}.obs;
   final RxMap<int, String> mapStatusFilter = <int, String>{}.obs;
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
-  RxList<String> rxListDepartmentFilter = <String>[].obs;
   RxList<String> rxListLevelFilter = <String>[].obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
 
@@ -166,15 +180,6 @@ class WorkBookViewModel extends GetxController {
     }
   }
 
-  void checkboxDepartment(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapDepartmentFilter.addAll(map);
-    } else {
-      mapDepartmentFilter.remove(key);
-    }
-  }
-
   void checkboxStatus(bool value, int key, String filterValue) {
     if (value == true) {
       var map = {key: filterValue};
@@ -184,12 +189,31 @@ class WorkBookViewModel extends GetxController {
     }
   }
 
-  void checkboxLevel(bool value, int key, String filterValue) {
+  void checkboxmapImportantFilter(bool value, int key, String filterValue) {
     if (value == true) {
       var map = {key: filterValue};
-      mapLevelFilter.addAll(map);
+      mapImportantFilter.addAll(map);
     } else {
-      mapLevelFilter.remove(key);
+      mapImportantFilter.remove(key);
     }
   }
+  Future<void> postWorkBookByFilter(String important,String status) async {
+    final url = Uri.parse(apiPostWorkBookSearch);
+    print('loading');
+    String json = '{"pageIndex":1,"pageSize":30, "important": "$important","status":"$status"}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+    print(response.body);
+    WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
+    rxWorkBookListItems.value = res.items!;
+  }
+  Future<void> postGroupWorkBook() async {
+    final url = Uri.parse(apiGroupBookList);
+    print('loading');
+    String json = '{"pageIndex":1,"pageSize":10}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+    print(response.body);
+    GroupWorkbookModel res = GroupWorkbookModel.fromJson(jsonDecode(response.body));
+    rxGroupWorkBookListItems.value = res.items!;
+  }
+
 }

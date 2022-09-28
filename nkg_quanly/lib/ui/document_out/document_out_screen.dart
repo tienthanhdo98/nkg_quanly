@@ -35,7 +35,7 @@ class DocumentOutScreen extends GetView {
                         height: 220, width: double.infinity, fit: BoxFit.cover),
                     headerWidget(header!, context),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
+                      padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
                       child: border(
                           Padding(
                             padding: const EdgeInsets.all(15),
@@ -67,7 +67,7 @@ class DocumentOutScreen extends GetView {
                                 ],
                               ),
                               const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                 child: Divider(
                                   thickness: 1,
                                 ),

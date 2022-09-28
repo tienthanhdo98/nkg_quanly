@@ -64,3 +64,45 @@ Widget bottomDateButton(String title,int value,int valueOfButton){
 Widget buttonShowListScreen(String value){
   return  Padding(padding : const EdgeInsets.all(11),child: Text(value,style: const TextStyle(fontSize: 16)));
 }
+
+Widget borderTextFilterEOffice(String? value,BuildContext context) {
+  return Container(
+    width: double.infinity,
+    decoration: BoxDecoration(
+      border: Border.all(
+          color: kDarkGray
+      ),
+      borderRadius: BorderRadius.circular(4),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(15),
+      child: Row(
+          children: [
+            Text(value!,style: Theme.of(context).textTheme.headline4,),
+            const Spacer(),
+            Align(
+                alignment: Alignment.centerRight,
+                child: Image.asset(
+                  'assets/icons/ic_arrow_down.png',
+                  width: 14,
+                  height: 14,
+                ))
+          ],
+         ),
+    ),
+  );
+}
+Widget textCodeStyle(String code){
+  return   Row(children: [
+    Container(
+      width: 5,
+      height: 5,
+      decoration:const BoxDecoration(
+        shape: BoxShape.circle,
+        color: kDarkGray,
+      ),
+    ),
+    const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
+    Text(code,style: CustomTextStyle.grayColorTextStyle,)
+  ],);
+}

@@ -8,19 +8,30 @@ import 'package:nkg_quanly/ui/report/report_screen.dart';
 import '../../const.dart';
 import '../../viewmodel/home_viewmodel.dart';
 import '../birthday/birthday_screen.dart';
-import '../book_car/book_car_screen.dart';
 import '../book_room_meet/book_meeting_screen.dart';
-import '../document_in_doc/doc_in_doc_screen.dart';
+import '../book_room_meet/e_office/book_room_e_office_list.dart';
+import '../booking_car/e_office/booking_car_e_office_list.dart';
+import '../booking_car/ksg/book_car_screen.dart';
+import '../calendarwork/e_office/calendar_work_e_office_screen.dart';
+import '../document_out/document_out_list.dart';
 import '../document_out/document_out_screen.dart';
+import '../document_out/e_office/document_out__e_office_list.dart';
 import '../document_unprocess/document_unprocess _screen.dart';
+import '../document_unprocess/e_office/document_in_e_office_list.dart';
+import '../misstion/e_office/mission__e_office_list.dart';
 import '../misstion/mission_screen.dart';
+import '../profile/e_office/profile_e_office_list.dart';
 import '../profile_procedure_/profiles_procedure_screen.dart';
+import '../profile_wait_publish/profile_non_publish__e_office_list.dart';
+import '../profile_work/e_office/profile_work_e_office_list.dart';
 import '../profile_work/profile_work_screen.dart';
 import '../workbook/workbook_list.dart';
+import 'list_all_item_e_office.dart';
 import 'list_all_item_kgs.dart';
 
 class HomeScreen extends GetView {
   final homeController = Get.put(HomeViewModel());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +47,11 @@ class HomeScreen extends GetView {
                   children: [
                     Container(
                         child: const Icon(Icons.person),
-                        width: 70,
-                        height: 70,
+                        width: 60,
+                        height: 60,
                         decoration: BoxDecoration(
                           color: kViolet,
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(25),
                         )),
                     const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                     Expanded(
@@ -60,8 +71,7 @@ class HomeScreen extends GetView {
                       ),
                     ),
                     Container(
-                      width: 44,
-                      height: 44,
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: kPink,
                         border: Border.all(
@@ -69,7 +79,8 @@ class HomeScreen extends GetView {
                         ),
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      child:Image.asset('assets/icons/ic_search_white.png',width: 44,height: 44,),
+                      child: Image.asset('assets/icons/ic_search_white.png',
+                          width: 20, height: 20),
                     )
                   ],
                 ),
@@ -108,7 +119,8 @@ class HomeScreen extends GetView {
                               ),
                               Flexible(
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                   child: Text(
                                     'Nam Định, Bình Dương nằm top 3 cao nhất điểm môn Toán tốt nghiệp THPT',
                                     style:
@@ -179,35 +191,49 @@ class HomeScreen extends GetView {
                 child: Row(children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 35, 10, 10),
+                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children:  [
+                        children: [
                           Text(
                             convertDateToViDate(dateNow),
-                            style: const TextStyle(fontSize: 18, color: kWhite),
+                            style: const TextStyle(
+                                color: kWhite,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
                           ),
-                          const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                          Text(formatDateToStringtype2(dateNow), style: const TextStyle(color: kWhite))
+                          const Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                          Text(formatDateToStringtype2(dateNow),
+                              style: const TextStyle(
+                                  color: kWhite,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600))
                         ],
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 35, 15, 0),
-                    child:Obx(() =>  Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                         Text('Hôm nay\n${homeController.rxWeatherModel.value.temperature?.toStringAsFixed(2)}°',
-                            style: TextStyle(color: kWhite)),
-                        Image.asset(
-                          'assets/icons/ic_rain.png',
-                          fit: BoxFit.cover,
-                          height: 80,
-                          width: 80,
-                        )
-                      ],
-                    )),
+                    child: Obx(() => Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                                'Hôm nay\n${homeController.rxWeatherModel.value.temperature?.toStringAsFixed(1)}°',
+                                style: const TextStyle(
+                                    color: kWhite,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500)),
+                            Image.asset(
+                              'assets/icons/ic_rain.png',
+                              fit: BoxFit.cover,
+                              height: 90,
+                              width: 90,
+                            )
+                          ],
+                        )),
                   )
                 ]) /* add child content here */,
               ),
@@ -227,6 +253,7 @@ class MenuItem {
 
   MenuItem(this.title, this.img, this.url, this.type);
 }
+
 class MenuHomeItem {
   String? title;
   String? img;
@@ -255,8 +282,21 @@ List<MenuItem> list = [
   MenuItem('Lịch họp', 'assets/icons/ic_meet.png', "", 7),
   MenuItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 8),
   MenuItem('Sinh nhật', 'assets/icons/ic_birthday.png', "", 9),
-  MenuItem('Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 10),
+  MenuItem(
+      'Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 10),
   MenuItem('Sổ tay Công việc', 'assets/icons/ic_sotay.png', "", 11),
+];
+List<MenuItem> listEOffice = [
+  MenuItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1),
+  MenuItem('Văn bản đến', 'assets/icons/ic_doc_in.png', "", 2),
+  MenuItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 3),
+  MenuItem(
+      'HS trình chờ phát hành', 'assets/icons/ic_hs_trinh_cho_ph.png', "", 4),
+  MenuItem('Hồ sơ công việc', 'assets/icons/ic_hoso_cv.png', "", 5),
+  MenuItem('Đặt lịch phòng họp', 'assets/icons/ic_meeting.png', "", 6),
+  MenuItem('Điều động bố trí ô tô', 'assets/icons/ic_booking_car.png', "", 7),
+  MenuItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 8),
+  MenuItem('Văn bản đi chờ phát hành', 'assets/icons/ic_doc_push.png', "", 9),
 ];
 
 // List<MenuItem> list2 = [
@@ -294,10 +334,7 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 5:
-      Get.to(() => DocumentOutScreen(
-            header: header,
-            icon: icon,
-          ));
+      Get.to(() => DocumentOutList(header: header));
       break;
     case 6:
       Get.to(() => ProfileScreen(
@@ -323,11 +360,6 @@ void toScreen(int type, String? header, String? icon) {
             icon: icon,
           ));
       break;
-    case 15:
-      Get.to(() => DocInDocScreen(
-            header: header,
-            icon: icon,
-          ));
       break;
     case 16:
       Get.to(() => BookMeetingScreen(
@@ -336,7 +368,7 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 12:
-      Get.to(() => BookCarScreen(
+      Get.to(() => BookingCarScreen(
             header: header,
             icon: icon,
           ));
@@ -354,9 +386,7 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 11:
-      Get.to(() => WorkBookList(
-            header: header
-          ));
+      Get.to(() => WorkBookList(header: header));
       break;
     // case 16:
     //   Get.to(() => ReportScreen(
@@ -371,6 +401,43 @@ void menuToScreen(int type, String? header, String? icon) {
   switch (type) {
     case 1:
       Get.to(() => ListAllItemKGS());
+      break;
+    case 2:
+      Get.to(() => ListAllItemEOffice());
+      break;
+  }
+}
+
+void toScreenEoffice(int type, String? header, String? icon) {
+  switch (type) {
+    case 7:
+      Get.to(() => BookingEOfficeCarList(
+            header: header,
+          ));
+      break;
+    case 1:
+      Get.to(() => CalendarWorkEOfficeScreen());
+      break;
+    case 2:
+      Get.to(() => DocumentInEOfficeList(header: header));
+      break;
+      case 3:
+      Get.to(() => ProfileEOfficeList(header: header,));
+      break;
+      case 4:
+      Get.to(() => ProfileNonPublishEOfficeList(header: header,));
+      break;
+      case 5:
+      Get.to(() => ProfileWorkEOfficeList(header: header,));
+      break;
+    case 6:
+      Get.to(() => BookRoomEOfficeList(header: header,));
+      break;
+      case 8:
+      Get.to(() => MissionEOfficeList(header: header,));
+      break;
+      case 9:
+      Get.to(() => DocumentOutEOfficeList(header: header,));
       break;
   }
 }

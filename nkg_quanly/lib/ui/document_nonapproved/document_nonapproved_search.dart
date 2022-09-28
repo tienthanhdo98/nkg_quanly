@@ -101,7 +101,7 @@ class DocumentnonapprovedSearch extends GetView{
                                     id: homeController.listData[index].id!));
                               },
                               child:
-                              DocumentNonApproveListItem(index, homeController.listData[index],isApprove));
+                              DocumentNonApproveListItem(index, homeController.listData[index]));
                         })),
                   ),
                 ),

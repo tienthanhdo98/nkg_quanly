@@ -25,3 +25,9 @@ final buttonFilterWhite =ElevatedButton.styleFrom(
       borderRadius: BorderRadius.circular(25),
       side: const BorderSide(color: kVioletButton)),
 );
+const textBlueCountTotalStyle =   TextStyle(
+    color: kBlueButton, fontSize: 24,fontWeight: FontWeight.w700,fontFamily: "Roboto");
+const textBlackCountEofficeStyle =  TextStyle(
+    fontWeight: FontWeight.w700,
+    fontFamily: 'Roboto',
+    fontSize: 24);

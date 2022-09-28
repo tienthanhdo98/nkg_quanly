@@ -11,7 +11,7 @@ import 'mission_list.dart';
 import 'mission_viewmodel.dart';
 
 class MissionCommentsDetail extends GetView {
-  final MissionDetailModel? missionDetailModel;
+  final MissionItem? missionDetailModel;
 
   final missionController = Get.put(MissionViewModel());
 

@@ -55,6 +55,7 @@ dev_dependencies:
   http: ^0.13.4
   table_calendar: ^3.0.7
   open_file: ^3.2.1
+  flutter_filereader: ^3.0.0
 
 
 
@@ -71,6 +72,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/
+    - assets/files/
 #
 fonts:
   - family: Roboto

@@ -25,7 +25,7 @@ class MissionDetail extends GetView {
       body: SafeArea(
         child: FutureBuilder(
           future: missionController.getMissionDetail(id!),
-          builder: (context, AsyncSnapshot<MissionDetailModel> snapshot) {
+          builder: (context, AsyncSnapshot<MissionItem> snapshot) {
             if (snapshot.hasData) {
               var item = snapshot.data;
               return Column(children: [
@@ -254,7 +254,7 @@ class TimelineItem extends StatelessWidget {
 
 
 
-Widget signWidgetMission(MissionDetailModel docModel) {
+Widget signWidgetMission(MissionItem docModel) {
   if (docModel.status == "Hoàn thành") {
     return Row(
       children: [
@@ -300,7 +300,7 @@ Widget signWidgetMission(MissionDetailModel docModel) {
     return Row(
       children: [
         Image.asset(
-          'assets/icons/ic_still.png',
+          'assets/icons/ic_done_black.png',
           height: 14,
           width: 14,
         ),

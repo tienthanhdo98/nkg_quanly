@@ -4,12 +4,12 @@ import 'package:nkg_quanly/ui/menu/MenuController.dart';
 import 'package:nkg_quanly/ui/workbook/update_work_screen.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_detail.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
+
 import '../../const.dart';
 import '../../const/style.dart';
 import '../../const/ultils.dart';
 import '../../const/widget.dart';
 import '../../model/workbook/workbook_model.dart';
-import '../document_nonapproved/document_nonapproved_list.dart';
 import '../document_nonapproved/document_nonapproved_search.dart';
 import '../theme/theme_data.dart';
 import 'add_new_work_screen.dart';
@@ -18,11 +18,11 @@ class WorkBookList extends GetView {
   String? header;
   final menuController = Get.put(MenuController());
   final workBookViewModel = Get.put(WorkBookViewModel());
-  int selectedButton = 0;
+
 
   WorkBookList({Key? key, this.header}) : super(key: key);
 
-  int selected = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +236,7 @@ class WorkBookItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                "${index! + 1}.${docModel!.workName!}",
+                "${index! + 1}. ${docModel!.workName!}",
                 style: Theme.of(context).textTheme.headline3,
               ),
               Expanded(
@@ -292,8 +292,8 @@ class WorkBookItem extends StatelessWidget {
                   children: [
                     const Text('Người thực hiện',
                         style: CustomTextStyle.grayColorTextStyle),
-                    Text(docModel!.worker!,
-                        style: Theme.of(context).textTheme.headline4)
+                    (docModel!.worker?.isNotEmpty == true) ?  Text(docModel!.worker!,
+                        style: Theme.of(context).textTheme.headline4) : Text("")
                   ],
                 ),
                 Column(
@@ -325,7 +325,7 @@ class WorkBookItem extends StatelessWidget {
 }
 
 Widget signWidget(WorkBookListItems docModel) {
-  if (docModel.status == true) {
+  if (docModel.status == "Đã xử lý") {
     return Row(
       children: [
         Image.asset(
@@ -334,8 +334,8 @@ Widget signWidget(WorkBookListItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        const Text(
-          'Hoàn thành',
+        Text(
+          docModel.status!,
           style: TextStyle(color: kGreenSign),
         )
       ],
@@ -349,7 +349,7 @@ Widget signWidget(WorkBookListItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        const Text('Đang xử lý', style: TextStyle(color: kOrangeSign))
+        Text(docModel.status!, style: TextStyle(color: kOrangeSign))
       ],
     );
   }
@@ -596,7 +596,7 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
                 children: [
                   const Expanded(
                     child: Text(
-                      'Tất cả nhiệm vụ',
+                      'Tất cả công việc',
                       style: TextStyle(
                           color: kBlueButton,
                           fontWeight: FontWeight.w500,
@@ -627,7 +627,7 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
               ),
             ),
             // tat ca muc do
-            const Divider(
+            const Divider (
               thickness: 1,
               color: kBlueButton,
             ),
@@ -638,14 +638,14 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
                 children: [
                   const Expanded(
                     child: Text(
-                      'Tất cả mức độ',
+                      'Tất cả độ quan trọng',
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (workBookViewModel!.mapAllFilter.containsKey(2))
+                  Obx(() => (workBookViewModel!.mapAllFilter.containsKey(1))
                       ? InkWell(
                           onTap: () {
-                            workBookViewModel!.checkboxFilterAll(false, 2);
+                            workBookViewModel!.checkboxFilterAll(false, 1);
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_active.png',
@@ -654,7 +654,7 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            workBookViewModel!.checkboxFilterAll(true, 2);
+                            workBookViewModel!.checkboxFilterAll(true, 1);
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_unactive.png',
@@ -675,9 +675,9 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: lisLevel.length,
+                  itemCount: listImportant.length,
                   itemBuilder: (context, index) {
-                    var item = lisLevel[index];
+                    var item = listImportant[index];
                     return Column(
                       children: [
                         Padding(
@@ -690,11 +690,11 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (workBookViewModel!.mapLevelFilter
+                              Obx(() => (workBookViewModel!.mapImportantFilter
                                       .containsKey(index))
                                   ? InkWell(
                                       onTap: () {
-                                        workBookViewModel!.checkboxLevel(
+                                        workBookViewModel!.checkboxmapImportantFilter(
                                             false, index, "$item;");
                                       },
                                       child: Image.asset(
@@ -704,7 +704,7 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
                                       ))
                                   : InkWell(
                                       onTap: () {
-                                        workBookViewModel!.checkboxLevel(
+                                        workBookViewModel!.checkboxmapImportantFilter(
                                             true, index, "$item;");
                                       },
                                       child: Image.asset(
@@ -736,10 +736,10 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (workBookViewModel!.mapAllFilter.containsKey(3))
+                  Obx(() => (workBookViewModel!.mapAllFilter.containsKey(2))
                       ? InkWell(
                           onTap: () {
-                            workBookViewModel!.checkboxFilterAll(false, 3);
+                            workBookViewModel!.checkboxFilterAll(false, 2);
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_active.png',
@@ -748,7 +748,7 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            workBookViewModel!.checkboxFilterAll(true, 3);
+                            workBookViewModel!.checkboxFilterAll(true, 2);
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_unactive.png',
@@ -841,31 +841,21 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
                           onPressed: () {
                             Get.back();
                             var status = "";
-                            var level = "";
-                            var department = "";
+                            var important = "";
                             if (workBookViewModel!.mapAllFilter
                                 .containsKey(0)) {
-                              // workBookViewModel!.postMissionByFilter(
-                              //   status,
-                              //   level,
-                              //   department,);
+                              workBookViewModel!.postWorkBookByFilter(
+                                important,
+                                status,
+                              );
                             } else {
                               if (workBookViewModel!.mapAllFilter
-                                  .containsKey(1)) {
-                                department = "";
-                              } else {
-                                workBookViewModel!.mapDepartmentFilter
-                                    .forEach((key, value) {
-                                  department += value;
-                                });
-                              }
-                              if (workBookViewModel!.mapAllFilter
                                   .containsKey(2)) {
-                                level = "";
+                                important = "";
                               } else {
-                                workBookViewModel!.mapLevelFilter
+                                workBookViewModel!.mapImportantFilter
                                     .forEach((key, value) {
-                                  level += value;
+                                  important += value;
                                 });
                               }
                               if (workBookViewModel!.mapAllFilter
@@ -878,13 +868,12 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
                                 });
                               }
                             }
-                            print(department);
-                            print(level);
+                            print(important);
                             print(status);
-                            // workBookViewModel!.postMissionByFilter(
-                            //     status,
-                            //     level,
-                            //     department);
+                            workBookViewModel!.postWorkBookByFilter(
+                              important,
+                              status,
+                            );
                           },
                           style: buttonFilterBlue,
                           child: const Text('Áp dụng')),
@@ -900,5 +889,7 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
   }
 }
 
-var lisLevel = ["Thấp", "Trung bình", "Cao"];
-var lisStatus = ["Chưa xử lý", "Đang thực hiện"];
+var listImportant= ["Không quan trọng", "Quan trọng"];
+var lisStatus = ["Chưa xử lý", "Đã xử lý"];
+final List<String> dropdownStatus = ["Chưa xử lý", "Đã xử lý"];
+

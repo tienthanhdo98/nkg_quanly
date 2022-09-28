@@ -1,6 +1,9 @@
 import 'package:intl/intl.dart';
+import 'package:nkg_quanly/const/ultils.dart';
+
 export 'package:table_calendar/table_calendar.dart';
 export 'package:intl/intl.dart';
+export 'package:get/get.dart';
 
 
 DateTime dateNow = DateTime.now();
@@ -24,6 +27,21 @@ String formatDateToString(DateTime value){
     return "";
   }
 }
+String formatDateToStringHour(String fromTime,String toTime){
+  try {
+    var baseFormat = DateFormat("yyyy-MM-DDThh:mm:ss");
+    var resFormat = DateFormat("hh:mm");
+    DateTime fromtime = baseFormat.parse(fromTime);
+    var strFromTime = resFormat.format(fromtime);
+
+    DateTime totime = baseFormat.parse(toTime);
+    var strtoTime = resFormat.format(totime);
+
+    return "$strFromTime - $strtoTime";
+  }catch (_){
+    return "";
+  }
+}
 String formatDateToStringtype2(DateTime value){
   try {
     var format2 = DateFormat("dd/MM/yyyy");
@@ -40,7 +58,7 @@ String convertDateToViDate(DateTime value){
     var thang = dateNow.month;
     var nam = dateNow.year;
 
-    var strDate = "Thứ $thu,ngày $ngay tháng $thang Năm ${caluAsianYear(nam)}";
+    var strDate = "${converWeekday(thu)}, ngày $ngay tháng $thang Năm ${caluAsianYear(nam)}";
     print(thu);
     print(ngay);
     print(thang);
@@ -49,6 +67,28 @@ String convertDateToViDate(DateTime value){
   }catch (_){
     return "";
   }
+}
+String converWeekday(int weekday)
+{
+  var thu = "";
+  switch(weekday)
+  {
+    case 1: thu = "Thứ hai";
+    break;
+    case 2: thu = "Thứ ba";
+    break;
+    case 3: thu = "Thứ tư";
+    break;
+    case 4: thu = "Thứ năm";
+    break;
+    case 5: thu = "Thứ sáu";
+    break;
+    case 6: thu = "Thứ bảy";
+    break;
+    case 7: thu = "Chủ nhật";
+    break;
+  }
+  return thu;
 }
 String caluAsianYear(int year)
 {

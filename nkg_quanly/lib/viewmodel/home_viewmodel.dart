@@ -6,14 +6,7 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/model/document/document_model.dart';
 import 'package:nkg_quanly/model/document/document_statistic_model.dart';
 
-import '../model/birthday_model/birthday_model.dart';
-import '../model/document_out_model/document_out_model.dart';
 import '../model/document_unprocess/document_filter.dart';
-import '../model/misstion/mission_model.dart';
-import '../model/proflie_model/profile_model.dart';
-import '../model/proflie_model/profile_statistic.dart';
-import '../model/report_model/report_model.dart';
-import '../model/report_model/report_statistic_model.dart';
 import '../model/weather_model/weather_model.dart';
 
 

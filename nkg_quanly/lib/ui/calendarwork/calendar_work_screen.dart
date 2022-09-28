@@ -12,7 +12,7 @@ import 'calendar_work_viewmodel.dart';
 class CalendarWorkScreen extends GetView {
   CalendarWorkScreen({Key? key}) : super(key: key);
   final calendarWorkController = Get.put(CalendarWorkViewModel());
-  DateTime dateNow = DateTime.now();
+
   int selected = 0;
 
 
@@ -126,17 +126,17 @@ class CalendarWorkScreen extends GetView {
                 ]),
               ),
             ),
-            Obx(() => (calendarWorkController.rxCalendarWorkListItems.isNotEmpty)
-                ?
             Expanded(
-              child: ListView.builder(
+              child: Obx(() => (calendarWorkController.rxCalendarWorkListItems.isNotEmpty)
+                  ?
+              ListView.builder(
                   itemCount:  calendarWorkController.rxCalendarWorkListItems.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return CalendarWorkItem(
                         index, calendarWorkController.rxCalendarWorkListItems[index]);
-                  }),
-            ) : Expanded(child: Text("Hôm nay không có lịch làm việc nào",style: Theme.of(context).textTheme.headline4))),
+                  }) : Text("Hôm nay không có lịch làm việc nào",style: Theme.of(context).textTheme.headline4)),
+            ),
             //bottom button
             Obx(() =>  Container(
               decoration: BoxDecoration(
@@ -155,7 +155,7 @@ class CalendarWorkScreen extends GetView {
                         calendarWorkController.onSelectDay(DateTime.now());
                         calendarWorkController.swtichBottomButton(0);
                       },
-                      child:  bottomDateButton("Tuần",calendarWorkController.selectedBottomButton.value,0),
+                      child:  bottomDateButton("Ngày",calendarWorkController.selectedBottomButton.value,0),
                     ),
                   ),
                   Expanded(

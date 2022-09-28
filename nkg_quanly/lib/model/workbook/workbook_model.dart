@@ -44,9 +44,10 @@ class WorkBookListItems {
   String? groupWorkName;
   String? groupWorkId;
   String? description;
+  String? createdDate;
   String? worker;
   String? workBy;
-  bool? status;
+  String? status;
   bool? important;
 
   WorkBookListItems(
@@ -55,6 +56,7 @@ class WorkBookListItems {
         this.groupWorkName,
         this.groupWorkId,
         this.description,
+        this.createdDate,
         this.worker,
         this.workBy,
         this.status,
@@ -66,6 +68,7 @@ class WorkBookListItems {
     groupWorkName = json['groupWorkName'];
     groupWorkId = json['groupWorkId'];
     description = json['description'];
+    createdDate = json['createdDate'];
     worker = json['worker'];
     workBy = json['workBy'];
     status = json['status'];
@@ -79,6 +82,7 @@ class WorkBookListItems {
     data['groupWorkName'] = this.groupWorkName;
     data['groupWorkId'] = this.groupWorkId;
     data['description'] = this.description;
+    data['createdDate'] = this.createdDate;
     data['worker'] = this.worker;
     data['workBy'] = this.workBy;
     data['status'] = this.status;

@@ -21,7 +21,6 @@ class DocumentUnprocessList extends GetView {
 
   DocumentUnprocessList({this.header});
 
-  int selected = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +247,7 @@ class DocumentNonProcessListItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                "${index! + 1}.${docModel!.name}",
+                "${index! + 1}. ${docModel!.name}",
                 style: Theme.of(context).textTheme.headline3,
               ),
               Expanded(
@@ -887,41 +886,57 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
 }
 
 Widget signWidget(Items docModel) {
-  return (docModel.status == "Đã xử lý")
-      ? Row(
-          children: [
-            Image.asset(
-              'assets/icons/ic_sign.png',
-              height: 14,
-              width: 14,
-            ),
-            const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-            Text(
-              docModel.status!,
-              style: const TextStyle(color: kGreenSign),
-            )
-          ],
-        )
-      : Row(
-          children: [
-            Image.asset(
-              'assets/icons/ic_not_sign.png',
-              height: 14,
-              width: 14,
-            ),
-            const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-            Text(
-              docModel.status!,
-              style: const TextStyle(color: kOrangeSign),
-            )
-          ],
-        );
+  if(docModel.status == "Đã xử lý")
+    {
+      return  Row(
+        children: [
+          Image.asset(
+            'assets/icons/ic_sign.png',
+            height: 14,
+            width: 14,
+          ),
+          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+          const Text(
+            "Đã xử lý",
+            style: TextStyle(color: kGreenSign),
+          )
+        ],
+      );
+    }
+  else if(docModel.status == "Đang xử lý")
+    {
+      return Row(
+        children: [
+          Image.asset(
+            'assets/icons/ic_not_sign.png',
+            height: 14,
+            width: 14,
+          ),
+          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+          const Text(
+            "Đang xử lý",
+            style: TextStyle(color: kOrangeSign),
+          )
+        ],
+      );
+    }
+  else
+    {
+     return Row(
+        children: [
+          Image.asset(
+            'assets/icons/ic_still.png',
+            height: 14,
+            width: 14,
+          ),
+          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+          const Text(
+            "Chưa xử lý",
+            style: TextStyle(color: Colors.black),
+          )
+        ],
+      );
+    }
+
 }
 
-class DocModel {
-  String? title;
-  int? priority;
-  bool? isSign;
-
-  DocModel(this.title, this.priority, this.isSign);
-}

@@ -70,7 +70,7 @@ class WorkBookDetail extends GetView{
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          borderText(item.worker!,context),
+                          borderText((item.worker?.isNotEmpty == true) ? item.worker : "",context),
                           //nguoi thuc hien
                           const Padding(
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 10),

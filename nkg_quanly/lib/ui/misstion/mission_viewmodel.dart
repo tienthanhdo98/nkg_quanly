@@ -87,6 +87,7 @@ class MissionViewModel extends GetxController {
     getFilterForChart("${apiGetMissionChart}0");
     initCurrentDate();
     getMissionByDay(rxDate.value);
+    getMissionStatisticInEOffice();
     super.onInit();
   }
 
@@ -163,12 +164,23 @@ class MissionViewModel extends GetxController {
     rxMissionItem.value = res.items!;
   }
 
-  Future<MissionDetailModel> getMissionDetail(int id) async {
+  Future<MissionItem> getMissionDetail(int id) async {
     final url = Uri.parse("$apiGetMissionDetail$id");
     print(url);
     http.Response response = await http.get(url);
     print(response.body);
-    return MissionDetailModel.fromJson(jsonDecode(response.body));
+    return MissionItem.fromJson(jsonDecode(response.body));
+  }
+  //e office
+  Rx<MissionStatisticModel> rxMissionStatisticModel = MissionStatisticModel().obs;
+  Future<void> getMissionStatisticInEOffice() async {
+    final url = Uri.parse(apiGetMissionStatistic);
+    print('loading');
+    http.Response response = await http.get(url);
+    print(response.body);
+    MissionStatisticModel res = MissionStatisticModel.fromJson(jsonDecode(response.body));
+    rxMissionStatisticModel.value  = res;
+
   }
 
 

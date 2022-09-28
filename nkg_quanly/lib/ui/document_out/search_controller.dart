@@ -9,6 +9,7 @@ import '../../model/birthday_model/birthday_model.dart';
 import '../../model/calendarwork_model/calendarwork_model.dart';
 import '../../model/document_out_model/document_out_model.dart';
 import '../../model/meeting_room/meeting_room_model.dart';
+import '../../model/misstion/mission_detail.dart';
 import '../../model/profile_procedure_model/profile_procedure_model.dart';
 import '../../model/proflie_model/profile_model.dart';
 import '../../model/report_model/report_model.dart';
@@ -93,4 +94,5 @@ class SearchController extends GetxController {
     ProfileProcedureModel reportModel =  ProfileProcedureModel.fromJson(jsonDecode(response.body));
     listDataProfileProc.value = reportModel.items!;
   }
+
 }

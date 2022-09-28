@@ -3,7 +3,7 @@ class WeatherModel {
   Main? main;
   String? name;
   String? linkIcon;
-  double? temperature;
+  int? temperature;
 
   WeatherModel(
       {this.weather, this.main, this.name, this.linkIcon, this.temperature});

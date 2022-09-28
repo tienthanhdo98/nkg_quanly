@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/book_room_meet/pie_chart_room_meeting.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_pie_chart.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
 
 import '../../const.dart';
+import '../../const/widget.dart';
 import '../../model/meeting_room/meeting_room_statistic_model.dart';
 import '../theme/theme_data.dart';
 import 'book_room_list.dart';
@@ -33,7 +35,7 @@ class BookMeetingScreen extends GetView {
                         height: 220, width: double.infinity, fit: BoxFit.cover),
                     headerWidget(header!, context),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
+                      padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
                       child: border(
                           Padding(
                             padding: const EdgeInsets.all(15),
@@ -108,13 +110,11 @@ class BookMeetingScreen extends GetView {
                     )
                   ],
                 ),
-                Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: RoomMeetingPieChart2(statisticModel: snapshot.data,)),
+                PieChartRoomMeetingWidget(documentFilterModel: snapshot.data,),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
@@ -124,7 +124,7 @@ class BookMeetingScreen extends GetView {
                               header: header,
                             ));
                           },
-                          child: Text('Xem danh sách $header'),
+                          child: buttonShowListScreen("Xem danh sách Phòng họp"),
                           style: bottomButtonStyle,
                         ),
                       ),

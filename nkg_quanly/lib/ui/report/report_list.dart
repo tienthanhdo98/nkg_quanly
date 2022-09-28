@@ -239,7 +239,7 @@ class ReportItem extends StatelessWidget {
           Row(
             children: [
               Text(
-                "${index! + 1}.${docModel!.name}",
+                "${index! + 1}. ${docModel!.name}",
                 style: Theme.of(context).textTheme.headline3,
               ),
               Expanded(

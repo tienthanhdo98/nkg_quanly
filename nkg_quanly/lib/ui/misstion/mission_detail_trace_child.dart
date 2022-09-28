@@ -10,7 +10,7 @@ import '../theme/theme_data.dart';
 import 'mission_viewmodel.dart';
 
 class MissionTracesDetail extends GetView {
-  final MissionDetailModel? missionDetailModel;
+  final MissionItem? missionDetailModel;
 
   final missionController = Get.put(MissionViewModel());
 
@@ -147,7 +147,7 @@ class TimelineItem extends StatelessWidget {
 
 
 
-Widget signWidgetMission(MissionDetailModel docModel) {
+Widget signWidgetMission(MissionItem docModel) {
   if (docModel.status == "Hoàn thành") {
     return Row(
       children: [

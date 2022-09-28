@@ -41,15 +41,20 @@ const apiGetProfileFilter =
 
 //profile procedure
 const apiGetProfileProcedureStatistic =
-    "http://123.31.31.237:6002/api/procedureprofiles/statistic-status";
+    "http://123.31.31.237:6002/api/procedureprofiles/statistic";
 const apiGetProfileProcedureChart0 =
     "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart?filterChart=0";
 const apiGetProfileProcedureChart1=
     "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart?filterChart=1";
 const apiPostProfileProcedureModel=
     "http://123.31.31.237:6002/api/procedureprofiles/search";
+const apiGetAgencies = "http://123.31.31.237:6002/api/procedureprofiles/get-agencies";
+const apiGetBranch= "http://123.31.31.237:6002/api/procedureprofiles/get-branch";
+const apiStatus= "http://123.31.31.237:6002/api/procedureprofiles/get-status";
+const apiProcedure= "http://123.31.31.237:6002/api/procedureprofiles/get-procedure";
+const apiGroupProcedure= "http://123.31.31.237:6002/api/procedureprofiles/get-group-procedure";
 const apiPostProfileProcedureDetail=
-    "http://123.31.31.237:6002/api/procedureprofiles/get-by-id?";
+    "http://123.31.31.237:6002/api/procedureprofiles/get-by-id?maSoBienNhan=";
 
 
 //doc out
@@ -67,6 +72,11 @@ const apiPostAllMeetingroomSearch=
 const apiGetMeetingDetail=
     "http://123.31.31.237:6002/api/meetingrooms/get-by-id?";
 
+//book car
+const apiGetBookingCarStatistic=
+    "http://123.31.31.237:6002/api/cars/statistic";
+const apiGetBookingCarListItems=
+    "http://123.31.31.237:6002/api/cars/search";
 //report
 const apiGetReportStatistic = "http://123.31.31.237:6002/api/reportapiclient/statistic";
 const apiGetReportChart0 = "http://123.31.31.237:6002/api/reportapiclient/get-statistic-chart?filterChart=0";
@@ -78,6 +88,7 @@ const apiGetReportDetail = "http://123.31.31.237:6002/api/reportapiclient/get-by
 const apiPostBirthDay = "http://123.31.31.237:6002/api/birthday";
 //workbook
 const apiPostWorkBookSearch = "http://123.31.31.237:6002/api/workbook/search";
+const apiGroupBookList= "http://123.31.31.237:6002/api/groupworkbook/search";
 const apiAddWorkBook = "http://123.31.31.237:6002/api/workbook";
 const apiWorkBookDetail = "http://123.31.31.237:6002/api/workbook/";//id
-const apiWorkBookDelete = "http://123.31.31.237:6002/api/workbook/deletes";
+const apiWorkBookDelete = "http://123.31.31.237:6002/api/workbook/";

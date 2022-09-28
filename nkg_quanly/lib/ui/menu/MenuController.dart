@@ -40,5 +40,10 @@ class MenuController extends  GetxController  {
     }
     print(listStateStatus.toString());
   }
+  //show more info in screen list eoffice
+  Rx<bool> rxShowStatistic = false.obs;
+  void changeStateShowStatistic(bool value) {
+    rxShowStatistic.value = value;
+  }
 
 }
