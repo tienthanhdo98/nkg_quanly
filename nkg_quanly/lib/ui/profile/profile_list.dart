@@ -972,40 +972,40 @@ class FilterProfileBottomSheet extends StatelessWidget {
                       child: ElevatedButton(
                           onPressed: () {
                             Get.back();
-                            var status = "";
-                            var level = "";
-                            if (profileViewModel!.mapAllFilter.containsKey(0)) {
-                              profileViewModel!.postProfileByFilterUi(
-                                status,
-                                level,);
-                            } else {
-                              if (profileViewModel!.mapAllFilter
-                                  .containsKey(1)) {
-                                level = "";
-                              }
-                              else
-                              {
-                                profileViewModel!.mapLevelFilter.forEach((key, value) {
-                                  level += value;
-                                });
-                              }
-                              if (profileViewModel!.mapAllFilter
-                                  .containsKey(2)) {
-                                status = "";
-                              }
-                              else
-                              {
-                                profileViewModel!.mapStatusFilter.forEach((key, value) {
-                                  status += value;
-                                });
-                              }
-                            }
-                            print(level);
-                            print(status);
-                            profileViewModel!.postProfileByFilterUi(
-                              status,
-                              level,
-                            );
+                            // var status = "";
+                            // var level = "";
+                            // if (profileViewModel!.mapAllFilter.containsKey(0)) {
+                            //   profileViewModel!.postProfileByFilterUi(
+                            //     status,
+                            //     level,);
+                            // } else {
+                            //   if (profileViewModel!.mapAllFilter
+                            //       .containsKey(1)) {
+                            //     level = "";
+                            //   }
+                            //   else
+                            //   {
+                            //     profileViewModel!.mapLevelFilter.forEach((key, value) {
+                            //       level += value;
+                            //     });
+                            //   }
+                            //   if (profileViewModel!.mapAllFilter
+                            //       .containsKey(2)) {
+                            //     status = "";
+                            //   }
+                            //   else
+                            //   {
+                            //     profileViewModel!.mapStatusFilter.forEach((key, value) {
+                            //       status += value;
+                            //     });
+                            //   }
+                            // }
+                            // print(level);
+                            // print(status);
+                            // profileViewModel!.postProfileByFilterUi(
+                            //   status,
+                            //   level,
+                            // );
                           },
                           style: buttonFilterBlue,
                           child: const Text('Áp dụng')),

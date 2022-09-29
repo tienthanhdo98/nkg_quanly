@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../const.dart';
-import '../../model/document/document_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
 import 'document_nonapproved_detail.dart';
 import 'document_nonapproved_list.dart';
 
@@ -12,7 +11,7 @@ class DocumentnonapprovedSearch extends GetView{
 
   final String? header;
   final bool? isApprove;
-  final homeController = Get.put(HomeViewModel());
+  final searchController = Get.put(SearchController());
 
   DocumentnonapprovedSearch({Key? key,this.header,this.isApprove}) : super(key: key);
 
@@ -69,7 +68,7 @@ class DocumentnonapprovedSearch extends GetView{
                                       color: Colors.black),
                                   onSubmitted: (value){
                                     print(value);
-                                    homeController.searchData(value);
+                                    searchController.searchData(value);
                                   },
                                   onChanged: (value) {
                                     //print(value);
@@ -93,15 +92,15 @@ class DocumentnonapprovedSearch extends GetView{
                   child: SizedBox(
                     height: 200,
                     child: Obx(() => ListView.builder(
-                        itemCount: homeController.listData.length,
+                        itemCount: searchController.listData.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () {
                                 Get.to(() => DocumentnonapprovedDetail(
-                                    id: homeController.listData[index].id!));
+                                    id: searchController.listData[index].id!));
                               },
                               child:
-                              DocumentNonApproveListItem(index, homeController.listData[index]));
+                              DocumentNonApproveListItem(index, searchController.listData[index]));
                         })),
                   ),
                 ),

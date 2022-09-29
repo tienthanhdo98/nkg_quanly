@@ -1,5 +1,5 @@
 const apiGetDocument =
-    "http://123.31.31.237:6002/api/documentin?Keyword&Level&DepartmentPublic&EndDate&DayInMonth&IsMonth&DateFrom&DateTo&PageIndex=1&PageSize=10";
+    "http://123.31.31.237:6002/api/documentin";
 const apiGetDocumentStatistic =
     "http://123.31.31.237:6002/api/documentin/statistic";
 const apiGetDocumentDetail =
@@ -38,7 +38,9 @@ const apiGetProfile =
     "http://123.31.31.237:6002/api/profiles/search";
 const apiGetProfileFilter =
     "http://123.31.31.237:6002/api/profiles/get-statistic-chart?filterChart=";
-
+//profile work
+const apiPostProfile =
+    "http://123.31.31.237:6002/api/workprofiles";
 //profile procedure
 const apiGetProfileProcedureStatistic =
     "http://123.31.31.237:6002/api/procedureprofiles/statistic";
@@ -65,7 +67,7 @@ const apiGetDocumentOut=
 //meeting room
 const apiGetMeetingroomStatistic=
     "http://123.31.31.237:6002/api/meetingrooms/statistic";
-const apiPostAllMeetingroom=
+const apiPostAllMeetingroomCalendar=
     "http://123.31.31.237:6002/api/meetingrooms/calendar";
 const apiPostAllMeetingroomSearch=
     "http://123.31.31.237:6002/api/meetingrooms/search";
@@ -73,8 +75,6 @@ const apiGetMeetingDetail=
     "http://123.31.31.237:6002/api/meetingrooms/get-by-id?";
 
 //book car
-const apiGetBookingCarStatistic=
-    "http://123.31.31.237:6002/api/cars/statistic";
 const apiGetBookingCarListItems=
     "http://123.31.31.237:6002/api/cars/search";
 //report

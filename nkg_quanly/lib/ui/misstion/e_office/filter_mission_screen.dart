@@ -56,7 +56,7 @@ class FilterMissionScreen extends GetView {
                             },
                           );
                         },
-                        child: borderTextFilterEOffice("Chọn mức độ",context)),
+                        child: borderTextFilterEOffice("Chọn đơn vị ban hành",context)),
                     //muc do
                     const Padding(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -532,9 +532,9 @@ class FilterStatusBottomSheet extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: listMissionStatus.length,
+                  itemCount: listMissionState.length,
                   itemBuilder: (context, index) {
-                    var item = listMissionStatus[index];
+                    var item = listMissionState[index];
                     return Column(
                       children: [
                         Padding(

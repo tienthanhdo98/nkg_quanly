@@ -1,5 +1,6 @@
 class BookingCarModel {
   List<BookingCarListItems>? items;
+  BookingStatistic? statistic;
   int? pageIndex;
   int? pageSize;
   int? totalRecords;
@@ -7,6 +8,7 @@ class BookingCarModel {
 
   BookingCarModel(
       {this.items,
+        this.statistic,
         this.pageIndex,
         this.pageSize,
         this.totalRecords,
@@ -19,6 +21,9 @@ class BookingCarModel {
         items!.add(new BookingCarListItems.fromJson(v));
       });
     }
+    statistic = json['statistic'] != null
+        ? new BookingStatistic.fromJson(json['statistic'])
+        : null;
     pageIndex = json['pageIndex'];
     pageSize = json['pageSize'];
     totalRecords = json['totalRecords'];
@@ -29,6 +34,9 @@ class BookingCarModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.items != null) {
       data['items'] = this.items!.map((v) => v.toJson()).toList();
+    }
+    if (this.statistic != null) {
+      data['statistic'] = this.statistic!.toJson();
     }
     data['pageIndex'] = this.pageIndex;
     data['pageSize'] = this.pageSize;
@@ -79,6 +87,28 @@ class BookingCarListItems {
     data['registerUser'] = this.registerUser;
     data['content'] = this.content;
     data['status'] = this.status;
+    return data;
+  }
+}
+
+class BookingStatistic {
+  int? total;
+  int? vacancy;
+  int? booked;
+
+  BookingStatistic({this.total, this.vacancy, this.booked});
+
+  BookingStatistic.fromJson(Map<String, dynamic> json) {
+    total = json['total'];
+    vacancy = json['vacancy'];
+    booked = json['booked'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['total'] = this.total;
+    data['vacancy'] = this.vacancy;
+    data['booked'] = this.booked;
     return data;
   }
 }

@@ -609,9 +609,9 @@ class FilterMissionBottomSheet extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: listMissionStatus.length,
+                  itemCount: listMissionState.length,
                   itemBuilder: (context, index) {
-                    var item = listMissionStatus[index];
+                    var item = listMissionState[index];
                     return Column(
                       children: [
                         Padding(

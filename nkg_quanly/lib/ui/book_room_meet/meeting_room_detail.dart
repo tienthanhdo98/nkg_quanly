@@ -25,8 +25,8 @@ class MeetingRoomDetail extends GetView{
             {
               var item = snapshot.data;
               return  Column(children: [
-                headerWidget('Chi tiết ${item!.name!}',context),
-                Text(item.name!)
+                headerWidget('Chi tiết ${item!.roomName!}',context),
+                Text(item.code!)
               ]);
             }
           else if (snapshot.hasError) {

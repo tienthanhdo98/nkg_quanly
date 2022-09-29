@@ -142,14 +142,11 @@ class BookRoomList extends GetView {
                           itemBuilder: (context, index) {
                             return InkWell(
                                 onTap: () {
-                                  Get.to(() => MeetingRoomDetail(
-                                      id: roomMeetingViewModel
-                                          .rxMeetingRoomItems[index].id!));
+                                  // Get.to(() => MeetingRoomDetail(
+                                  //     id: roomMeetingViewModel
+                                  //         .rxMeetingRoomItems[index].id!));
                                 },
-                                child: MeetingRoomItem(
-                                    index,
-                                    roomMeetingViewModel
-                                        .rxMeetingRoomItems[index]));
+                                child: Text(""));
                           })
                       : const Text("Hôm nay không có lịch họp nào"))),
               //bottom
@@ -214,74 +211,74 @@ class BookRoomList extends GetView {
   }
 }
 
-class MeetingRoomItem extends StatelessWidget {
-  MeetingRoomItem(this.index, this.docModel);
-
-  int? index;
-  MeetingRoomItems? docModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 25),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-            child: SizedBox(
-              width: 100,
-              child: Text(formatDateToStringHour(docModel!.fromTime!,docModel!.toTime!)),
-            ),
-          ),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                signWidget(docModel!),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                Row(
-                  children: [
-                    Image.asset(
-                      "assets/icons/ic_camera.png",
-                      height: 18,
-                      width: 18,
-                      fit: BoxFit.fill,
-                    ),
-                    const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
-                    Text(docModel!.roomName!,
-                        style: CustomTextStyle.grayColorTextStyle)
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/ic_user.png',
-                      width: 30,
-                      height: 30,
-                    ),
-                    const Padding(padding: EdgeInsets.fromLTRB(8, 0, 0, 0)),
-                    Text(
-                      docModel!.registerUser!,
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w500),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class MeetingRoomItem extends StatelessWidget {
+//   MeetingRoomItem(this.index, this.docModel);
+//
+//   int? index;
+//   MeetingRoomItems? docModel;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.fromLTRB(0, 0, 0, 25),
+//       child: Row(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//            Padding(
+//             padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+//             child: SizedBox(
+//               width: 100,
+//               child: Text(formatDateToStringHour(docModel!.fromTime!,docModel!.toTime!)),
+//             ),
+//           ),
+//           Flexible(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   "${docModel!.name}",
+//                   style: Theme.of(context).textTheme.headline5,
+//                 ),
+//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+//                 signWidget(docModel!),
+//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+//                 Row(
+//                   children: [
+//                     Image.asset(
+//                       "assets/icons/ic_camera.png",
+//                       height: 18,
+//                       width: 18,
+//                       fit: BoxFit.fill,
+//                     ),
+//                     const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
+//                     Text(docModel!.roomName!,
+//                         style: CustomTextStyle.grayColorTextStyle)
+//                   ],
+//                 ),
+//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+//                 Row(
+//                   children: [
+//                     Image.asset(
+//                       'assets/icons/ic_user.png',
+//                       width: 30,
+//                       height: 30,
+//                     ),
+//                     const Padding(padding: EdgeInsets.fromLTRB(8, 0, 0, 0)),
+//                     Text(
+//                       docModel!.registerUser!,
+//                       style: const TextStyle(
+//                           fontSize: 12, fontWeight: FontWeight.w500),
+//                     )
+//                   ],
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class FilterRoomMeetingBottomSheet extends StatelessWidget {
   const FilterRoomMeetingBottomSheet(
@@ -493,7 +490,7 @@ class FilterRoomMeetingBottomSheet extends StatelessWidget {
 var lisStatus = ["Đã đặt lịch", "Còn trống"];
 
 Widget signWidget(MeetingRoomItems docModel) {
-  if (docModel.registerUser!.isNotEmpty) {
+  if (docModel.mettings!.isNotEmpty) {
     return Row(
       children: [
         Image.asset(

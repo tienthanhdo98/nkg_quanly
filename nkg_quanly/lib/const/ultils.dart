@@ -51,6 +51,15 @@ String formatDateToStringtype2(DateTime value){
     return "";
   }
 }
+DateTime convertStringToDate(String value){
+  try {
+    var format2 = DateFormat("dd/MM/yyyy");
+    var str2 = format2.parse(value);
+    return str2;
+  }catch (_){
+    return DateTime.now();
+  }
+}
 String convertDateToViDate(DateTime value){
   try {
     var thu = dateNow.weekday;
@@ -167,7 +176,32 @@ String caluAsianYear(int year)
 
   return "$can $chi";
 }
-
+String getStringFilterFromMap(RxMap mapPickAll,RxMap rxMapSelect,int indexOfMap)
+{
+  var res = "";
+  if(mapPickAll.containsKey(indexOfMap))
+  {
+    res = "";
+  }
+  else
+  {
+    rxMapSelect.forEach((key, value) {
+      res += value;
+    });
+  }
+  return res;
+}
+String checkingStringNull(String? value)
+{
+  if(value != null)
+    {
+      return value;
+    }
+  else
+    {
+      return "";
+    }
+}
 // bool isSameDay(DateTime? a, DateTime? b) {
 //   if (a == null || b == null) {
 //     return false;

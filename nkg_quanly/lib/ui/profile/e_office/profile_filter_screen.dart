@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/profile_wait_publish/profile_non_publish_viewmodel.dart';
 
 import '../../../const.dart';
 import '../../../const/style.dart';
+import '../../../const/ultils.dart';
 import '../../../const/widget.dart';
-import '../theme/theme_data.dart';
+import '../../theme/theme_data.dart';
+import '../profile_viewmodel.dart';
 
 
-class ProfileNonPubFilterScreen extends GetView {
-  ProfileNonPubFilterScreen(this.profileNonPublishViewModel, {Key? key}) : super(key: key);
-  final ProfileNonPublishViewModel? profileNonPublishViewModel;
+
+class ProfileFilterScreen extends GetView {
+  ProfileFilterScreen(this.profileViewModel, {Key? key}) : super(key: key);
+  final ProfileViewModel? profileViewModel;
   String? department ;
   String? level;
   String? status ;
@@ -34,7 +36,7 @@ class ProfileNonPubFilterScreen extends GetView {
                     const Padding(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
                       child: Text(
-                        "Đơn vị ban hành:",
+                        "Đơn vị soạn thảo:",
                         style: CustomTextStyle.grayColorTextStyle,
                       ),
                     ),
@@ -51,17 +53,17 @@ class ProfileNonPubFilterScreen extends GetView {
                             context: context,
                             builder: (BuildContext context) {
                               return SizedBox(
-                                  height: 570,
-                                  child: FilterProblemBottomSheet(profileNonPublishViewModel));
+                                  height: 300,
+                                  child: FilterUnitBottomSheet(profileViewModel));
                             },
                           );
                         },
-                        child: borderTextFilterEOffice("Chọn vấn đề trình",context)),
+                        child: borderTextFilterEOffice("Chọn đơn vị soạn thảo",context)),
                     //muc do
                     const Padding(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
                       child: Text(
-                        "Mức độ:",
+                        "Vấn đề trình:",
                         style: CustomTextStyle.grayColorTextStyle,
                       ),
                     ),
@@ -78,13 +80,40 @@ class ProfileNonPubFilterScreen extends GetView {
                             context: context,
                             builder: (BuildContext context) {
                               return SizedBox(
-                                  height: 400,
-                                  child: FilterSubmitTypeBottomSheet(profileNonPublishViewModel));
+                                  height: 300,
+                                  child: FilterSubmitProblemBottomSheet(profileViewModel));
+                            },
+                          );
+                        },
+                        child: borderTextFilterEOffice("Chọn vấn đề trình",context)),
+                    //loai phieu trinh
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                      child: Text(
+                        "Loại phiếu trình:",
+                        style: CustomTextStyle.grayColorTextStyle,
+                      ),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SizedBox(
+                                  height: 350,
+                                  child: FilterSubmitTypeBottomSheet(profileViewModel));
                             },
                           );
                         },
                         child: borderTextFilterEOffice("Chọn loại phiếu trình",context)),
-                    //nhom trang thai
+                    //trang thai
                     const Padding(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
                       child: Text(
@@ -105,12 +134,12 @@ class ProfileNonPubFilterScreen extends GetView {
                             context: context,
                             builder: (BuildContext context) {
                               return SizedBox(
-                                  height: 450,
-                                  child: FilterUnitBottomSheet(profileNonPublishViewModel));
+                                  height:400,
+                                  child: FilterStateBottomSheet(profileViewModel));
                             },
                           );
                         },
-                        child: borderTextFilterEOffice("Chọn đơn vị soạn thảo",context)),
+                        child: borderTextFilterEOffice("Chọn trạng thái",context)),
                     const Spacer(),
                     Align(
                       alignment: Alignment.bottomCenter,
@@ -120,11 +149,47 @@ class ProfileNonPubFilterScreen extends GetView {
                           padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                           child: ElevatedButton(
                             onPressed: () {
+                              var state ="";
+                              var unitEditor ="";
+                              var submissionProblem ="";
+                              var typeSubmission ="";
+                              if (profileViewModel!.mapAllFilter.containsKey(0)) {
+                                profileViewModel!.postProfileByFilter(
+                                    state,
+                                    unitEditor,
+                                    submissionProblem,
+                                    typeSubmission);
+                              } else {
+                                state = getStringFilterFromMap(
+                                    profileViewModel!.mapAllFilter,
+                                    profileViewModel!.mapState,
+                                    1);
+                                unitEditor = getStringFilterFromMap(
+                                    profileViewModel!.mapAllFilter,
+                                    profileViewModel!.mapUnitEditorFilter,
+                                    2);
+                                submissionProblem = getStringFilterFromMap(
+                                    profileViewModel!.mapAllFilter,
+                                    profileViewModel!.mapSubmissProblem,
+                                    3);
+                                typeSubmission = getStringFilterFromMap(
+                                    profileViewModel!.mapAllFilter,
+                                    profileViewModel!.mapTypeSubmission,
+                                    4);
+
+                                print(state);
+                                print(unitEditor);
+                                print(submissionProblem);
+                                print(typeSubmission);
+                                profileViewModel!.postProfileByFilter(
+                                    state,
+                                    unitEditor,
+                                    submissionProblem,
+                                    typeSubmission);
+                              }
                               Get.back();
 
-                              print(department);
-                              print(level);
-                              print(status);
+
 
                             },
                             child: buttonShowListScreen(
@@ -143,11 +208,304 @@ class ProfileNonPubFilterScreen extends GetView {
         ),));
   }
 }
-class FilterProblemBottomSheet extends StatelessWidget {
-  const FilterProblemBottomSheet(this.profileNonPublishViewModel,
+
+
+
+class FilterStateBottomSheet extends StatelessWidget {
+  const FilterStateBottomSheet(this.profileViewModel,
       {Key? key})
       : super(key: key);
-  final ProfileNonPublishViewModel? profileNonPublishViewModel;
+  final ProfileViewModel? profileViewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+          child: Column(children: [
+            //tat ca don vi
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Tất cả trạng thái',
+                      style: CustomTextStyle.roboto700TextStyle,
+                    ),
+                  ),
+                  Obx(() => (profileViewModel!.mapAllFilter.containsKey(1))
+                      ? InkWell(
+                      onTap: () {
+                        profileViewModel!.checkboxFilterAll(false, 1);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        profileViewModel!.checkboxFilterAll(true, 1);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            SizedBox(
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: listProfileState.length,
+                  itemBuilder: (context, index) {
+                    var item = listProfileState[index];
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  item,
+                                  style: CustomTextStyle.roboto400s16TextStyle,
+                                ),
+                              ),
+                              Obx(() => (profileViewModel!.mapState
+                                  .containsKey(index))
+                                  ? InkWell(
+                                  onTap: () {
+                                    profileViewModel!
+                                        .checkboxState(
+                                        false, index, "$item;");
+                                  },
+                                  child: Image.asset(
+                                    'assets/icons/ic_checkbox_active.png',
+                                    width: 30,
+                                    height: 30,
+                                  ))
+                                  : InkWell(
+                                  onTap: () {
+                                    profileViewModel!
+                                        .checkboxState(
+                                        true, index, "$item;");
+                                  },
+                                  child: Image.asset(
+                                    'assets/icons/ic_checkbox_unactive.png',
+                                    width: 30,
+                                    height: 30,
+                                  )))
+                            ],
+                          ),
+                        ),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Divider(
+                              thickness: 1,
+                              color: kgray,
+                            )),
+                      ],
+                    );
+                  }),
+            ),
+            //bottom button
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          style: buttonFilterWhite,
+                          child: const Text('Đóng')),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          style: buttonFilterBlue,
+                          child: const Text('Áp dụng')),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ]),
+        ),
+      ),
+    );
+  }
+}
+class FilterUnitBottomSheet extends StatelessWidget {
+  const FilterUnitBottomSheet(this.profileViewModel,
+      {Key? key})
+      : super(key: key);
+  final ProfileViewModel? profileViewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+          child: Column(children: [
+            //tat ca don vi
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Tất cả đơn vị',
+                      style: CustomTextStyle.roboto700TextStyle,
+                    ),
+                  ),
+                  Obx(() => (profileViewModel!.mapAllFilter.containsKey(2))
+                      ? InkWell(
+                      onTap: () {
+                        profileViewModel!.checkboxFilterAll(false, 2);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        profileViewModel!.checkboxFilterAll(true, 2);
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
+                ],
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Divider(
+                  thickness: 1,
+                  color: kgray,
+                )),
+            SizedBox(
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: profileViewModel!.rxListUnitEditor.length,
+                  itemBuilder: (context, index) {
+                    var item = profileViewModel!.rxListUnitEditor[index];
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  item,
+                                  style: CustomTextStyle.roboto400s16TextStyle,
+                                ),
+                              ),
+                              Obx(() => (profileViewModel!.mapUnitEditorFilter
+                                  .containsKey(index))
+                                  ? InkWell(
+                                  onTap: () {
+                                    profileViewModel!
+                                        .checkboxUnitEditor(
+                                        false, index, "$item;");
+                                  },
+                                  child: Image.asset(
+                                    'assets/icons/ic_checkbox_active.png',
+                                    width: 30,
+                                    height: 30,
+                                  ))
+                                  : InkWell(
+                                  onTap: () {
+                                    profileViewModel!
+                                        .checkboxUnitEditor(
+                                        true, index, "$item;");
+                                  },
+                                  child: Image.asset(
+                                    'assets/icons/ic_checkbox_unactive.png',
+                                    width: 30,
+                                    height: 30,
+                                  )))
+                            ],
+                          ),
+                        ),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                            child: Divider(
+                              thickness: 1,
+                              color: kgray,
+                            )),
+                      ],
+                    );
+                  }),
+            ),
+            //bottom button
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          style: buttonFilterWhite,
+                          child: const Text('Đóng')),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          style: buttonFilterBlue,
+                          child: const Text('Áp dụng')),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ]),
+        ),
+      ),
+    );
+  }
+}
+class FilterSubmitProblemBottomSheet extends StatelessWidget {
+  const FilterSubmitProblemBottomSheet(this.profileViewModel,
+      {Key? key})
+      : super(key: key);
+  final ProfileViewModel? profileViewModel;
 
 
   @override
@@ -169,10 +527,10 @@ class FilterProblemBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (profileNonPublishViewModel!.mapAllFilter.containsKey(1))
+                  Obx(() => (profileViewModel!.mapAllFilter.containsKey(3))
                       ? InkWell(
                       onTap: () {
-                        profileNonPublishViewModel!.checkboxFilterAll(false, 1);
+                        profileViewModel!.checkboxFilterAll(false, 3);
                       },
                       child: Image.asset(
                         'assets/icons/ic_checkbox_active.png',
@@ -181,7 +539,7 @@ class FilterProblemBottomSheet extends StatelessWidget {
                       ))
                       : InkWell(
                       onTap: () {
-                        profileNonPublishViewModel!.checkboxFilterAll(true, 1);
+                        profileViewModel!.checkboxFilterAll(true, 3);
                       },
                       child: Image.asset(
                         'assets/icons/ic_checkbox_unactive.png',
@@ -200,10 +558,10 @@ class FilterProblemBottomSheet extends StatelessWidget {
             SizedBox(
               child: ListView.builder(
                   shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: listProblem.length,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: profileViewModel!.rxListSubmissProblem.length,
                   itemBuilder: (context, index) {
-                    var item = listProblem[index];
+                    var item = profileViewModel!.rxListSubmissProblem[index];
                     return Column(
                       children: [
                         Padding(
@@ -216,11 +574,11 @@ class FilterProblemBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (profileNonPublishViewModel!.mapProblemFilter
+                              Obx(() => (profileViewModel!.mapSubmissProblem
                                   .containsKey(index))
                                   ? InkWell(
                                   onTap: () {
-                                    profileNonPublishViewModel!.checkboxProblem(
+                                    profileViewModel!.checkboxSubmissProblemr(
                                         false, index, "$item;");
                                   },
                                   child: Image.asset(
@@ -230,7 +588,7 @@ class FilterProblemBottomSheet extends StatelessWidget {
                                   ))
                                   : InkWell(
                                   onTap: () {
-                                    profileNonPublishViewModel!.checkboxProblem(
+                                    profileViewModel!.checkboxSubmissProblemr(
                                         true, index, "$item;");
                                   },
                                   child: Image.asset(
@@ -271,7 +629,7 @@ class FilterProblemBottomSheet extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
                           onPressed: () {
-                              Get.back();
+                            Get.back();
                           },
                           style: buttonFilterBlue,
                           child: const Text('Áp dụng')),
@@ -287,10 +645,10 @@ class FilterProblemBottomSheet extends StatelessWidget {
   }
 }
 class FilterSubmitTypeBottomSheet extends StatelessWidget {
-  const FilterSubmitTypeBottomSheet(this.profileNonPublishViewModel,
+  const FilterSubmitTypeBottomSheet(this.profileViewModel,
       {Key? key})
       : super(key: key);
-  final ProfileNonPublishViewModel? profileNonPublishViewModel;
+  final ProfileViewModel? profileViewModel;
 
 
   @override
@@ -312,10 +670,10 @@ class FilterSubmitTypeBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (profileNonPublishViewModel!.mapAllFilter.containsKey(2))
+                  Obx(() => (profileViewModel!.mapAllFilter.containsKey(4))
                       ? InkWell(
                       onTap: () {
-                        profileNonPublishViewModel!.checkboxFilterAll(false, 2);
+                        profileViewModel!.checkboxFilterAll(false, 4);
                       },
                       child: Image.asset(
                         'assets/icons/ic_checkbox_active.png',
@@ -324,7 +682,7 @@ class FilterSubmitTypeBottomSheet extends StatelessWidget {
                       ))
                       : InkWell(
                       onTap: () {
-                        profileNonPublishViewModel!.checkboxFilterAll(true, 2);
+                        profileViewModel!.checkboxFilterAll(true, 4);
                       },
                       child: Image.asset(
                         'assets/icons/ic_checkbox_unactive.png',
@@ -344,10 +702,10 @@ class FilterSubmitTypeBottomSheet extends StatelessWidget {
             SizedBox(
               child: ListView.builder(
                   shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: listType.length,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: profileViewModel!.rxListTypeSubmission.length,
                   itemBuilder: (context, index) {
-                    var item = listType[index];
+                    var item = profileViewModel!.rxListTypeSubmission[index];
                     return Column(
                       children: [
                         Padding(
@@ -360,12 +718,12 @@ class FilterSubmitTypeBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (profileNonPublishViewModel!.mapSubmitTypeFilter
+                              Obx(() => (profileViewModel!.mapTypeSubmission
                                   .containsKey(index))
                                   ? InkWell(
                                   onTap: () {
-                                    profileNonPublishViewModel!
-                                        .checkboxSubmitType(
+                                    profileViewModel!
+                                        .checkboxTypeSubmission(
                                         false, index, "$item;");
                                   },
                                   child: Image.asset(
@@ -375,8 +733,8 @@ class FilterSubmitTypeBottomSheet extends StatelessWidget {
                                   ))
                                   : InkWell(
                                   onTap: () {
-                                    profileNonPublishViewModel!
-                                        .checkboxSubmitType(
+                                    profileViewModel!
+                                        .checkboxTypeSubmission(
                                         true, index, "$item;");
                                   },
                                   child: Image.asset(
@@ -417,152 +775,7 @@ class FilterSubmitTypeBottomSheet extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
                           onPressed: () {
-                              Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ]),
-        ),
-      ),
-    );
-  }
-}
-class FilterUnitBottomSheet extends StatelessWidget {
-  const FilterUnitBottomSheet(this.profileNonPublishViewModel,
-      {Key? key})
-      : super(key: key);
-  final ProfileNonPublishViewModel? profileNonPublishViewModel;
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tat ca don vi
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Tất cả đơn vị',
-                      style: CustomTextStyle.roboto700TextStyle,
-                    ),
-                  ),
-                  Obx(() => (profileNonPublishViewModel!.mapAllFilter.containsKey(3))
-                      ? InkWell(
-                      onTap: () {
-                        profileNonPublishViewModel!.checkboxFilterAll(false, 3);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
-                      : InkWell(
-                      onTap: () {
-                        profileNonPublishViewModel!.checkboxFilterAll(true, 3);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
-                ],
-              ),
-            ),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: listMissionStatus.length,
-                  itemBuilder: (context, index) {
-                    var item = listMissionStatus[index];
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item,
-                                  style: CustomTextStyle.roboto400s16TextStyle,
-                                ),
-                              ),
-                              Obx(() => (profileNonPublishViewModel!.mapUnitFilter
-                                  .containsKey(index))
-                                  ? InkWell(
-                                  onTap: () {
-                                    profileNonPublishViewModel!
-                                        .checkboxUnit(
-                                        false, index, "$item;");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_active.png',
-                                    width: 30,
-                                    height: 30,
-                                  ))
-                                  : InkWell(
-                                  onTap: () {
-                                    profileNonPublishViewModel!
-                                        .checkboxUnit(
-                                        true, index, "$item;");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_unactive.png',
-                                    width: 30,
-                                    height: 30,
-                                  )))
-                            ],
-                          ),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Divider(
-                              thickness: 1,
-                              color: kgray,
-                            )),
-                      ],
-                    );
-                  }),
-            ),
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
                             Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                              Get.back();
                           },
                           style: buttonFilterBlue,
                           child: const Text('Áp dụng')),

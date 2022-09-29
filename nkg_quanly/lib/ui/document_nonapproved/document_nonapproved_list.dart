@@ -225,7 +225,7 @@ class DocumentNonApproveListItem extends StatelessWidget {
   DocumentNonApproveListItem(this.index, this.docModel);
 
   final int? index;
-  final Items? docModel;
+  final DocumentInListItems? docModel;
 
   @override
   Widget build(BuildContext context) {
@@ -825,7 +825,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
   }
 }
 
-Widget signWidget(Items docModel) {
+Widget signWidget(DocumentInListItems docModel) {
   if (docModel.status == "Đã bút phê") {
     return Row(
       children: [

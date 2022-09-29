@@ -33,7 +33,7 @@ class ListAllItemEOffice extends StatelessWidget {
                   ),
                   const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                   Text(
-                    "Không gian số",
+                    "Hệ thống E-Office",
                     style: Theme.of(context).textTheme.headline1,
                   ),
                   const Expanded(

@@ -904,21 +904,7 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
     );
   }
 }
-String getStringFilterFromMap(RxMap mapPickAll,RxMap rxMapSelect,int indexOfMap)
-{
-  var res = "";
-  if(mapPickAll.containsKey(1))
-  {
-      res = "";
-  }
-  else
-  {
-    rxMapSelect.forEach((key, value) {
-      res += value;
-    });
-  }
-  return res;
-}
+
 Widget signWidget(ProfileProcedureListItems docModel) {
   if (docModel.status == "Hoàn thành") {
     return Row(

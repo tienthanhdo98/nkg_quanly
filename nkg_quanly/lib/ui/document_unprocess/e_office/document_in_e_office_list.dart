@@ -131,9 +131,9 @@ class DocumentInEOfficeList extends GetView {
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                             child: Row(
-                                children: const [
-                                Text("1290",style: textBlueCountTotalStyle) ,
-                                  Padding(
+                                children: [
+                                Obx(() => (documentUnprocessViewModel.rxDocumentInStatistic.value.tong != null) ? Text(documentUnprocessViewModel.rxDocumentInStatistic.value.tong.toString(),style: textBlueCountTotalStyle): const Text("") ) ,
+                                const  Padding(
                                       padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Icon(Icons.keyboard_arrow_down,color: kBlueButton,))
                                 ]),
@@ -171,29 +171,29 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children: [
+                            const SizedBox(
                               height: 30,
                               child: Text('Chưa xử lý',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
-                            Text("300",
+                            Text(checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.chuaXuLy.toString()),
                                 style: textBlackCountEofficeStyle)
                           ],
                         ),
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children:  [
+                          const  SizedBox(
                               height: 30,
                               child: Text('Đang xử lý',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                              "204",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.dangXuLy.toString()),
                               style: textBlackCountEofficeStyle,
                             )
                           ],
@@ -201,15 +201,15 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children:  [
+                            const SizedBox(
                               height: 30,
                               child: Text('Đã xử lý',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                           "400",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.daXuLy.toString()),
                               style: textBlackCountEofficeStyle,
                             )
                           ],
@@ -217,15 +217,15 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children: [
+                          const  SizedBox(
                               height: 30,
                               child: Text('Đã bút phê',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                              "700",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.daButPhe.toString()),
                               style: textBlackCountEofficeStyle,
                             )
                           ],
@@ -233,15 +233,15 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children:  [
+                           const SizedBox(
                               height: 30,
                               child: Text('Chưa bút phê',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                              "214",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.chuaButPhe.toString()),
                               style:textBlackCountEofficeStyle,
                             )
                           ],
@@ -249,15 +249,15 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children:  [
+                            const SizedBox(
                               height: 30,
                               child: Text('Trong hạn',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                              "245",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.trongHan.toString()),
                               style: textBlackCountEofficeStyle,
                             )
                           ],
@@ -265,15 +265,15 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children: [
+                           const SizedBox(
                               height: 30,
-                              child: Text('Qúa hạn',
+                              child: Text('Quá hạn',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                              "245",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.quaHan.toString()),
                               style: textBlackCountEofficeStyle,
                             )
                           ],
@@ -281,15 +281,15 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children:  [
+                           const SizedBox(
                               height: 30,
                               child: Text('HT trước hạn',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                              "245",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.hoanThanhTruocHan.toString()),
                               style: textBlackCountEofficeStyle,
                             )
                           ],
@@ -297,15 +297,15 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children:  [
+                           const SizedBox(
                               height: 30,
                               child: Text('Hoàn thành trong hạn',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                              "245",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.hoanThanhTrongHan.toString()),
                               style: textBlackCountEofficeStyle,
                             )
                           ],
@@ -313,15 +313,15 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children:  [
+                          const  SizedBox(
                               height: 30,
                               child: Text('Hoàn thành quá hạn',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                              "245",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.hoanThanhQuaHan.toString()),
                               style: textBlackCountEofficeStyle,
                             )
                           ],
@@ -329,15 +329,15 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children:  [
+                           const SizedBox(
                               height: 30,
                               child: Text('Chưa HT trong hạn',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                              "245",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.chuaHoanThanhTrongHan.toString()),
                               style: textBlackCountEofficeStyle,
                             )
                           ],
@@ -345,15 +345,15 @@ class DocumentInEOfficeList extends GetView {
                         Column(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children:  [
+                           const SizedBox(
                               height: 30,
                               child: Text('Chưa HT quá hạn',
                                   style: CustomTextStyle
                                       .robotow400s12TextStyle),
                             ),
                             Text(
-                              "245",
+                              checkingStringNull(documentUnprocessViewModel.rxDocumentInStatistic.value.chuaHoanThanhQuaHan.toString()),
                               style: textBlackCountEofficeStyle,
                             )
                           ],
@@ -472,7 +472,7 @@ class DocumentNonProcessListItem extends StatelessWidget {
   DocumentNonProcessListItem(this.index, this.docModel);
 
   final int? index;
-  final Items? docModel;
+  final DocumentInListItems? docModel;
 
   @override
   Widget build(BuildContext context) {
@@ -557,7 +557,7 @@ class DetailDocInBottomSheet extends StatelessWidget {
       {Key? key})
       : super(key: key);
   final int? index;
-  final Items? docModel;
+  final DocumentInListItems? docModel;
 
   @override
   Widget build(BuildContext context) {
@@ -708,7 +708,7 @@ class DetailDocInBottomSheet extends StatelessWidget {
   }
 }
 
-Widget signWidget(Items docModel) {
+Widget signWidget(DocumentInListItems docModel) {
   if(docModel.status == "Đã xử lý")
     {
       return  Row(

@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const.dart';
 import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/ultils.dart';
-import '../../model/calendarwork_model/calendarwork_model.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/proflie_model/profile_model.dart';
 
@@ -37,7 +36,7 @@ class ProfileViewModel extends GetxController {
   Rx<DateTime> rxSelectedDay = dateNow.obs;
   Rx<CalendarFormat> rxCalendarFormat = CalendarFormat.week.obs;
   RxList<ProfileItems> rxProfileItems = <ProfileItems>[].obs;
-
+  Rx<ProfileStatisticModel> rxProfileStatistic= ProfileStatisticModel().obs;
   @override
   void onInit() {
     getFilterUnitEditor();
@@ -45,8 +44,8 @@ class ProfileViewModel extends GetxController {
     getFilterSubmissProblem();
     getFilterForChart("${apiGetProfileFilter}0");
     initCurrentDate();
-    getProfileStatisticEOffice();
-    postProfileByDay(rxDate.value);
+    postProfileStatistic();
+    // postProfileByDay(rxDate.value);
     super.onInit();
   }
 
@@ -54,10 +53,12 @@ class ProfileViewModel extends GetxController {
   final RxMap<int, String> mapUnitEditorFilter = <int, String>{}.obs;
   final RxMap<int, String> mapSubmissProblem  = <int, String>{}.obs;
   final RxMap<int, String> mapTypeSubmission = <int, String>{}.obs;
+  final RxMap<int, String> mapState = <int, String>{}.obs;
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
   RxList<String> rxListUnitEditor = <String>[].obs;
   RxList<String> rxListTypeSubmission = <String>[].obs;
   RxList<String> rxListSubmissProblem = <String>[].obs;
+  RxList<String> rxListState = <String>[].obs;
 
   Future<void> getFilterUnitEditor() async {
     print('loading');
@@ -76,7 +77,6 @@ class ProfileViewModel extends GetxController {
     List<dynamic> listRes = jsonDecode(response.body);
     List<String> listUnit = listRes.map((e) => e.toString()).toList();
     rxListSubmissProblem.value = listUnit;
-    print('loading ${rxListSubmissProblem.length}');
   }
 
   Future<void> getFilterTypeSubmission() async {
@@ -95,6 +95,14 @@ class ProfileViewModel extends GetxController {
       mapUnitEditorFilter.addAll(map);
     } else {
       mapUnitEditorFilter.remove(key);
+    }
+  }
+  void checkboxState(bool value, int key, String filterValue) {
+    if (value == true) {
+      var map = {key: filterValue};
+      mapState.addAll(map);
+    } else {
+      mapState.remove(key);
     }
   }
   void checkboxSubmissProblemr(bool value, int key, String filterValue) {
@@ -171,7 +179,7 @@ class ProfileViewModel extends GetxController {
     rxCalendarFormat.value = format;
   }
 
-  // profile ho so trinh
+  // profile ho so trinh data
   Future<DocumentFilterModel> getQuantityDocumentBuUrl(String url) async {
     print('loading');
     http.Response response = await http.get(Uri.parse(url));
@@ -179,13 +187,17 @@ class ProfileViewModel extends GetxController {
     return DocumentFilterModel.fromJson(jsonDecode(response.body));
   }
 
-  // Future<ProfileStatisticModel> getProfileStatistic() async {
-  //   final url = Uri.parse(apiGetProfileStatistic);
-  //   print('loading');
-  //   http.Response response = await http.get(url);
-  //   print(response.body);
-  //   return ProfileStatisticModel.fromJson(jsonDecode(response.body));
-  // }
+  Future<void> postProfileStatistic() async {
+    final url = Uri.parse(apiGetProfile);
+    print('loading');
+    String json = '{"pageIndex":1,"pageSize":10}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+    print(response.body);
+    ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
+    rxProfileStatistic.value = res.statistic!;
+    rxProfileItems.value = res.items!;
+  }
+
 
   Future<void> postProfileByDay(String day) async {
     final url = Uri.parse(apiGetProfile);
@@ -216,35 +228,19 @@ class ProfileViewModel extends GetxController {
     print(response.body);
     ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileItems.value = res.items!;
+    rxProfileStatistic.value = res.statistic!;
   }
-  Future<void> postProfileByFilter(String status, String level, String department, String submissionProblem, String typeSubmission, String unitEditor) async {
+  Future<void> postProfileByFilter(String state,String unitEditor,String submissionProblem,String typeSubmission) async {
     final url = Uri.parse(apiGetProfile);
     print('loading');
-    String json = '{"pageIndex":1,"pageSize":10,"typeSubmission":"$typeSubmission","submissionProblem":"$submissionProblem","unitEditor":"$unitEditor","state":"$status","level":"$level"}';
+    String json = '{"pageIndex":1,"pageSize":10,"typeSubmission":"$typeSubmission","submissionProblem":"$submissionProblem","unitEditor":"$unitEditor","state":"$state"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
     ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileItems.value = res.items!;
+
   }
-  Future<void> postProfileByFilterUi(String status, String level) async {
-    final url = Uri.parse(apiGetProfile);
-    print('loading');
-    String json = '{"pageIndex":1,"pageSize":10,"status":"$status","level":"$level"}';
-    http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
-    ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
-    rxProfileItems.value = res.items!;
-  }
-  //eoffice
- RxList<FilterItems> rxProfileStatisticModel = <FilterItems>[].obs;
-  Future<void> getProfileStatisticEOffice() async {
-    final url = Uri.parse(apiGetProfileStatistic);
-    print('loading');
-    http.Response response = await http.get(url);
-    print(response.body);
-    var listStatistic= <FilterItems>[];
-    List a = json.decode(response.body) as List;
-    listStatistic = a.map((e) => FilterItems.fromJson(e)).toList();
-    rxProfileStatisticModel.value = listStatistic;
-  }
+
+
+
 }

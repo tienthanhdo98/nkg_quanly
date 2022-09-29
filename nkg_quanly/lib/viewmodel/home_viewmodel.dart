@@ -11,7 +11,7 @@ import '../model/weather_model/weather_model.dart';
 
 
 class HomeViewModel extends GetxController {
-  RxList<Items> listData = <Items>[].obs;
+
   Rx<int> selectedButton = 0.obs;
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   Rx<WeatherModel> rxWeatherModel = WeatherModel().obs;
@@ -47,14 +47,7 @@ class HomeViewModel extends GetxController {
   }
 
   Map<String, String> headers = {"Content-type": "application/json"};
-  Future<DocumentModel> getDocument() async {
-    final url = Uri.parse(apiGetDocument);
-    String json = '{"pageIndex":1,"pageSize":10}';
-    print('loading');
-    http.Response response = await http.post(url,headers: headers,body: json);
-    print(response.body);
-    return DocumentModel.fromJson(jsonDecode(response.body));
-  }
+
 
   Future<DocumentStatisticModel> getDocumentStatistic() async {
     final url = Uri.parse(apiGetDocumentStatistic);
@@ -76,15 +69,7 @@ class HomeViewModel extends GetxController {
   }
 
 
-  //doc non approve
-  void searchData(String keyword) async {
-    final url = Uri.parse(apiGetDocumentOut);
-    String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
-    print('loading');
-    http.Response response = await http.post(url, headers: headers, body: json);
-    DocumentModel res =DocumentModel.fromJson(jsonDecode(response.body));
-    listData.value = res.items!;
-  }
+
 
 
 

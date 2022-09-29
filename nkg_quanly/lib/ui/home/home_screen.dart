@@ -5,24 +5,21 @@ import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
 import 'package:nkg_quanly/ui/document_nonapproved/document_nonapproved_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_screen.dart';
 import 'package:nkg_quanly/ui/report/report_screen.dart';
+
 import '../../const.dart';
 import '../../viewmodel/home_viewmodel.dart';
 import '../birthday/birthday_screen.dart';
 import '../book_room_meet/book_meeting_screen.dart';
 import '../book_room_meet/e_office/book_room_e_office_list.dart';
 import '../booking_car/e_office/booking_car_e_office_list.dart';
-import '../booking_car/ksg/book_car_screen.dart';
 import '../calendarwork/e_office/calendar_work_e_office_screen.dart';
 import '../document_out/document_out_list.dart';
-import '../document_out/document_out_screen.dart';
-import '../document_out/e_office/document_out__e_office_list.dart';
 import '../document_unprocess/document_unprocess _screen.dart';
 import '../document_unprocess/e_office/document_in_e_office_list.dart';
 import '../misstion/e_office/mission__e_office_list.dart';
 import '../misstion/mission_screen.dart';
 import '../profile/e_office/profile_e_office_list.dart';
 import '../profile_procedure_/profiles_procedure_screen.dart';
-import '../profile_wait_publish/profile_non_publish__e_office_list.dart';
 import '../profile_work/e_office/profile_work_e_office_list.dart';
 import '../profile_work/profile_work_screen.dart';
 import '../workbook/workbook_list.dart';
@@ -290,13 +287,10 @@ List<MenuItem> listEOffice = [
   MenuItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1),
   MenuItem('Văn bản đến', 'assets/icons/ic_doc_in.png', "", 2),
   MenuItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 3),
-  MenuItem(
-      'HS trình chờ phát hành', 'assets/icons/ic_hs_trinh_cho_ph.png', "", 4),
-  MenuItem('Hồ sơ công việc', 'assets/icons/ic_hoso_cv.png', "", 5),
-  MenuItem('Đặt lịch phòng họp', 'assets/icons/ic_meeting.png', "", 6),
-  MenuItem('Điều động bố trí ô tô', 'assets/icons/ic_booking_car.png', "", 7),
-  MenuItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 8),
-  MenuItem('Văn bản đi chờ phát hành', 'assets/icons/ic_doc_push.png', "", 9),
+  MenuItem('Hồ sơ công việc', 'assets/icons/ic_hoso_cv.png', "", 4),
+  MenuItem('Bố trí phòng họp', 'assets/icons/ic_meeting.png', "", 5),
+  MenuItem('Bố trí và điều động xe ô tô', 'assets/icons/ic_booking_car.png', "", 6),
+  MenuItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 7),
 ];
 
 // List<MenuItem> list2 = [
@@ -367,12 +361,6 @@ void toScreen(int type, String? header, String? icon) {
             icon: icon,
           ));
       break;
-    case 12:
-      Get.to(() => BookingCarScreen(
-            header: header,
-            icon: icon,
-          ));
-      break;
     case 13:
       Get.to(() => ProfileWorkScreen(
             header: header,
@@ -410,7 +398,7 @@ void menuToScreen(int type, String? header, String? icon) {
 
 void toScreenEoffice(int type, String? header, String? icon) {
   switch (type) {
-    case 7:
+    case 6:
       Get.to(() => BookingEOfficeCarList(
             header: header,
           ));
@@ -424,20 +412,14 @@ void toScreenEoffice(int type, String? header, String? icon) {
       case 3:
       Get.to(() => ProfileEOfficeList(header: header,));
       break;
-      case 4:
-      Get.to(() => ProfileNonPublishEOfficeList(header: header,));
-      break;
-      case 5:
+        case 4:
       Get.to(() => ProfileWorkEOfficeList(header: header,));
       break;
-    case 6:
+    case 5:
       Get.to(() => BookRoomEOfficeList(header: header,));
       break;
-      case 8:
+      case 7:
       Get.to(() => MissionEOfficeList(header: header,));
-      break;
-      case 9:
-      Get.to(() => DocumentOutEOfficeList(header: header,));
       break;
   }
 }

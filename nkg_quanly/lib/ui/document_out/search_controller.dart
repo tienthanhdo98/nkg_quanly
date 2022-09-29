@@ -7,6 +7,7 @@ import 'package:nkg_quanly/model/misstion/mission_model.dart';
 import '../../const/api.dart';
 import '../../model/birthday_model/birthday_model.dart';
 import '../../model/calendarwork_model/calendarwork_model.dart';
+import '../../model/document/document_model.dart';
 import '../../model/document_out_model/document_out_model.dart';
 import '../../model/meeting_room/meeting_room_model.dart';
 import '../../model/misstion/mission_detail.dart';
@@ -23,7 +24,7 @@ class SearchController extends GetxController {
   RxList<ProfileItems> listDataProfile = <ProfileItems>[].obs;
   RxList<ReportListItems> listDataReport= <ReportListItems>[].obs;
   RxList<ProfileProcedureListItems> listDataProfileProc = <ProfileProcedureListItems>[].obs;
-
+  RxList<DocumentInListItems> listData = <DocumentInListItems>[].obs;
 
   Map<String, String> headers = {"Content-type": "application/json"};
   void searchDataDocOut(String keyword) async {
@@ -43,7 +44,7 @@ class SearchController extends GetxController {
     listDataMission.value = res.items!;
   }
   void searchDataRoomMeeting(String keyword) async {
-    final url = Uri.parse(apiPostAllMeetingroom);
+    final url = Uri.parse(apiPostAllMeetingroomSearch);
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"keyword":"$keyword"}';
     http.Response response = await http.post(url,headers: headers,body: json);
@@ -93,6 +94,16 @@ class SearchController extends GetxController {
     http.Response response = await http.post(url,headers: headers,body: json);
     ProfileProcedureModel reportModel =  ProfileProcedureModel.fromJson(jsonDecode(response.body));
     listDataProfileProc.value = reportModel.items!;
+  }
+
+  //doc non approve
+  void searchData(String keyword) async {
+    final url = Uri.parse(apiGetDocumentOut);
+    String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+    print('loading');
+    http.Response response = await http.post(url, headers: headers, body: json);
+    DocumentInModel res =DocumentInModel.fromJson(jsonDecode(response.body));
+    listData.value = res.items!;
   }
 
 }

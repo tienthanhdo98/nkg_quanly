@@ -21,14 +21,14 @@ class BookingCarViewModel extends GetxController {
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   RxList<BookingCarListItems> rxBookingCarItems=
       <BookingCarListItems>[].obs;
-  Rx<MeetingRoomStatisticModel> rxBookingCarStatistic = MeetingRoomStatisticModel().obs;
+  Rx<BookingStatistic> rxBookingCarStatistic = BookingStatistic().obs;
 
   Map<String, String> headers = {"Content-type": "application/json"};
   @override
   void onInit() {
     getFilterForChart(apiGetReportChart0);
     initCurrentDate();
-    getBookingCarStatisticEoffice();
+    postBookingCarStatistic();
     postBookingCarByDay(rxDate.value);
     super.onInit();
   }
@@ -68,13 +68,6 @@ class BookingCarViewModel extends GetxController {
 
 
   //book car
-  Future<MeetingRoomStatisticModel> getBookingCarStatistic() async {
-    final url = Uri.parse(apiGetBookingCarStatistic);
-    print('loading');
-    http.Response response = await http.get(url);
-    print(response.body);
-    return MeetingRoomStatisticModel.fromJson(jsonDecode(response.body));
-  }
   Future<void> postBookingCarByDay(String day) async {
     final url = Uri.parse(apiGetBookingCarListItems);
     print('loading');
@@ -83,6 +76,14 @@ class BookingCarViewModel extends GetxController {
     print(response.body);
     BookingCarModel res=   BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarItems.value = res.items!;
+  } Future<void> postBookingCarStatistic() async {
+    final url = Uri.parse(apiGetBookingCarListItems);
+    print('loading');
+    String json = '{"pageIndex":1,"pageSize":10}';
+    http.Response response = await http.post(url,headers: headers,body: json);
+    print(response.body);
+    BookingCarModel res=   BookingCarModel.fromJson(jsonDecode(response.body));
+    rxBookingCarStatistic.value = res.statistic!;
   }
   Future<void> postookingCarByWeek(String datefrom, String dateTo) async {
     final url = Uri.parse(apiGetBookingCarListItems);
@@ -149,14 +150,6 @@ class BookingCarViewModel extends GetxController {
     rxBookingCarItems.value = res.items!;
   }
 //end filter
-//eoffice
-  Future<void> getBookingCarStatisticEoffice() async {
-    final url = Uri.parse(apiGetBookingCarStatistic);
-    print('loading');
-    http.Response response = await http.get(url);
-    print(response.body);
-    MeetingRoomStatisticModel res = MeetingRoomStatisticModel.fromJson(jsonDecode(response.body));
-    rxBookingCarStatistic.value = res;
-  }
+
 
 }

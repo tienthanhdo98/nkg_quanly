@@ -5,6 +5,7 @@ import '../../const.dart';
 import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../model/booking_car/booking_car_model;.dart';
 import '../../model/meeting_room/meeting_room_statistic_model.dart';
 import '../theme/theme_data.dart';
 
@@ -12,7 +13,7 @@ class PieChartRoomMeetingWidget extends StatefulWidget {
   PieChartRoomMeetingWidget({UniqueKey? key, this.documentFilterModel})
       : super(key: key);
 
-  final MeetingRoomStatisticModel? documentFilterModel;
+  final BookingStatistic? documentFilterModel;
 
   @override
   State<StatefulWidget> createState() => PieChartRoomMeetingState();
@@ -20,7 +21,7 @@ class PieChartRoomMeetingWidget extends StatefulWidget {
 
 class PieChartRoomMeetingState extends State<PieChartRoomMeetingWidget> {
   List<PieCharData> listChartData = [];
-  MeetingRoomStatisticModel? documentFilterModel;
+  BookingStatistic? documentFilterModel;
   List<FilterItems>? listQuantity;
 
   @override

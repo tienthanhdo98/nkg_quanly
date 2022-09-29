@@ -10,7 +10,6 @@ import '../../../const/widget.dart';
 import '../../../model/meeting_room/meeting_room_model.dart';
 import '../meeting_room_detail.dart';
 
-
 class BookRoomEOfficeList extends GetView {
   final String? header;
   final MenuController menuController = Get.put(MenuController());
@@ -23,7 +22,7 @@ class BookRoomEOfficeList extends GetView {
     return Scaffold(
       body: SafeArea(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //header
           headerWidgetSeatch(
@@ -33,48 +32,49 @@ class BookRoomEOfficeList extends GetView {
               ),
               context),
           //date table
-          headerTableDate( Obx(() => TableCalendar(
-              locale: 'vi_VN',
-              headerVisible: false,
-              calendarFormat: roomMeetingViewModel.rxCalendarFormat.value,
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: roomMeetingViewModel.rxSelectedDay.value,
-              selectedDayPredicate: (day) {
-                return isSameDay(
-                    roomMeetingViewModel.rxSelectedDay.value, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) async {
-                if (!isSameDay(roomMeetingViewModel.rxSelectedDay.value,
-                    selectedDay)) {
-                  roomMeetingViewModel.onSelectDay(selectedDay);
-                }
-              },
-              onFormatChanged: (format) {
-                if (roomMeetingViewModel.rxCalendarFormat.value !=
-                    format) {
-                  // Call `setState()` when updating calendar format
-                  roomMeetingViewModel.rxCalendarFormat.value = format;
-                }
-              })),
+          headerTableDate(
+              Obx(() => TableCalendar(
+                  locale: 'vi_VN',
+                  headerVisible: false,
+                  calendarFormat: roomMeetingViewModel.rxCalendarFormat.value,
+                  firstDay: DateTime.utc(2010, 10, 16),
+                  lastDay: DateTime.utc(2030, 3, 14),
+                  focusedDay: roomMeetingViewModel.rxSelectedDay.value,
+                  selectedDayPredicate: (day) {
+                    return isSameDay(
+                        roomMeetingViewModel.rxSelectedDay.value, day);
+                  },
+                  onDaySelected: (selectedDay, focusedDay) async {
+                    if (!isSameDay(roomMeetingViewModel.rxSelectedDay.value,
+                        selectedDay)) {
+                      roomMeetingViewModel.onSelectDay(selectedDay);
+                    }
+                  },
+                  onFormatChanged: (format) {
+                    if (roomMeetingViewModel.rxCalendarFormat.value != format) {
+                      // Call `setState()` when updating calendar format
+                      roomMeetingViewModel.rxCalendarFormat.value = format;
+                    }
+                  })),
               Center(
                   child: InkWell(
-                    onTap: () {
-                      if (roomMeetingViewModel.rxCalendarFormat.value !=
-                          CalendarFormat.month) {
-                        roomMeetingViewModel.switchFormat(CalendarFormat.month);
-                      } else {
-                        roomMeetingViewModel.switchFormat(CalendarFormat.week);
-                      }
-                    },
-                    child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                        child: Image.asset(
-                          "assets/icons/ic_showmore.png",
-                          height: 15,
-                          width: 80,
-                        )),
-                  )),context),
+                onTap: () {
+                  if (roomMeetingViewModel.rxCalendarFormat.value !=
+                      CalendarFormat.month) {
+                    roomMeetingViewModel.switchFormat(CalendarFormat.month);
+                  } else {
+                    roomMeetingViewModel.switchFormat(CalendarFormat.week);
+                  }
+                },
+                child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                    child: Image.asset(
+                      "assets/icons/ic_showmore.png",
+                      height: 15,
+                      width: 80,
+                    )),
+              )),
+              context),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -86,65 +86,71 @@ class BookRoomEOfficeList extends GetView {
                   style: Theme.of(context).textTheme.headline5,
                 ),
                 InkWell(
-                  onTap: (){
-                    if( menuController.rxShowStatistic.value == true)
-                      {
-                        menuController.changeStateShowStatistic(false);
-                      }
-                    else
-                      {
-                        menuController.changeStateShowStatistic(true);
-                      }
-
+                  onTap: () {
+                    if (menuController.rxShowStatistic.value == true) {
+                      menuController.changeStateShowStatistic(false);
+                    } else {
+                      menuController.changeStateShowStatistic(true);
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                    child: Row(
-                        children: const [
-                         Text("20",style: textBlueCountTotalStyle),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                              child: Icon(Icons.keyboard_arrow_down,color: kBlueButton,))
-                        ]),
+                    child: Row(children: [
+                     Obx(() => (roomMeetingViewModel
+                      .rxMeetingRoomStatistic.value.total != null) ? Text(
+                         roomMeetingViewModel
+                             .rxMeetingRoomStatistic.value.total
+                             .toString(),
+                         style: textBlueCountTotalStyle) : const Text("")) ,
+                      const Padding(
+                          padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: kBlueButton,
+                          ))
+                    ]),
                   ),
                 ),
-                Obx(() => (menuController.rxShowStatistic.value == true) ?
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: const [
-                                Text('Còn trống'),
-                                Text(
-                                    "300",
-                                    style: TextStyle(
+                Obx(() => (menuController.rxShowStatistic.value == true)
+                    ? Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Còn trống'),
+                                  Text(
+                                      roomMeetingViewModel
+                                          .rxMeetingRoomStatistic.value.vacancy
+                                          .toString(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 24))
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Đã đặt'),
+                                  Text(
+                                    roomMeetingViewModel
+                                        .rxMeetingRoomStatistic.value.booked
+                                        .toString(),
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 24))
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: const [
-                                Text('Đã đặt'),
-                                Text(
-                                  "204",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ) : const SizedBox.shrink())
+                                        fontSize: 24),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    : const SizedBox.shrink())
               ],
             ),
           ),
@@ -202,17 +208,18 @@ class BookRoomEOfficeList extends GetView {
                           itemBuilder: (context, index) {
                             return InkWell(
                                 onTap: () {
-                                  Get.to(() => MeetingRoomDetail(
-                                      id: roomMeetingViewModel
-                                          .rxMeetingRoomItems[index].id!));
+                                  // Get.to(() => MeetingRoomDetail(
+                                  //     id: roomMeetingViewModel
+                                  //         .rxMeetingRoomItems[index]!));
                                 },
-                                child: MeetingRoomItem(
-                                    index,
-                                    roomMeetingViewModel
-                                        .rxMeetingRoomItems[index]));
+                                child: Text(""));
                           })
                       : const Text("Hôm nay không có lịch họp nào"))),
               //bottom
+              //MeetingRoomItem(
+              //                                     index,
+              //                                     roomMeetingViewModel
+              //                                         .rxMeetingRoomItems[index])
             ]),
           )),
           Obx(() => Container(
@@ -240,9 +247,8 @@ class BookRoomEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-
                           DateTime dateTo =
-                          dateNow.add(const Duration(days: 7));
+                              dateNow.add(const Duration(days: 7));
                           String strdateFrom = formatDateToString(dateNow);
                           String strdateTo = formatDateToString(dateTo);
                           print(strdateFrom);
@@ -274,74 +280,77 @@ class BookRoomEOfficeList extends GetView {
   }
 }
 
-class MeetingRoomItem extends StatelessWidget {
-  MeetingRoomItem(this.index, this.docModel);
 
-  int? index;
-  MeetingRoomItems? docModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 25),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-            child: SizedBox(
-              width: 100,
-              child: Text(formatDateToStringHour(docModel!.fromTime!,docModel!.toTime!)),
-            ),
-          ),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                signWidget(docModel!),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                Row(
-                  children: [
-                    Image.asset(
-                      "assets/icons/ic_camera.png",
-                      height: 18,
-                      width: 18,
-                      fit: BoxFit.fill,
-                    ),
-                    const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
-                    Text(docModel!.roomName!,
-                        style: CustomTextStyle.grayColorTextStyle)
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/icons/ic_user.png',
-                      width: 30,
-                      height: 30,
-                    ),
-                    const Padding(padding: EdgeInsets.fromLTRB(8, 0, 0, 0)),
-                    Text(
-                      docModel!.registerUser!,
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w500),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//
+// class MeetingRoomItem extends StatelessWidget {
+//   MeetingRoomItem(this.index, this.docModel);
+//
+//   int? index;
+//   MeetingRoomItems? docModel;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.fromLTRB(0, 0, 0, 25),
+//       child: Row(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Padding(
+//             padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+//             child: SizedBox(
+//               width: 100,
+//               child: Text(formatDateToStringHour(
+//                   docModel!.fromTime!, docModel!.toTime!)),
+//             ),
+//           ),
+//           Flexible(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   "${docModel!.name}",
+//                   style: Theme.of(context).textTheme.headline5,
+//                 ),
+//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+//                 signWidget(docModel!),
+//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+//                 Row(
+//                   children: [
+//                     Image.asset(
+//                       "assets/icons/ic_camera.png",
+//                       height: 18,
+//                       width: 18,
+//                       fit: BoxFit.fill,
+//                     ),
+//                     const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
+//                     Text(docModel!.roomName!,
+//                         style: CustomTextStyle.grayColorTextStyle)
+//                   ],
+//                 ),
+//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+//                 Row(
+//                   children: [
+//                     Image.asset(
+//                       'assets/icons/ic_user.png',
+//                       width: 30,
+//                       height: 30,
+//                     ),
+//                     const Padding(padding: EdgeInsets.fromLTRB(8, 0, 0, 0)),
+//                     Text(
+//                       docModel!.registerUser!,
+//                       style: const TextStyle(
+//                           fontSize: 12, fontWeight: FontWeight.w500),
+//                     )
+//                   ],
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class FilterRoomMeetingBottomSheet extends StatelessWidget {
   const FilterRoomMeetingBottomSheet(
@@ -529,7 +538,6 @@ class FilterRoomMeetingBottomSheet extends StatelessWidget {
                                   status += value;
                                 });
                               }
-
                             }
                             print(status);
                             roomMeetingViewModel!
@@ -553,7 +561,7 @@ class FilterRoomMeetingBottomSheet extends StatelessWidget {
 var lisStatus = ["Đã đặt lịch", "Còn trống"];
 
 Widget signWidget(MeetingRoomItems docModel) {
-  if (docModel.registerUser!.isNotEmpty) {
+  if (docModel.mettings!.isNotEmpty) {
     return Row(
       children: [
         Image.asset(
@@ -585,3 +593,74 @@ Widget signWidget(MeetingRoomItems docModel) {
     );
   }
 }
+
+//old model
+// class MeetingRoomItem extends StatelessWidget {
+//   MeetingRoomItem(this.index, this.docModel);
+//
+//   int? index;
+//   MeetingRoomItems? docModel;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.fromLTRB(0, 0, 0, 25),
+//       child: Row(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Padding(
+//             padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+//             child: SizedBox(
+//               width: 100,
+//               child: Text(formatDateToStringHour(
+//                   docModel!.fromTime!, docModel!.toTime!)),
+//             ),
+//           ),
+//           Flexible(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   "${docModel!.name}",
+//                   style: Theme.of(context).textTheme.headline5,
+//                 ),
+//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+//                 signWidget(docModel!),
+//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+//                 Row(
+//                   children: [
+//                     Image.asset(
+//                       "assets/icons/ic_camera.png",
+//                       height: 18,
+//                       width: 18,
+//                       fit: BoxFit.fill,
+//                     ),
+//                     const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
+//                     Text(docModel!.roomName!,
+//                         style: CustomTextStyle.grayColorTextStyle)
+//                   ],
+//                 ),
+//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+//                 Row(
+//                   children: [
+//                     Image.asset(
+//                       'assets/icons/ic_user.png',
+//                       width: 30,
+//                       height: 30,
+//                     ),
+//                     const Padding(padding: EdgeInsets.fromLTRB(8, 0, 0, 0)),
+//                     Text(
+//                       docModel!.registerUser!,
+//                       style: const TextStyle(
+//                           fontSize: 12, fontWeight: FontWeight.w500),
+//                     )
+//                   ],
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

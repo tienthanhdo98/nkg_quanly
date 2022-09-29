@@ -236,7 +236,7 @@ class DocumentNonProcessListItem extends StatelessWidget {
   DocumentNonProcessListItem(this.index, this.docModel);
 
   final int? index;
-  final Items? docModel;
+  final DocumentInListItems? docModel;
 
   @override
   Widget build(BuildContext context) {
@@ -885,7 +885,7 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
   }
 }
 
-Widget signWidget(Items docModel) {
+Widget signWidget(DocumentInListItems docModel) {
   if(docModel.status == "Đã xử lý")
     {
       return  Row(

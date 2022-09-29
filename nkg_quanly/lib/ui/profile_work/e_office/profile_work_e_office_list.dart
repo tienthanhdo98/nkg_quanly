@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nkg_quanly/model/profile_work/profile_work_model.dart';
 import 'package:nkg_quanly/ui/menu/MenuController.dart';
 
 import '../../../const.dart';
@@ -11,11 +12,12 @@ import '../../misstion/mission_detail.dart';
 import '../../misstion/mission_viewmodel.dart';
 import '../../misstion/misstion_search.dart';
 import '../../theme/theme_data.dart';
+import '../profile_work_viewmodel.dart';
 
 class ProfileWorkEOfficeList extends GetView {
   final String? header;
   final MenuController menuController = Get.put(MenuController());
-  final missionViewModel = Get.put(MissionViewModel());
+  final profileWorkViewModel = Get.put(ProfileWorkViewModel());
   final int selectedButton = 0;
 
   ProfileWorkEOfficeList({this.header});
@@ -40,33 +42,34 @@ class ProfileWorkEOfficeList extends GetView {
               Obx(() => TableCalendar(
                   locale: 'vi_VN',
                   headerVisible: false,
-                  calendarFormat: missionViewModel.rxCalendarFormat.value,
+                  calendarFormat: profileWorkViewModel.rxCalendarFormat.value,
                   firstDay: DateTime.utc(2010, 10, 16),
                   lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: missionViewModel.rxSelectedDay.value,
+                  focusedDay: profileWorkViewModel.rxSelectedDay.value,
                   selectedDayPredicate: (day) {
-                    return isSameDay(missionViewModel.rxSelectedDay.value, day);
+                    return isSameDay(
+                        profileWorkViewModel.rxSelectedDay.value, day);
                   },
                   onDaySelected: (selectedDay, focusedDay) async {
-                    if (!isSameDay(
-                        missionViewModel.rxSelectedDay.value, selectedDay)) {
-                      missionViewModel.onSelectDay(selectedDay);
+                    if (!isSameDay(profileWorkViewModel.rxSelectedDay.value,
+                        selectedDay)) {
+                      profileWorkViewModel.onSelectDay(selectedDay);
                     }
                   },
                   onFormatChanged: (format) {
-                    if (missionViewModel.rxCalendarFormat.value != format) {
+                    if (profileWorkViewModel.rxCalendarFormat.value != format) {
                       // Call `setState()` when updating calendar format
-                      missionViewModel.rxCalendarFormat.value = format;
+                      profileWorkViewModel.rxCalendarFormat.value = format;
                     }
                   })),
               Center(
                   child: InkWell(
                 onTap: () {
-                  if (missionViewModel.rxCalendarFormat.value !=
+                  if (profileWorkViewModel.rxCalendarFormat.value !=
                       CalendarFormat.month) {
-                    missionViewModel.switchFormat(CalendarFormat.month);
+                    profileWorkViewModel.switchFormat(CalendarFormat.month);
                   } else {
-                    missionViewModel.switchFormat(CalendarFormat.week);
+                    profileWorkViewModel.switchFormat(CalendarFormat.week);
                   }
                 },
                 child: Padding(
@@ -102,9 +105,17 @@ class ProfileWorkEOfficeList extends GetView {
                           },
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                            child: Row(children: const [
-                              Text("14", style: textBlueCountTotalStyle),
-                              Padding(
+                            child: Row(children: [
+                              Obx(() => (profileWorkViewModel
+                                          .rxProfileWorkStatistic.value.tong !=
+                                      null)
+                                  ? Text(
+                                      profileWorkViewModel
+                                          .rxProfileWorkStatistic.value.tong
+                                          .toString(),
+                                      style: textBlueCountTotalStyle)
+                                  :const Text("")),
+                              const Padding(
                                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                   child: Icon(
                                     Icons.keyboard_arrow_down,
@@ -134,7 +145,7 @@ class ProfileWorkEOfficeList extends GetView {
                                 return SizedBox(
                                     height: 560,
                                     child: FilterProfileWorkEOfficeBottomSheet(
-                                        menuController, missionViewModel));
+                                        menuController, profileWorkViewModel));
                               },
                             );
                           },
@@ -164,8 +175,8 @@ class ProfileWorkEOfficeList extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                      missionViewModel.rxMissionStatisticModel
-                                          .value.chuaXuLy
+                                      profileWorkViewModel
+                                          .rxProfileWorkStatistic.value.taoMoi
                                           .toString(),
                                       style: textBlackCountEofficeStyle)
                                 ],
@@ -177,8 +188,8 @@ class ProfileWorkEOfficeList extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    missionViewModel.rxMissionStatisticModel
-                                        .value.dangThucHien
+                                    profileWorkViewModel
+                                        .rxProfileWorkStatistic.value.daThuHoi
                                         .toString(),
                                     style: textBlackCountEofficeStyle,
                                   )
@@ -191,8 +202,8 @@ class ProfileWorkEOfficeList extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    missionViewModel
-                                        .rxMissionStatisticModel.value.daHuy
+                                    profileWorkViewModel
+                                        .rxProfileWorkStatistic.value.dangXuLy
                                         .toString(),
                                     style: textBlackCountEofficeStyle,
                                   )
@@ -205,8 +216,8 @@ class ProfileWorkEOfficeList extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    missionViewModel
-                                        .rxMissionStatisticModel.value.daTamDung
+                                    profileWorkViewModel.rxProfileWorkStatistic
+                                        .value.daHoanThanh
                                         .toString(),
                                     style: textBlackCountEofficeStyle,
                                   )
@@ -219,8 +230,8 @@ class ProfileWorkEOfficeList extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    missionViewModel
-                                        .rxMissionStatisticModel.value.quaHan
+                                    profileWorkViewModel
+                                        .rxProfileWorkStatistic.value.quaHan
                                         .toString(),
                                     style: textBlackCountEofficeStyle,
                                   )
@@ -233,8 +244,8 @@ class ProfileWorkEOfficeList extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    missionViewModel
-                                        .rxMissionStatisticModel.value.trongHan
+                                    profileWorkViewModel.rxProfileWorkStatistic
+                                        .value.trongHanXuLy
                                         .toString(),
                                     style: textBlackCountEofficeStyle,
                                   )
@@ -254,9 +265,10 @@ class ProfileWorkEOfficeList extends GetView {
                 thickness: 1,
               )),
           Expanded(
-              child: Obx(() => (missionViewModel.rxMissionItem.isNotEmpty)
+              child: Obx(() => (profileWorkViewModel
+                      .rxProfileWorkList.isNotEmpty)
                   ? ListView.builder(
-                      itemCount: missionViewModel.rxMissionItem.length,
+                      itemCount: profileWorkViewModel.rxProfileWorkList.length,
                       itemBuilder: (context, index) {
                         return InkWell(
                             onTap: () {
@@ -271,16 +283,16 @@ class ProfileWorkEOfficeList extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: 320,
-                                      child: DetailMissionBottomSheet(
+                                      height: 350,
+                                      child: DetailProfileWorkBottomSheet(
                                           index,
-                                          missionViewModel
-                                              .rxMissionItem[index]));
+                                          profileWorkViewModel
+                                              .rxProfileWorkList[index]));
                                 },
                               );
                             },
-                            child: MissionListItem(
-                                index, missionViewModel.rxMissionItem[index]));
+                            child: ProfileWorkItem(index,
+                                profileWorkViewModel.rxProfileWorkList[index]));
                       })
                   : const SizedBox.shrink())),
           //bottom
@@ -297,38 +309,38 @@ class ProfileWorkEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          missionViewModel.rxSelectedDay.value = DateTime.now();
-                          missionViewModel.onSelectDay(DateTime.now());
-                          missionViewModel.swtichBottomButton(0);
+                          profileWorkViewModel.rxSelectedDay.value =
+                              DateTime.now();
+                          profileWorkViewModel.onSelectDay(DateTime.now());
+                          profileWorkViewModel.switchBottomButton(0);
                         },
                         child: bottomDateButton("Ngày",
-                            missionViewModel.selectedBottomButton.value, 0),
+                            profileWorkViewModel.selectedBottomButton.value, 0),
                       ),
                     ),
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime datefrom = DateTime.now();
                           DateTime dateTo =
-                              datefrom.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(datefrom);
+                              dateNow.add(const Duration(days: 7));
+                          String strdateFrom = formatDateToString(dateNow);
                           String strdateTo = formatDateToString(dateTo);
-                          missionViewModel.getMissionByWeek(
+                          profileWorkViewModel.postProfileWorkByWeek(
                               strdateFrom, strdateTo);
-                          missionViewModel.swtichBottomButton(1);
+                          profileWorkViewModel.switchBottomButton(1);
                         },
                         child: bottomDateButton("Tuần",
-                            missionViewModel.selectedBottomButton.value, 1),
+                            profileWorkViewModel.selectedBottomButton.value, 1),
                       ),
                     ),
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          missionViewModel.getMissionByMonth();
-                          missionViewModel.swtichBottomButton(2);
+                          profileWorkViewModel.postProfileWorkByMonth();
+                          profileWorkViewModel.switchBottomButton(2);
                         },
                         child: bottomDateButton("Tháng",
-                            missionViewModel.selectedBottomButton.value, 2),
+                            profileWorkViewModel.selectedBottomButton.value, 2),
                       ),
                     )
                   ],
@@ -340,34 +352,27 @@ class ProfileWorkEOfficeList extends GetView {
   }
 }
 
-class MissionListItem extends StatelessWidget {
-  MissionListItem(this.index, this.docModel);
+class ProfileWorkItem extends StatelessWidget {
+  ProfileWorkItem(this.index, this.docModel);
 
   final int? index;
-  final MissionItem? docModel;
+  final ProfileWorkListItems? docModel;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                "${index! + 1}. ${docModel!.name}",
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: priorityWidget(docModel!))),
-            ],
+          Text(
+            "${index! + 1}. ${docModel!.name}",
+            style: Theme.of(context).textTheme.headline3,
           ),
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
               child: textCodeStyle(docModel!.code!)),
-          signWidgetMission(docModel!),
+          signWidgetProfileWork(docModel!),
           SizedBox(
             height: 70,
             child: GridView.count(
@@ -385,7 +390,7 @@ class MissionListItem extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.organizationName!,
+                        child: Text(docModel!.handler!,
                             style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
@@ -396,7 +401,7 @@ class MissionListItem extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.deadline!),
+                        child: Text(formatDate(docModel!.endDate!),
                             style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
@@ -408,7 +413,7 @@ class MissionListItem extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(
-                          formatDate(docModel!.processingDate!),
+                          formatDate(docModel!.toDate!),
                           style: Theme.of(context).textTheme.headline5,
                         ))
                   ],
@@ -425,8 +430,8 @@ class MissionListItem extends StatelessWidget {
   }
 }
 
-Widget signWidgetMission(MissionItem docModel) {
-  if (docModel.state == "Đang thực hiện") {
+Widget signWidgetProfileWork(ProfileWorkListItems docModel) {
+  if (docModel.status == "Đã hoàn thành") {
     return Row(
       children: [
         Image.asset(
@@ -436,12 +441,12 @@ Widget signWidgetMission(MissionItem docModel) {
         ),
         const Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
         Text(
-          docModel.state!,
+          docModel.status!,
           style: const TextStyle(color: kGreenSign, fontSize: 12),
         )
       ],
     );
-  } else if (docModel.state == "Chưa xử lý") {
+  } else if (docModel.status == "Đang xử lý") {
     return Row(
       children: [
         Image.asset(
@@ -450,11 +455,11 @@ Widget signWidgetMission(MissionItem docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
-        Text(docModel.state!,
+        Text(docModel.status!,
             style: const TextStyle(color: kOrangeSign, fontSize: 12))
       ],
     );
-  } else if (docModel.state == "Đã hủy") {
+  } else if (docModel.status == "Quá hạn") {
     return Row(
       children: [
         Image.asset(
@@ -463,11 +468,39 @@ Widget signWidgetMission(MissionItem docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
-        Text(docModel.state!,
+        Text(docModel.status!,
             style: const TextStyle(color: kRedPriority, fontSize: 12))
       ],
     );
-  } else {
+  }
+  else if (docModel.status == "Tạo mới") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_add.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
+        Text(docModel.status!,
+            style: const TextStyle(color: kGreenSign, fontSize: 12))
+      ],
+    );
+  }else if (docModel.status == "Đã thu hồi") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_outdate.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
+        Text(docModel.status!,
+            style: const TextStyle(color: Colors.black, fontSize: 12))
+      ],
+    );
+  }
+  else {
     return Row(
       children: [
         Image.asset(
@@ -476,18 +509,18 @@ Widget signWidgetMission(MissionItem docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(4, 0, 0, 0)),
-        Text(docModel.state!,
+        Text(docModel.status!,
             style: const TextStyle(color: Colors.black, fontSize: 12))
       ],
     );
   }
 }
 
-class DetailMissionBottomSheet extends StatelessWidget {
-  const DetailMissionBottomSheet(this.index, this.docModel, {Key? key})
+class DetailProfileWorkBottomSheet extends StatelessWidget {
+  const DetailProfileWorkBottomSheet(this.index, this.docModel, {Key? key})
       : super(key: key);
   final int? index;
-  final MissionItem? docModel;
+  final ProfileWorkListItems? docModel;
 
   @override
   Widget build(BuildContext context) {
@@ -509,26 +542,22 @@ class DetailMissionBottomSheet extends StatelessWidget {
             color: kBlueButton,
           ),
           const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-          Row(
-            children: [
-              Text(
-                "${index! + 1}. ${docModel!.name}",
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: priorityWidget(docModel!))),
-            ],
+          Text(
+            "${index! + 1}. ${docModel!.name}",
+            style: Theme.of(context).textTheme.headline3,
           ),
-          signWidgetMission(docModel!),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+              child: textCodeStyle(docModel!.code!)),
+          signWidgetProfileWork(docModel!),
           SizedBox(
+            height: 130,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
-              shrinkWrap: true,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               crossAxisSpacing: 10,
+              childAspectRatio: 3/2,
               mainAxisSpacing: 0,
               crossAxisCount: 3,
               children: <Widget>[
@@ -539,7 +568,7 @@ class DetailMissionBottomSheet extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.organizationName!,
+                        child: Text(docModel!.handler!,
                             style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
@@ -550,7 +579,7 @@ class DetailMissionBottomSheet extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.deadline!),
+                        child: Text(formatDate(docModel!.endDate!),
                             style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
@@ -562,7 +591,20 @@ class DetailMissionBottomSheet extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(
-                          formatDate(docModel!.processingDate!),
+                          formatDate(docModel!.toDate!),
+                          style: Theme.of(context).textTheme.headline5,
+                        ))
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Ngày khởi tạo',
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(
+                          formatDate(docModel!.innitiatedDate!),
                           style: Theme.of(context).textTheme.headline5,
                         ))
                   ],
@@ -590,8 +632,8 @@ class DetailMissionBottomSheet extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
                         onPressed: () {
-                          Get.to(() =>
-                              MissionDetail(id: int.parse(docModel!.id!)));
+                          // Get.to(() =>
+                          //     MissionDetail(id: int.parse(docModel!.id!)));
                         },
                         style: buttonFilterBlue,
                         child: const Text('Xem chi tiết')),
@@ -607,11 +649,12 @@ class DetailMissionBottomSheet extends StatelessWidget {
 }
 
 class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
-  const FilterProfileWorkEOfficeBottomSheet(this.menuController, this.missionViewModel,
+  const FilterProfileWorkEOfficeBottomSheet(
+      this.menuController, this.profileWorkViewModel,
       {Key? key})
       : super(key: key);
   final MenuController? menuController;
-  final MissionViewModel? missionViewModel;
+  final ProfileWorkViewModel? profileWorkViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -632,10 +675,10 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (missionViewModel!.mapAllFilter.containsKey(3))
+                  Obx(() => (profileWorkViewModel!.mapAllFilter.containsKey(3))
                       ? InkWell(
                           onTap: () {
-                            missionViewModel!.checkboxFilterAll(false, 3);
+                            profileWorkViewModel!.checkboxFilterAll(false, 3);
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_active.png',
@@ -644,7 +687,7 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            missionViewModel!.checkboxFilterAll(true, 3);
+                            profileWorkViewModel!.checkboxFilterAll(true, 3);
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_unactive.png',
@@ -679,11 +722,11 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (missionViewModel!.mapStatusFilter
+                              Obx(() => (profileWorkViewModel!.mapStatus
                                       .containsKey(index))
                                   ? InkWell(
                                       onTap: () {
-                                        missionViewModel!.checkboxStatus(
+                                        profileWorkViewModel!.checkboxStatus(
                                             false, index, "$item;");
                                       },
                                       child: Image.asset(
@@ -693,7 +736,7 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
                                       ))
                                   : InkWell(
                                       onTap: () {
-                                        missionViewModel!.checkboxStatus(
+                                        profileWorkViewModel!.checkboxStatus(
                                             true, index, "$item;");
                                       },
                                       child: Image.asset(
@@ -735,50 +778,27 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
                           onPressed: () {
-                            Get.back();
                             var status = "";
-                            var level = "";
-                            var department = "";
-                            if (missionViewModel!.mapAllFilter.containsKey(0)) {
-                              missionViewModel!.postMissionByFilter(
+                            if (profileWorkViewModel!.mapAllFilter
+                                .containsKey(0)) {
+                              profileWorkViewModel!.postProfileWorkByFilter(
                                 status,
-                                level,
-                                department,
                               );
                             } else {
-                              if (missionViewModel!.mapAllFilter
-                                  .containsKey(1)) {
-                                department = "";
-                              } else {
-                                missionViewModel!.mapDepartmentFilter
-                                    .forEach((key, value) {
-                                  department += value;
-                                });
-                              }
-                              if (missionViewModel!.mapAllFilter
-                                  .containsKey(2)) {
-                                level = "";
-                              } else {
-                                missionViewModel!.mapLevelFilter
-                                    .forEach((key, value) {
-                                  level += value;
-                                });
-                              }
-                              if (missionViewModel!.mapAllFilter
+                              if (profileWorkViewModel!.mapAllFilter
                                   .containsKey(3)) {
                                 status = "";
                               } else {
-                                missionViewModel!.mapStatusFilter
+                                profileWorkViewModel!.mapStatus
                                     .forEach((key, value) {
                                   status += value;
                                 });
                               }
                             }
-                            print(department);
-                            print(level);
                             print(status);
-                            missionViewModel!
-                                .postMissionByFilter(status, level, department);
+                            profileWorkViewModel!
+                                .postProfileWorkByFilter(status);
+                            Get.back();
                           },
                           style: buttonFilterBlue,
                           child: const Text('Áp dụng')),
@@ -793,5 +813,3 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
     );
   }
 }
-
-

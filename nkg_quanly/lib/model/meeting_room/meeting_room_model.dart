@@ -1,5 +1,8 @@
+import 'package:nkg_quanly/model/booking_car/booking_car_model;.dart';
+
 class MeetingRoomModel {
   List<MeetingRoomItems>? items;
+  BookingStatistic? statistic;
   int? pageIndex;
   int? pageSize;
   int? totalRecords;
@@ -7,6 +10,7 @@ class MeetingRoomModel {
 
   MeetingRoomModel(
       {this.items,
+        this.statistic,
         this.pageIndex,
         this.pageSize,
         this.totalRecords,
@@ -19,6 +23,9 @@ class MeetingRoomModel {
         items!.add(new MeetingRoomItems.fromJson(v));
       });
     }
+    statistic = json['statistic'] != null
+        ? new BookingStatistic.fromJson(json['statistic'])
+        : null;
     pageIndex = json['pageIndex'];
     pageSize = json['pageSize'];
     totalRecords = json['totalRecords'];
@@ -30,6 +37,9 @@ class MeetingRoomModel {
     if (this.items != null) {
       data['items'] = this.items!.map((v) => v.toJson()).toList();
     }
+    if (this.statistic != null) {
+      data['statistic'] = this.statistic!.toJson();
+    }
     data['pageIndex'] = this.pageIndex;
     data['pageSize'] = this.pageSize;
     data['totalRecords'] = this.totalRecords;
@@ -39,6 +49,35 @@ class MeetingRoomModel {
 }
 
 class MeetingRoomItems {
+  String? code;
+  String? roomName;
+  List<Mettings>? mettings;
+
+  MeetingRoomItems({this.code, this.roomName, this.mettings});
+
+  MeetingRoomItems.fromJson(Map<String, dynamic> json) {
+    code = json['code'];
+    roomName = json['roomName'];
+    if (json['mettings'] != null) {
+      mettings = <Mettings>[];
+      json['mettings'].forEach((v) {
+        mettings!.add(new Mettings.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['code'] = this.code;
+    data['roomName'] = this.roomName;
+    if (this.mettings != null) {
+      data['mettings'] = this.mettings!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Mettings {
   int? id;
   String? code;
   String? roomName;
@@ -48,7 +87,7 @@ class MeetingRoomItems {
   String? fromTime;
   String? toTime;
 
-  MeetingRoomItems(
+  Mettings(
       {this.id,
         this.code,
         this.roomName,
@@ -58,7 +97,7 @@ class MeetingRoomItems {
         this.fromTime,
         this.toTime});
 
-  MeetingRoomItems.fromJson(Map<String, dynamic> json) {
+  Mettings.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     code = json['code'];
     roomName = json['roomName'];

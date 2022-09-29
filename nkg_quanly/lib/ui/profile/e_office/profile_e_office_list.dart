@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/model/proflie_model/profile_model.dart';
 import 'package:nkg_quanly/ui/menu/MenuController.dart';
+import 'package:nkg_quanly/ui/profile/e_office/profile_filter_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_viewmodel.dart';
 
 import '../../../const.dart';
 import '../../../const/style.dart';
 import '../../../const/ultils.dart';
 import '../../../const/widget.dart';
-import '../../document_nonapproved/document_nonapproved_detail.dart';
 import '../../document_out/document_out_search.dart';
 import '../../misstion/mission_detail.dart';
 import '../../misstion/profile_detail.dart';
@@ -104,14 +104,11 @@ class ProfileEOfficeList extends GetView {
                             padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                             child: Row(children: [
                               Obx(() => (profileViewModel
-                                      .rxProfileStatisticModel.isNotEmpty)
-                                  ? Text(
-                                      profileViewModel
-                                          .rxProfileStatisticModel[0].quantity
-                                          .toString(),
-                                      style: textBlueCountTotalStyle)
-                                  : const Text("0",
-                                      style: textBlueCountTotalStyle)),
+                              .rxProfileStatistic.value.hoSoTrinh != null) ?Text(
+                                  profileViewModel
+                                      .rxProfileStatistic.value.hoSoTrinh
+                                      .toString(),
+                                  style: textBlueCountTotalStyle) : const Text("0")),
                               const Padding(
                                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                   child: Icon(
@@ -121,7 +118,6 @@ class ProfileEOfficeList extends GetView {
                             ]),
                           ),
                         ),
-
                       ],
                     ),
                     const Spacer(),
@@ -130,22 +126,7 @@ class ProfileEOfficeList extends GetView {
                         child: ElevatedButton(
                           style: elevetedButtonWhite,
                           onPressed: () {
-                            showModalBottomSheet<void>(
-                              isScrollControlled: true,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                              ),
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SizedBox(
-                                    height: 600,
-                                    child: FilterProfileEOfficeBottomSheet(
-                                        menuController, profileViewModel));
-                              },
-                            );
+                            Get.to(() => ProfileFilterScreen(profileViewModel));
                           },
                           child: const Text(
                             'Bộ lọc',
@@ -158,46 +139,148 @@ class ProfileEOfficeList extends GetView {
                     ? Padding(
                         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                         child: SizedBox(
-                          child: GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4,
+                          child: GridView.count(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            crossAxisCount: 4,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 28,
+                                    child: Text("Tạo mới",
+                                        style: CustomTextStyle
+                                            .robotow400s12TextStyle),
+                                  ),
+                                  Text(
+                                      profileViewModel
+                                          .rxProfileStatistic.value.taoMoi
+                                          .toString(),
+                                      style: textBlackCountEofficeStyle)
+                                ],
                               ),
-                              itemCount: profileViewModel
-                                      .rxProfileStatisticModel.length -
-                                  1,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      height: 28,
-                                      child: Text(
-                                          profileViewModel
-                                              .rxProfileStatisticModel[
-                                                  index + 1]
-                                              .name!,
-                                          style: CustomTextStyle
-                                              .robotow400s12TextStyle),
-                                    ),
-                                    Text(
-                                        profileViewModel
-                                            .rxProfileStatisticModel[index + 1]
-                                            .quantity
-                                            .toString(),
-                                        style: textBlackCountEofficeStyle)
-                                  ],
-                                );
-                              }),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 28,
+                                    child: Text("Chờ duyệt",
+                                        style: CustomTextStyle
+                                            .robotow400s12TextStyle),
+                                  ),
+                                  Text(
+                                      profileViewModel
+                                          .rxProfileStatistic.value.choDuyet
+                                          .toString(),
+                                      style: textBlackCountEofficeStyle)
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 28,
+                                    child: Text("Ý kiến đơn vị",
+                                        style: CustomTextStyle
+                                            .robotow400s12TextStyle),
+                                  ),
+                                  Text(
+                                      profileViewModel
+                                          .rxProfileStatistic.value.yKienDonVi
+                                          .toString(),
+                                      style: textBlackCountEofficeStyle)
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 28,
+                                    child: Text("Đã thu hồi",
+                                        style: CustomTextStyle
+                                            .robotow400s12TextStyle),
+                                  ),
+                                  Text(
+                                      profileViewModel
+                                          .rxProfileStatistic.value.daThuHoi
+                                          .toString(),
+                                      style: textBlackCountEofficeStyle)
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 28,
+                                    child: Text("Đã duyệt",
+                                        style: CustomTextStyle
+                                            .robotow400s12TextStyle),
+                                  ),
+                                  Text(
+                                      profileViewModel
+                                          .rxProfileStatistic.value.daDuyet
+                                          .toString(),
+                                      style: textBlackCountEofficeStyle)
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 28,
+                                    child: Text("Chờ tiếp nhận",
+                                        style: CustomTextStyle
+                                            .robotow400s12TextStyle),
+                                  ),
+                                  Text(
+                                      profileViewModel
+                                          .rxProfileStatistic.value.choTiepNhan
+                                          .toString(),
+                                      style: textBlackCountEofficeStyle)
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 28,
+                                    child: Text("Đã tiếp nhận",
+                                        style: CustomTextStyle
+                                            .robotow400s12TextStyle),
+                                  ),
+                                  Text(
+                                      profileViewModel
+                                          .rxProfileStatistic.value.daTiepNhan
+                                          .toString(),
+                                      style: textBlackCountEofficeStyle)
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 28,
+                                    child: Text("Hồ sơ trình chờ phát hành",
+                                        style: CustomTextStyle
+                                            .robotow400s12TextStyle),
+                                  ),
+                                  Text(
+                                      profileViewModel.rxProfileStatistic.value
+                                          .hoSoTrinhChoPhatHanh
+                                          .toString(),
+                                      style: textBlackCountEofficeStyle)
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     : const SizedBox.shrink())
               ],
             ),
           ),
-        const  Divider(
+          const Divider(
             thickness: 1,
           ),
           Expanded(
@@ -219,8 +302,10 @@ class ProfileEOfficeList extends GetView {
                                 builder: (BuildContext context) {
                                   return SizedBox(
                                       height: 320,
-                                      child: DetailProfileBottomSheet(index,
-                                          profileViewModel.rxProfileItems[index]));
+                                      child: DetailProfileBottomSheet(
+                                          index,
+                                          profileViewModel
+                                              .rxProfileItems[index]));
                                 },
                               );
                             },
@@ -359,188 +444,9 @@ class ProfileListItem extends StatelessWidget {
 }
 
 //filter by ui
-class FilterProfileEOfficeBottomSheet extends StatelessWidget {
-  const FilterProfileEOfficeBottomSheet(this.menuController, this.profileViewModel,
-      {Key? key})
-      : super(key: key);
-  final MenuController? menuController;
-  final ProfileViewModel? profileViewModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            // Tất cả loai phieu trinh
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Tất cả trạng thái',
-                      style: CustomTextStyle.roboto700TextStyle,
-                    ),
-                  ),
-                  Obx(() => (profileViewModel!.mapAllFilter.containsKey(0))
-                      ? InkWell(
-                          onTap: () {
-                            profileViewModel!.checkboxFilterAll(false, 0);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
-                      : InkWell(
-                          onTap: () {
-                            profileViewModel!.checkboxFilterAll(true, 0);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
-                ],
-              ),
-            ),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: lisState.length,
-                  itemBuilder: (context, index) {
-                    var item = lisState[index];
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item,
-                                  style: CustomTextStyle.roboto400s16TextStyle,
-                                ),
-                              ),
-                              Obx(() => (profileViewModel!.mapStatusFilter
-                                      .containsKey(index))
-                                  ? InkWell(
-                                      onTap: () {
-                                        profileViewModel!.checkboxStatus(
-                                            false, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_active.png',
-                                        width: 30,
-                                        height: 30,
-                                      ))
-                                  : InkWell(
-                                      onTap: () {
-                                        profileViewModel!.checkboxStatus(
-                                            true, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_unactive.png',
-                                        width: 30,
-                                        height: 30,
-                                      )))
-                            ],
-                          ),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Divider(
-                              thickness: 1,
-                              color: kgray,
-                            )),
-                      ],
-                    );
-                  }),
-            ),
-
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                            var status = "";
-                            var level = "";
-                            if (profileViewModel!.mapAllFilter.containsKey(0)) {
-                              profileViewModel!.postProfileByFilterUi(
-                                status,
-                                level,
-                              );
-                            } else {
-                              if (profileViewModel!.mapAllFilter
-                                  .containsKey(1)) {
-                                level = "";
-                              } else {
-                                profileViewModel!.mapLevelFilter
-                                    .forEach((key, value) {
-                                  level += value;
-                                });
-                              }
-                              if (profileViewModel!.mapAllFilter
-                                  .containsKey(2)) {
-                                status = "";
-                              } else {
-                                profileViewModel!.mapStatusFilter
-                                    .forEach((key, value) {
-                                  status += value;
-                                });
-                              }
-                            }
-                            print(level);
-                            print(status);
-                            profileViewModel!.postProfileByFilterUi(
-                              status,
-                              level,
-                            );
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ]),
-        ),
-      ),
-    );
-  }
-}
-var lisState= ["Tạo mới","Chờ duyệt","Ý kiến đơn vị","Đã thu hồi","Đã duyệt","Chờ tiếp nhận","Đã tiếp nhận","Chờ phát hành"];
 
 class DetailProfileBottomSheet extends StatelessWidget {
-  const DetailProfileBottomSheet( this.index,this.docModel,
-      {Key? key})
+  const DetailProfileBottomSheet(this.index, this.docModel, {Key? key})
       : super(key: key);
   final int? index;
   final ProfileItems? docModel;
@@ -552,7 +458,7 @@ class DetailProfileBottomSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Tất cả hồ sơ trình',
             style: TextStyle(
                 color: kBlueButton,
@@ -564,7 +470,7 @@ class DetailProfileBottomSheet extends StatelessWidget {
             thickness: 1,
             color: kBlueButton,
           ),
-          Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+          const Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 0)),
           Row(
             children: [
               Text(
@@ -635,8 +541,7 @@ class DetailProfileBottomSheet extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
                         onPressed: () {
-                          Get.to(() => ProfileDetail(
-                              id: 1));
+                          Get.to(() => ProfileDetail(id: 1));
                         },
                         style: buttonFilterBlue,
                         child: const Text('Xem chi tiết')),
@@ -663,7 +568,7 @@ Widget signWidget(ProfileItems docModel) {
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         Text(
           docModel.state!,
-          style: TextStyle(color: kGreenSign),
+          style: const TextStyle(color: kGreenSign),
         )
       ],
     );
@@ -676,7 +581,7 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: TextStyle(color: kOrangeSign))
+        Text(docModel.state!, style: const TextStyle(color: kOrangeSign))
       ],
     );
   } else if (docModel.state == "Đã thu hồi") {
@@ -688,7 +593,7 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: TextStyle(color: kRedPriority))
+        Text(docModel.state!, style: const TextStyle(color: kRedPriority))
       ],
     );
   } else if (docModel.state == "Đã tiếp nhận") {
@@ -700,7 +605,7 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: TextStyle(color: Colors.black))
+        Text(docModel.state!, style: const TextStyle(color: Colors.black))
       ],
     );
   } else {
@@ -712,7 +617,7 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: TextStyle(color: Colors.black))
+        Text(docModel.state!, style: const TextStyle(color: Colors.black))
       ],
     );
   }

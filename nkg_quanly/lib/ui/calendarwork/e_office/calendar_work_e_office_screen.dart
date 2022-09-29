@@ -14,9 +14,6 @@ class CalendarWorkEOfficeScreen extends GetView {
   CalendarWorkEOfficeScreen({Key? key}) : super(key: key);
   final calendarWorkController = Get.put(CalendarWorkViewModel());
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +73,7 @@ class CalendarWorkEOfficeScreen extends GetView {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Tất cả lịch làm việc của tôi",style: Theme.of(context).textTheme.headline5,),
-                Text("1292",style: textBlueCountTotalStyle,)
+                const Text("1292",style: textBlueCountTotalStyle,)
               ],),
             ),
             //list work

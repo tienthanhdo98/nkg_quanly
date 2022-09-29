@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:nkg_quanly/ui/misstion/e_office/mission__e_office_list.dart';
+import 'package:nkg_quanly/ui/misstion/mission_viewmodel.dart';
 
 import 'const/ultils.dart';
 
@@ -54,12 +56,12 @@ var listColorChart = [
 ];
 var listLevel = ["Thấp", "Trung bình", "Cao"];
 var listProfileWorkStatus = [
-  "Hoàn thành",
-  "Đang xử lý",
-  "Quá hạn xử lý",
+  "Tạo mới",
   "Đã thu hồi",
+  "Đang xử lý",
+  "Đã hoàn thành",
+  "Quá hạn",
   "Trong hạn xử lý",
-  "Được tạo mới"
 ];
 var listDocInStatus = [
   "Đã xử lý",
@@ -68,15 +70,39 @@ var listDocInStatus = [
   "Đã bút phê",
   "Chưa bút phê"
 ];
-var listMissionStatus = [
+var listMissionState = [
   "Chưa xử lý",
   "Đang thực hiện",
   "Đã hủy",
   "Đã tạm dừng"
 ];
+var listProfileState = [
+  "Tạo mới",
+  "Chờ duyệt",
+  "Ý kiến đơn vị",
+  "Đã thu hồi",
+  "Đã duyệt",
+  "Chờ tiếp nhận",
+  "Đã tiếp nhận",
+  "Chờ phát hành",
+];
 var listType = ["Trực tiếp", "Trực tuyến"];
-var listProblem = ["Giáo dục mầm non", "Giáo dục THCS", "Giáo dục THPT","Giáo dục Đại Học","Giáo dục Cao học","Giáo dục thường xuyên"];
-var listUnit = ["Phòng Hành Chính","Phòng Nội vụ","Phòng Công vụ","Phòng Chiến lược","Phòng Công tác đào taọ","Phòng tài chính"];
+var listProblem = [
+  "Giáo dục mầm non",
+  "Giáo dục THCS",
+  "Giáo dục THPT",
+  "Giáo dục Đại Học",
+  "Giáo dục Cao học",
+  "Giáo dục thường xuyên"
+];
+var listUnit = [
+  "Phòng Hành Chính",
+  "Phòng Nội vụ",
+  "Phòng Công vụ",
+  "Phòng Chiến lược",
+  "Phòng Công tác đào taọ",
+  "Phòng tài chính"
+];
 //string
 String jsonGetByMonth =
     '{"pageIndex":1,"pageSize":10,"isMonth": true,"dateFrom":"${formatDateToString(dateNow)}"}';
@@ -186,25 +212,85 @@ Widget headerWidgetSeatch(
   );
 }
 
+Widget headerTableDatePicker(Widget widget1, Widget widget2,
+    MissionViewModel missionViewModel, BuildContext context) {
+  return Container(
+    color: kgray,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(
+                "${dateNow.year} Tháng ${dateNow.month}",
+                style: Theme.of(context).textTheme.headline2,
+              ),
+            ),
+            const Spacer(),
+            InkWell(
+              onTap: () {
+                showModalBottomSheet<void>(
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                        height: 320,
+                        child: DayPickerBottomSheet(missionViewModel));
+                  },
+                );
+              },
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+                  child: Image.asset(
+                    "assets/icons/ic_calendar.png",
+                    width: 20,
+                    height: 20,
+                  )),
+            ),
+          ],
+        ),
+        widget1,
+        widget2
+      ],
+    ),
+  );
+}
+
 Widget headerTableDate(Widget widget1, Widget widget2, BuildContext context) {
   return Container(
     color: kgray,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(children: [
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Text(
-              "${dateNow.year} Tháng ${dateNow.month}",
-              style: Theme.of(context).textTheme.headline2,
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(
+                "${dateNow.year} Tháng ${dateNow.month}",
+                style: Theme.of(context).textTheme.headline2,
+              ),
             ),
-          ),
-          const Spacer(),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-              child: Image.asset("assets/icons/ic_calendar.png",width: 20,height: 20,))
-        ],
+            const Spacer(),
+            InkWell(
+              onTap: () {},
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+                  child: Image.asset(
+                    "assets/icons/ic_calendar.png",
+                    width: 20,
+                    height: 20,
+                  )),
+            )
+          ],
         ),
         widget1,
         widget2

@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/ultils.dart';
+
 import '../../const.dart';
-import '../../model/calendarwork_model/calendarwork_model.dart';
 import '../../model/document/document_model.dart';
-import '../../model/document/document_statistic_model.dart';
 import '../../model/document_unprocess/document_filter.dart';
 
 class DocumentUnprocessViewModel extends GetxController {
@@ -22,19 +20,22 @@ class DocumentUnprocessViewModel extends GetxController {
   Rx<int> selectedBottomButton = 0.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;
   Rx<CalendarFormat> rxCalendarFormat = CalendarFormat.week.obs;
-  RxList<Items> rxItems =
-      <Items>[].obs;
+  RxList<DocumentInListItems> rxItems =
+      <DocumentInListItems>[].obs;
+  Rx<DocumentInStatistic> rxDocumentInStatistic =
+      DocumentInStatistic().obs;
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
+
   @override
   void onInit() {
     getFilterForChart("${apiGetDocumentUnprocessFilterChart}0");
     initCurrentDate();
     getFilterDepartment();
+    getDocumentStatistic();
     getDocumentByDay(rxDate.value);
     super.onInit();
   }
   Future<void> getFilterForChart(String url) async {
-
     print('loading');
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel = DocumentFilterModel.fromJson(jsonDecode(response.body));
@@ -68,18 +69,21 @@ class DocumentUnprocessViewModel extends GetxController {
     rxCalendarFormat.value = format;
   }
   //document unprocess
-  Future<DocumentFilterModel> getQuantityDocumentBuUrl(String url) async {
-    print('loading');
-    http.Response response = await http.get(Uri.parse(url));
-    print(response.body);
-    return DocumentFilterModel.fromJson(jsonDecode(response.body));
-  }
-  Future<Items> getDocumentDetail(int id) async {
+  Future<DocumentInListItems> getDocumentDetail(int id) async {
     final url = Uri.parse("${apiGetDocumentDetail}id=$id");
     print('loading detail');
     http.Response response = await http.get(url);
     print(response.body);
-    return Items.fromJson(jsonDecode(response.body));
+    return DocumentInListItems.fromJson(jsonDecode(response.body));
+  }
+  Future<void> getDocumentStatistic() async {
+    final url = Uri.parse(apiGetDocument);
+    String json = '{"pageIndex":1,"pageSize":10}';
+    print('loading');
+    http.Response response = await http.post(url,headers: headers,body: json);
+    print(response.body);
+    DocumentInModel res =  DocumentInModel.fromJson(jsonDecode(response.body));
+    rxDocumentInStatistic.value = res.statistic!;
   }
   Future<void> getDocumentByDay(String day) async {
     final url = Uri.parse(apiGetDocument);
@@ -87,7 +91,7 @@ class DocumentUnprocessViewModel extends GetxController {
     print('loading');
     http.Response response = await http.post(url,headers: headers,body: json);
     print(response.body);
-    DocumentModel res =  DocumentModel.fromJson(jsonDecode(response.body));
+    DocumentInModel res =  DocumentInModel.fromJson(jsonDecode(response.body));
     rxItems.value = res.items!;
   }
   Future<void> getDocumentByWeek(String datefrom, String dateTo) async {
@@ -96,14 +100,14 @@ class DocumentUnprocessViewModel extends GetxController {
       '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     print('loading');
     http.Response response = await http.post(url,headers: headers,body: json);
-    DocumentModel res =  DocumentModel.fromJson(jsonDecode(response.body));
+    DocumentInModel res =  DocumentInModel.fromJson(jsonDecode(response.body));
     rxItems.value = res.items!;
   }
   Future<void> getDocumentByMonth() async {
     final url = Uri.parse(apiGetDocument);
     print('loading');
     http.Response response = await http.post(url,headers: headers,body: jsonGetByMonth);
-    DocumentModel res =  DocumentModel.fromJson(jsonDecode(response.body));
+    DocumentInModel res =  DocumentInModel.fromJson(jsonDecode(response.body));
     rxItems.value = res.items!;
   }
   Future<void> getDocumentByFilter(String status,String level,String department) async {
@@ -111,15 +115,8 @@ class DocumentUnprocessViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"level":"$level","status": "$status","departmentPublic":"$department"}';
     http.Response response = await http.post(url,headers: headers,body: json);
-    DocumentModel res =  DocumentModel.fromJson(jsonDecode(response.body));
+    DocumentInModel res =  DocumentInModel.fromJson(jsonDecode(response.body));
     rxItems.value = res.items!;
-  }
-  Future<DocumentStatisticModel> getDocumentStatistic() async {
-    final url = Uri.parse(apiGetDocumentStatistic);
-    print('loading');
-    http.Response response = await http.get(url);
-    print(response.body);
-    return DocumentStatisticModel.fromJson(jsonDecode(response.body));
   }
   //filter
   final RxMap<int, String> mapDepartmentFilter = <int, String>{}.obs;

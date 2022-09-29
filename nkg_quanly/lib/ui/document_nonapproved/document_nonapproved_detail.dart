@@ -17,7 +17,7 @@ class DocumentnonapprovedDetail extends GetView{
     return Scaffold(body: SafeArea(
       child: FutureBuilder(
         future: documentNonApproveViewModel.getDocumentDetail(id!),
-        builder: (context,AsyncSnapshot<Items> snapshot)
+        builder: (context,AsyncSnapshot<DocumentInListItems> snapshot)
         {
           if(snapshot.hasData)
             {

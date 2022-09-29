@@ -92,12 +92,13 @@ class RoomMeetingSearch extends GetView {
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () {
-                                Get.to(() => MeetingRoomDetail(
-                                    id: searchController.listDataRoomMeeting[index].id!));
+                                // Get.to(() => MeetingRoomDetail(
+                                //     id: searchController.listDataRoomMeeting[index].id!));
                               },
-                              child:
-                              MeetingRoomItem(index, searchController.listDataRoomMeeting[index]));
+                              child: Text("")
+                            );
                         })),
+                    //  MeetingRoomItem(index, searchController.listDataRoomMeeting[index])
                   ),
                 ),
               ),

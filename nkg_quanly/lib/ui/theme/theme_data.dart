@@ -90,13 +90,14 @@ class ThemeClass {
         headline1: TextStyle(
             color: Colors.white, fontSize: 20,  fontFamily: 'Inter',fontWeight: FontWeight.w500),
         headline2: TextStyle(
-            color:  Colors.white, fontSize: 18, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
+            color: Colors.white, fontSize: 18, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
         headline3: TextStyle(
-            color:  Colors.white, fontSize: 16, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
+            color: Colors.white, fontSize: 16, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
         headline4: TextStyle(
-            color:  Colors.white, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w400),
+            color: Colors.white, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w400),
         headline5: TextStyle(
-            color:  Colors.white, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w500),));
+            color: Colors.white, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w500),));
+
 }
 
 final unActiveButtonStyle = ElevatedButton.styleFrom(
