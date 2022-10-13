@@ -47,7 +47,7 @@ class ProfileProcTracesDetail extends GetView {
                   ),
                   InkWell(
                     onTap: () {
-                      Get.offAll(() => ProfilesProcedureListWithStatistic(header: "Danh sách hồ sơ hành chính"));
+                      Get.offAll(() => ProfilesProcedureListWithStatistic());
                     },
                     child: Align(
                         alignment: Alignment.centerRight,

@@ -12,24 +12,31 @@ class DatePickerController extends GetxController {
   final Rx<int> rxWeekDay = dateNow.weekday.obs;
   final Rx<DateTime> rxSelectedDay = dateNow.obs;
   Rx<CalendarFormat> rxCalendarFormat = CalendarFormat.week.obs;
-  Rx<String> rxToDateWithWeekDay = convertDateToWeekDayFormat(dateNow).obs;
-  Rx<String> rxFromDateWithWeekDay = convertDateToWeekDayFormat(dateNow).obs;
 
-  Rx<String> rxToDateWithoutWeekDay = convertDateToWeekDayFormatWithoutWeeked(dateNow).obs;
-  Rx<String> rxFromDateWithoutWeekDay = convertDateToWeekDayFormatWithoutWeeked(dateNow).obs;
+  //thu 6, ngay 31 thang 10,2020
+  Rx<String> rxToDateWithWeekDay = "".obs;
+  Rx<String> rxFromDateWithWeekDay = "".obs;
+
+  //31 thang 10,2020
+  Rx<String> rxToDateWithoutWeekDay = "".obs;
+  Rx<String> rxFromDateWithoutWeekDay ="".obs;
+
+  //han xu ly
+  Rx<String> rxEndDate = "".obs;
 
   Rx<String> rxToDate = formatDateToString(dateNow).obs;
   Rx<String> rxFromDate = formatDateToString(dateNow).obs;
 
-  @override
-  void onInit() {
 
-    super.onInit();
-  }
 
   void switchFormat(CalendarFormat format) {
     rxCalendarFormat.value = format;
   }
+
+  void changeEndDate(int value) {
+    rxEndDate.value = value;
+  }
+
 
   void changeMonthInDateTable(int value) {
     rxMonth.value = value;

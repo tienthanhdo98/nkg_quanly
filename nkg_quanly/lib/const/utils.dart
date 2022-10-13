@@ -287,7 +287,7 @@ String checkingNullNumberAndConvertToString(int? value) {
   if (value != null) {
     return value.toString();
   } else {
-    return "";
+    return "0";
   }
 }
 
@@ -489,5 +489,10 @@ class FilterAllItem extends StatelessWidget {
           )),
         ));
   }
+}
+
+void changeValueSelectedFilter(Rx<String> rxSelected,String value)
+{
+  rxSelected.value = value;
 }
 

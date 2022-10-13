@@ -193,7 +193,6 @@ class HomeScreen extends GetView {
                     fit: BoxFit.cover,
                   ),
                 ),
-
                 child: Row(children: [
                   Expanded(
                     child: Padding(
@@ -235,8 +234,8 @@ class HomeScreen extends GetView {
                             SizedBox(
                               height:80,
                               width: 80,
-                              child: CachedNetworkImage(
-                                  imageUrl: (homeController.rxWeatherModel.value.linkIcon != null) ? homeController.rxWeatherModel.value.linkIcon! : "",
+                              child:Obx(() => (homeController.rxWeatherModel.value.linkIcon != null) ? CachedNetworkImage(
+                                  imageUrl:  homeController.rxWeatherModel.value.linkIcon!,
                                   imageBuilder: (context, imageProvider) => Container(
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
@@ -246,8 +245,7 @@ class HomeScreen extends GetView {
                                       ),
                                     ),
                                   ),
-                                  errorWidget: (context, url, error) => Image.asset("assets/default.webp")
-                              ),
+                              ) : SizedBox.shrink()),
                             ),
 
 

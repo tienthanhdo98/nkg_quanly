@@ -29,7 +29,6 @@ class ProfilesProcedureList extends GetView {
           headerWidgetSeatch(
               header!,
               ProfileProcSearch(
-                header: header,
               ),
               context),
           headerTableDatePicker(context, profilesProcedureController),
@@ -208,6 +207,9 @@ class ProfileProcItem extends StatelessWidget {
                   child: priorityProfileProcWidget(docModel!)),
             ],
           ),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 0 , 5),
+              child: textCodeStyle(docModel!.maSoBienNhan!)),
           signProfileProcWidget(docModel!),
           SizedBox(
             height: 70,

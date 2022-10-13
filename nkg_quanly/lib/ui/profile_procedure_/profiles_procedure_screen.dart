@@ -467,7 +467,6 @@ class ProfilesProcedureScreen extends GetView {
                           child: ElevatedButton(
                             onPressed: () {
                               Get.to(() => ProfilesProcedureListWithStatistic(
-                                header: header,
                               ));
                             },
                             child: buttonShowListScreen(

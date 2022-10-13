@@ -6,10 +6,9 @@ import '../../const/const.dart';
 import '../document_out/search_controller.dart';
 
 class ProfileProcSearch extends GetView {
-  final String? header;
   final searchController = Get.put(SearchController());
 
-  ProfileProcSearch({Key? key, this.header}) : super(key: key);
+  ProfileProcSearch({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

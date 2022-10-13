@@ -94,7 +94,7 @@ class ProfileProcMenuScreen extends StatelessWidget {
 void toUitilityScreen(int type, String? header, String? icon) {
   switch (type) {
     case 1:
-      Get.to(() => ProfilesProcedureListWithStatistic(header: header));
+      Get.to(() => ProfilesProcedureListWithStatistic());
       break;
       case 2:
       Get.to(() => ProfileProcReportScreen());

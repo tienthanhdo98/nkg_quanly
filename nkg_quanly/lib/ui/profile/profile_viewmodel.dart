@@ -1,17 +1,19 @@
 import 'dart:convert';
 
-import 'package:get/get.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/const/api.dart';
+import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/const/utils.dart';
-import '../../const/lunar_calendar.dart';
+
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/proflie_model/profile_model.dart';
 
 class ProfileViewModel extends GetxController {
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   Rx<int> selectedChartButton = 0.obs;
+  ScrollController controller = ScrollController();
+  ProfileModel profileModel = ProfileModel();
 
   void swtichChartButton(int button) {
     selectedChartButton.value = button;
@@ -39,6 +41,7 @@ class ProfileViewModel extends GetxController {
 
   RxList<ProfileItems> rxProfileItems = <ProfileItems>[].obs;
   Rx<ProfileStatisticModel> rxProfileStatistic = ProfileStatisticModel().obs;
+  Rx<ProfileStatisticModel> rxProfileStatisticTotal = ProfileStatisticModel().obs;
 
   @override
   void onInit() {
@@ -46,9 +49,9 @@ class ProfileViewModel extends GetxController {
     getFilterTypeSubmission();
     getFilterSubmissProblem();
     getFilterForChart("${apiGetProfileFilter}0");
-    //get statis and list
+
     postProfileStatistic();
-    // postProfileByDay(rxDate.value);
+
 
     super.onInit();
   }
@@ -92,42 +95,6 @@ class ProfileViewModel extends GetxController {
     List<dynamic> listRes = jsonDecode(response.body);
     List<String> listUnit = listRes.map((e) => e.toString()).toList();
     rxListTypeSubmission.value = listUnit;
-  }
-
-  void checkboxUnitEditor(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapUnitEditorFilter.addAll(map);
-    } else {
-      mapUnitEditorFilter.remove(key);
-    }
-  }
-
-  void checkboxState(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapState.addAll(map);
-    } else {
-      mapState.remove(key);
-    }
-  }
-
-  void checkboxSubmissProblemr(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapSubmissProblem.addAll(map);
-    } else {
-      mapSubmissProblem.remove(key);
-    }
-  }
-
-  void checkboxTypeSubmission(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapTypeSubmission.addAll(map);
-    } else {
-      mapTypeSubmission.remove(key);
-    }
   }
 
   void checkboxFilterAll(bool value, int key) {
@@ -189,9 +156,24 @@ class ProfileViewModel extends GetxController {
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
-    ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
-    rxProfileStatistic.value = res.statistic!;
-    rxProfileItems.value = res.items!;
+    profileModel = ProfileModel.fromJson(jsonDecode(response.body));
+    rxProfileStatisticTotal.value = profileModel.statistic!;
+    rxProfileStatistic.value = profileModel.statistic!;
+    rxProfileItems.value = profileModel.items!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        profileModel = ProfileModel.fromJson(jsonDecode(response.body));
+        rxProfileItems.addAll(profileModel.items!);
+        print("loadmore w at $page");
+      }
+    });
   }
 
   Future<void> postProfileByDay(String day) async {
@@ -202,6 +184,24 @@ class ProfileViewModel extends GetxController {
     print(response.body);
     ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileItems.value = res.items!;
+    profileModel = ProfileModel.fromJson(jsonDecode(response.body));
+    rxProfileStatisticTotal.value = profileModel.statistic!;
+    rxProfileStatistic.value = profileModel.statistic!;
+    rxProfileItems.value = profileModel.items!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        profileModel = ProfileModel.fromJson(jsonDecode(response.body));
+        rxProfileItems.addAll(profileModel.items!);
+        print("loadmore w at $page");
+      }
+    });
   }
 
   Future<void> postProfileByWeek(String datefrom, String dateTo) async {
@@ -211,8 +211,26 @@ class ProfileViewModel extends GetxController {
         '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
-    ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
-    rxProfileItems.value = res.items!;
+    profileModel= ProfileModel.fromJson(jsonDecode(response.body));
+    rxProfileStatistic.value = profileModel.statistic!;
+    rxProfileItems.value = profileModel.items!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        profileModel = ProfileModel.fromJson(jsonDecode(response.body));
+        rxProfileItems.addAll(profileModel.items!);
+        print("loadmore w at $page");
+      }
+    });
+
+
   }
 
   Future<void> postProfileByMonth() async {
@@ -221,9 +239,24 @@ class ProfileViewModel extends GetxController {
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
     print(response.body);
-    ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
-    rxProfileItems.value = res.items!;
-    rxProfileStatistic.value = res.statistic!;
+    profileModel= ProfileModel.fromJson(jsonDecode(response.body));
+    rxProfileStatistic.value = profileModel.statistic!;
+    rxProfileItems.value = profileModel.items!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String jsonGetByMonth =
+            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: jsonGetByMonth);
+        profileModel = ProfileModel.fromJson(jsonDecode(response.body));
+        rxProfileItems.addAll(profileModel.items!);
+        print("loadmore w at $page");
+      }
+    });
   }
 
   Future<void> postProfileByFilter(String state, String unitEditor,
@@ -234,7 +267,23 @@ class ProfileViewModel extends GetxController {
         '{"pageIndex":1,"pageSize":10,"typeSubmission":"$typeSubmission","submissionProblem":"$submissionProblem","unitEditor":"$unitEditor","state":"$state"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
-    ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
-    rxProfileItems.value = res.items!;
+    profileModel= ProfileModel.fromJson(jsonDecode(response.body));
+    rxProfileStatistic.value = profileModel.statistic!;
+    rxProfileItems.value = profileModel.items!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"typeSubmission":"$typeSubmission","submissionProblem":"$submissionProblem","unitEditor":"$unitEditor","state":"$state"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        profileModel = ProfileModel.fromJson(jsonDecode(response.body));
+        rxProfileItems.addAll(profileModel.items!);
+        print("loadmore w at $page");
+      }
+    });
   }
 }

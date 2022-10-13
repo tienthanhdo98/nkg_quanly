@@ -137,7 +137,7 @@ class HelpdeskViewModel extends GetxController {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore Helpdesk");
         page++;
-        if (json != "") {
+        if (status != "") {
           json = '{"pageIndex":$page,"pageSize":10,"status":"$status"}';
         } else {
           json = '{"pageIndex":$page,"pageSize":10}';

@@ -66,7 +66,8 @@ class ProfileEOfficeList extends GetView {
                                           .rxProfileStatistic.value.hoSoTrinh
                                           .toString(),
                                       style: textBlueCountTotalStyle)
-                                  : const Text("0")),
+                                  : const Text("0",
+                                      style: textBlueCountTotalStyle)),
                               const Padding(
                                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                   child: Icon(
@@ -112,9 +113,9 @@ class ProfileEOfficeList extends GetView {
                                             .robotow400s12TextStyle),
                                   ),
                                   Text(
-                                      profileViewModel
-                                          .rxProfileStatistic.value.taoMoi
-                                          .toString(),
+                                      checkingNullNumberAndConvertToString(
+                                          profileViewModel
+                                              .rxProfileStatistic.value.taoMoi),
                                       style: textBlackCountEofficeStyle)
                                 ],
                               ),
@@ -128,9 +129,9 @@ class ProfileEOfficeList extends GetView {
                                             .robotow400s12TextStyle),
                                   ),
                                   Text(
-                                      profileViewModel
-                                          .rxProfileStatistic.value.choDuyet
-                                          .toString(),
+                                      checkingNullNumberAndConvertToString(
+                                          profileViewModel.rxProfileStatistic
+                                              .value.choDuyet),
                                       style: textBlackCountEofficeStyle)
                                 ],
                               ),
@@ -144,9 +145,9 @@ class ProfileEOfficeList extends GetView {
                                             .robotow400s12TextStyle),
                                   ),
                                   Text(
-                                      profileViewModel
-                                          .rxProfileStatistic.value.yKienDonVi
-                                          .toString(),
+                                      checkingNullNumberAndConvertToString(
+                                          profileViewModel.rxProfileStatistic
+                                              .value.yKienDonVi),
                                       style: textBlackCountEofficeStyle)
                                 ],
                               ),
@@ -160,9 +161,9 @@ class ProfileEOfficeList extends GetView {
                                             .robotow400s12TextStyle),
                                   ),
                                   Text(
-                                      profileViewModel
-                                          .rxProfileStatistic.value.daThuHoi
-                                          .toString(),
+                                      checkingNullNumberAndConvertToString(
+                                          profileViewModel.rxProfileStatistic
+                                              .value.daThuHoi),
                                       style: textBlackCountEofficeStyle)
                                 ],
                               ),
@@ -176,9 +177,9 @@ class ProfileEOfficeList extends GetView {
                                             .robotow400s12TextStyle),
                                   ),
                                   Text(
-                                      profileViewModel
-                                          .rxProfileStatistic.value.daDuyet
-                                          .toString(),
+                                      checkingNullNumberAndConvertToString(
+                                          profileViewModel.rxProfileStatistic
+                                              .value.daDuyet),
                                       style: textBlackCountEofficeStyle)
                                 ],
                               ),
@@ -192,9 +193,9 @@ class ProfileEOfficeList extends GetView {
                                             .robotow400s12TextStyle),
                                   ),
                                   Text(
-                                      profileViewModel
-                                          .rxProfileStatistic.value.choTiepNhan
-                                          .toString(),
+                                      checkingNullNumberAndConvertToString(
+                                          profileViewModel.rxProfileStatistic
+                                              .value.choTiepNhan),
                                       style: textBlackCountEofficeStyle)
                                 ],
                               ),
@@ -208,9 +209,9 @@ class ProfileEOfficeList extends GetView {
                                             .robotow400s12TextStyle),
                                   ),
                                   Text(
-                                      profileViewModel
-                                          .rxProfileStatistic.value.daTiepNhan
-                                          .toString(),
+                                      checkingNullNumberAndConvertToString(
+                                          profileViewModel.rxProfileStatistic
+                                              .value.daTiepNhan),
                                       style: textBlackCountEofficeStyle)
                                 ],
                               ),
@@ -224,9 +225,9 @@ class ProfileEOfficeList extends GetView {
                                             .robotow400s12TextStyle),
                                   ),
                                   Text(
-                                      profileViewModel.rxProfileStatistic.value
-                                          .hoSoTrinhChoPhatHanh
-                                          .toString(),
+                                      checkingNullNumberAndConvertToString(
+                                          profileViewModel.rxProfileStatistic
+                                              .value.hoSoTrinhChoPhatHanh),
                                       style: textBlackCountEofficeStyle)
                                 ],
                               ),
@@ -244,6 +245,7 @@ class ProfileEOfficeList extends GetView {
           Expanded(
               child: Obx(() => (profileViewModel.rxProfileItems.isNotEmpty)
                   ? ListView.builder(
+                      controller: profileViewModel.controller,
                       itemCount: profileViewModel.rxProfileItems.length,
                       itemBuilder: (context, index) {
                         return InkWell(

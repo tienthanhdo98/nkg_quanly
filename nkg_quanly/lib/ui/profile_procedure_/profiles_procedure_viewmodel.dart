@@ -98,9 +98,26 @@ class ProfilesProcedureViewModel extends GetxController {
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
-    ProfileProcedureModel res =
+    profileProcedureModel =
         ProfileProcedureModel.fromJson(jsonDecode(response.body));
-    rxProfileProcedureListItems.value = res.items!;
+    rxProfileProcedureListItems.value = profileProcedureModel.items!;
+    rxProfileProcedureStatistic.value = profileProcedureModel.statistic!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore day");
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+        response = await http.post(url, headers: headers, body: json);
+        print(response.body);
+        profileProcedureModel =
+            ProfileProcedureModel.fromJson(jsonDecode(response.body));
+        rxProfileProcedureListItems.addAll(profileProcedureModel.items!);
+        print("loadmore day at $page");
+      }
+    });
   }
 
   Future<void> postProfileProcByMonth() async {
@@ -109,10 +126,26 @@ class ProfilesProcedureViewModel extends GetxController {
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
     print('rxProfileProcedureListItems ${response.body}');
-    ProfileProcedureModel res =
+    profileProcedureModel =
         ProfileProcedureModel.fromJson(jsonDecode(response.body));
-    rxProfileProcedureListItems.value = res.items!;
-    print('rxProfileProcedureListItems ${rxProfileProcedureListItems.length}');
+    rxProfileProcedureListItems.value = profileProcedureModel.items!;
+    rxProfileProcedureStatistic.value = profileProcedureModel.statistic!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore day");
+        page++;
+        String jsonGetByMonth =
+            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
+        response = await http.post(url, headers: headers, body: jsonGetByMonth);
+        print(response.body);
+        profileProcedureModel =
+            ProfileProcedureModel.fromJson(jsonDecode(response.body));
+        rxProfileProcedureListItems.addAll(profileProcedureModel.items!);
+        print("loadmore day at $page");
+      }
+    });
   }
 
   Future<ProfileProcedureListItems> getProfileProcDetail(String id) async {
@@ -128,6 +161,11 @@ class ProfilesProcedureViewModel extends GetxController {
   final RxMap<int, String> mapProcedureFilter = <int, String>{}.obs;
   final RxMap<int, String> mapGroupProcedureFilter = <int, String>{}.obs;
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
+  Rx<String> rxSelectedAgencies = "".obs;
+  Rx<String> rxSelectedBranch = "".obs;
+  Rx<String> rxSelectedStatus= "".obs;
+  Rx<String> rxSelectedProcedure= "".obs;
+  Rx<String> rxSelectedGroupProcedure= "".obs;
   RxList<FilterProfileProcModel> rxListAgenciesList =
       <FilterProfileProcModel>[].obs;
   RxList<FilterProfileProcModel> rxListBranch = <FilterProfileProcModel>[].obs;
@@ -138,6 +176,11 @@ class ProfilesProcedureViewModel extends GetxController {
       <FilterProfileProcModel>[].obs;
   RxList<String> rxListLevelFilter = <String>[].obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
+
+  void changeValueSelectedFilter(Rx<String> rxSelected,String value)
+  {
+    rxSelected.value = value;
+  }
 
   void checkboxFilterAll(bool value, int key) {
     if (value == true) {
@@ -256,10 +299,27 @@ class ProfilesProcedureViewModel extends GetxController {
         '{"pageIndex":1,"pageSize":10,"coQuanId":"$agenciesId","linhVuc":"$branch","trangThaiHoSo":"$status","nttId":"$groupProcudereId","ttId":"$procudereId"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     print('rxProfileProcedureListItems ${response.body}');
-    ProfileProcedureModel res =
+    profileProcedureModel =
         ProfileProcedureModel.fromJson(jsonDecode(response.body));
-    rxProfileProcedureListItems.value = res.items!;
+    rxProfileProcedureListItems.value = profileProcedureModel.items!;
+    rxProfileProcedureStatistic.value = profileProcedureModel.statistic!;
     print('rxProfileProcedureListItems ${rxProfileProcedureListItems.length}');
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore day");
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"coQuanId":"$agenciesId","linhVuc":"$branch","trangThaiHoSo":"$status","nttId":"$groupProcudereId","ttId":"$procudereId"}';
+        response = await http.post(url, headers: headers, body: json);
+        print(response.body);
+        profileProcedureModel =
+            ProfileProcedureModel.fromJson(jsonDecode(response.body));
+        rxProfileProcedureListItems.addAll(profileProcedureModel.items!);
+        print("loadmore day at $page");
+      }
+    });
   }
 
 //filter

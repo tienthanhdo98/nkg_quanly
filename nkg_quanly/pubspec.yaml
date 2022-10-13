@@ -75,15 +75,13 @@ flutter:
     - assets/
     - assets/files/
 #
-fonts:
-  - family: Roboto
-    fonts:
-      - asset: assets/fonts/Roboto-Regular.ttf
-  - family: Inter
-    fonts:
-      - asset: assets/fonts/Roboto-Regular.ttf
-
-
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Medium.ttf
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
