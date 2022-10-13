@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import '../../const/api.dart';
+import '../../const/widget.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../theme/theme_data.dart';
 import 'document_out_chart.dart';
 import 'document_out_list.dart';
-
-
 
 class DocumentOutScreen extends GetView {
   final String? header;
@@ -25,7 +24,8 @@ class DocumentOutScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: homeController.getQuantityDocumentBuUrl(apiGetDocumentOutFilter0),
+          future:
+              homeController.getQuantityDocumentBuUrl(apiGetDocumentOutFilter0),
           builder: (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
@@ -80,7 +80,8 @@ class DocumentOutScreen extends GetView {
                                     children: [
                                       const Text('Phát hành'),
                                       Text(
-                                          snapshot.data!.items![0].quantity.toString(),
+                                          snapshot.data!.items![0].quantity
+                                              .toString(),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20))
@@ -95,7 +96,8 @@ class DocumentOutScreen extends GetView {
                                     children: [
                                       const Text('Chưa phát hành'),
                                       Text(
-                                        snapshot.data!.items![1].quantity.toString(),
+                                        snapshot.data!.items![1].quantity
+                                            .toString(),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
@@ -112,7 +114,9 @@ class DocumentOutScreen extends GetView {
                 ),
                 Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: DocumentOutPieChart(homeViewModel: homeController,documentFilterModel: snapshot.data!)),
+                    child: DocumentOutPieChart(
+                        homeViewModel: homeController,
+                        documentFilterModel: snapshot.data!)),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -123,8 +127,8 @@ class DocumentOutScreen extends GetView {
                         child: ElevatedButton(
                           onPressed: () {
                             Get.to(() => DocumentOutList(
-                              header: header,
-                            ));
+                                  header: header,
+                                ));
                           },
                           child: Text('Xem danh sách $header'),
                           style: bottomButtonStyle,

@@ -8,11 +8,11 @@ class DocumentInModel {
 
   DocumentInModel(
       {this.items,
-        this.statistic,
-        this.pageIndex,
-        this.pageSize,
-        this.totalRecords,
-        this.pageCount});
+      this.statistic,
+      this.pageIndex,
+      this.pageSize,
+      this.totalRecords,
+      this.pageCount});
 
   DocumentInModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
@@ -63,18 +63,18 @@ class DocumentInListItems {
 
   DocumentInListItems(
       {this.id,
-        this.code,
-        this.name,
-        this.innitiatedDate,
-        this.toDate,
-        this.departmentPublic,
-        this.endDate,
-        this.status,
-        this.approved,
-        this.dateDone,
-        this.state,
-        this.level,
-        this.detail});
+      this.code,
+      this.name,
+      this.innitiatedDate,
+      this.toDate,
+      this.departmentPublic,
+      this.endDate,
+      this.status,
+      this.approved,
+      this.dateDone,
+      this.state,
+      this.level,
+      this.detail});
 
   DocumentInListItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -128,18 +128,18 @@ class DocumentInStatistic {
 
   DocumentInStatistic(
       {this.tong,
-        this.chuaXuLy,
-        this.dangXuLy,
-        this.daXuLy,
-        this.chuaButPhe,
-        this.daButPhe,
-        this.trongHan,
-        this.quaHan,
-        this.hoanThanhTruocHan,
-        this.chuaHoanThanhTrongHan,
-        this.hoanThanhTrongHan,
-        this.chuaHoanThanhQuaHan,
-        this.hoanThanhQuaHan});
+      this.chuaXuLy,
+      this.dangXuLy,
+      this.daXuLy,
+      this.chuaButPhe,
+      this.daButPhe,
+      this.trongHan,
+      this.quaHan,
+      this.hoanThanhTruocHan,
+      this.chuaHoanThanhTrongHan,
+      this.hoanThanhTrongHan,
+      this.chuaHoanThanhQuaHan,
+      this.hoanThanhQuaHan});
 
   DocumentInStatistic.fromJson(Map<String, dynamic> json) {
     tong = json['tong'];

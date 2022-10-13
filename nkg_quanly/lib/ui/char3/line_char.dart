@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../const.dart';
-import '../../model/ChartModel.dart';
+import '../../const/const.dart';
 import '../../model/document_unprocess/document_filter.dart';
 
 class LineCharWidget extends StatefulWidget {
-  LineCharWidget({UniqueKey? key, this.documentFilterModel}): super(key: key);
+  LineCharWidget({UniqueKey? key, this.documentFilterModel}) : super(key: key);
 
   final DocumentFilterModel? documentFilterModel;
 
@@ -15,7 +14,6 @@ class LineCharWidget extends StatefulWidget {
 }
 
 class LineCharWidgetState extends State<LineCharWidget> {
-
   List<_ChartData> listChartData = [];
   DocumentFilterModel? documentFilterModel;
   List<FilterItems>? listQuantity;
@@ -25,8 +23,9 @@ class LineCharWidgetState extends State<LineCharWidget> {
     documentFilterModel = widget.documentFilterModel;
     listQuantity = documentFilterModel!.items!;
     print(listQuantity!.length);
-    for (int i =0; i < listQuantity!.length; i++) {
-      listChartData.add(_ChartData(listQuantity![i].name!,listQuantity![i].quantity!));
+    for (int i = 0; i < listQuantity!.length; i++) {
+      listChartData
+          .add(_ChartData(listQuantity![i].name!, listQuantity![i].quantity!));
     }
 
     super.initState();
@@ -35,15 +34,14 @@ class LineCharWidgetState extends State<LineCharWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
-        child: Column(
-          children: [
-            SizedBox(height: 200,  child: _buildDefaultLineChart()),
-            const Text('Biểu đồ minh họa')
-          ],
-        ),
-      );
-
+      padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
+      child: Column(
+        children: [
+          SizedBox(height: 200, child: _buildDefaultLineChart()),
+          const Text('Biểu đồ minh họa')
+        ],
+      ),
+    );
   }
 
   SfCartesianChart _buildDefaultLineChart() {
@@ -79,7 +77,7 @@ class LineCharWidgetState extends State<LineCharWidget> {
 
 class _ChartData {
   _ChartData(this.x, this.y);
+
   final String x;
   final int y;
-
 }

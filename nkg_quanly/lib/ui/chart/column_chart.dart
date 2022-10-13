@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../../const.dart';
-import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../../const/const.dart';
+import '../../const/style.dart';
+import '../../const/widget.dart';
+import '../../model/ChartModel.dart';
 
 class ColumnChart extends StatefulWidget {
   const ColumnChart({
@@ -12,15 +14,15 @@ class ColumnChart extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => ColumnChartState();
 
-
-  // final TooltipBehavior? _tooltipBehavior =
-  //     TooltipBehavior(enable: true, header: '', canShowMarker: false);
-
+// final TooltipBehavior? _tooltipBehavior =
+//     TooltipBehavior(enable: true, header: '', canShowMarker: false);
 
 }
-class ColumnChartState extends State<ColumnChart>{
+
+class ColumnChartState extends State<ColumnChart> {
   var selected = 0;
   List<ChartSampleData> listCharData = [];
+
   @override
   void initState() {
     listCharData = <ChartSampleData>[
@@ -30,26 +32,31 @@ class ColumnChartState extends State<ColumnChart>{
     ];
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15),
-      child: borderItem(Column(
-        children: [
-          headerChartTable("Hồ sơ trình", "5.987",context),
-          Row(
+      child: borderItem(
+          Column(
             children: [
-              Expanded(
-                  child: Padding(
+              headerChartTable("Hồ sơ trình", "5.987", context),
+              Row(
+                children: [
+                  Expanded(
+                      child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                     child: ElevatedButton(
-                      style: selected == 0 ? kActiveButtonStyle : kUnActiveButtonStyle,
+                      style: selected == 0
+                          ? kActiveButtonStyle
+                          : kUnActiveButtonStyle,
                       onPressed: () {
                         setState(() {
                           selected = 0;
                           listCharData = <ChartSampleData>[
                             ChartSampleData(x: 'Thấp', y: 760, color: kViolet),
-                            ChartSampleData(x: 'Trung bình', y: 1240, color: kBlueChart),
+                            ChartSampleData(
+                                x: 'Trung bình', y: 1240, color: kBlueChart),
                             ChartSampleData(x: 'Cao', y: 1369, color: kOrange),
                           ];
                         });
@@ -57,30 +64,33 @@ class ColumnChartState extends State<ColumnChart>{
                       child: const Text("Mức độ"),
                     ),
                   )),
-              Expanded(
-                  child: Padding(
+                  Expanded(
+                      child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                     child: ElevatedButton(
-                      style: selected == 1 ? kActiveButtonStyle : kUnActiveButtonStyle,
+                      style: selected == 1
+                          ? kActiveButtonStyle
+                          : kUnActiveButtonStyle,
                       onPressed: () {
                         setState(() {
                           selected = 1;
                           listCharData = <ChartSampleData>[
                             ChartSampleData(x: 'Thấp', y: 560, color: kViolet),
-                            ChartSampleData(x: 'Trung bình', y: 1540, color: kBlueChart),
+                            ChartSampleData(
+                                x: 'Trung bình', y: 1540, color: kBlueChart),
                             ChartSampleData(x: 'Cao', y: 9369, color: kOrange),
                           ];
                         });
-
                       },
                       child: const Text("Trạng thái"),
                     ),
                   ))
+                ],
+              ),
+              _buildDefaultColumnChart()
             ],
           ),
-          _buildDefaultColumnChart()
-        ],
-      ),context),
+          context),
     );
   }
 
@@ -94,8 +104,7 @@ class ColumnChartState extends State<ColumnChart>{
             axisLine: const AxisLine(width: 0),
             labelFormat: '{value}',
             majorTickLines: const MajorTickLines(size: 0)),
-        series: _getDefaultColumnSeries()
-    );
+        series: _getDefaultColumnSeries());
   }
 
   List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSeries() {

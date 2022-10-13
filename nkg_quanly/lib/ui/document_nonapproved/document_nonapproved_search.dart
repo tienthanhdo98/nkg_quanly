@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import 'document_nonapproved_detail.dart';
 import 'document_nonapproved_list.dart';
 
-class DocumentnonapprovedSearch extends GetView{
-
+class DocumentnonapprovedSearch extends GetView {
   final String? header;
   final bool? isApprove;
   final searchController = Get.put(SearchController());
 
-  DocumentnonapprovedSearch({Key? key,this.header,this.isApprove}) : super(key: key);
+  DocumentnonapprovedSearch({Key? key, this.header, this.isApprove})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +25,9 @@ class DocumentnonapprovedSearch extends GetView{
                   color: Theme.of(context).cardColor,
                   border: Border(
                       bottom: BorderSide(
-                        width: 1,
-                        color: Theme.of(context).dividerColor,
-                      ))),
+                    width: 1,
+                    color: Theme.of(context).dividerColor,
+                  ))),
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Row(
@@ -43,19 +42,19 @@ class DocumentnonapprovedSearch extends GetView{
                         height: 18,
                       ),
                     ),
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                    const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                     Expanded(
                       child: Container(
                           decoration: BoxDecoration(
                               color: kgray,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
+                              borderRadius: BorderRadius.circular(10)),
                           height: 50,
                           width: double.infinity,
                           child: Row(
                             children: [
-                              const Padding(padding: EdgeInsets.fromLTRB(10, 0, 10, 0),child: Icon(Icons.search)),
+                              const Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  child: Icon(Icons.search)),
                               SizedBox(
                                 width: 200,
                                 child: TextField(
@@ -64,9 +63,8 @@ class DocumentnonapprovedSearch extends GetView{
                                     border: InputBorder.none,
                                     hintText: 'Tìm kiếm...',
                                   ),
-                                  style: const TextStyle(
-                                      color: Colors.black),
-                                  onSubmitted: (value){
+                                  style: const TextStyle(color: Colors.black),
+                                  onSubmitted: (value) {
                                     print(value);
                                     searchController.searchData(value);
                                   },
@@ -85,7 +83,6 @@ class DocumentnonapprovedSearch extends GetView{
             ),
             Expanded(
               child: Container(
-
                 height: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
@@ -99,8 +96,8 @@ class DocumentnonapprovedSearch extends GetView{
                                 Get.to(() => DocumentnonapprovedDetail(
                                     id: searchController.listData[index].id!));
                               },
-                              child:
-                              DocumentNonApproveListItem(index, searchController.listData[index]));
+                              child: DocumentNonApproveListItem(
+                                  index, searchController.listData[index]));
                         })),
                   ),
                 ),
@@ -111,5 +108,4 @@ class DocumentnonapprovedSearch extends GetView{
       ),
     );
   }
-
 }

@@ -8,11 +8,11 @@ class ProfileModel {
 
   ProfileModel(
       {this.items,
-        this.statistic,
-        this.pageIndex,
-        this.pageSize,
-        this.totalRecords,
-        this.pageCount});
+      this.statistic,
+      this.pageIndex,
+      this.pageSize,
+      this.totalRecords,
+      this.pageCount});
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
@@ -64,19 +64,19 @@ class ProfileItems {
 
   ProfileItems(
       {this.id,
-        this.code,
-        this.name,
-        this.innitiatedDate,
-        this.deadline,
-        this.dateProcess,
-        this.handler,
-        this.level,
-        this.state,
-        this.status,
-        this.unitEditor,
-        this.submissionProblem,
-        this.typeSubmission,
-        this.detail});
+      this.code,
+      this.name,
+      this.innitiatedDate,
+      this.deadline,
+      this.dateProcess,
+      this.handler,
+      this.level,
+      this.state,
+      this.status,
+      this.unitEditor,
+      this.submissionProblem,
+      this.typeSubmission,
+      this.detail});
 
   ProfileItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -128,14 +128,14 @@ class ProfileStatisticModel {
 
   ProfileStatisticModel(
       {this.hoSoTrinh,
-        this.taoMoi,
-        this.choDuyet,
-        this.yKienDonVi,
-        this.daThuHoi,
-        this.daDuyet,
-        this.choTiepNhan,
-        this.daTiepNhan,
-        this.hoSoTrinhChoPhatHanh});
+      this.taoMoi,
+      this.choDuyet,
+      this.yKienDonVi,
+      this.daThuHoi,
+      this.daDuyet,
+      this.choTiepNhan,
+      this.daTiepNhan,
+      this.hoSoTrinhChoPhatHanh});
 
   ProfileStatisticModel.fromJson(Map<String, dynamic> json) {
     hoSoTrinh = json['hoSoTrinh'];

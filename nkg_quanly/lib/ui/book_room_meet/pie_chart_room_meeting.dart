@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/model/document_unprocess/document_filter.dart';
-
-import '../../const.dart';
-import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../const/const.dart';
+import '../../const/utils.dart';
+import '../../const/widget.dart';
+import '../../model/ChartModel.dart';
 import '../../model/booking_car/booking_car_model;.dart';
-import '../../model/meeting_room/meeting_room_statistic_model.dart';
-import '../theme/theme_data.dart';
 
 class PieChartRoomMeetingWidget extends StatefulWidget {
   PieChartRoomMeetingWidget({UniqueKey? key, this.documentFilterModel})
@@ -22,7 +21,6 @@ class PieChartRoomMeetingWidget extends StatefulWidget {
 class PieChartRoomMeetingState extends State<PieChartRoomMeetingWidget> {
   List<PieCharData> listChartData = [];
   BookingStatistic? documentFilterModel;
-  List<FilterItems>? listQuantity;
 
   @override
   void initState() {
@@ -31,13 +29,9 @@ class PieChartRoomMeetingState extends State<PieChartRoomMeetingWidget> {
     int num2 = documentFilterModel!.vacancy!;
     int num1 = documentFilterModel!.booked!;
     listChartData.add(PieCharData(
-        title: calcuPercen(num1, total),
-        value: num1,
-        color: kBlueChart));
+        title: calcuPercen(num1, total), value: num1, color: kBlueChart));
     listChartData.add(PieCharData(
-        title: calcuPercen(num2, total),
-        value: num2,
-        color: kOrange));
+        title: calcuPercen(num2, total), value: num2, color: kOrange));
 
     super.initState();
   }
@@ -56,7 +50,6 @@ class PieChartRoomMeetingState extends State<PieChartRoomMeetingWidget> {
             children: [
               legendChart('Còn trống', kBlueChart),
               legendChart('Đã đặt', kOrange),
-
             ],
           ),
           const Text('Biểu đồ minh họa')

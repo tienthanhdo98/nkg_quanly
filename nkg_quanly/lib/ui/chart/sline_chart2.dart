@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
+import '../../const/style.dart';
+import '../../const/widget.dart';
 
 class SLineChart2 extends StatefulWidget {
   const SLineChart2({
@@ -17,7 +19,6 @@ class SlineChart2State extends State<SLineChart2> {
   int selectedChart = 0;
   String dropdownValue = 'Mức độ';
   List<_ChartData>? chartData;
-
 
   @override
   void initState() {
@@ -42,65 +43,70 @@ class SlineChart2State extends State<SLineChart2> {
               headerChartTable2(context),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-                child: Row(children: [
-                  Expanded(child: Text("Biểu đồ theo dõi", style: CustomTextStyle.secondTextStyle,)),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      height: 40,
-                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(0),
-                        border: Border.all(
-                            color: kDLine, style: BorderStyle.solid, width: 0.80),
-                      ),
-                      child: DropdownButton<String>(
-                        style: CustomTextStyle.secondTextStyle,
-                        value: dropdownValue,
-                        icon: const Icon(Icons.arrow_drop_down),
-                        elevation: 16,
-                        underline: DropdownButtonHideUnderline(child: Container()),
-                        onChanged: (String? newValue,) {
-                          setState(() {
-                            if(newValue == "Mức độ")
-                            {
-                              chartData = <_ChartData>[
-                                _ChartData(2005, 21),
-                                _ChartData(2006, 24),
-                                _ChartData(2007, 36),
-                                _ChartData(2008, 38),
-                                _ChartData(2009, 54),
-                              ];
-                            }
-                            else
-                            {
-                              chartData = <_ChartData>[
-                                _ChartData(2003, 10),
-                                _ChartData(2004, 24),
-                                _ChartData(2005, 60),
-                                _ChartData(2006, 38),
-                                _ChartData(2007, 70),
-                              ];
-                            }
-
-                          });
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                      "Biểu đồ theo dõi",
+                      style: CustomTextStyle.secondTextStyle,
+                    )),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        height: 40,
+                        padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(0),
+                          border: Border.all(
+                              color: kDLine,
+                              style: BorderStyle.solid,
+                              width: 0.80),
+                        ),
+                        child: DropdownButton<String>(
+                          style: CustomTextStyle.secondTextStyle,
+                          value: dropdownValue,
+                          icon: const Icon(Icons.arrow_drop_down),
+                          elevation: 16,
+                          underline:
+                              DropdownButtonHideUnderline(child: Container()),
+                          onChanged: (
+                            String? newValue,
+                          ) {
+                            setState(() {
+                              if (newValue == "Mức độ") {
+                                chartData = <_ChartData>[
+                                  _ChartData(2005, 21),
+                                  _ChartData(2006, 24),
+                                  _ChartData(2007, 36),
+                                  _ChartData(2008, 38),
+                                  _ChartData(2009, 54),
+                                ];
+                              } else {
+                                chartData = <_ChartData>[
+                                  _ChartData(2003, 10),
+                                  _ChartData(2004, 24),
+                                  _ChartData(2005, 60),
+                                  _ChartData(2006, 38),
+                                  _ChartData(2007, 70),
+                                ];
+                              }
+                            });
                             dropdownValue = newValue!;
-
-                        },
-                        items: <String>['Mức độ', 'Tỉ lệ']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                          },
+                          items: <String>['Mức độ', 'Tỉ lệ']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
-                  ),
-                ],),
+                  ],
+                ),
               ),
               _buildDefaultLineChart()
-
             ],
           ),
           context),
@@ -140,7 +146,7 @@ class SlineChart2State extends State<SLineChart2> {
 
 class _ChartData {
   _ChartData(this.x, this.y);
+
   final double x;
   final double y;
-
 }

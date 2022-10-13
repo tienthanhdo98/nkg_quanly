@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../../const.dart';
 import 'package:provider/provider.dart';
 
+import '../../const/const.dart';
+import '../../const/style.dart';
 import '../theme/theme_data.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -76,27 +76,32 @@ class SettingScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             if (index == listMenu.length - 1) {
                               return Padding(
-                                padding:  const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                 child: Row(
                                   children: [
                                     Icon(listMenu[index].icon),
-                                    const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                                    const Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(10, 0, 0, 0)),
                                     Text(
                                       listMenu[index].title,
                                       style:
-                                      Theme.of(context).textTheme.headline3,
+                                          Theme.of(context).textTheme.headline3,
                                     ),
                                     Expanded(
                                       child: SizedBox(
                                         child: Consumer<ThemeProvider>(
                                           builder: (context,
-                                              ThemeProvider themdeProvider, child) {
+                                              ThemeProvider themdeProvider,
+                                              child) {
                                             return Align(
                                               alignment: Alignment.centerRight,
                                               child: SwitchListTile(
-                                                  value: themdeProvider.darkTheme!,
+                                                  value:
+                                                      themdeProvider.darkTheme!,
                                                   onChanged: (value) {
-                                                    themdeProvider.toggleTheme(value);
+                                                    themdeProvider
+                                                        .toggleTheme(value);
                                                   }),
                                             );
                                           },

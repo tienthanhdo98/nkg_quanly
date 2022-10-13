@@ -2,32 +2,29 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:nkg_quanly/const.dart';
+import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/const/api.dart';
-import 'package:nkg_quanly/const/ultils.dart';
+import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/model/profile_work/profile_work_model.dart';
-import '../../model/document_unprocess/document_filter.dart';
-import '../../model/proflie_model/profile_model.dart';
 
 class ProfileWorkViewModel extends GetxController {
-
   Map<String, String> headers = {"Content-type": "application/json"};
-  Rx<String> rxDate = "".obs;
+
   Rx<int> selectedBottomButton = 0.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;
-  Rx<CalendarFormat> rxCalendarFormat = CalendarFormat.week.obs;
+
   RxList<ProfileWorkListItems> rxProfileWorkList = <ProfileWorkListItems>[].obs;
   Rx<ProfileWorkStatistic> rxProfileWorkStatistic = ProfileWorkStatistic().obs;
+
   @override
   void onInit() {
-    initCurrentDate();
     postProfileWorkStatistic();
-    postProfileWorkByDay(rxDate.value);
+    postProfileWorkByDay(formatDateToString(dateNow));
     super.onInit();
   }
 
   //filter
-  final RxMap<int, String> mapStatus= <int, String>{}.obs;
+  final RxMap<int, String> mapStatus = <int, String>{}.obs;
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
 
   void checkboxStatus(bool value, int key, String filterValue) {
@@ -48,26 +45,13 @@ class ProfileWorkViewModel extends GetxController {
     }
   }
 
-
   void switchBottomButton(int button) {
     selectedBottomButton.value = button;
   }
 
-  void initCurrentDate() {
-    rxDate.value = DateFormat('yyyy-MM-dd').format(dateNow);
-  }
-
   void onSelectDay(DateTime selectedDay) {
-    rxSelectedDay.value = selectedDay;
-    var a = DateFormat('yyyy-MM-dd').format(selectedDay);
-    print("a $a");
-    rxDate.value = formatDateToString(selectedDay);
-    print("data ${rxDate.value}");
-    postProfileWorkByDay(rxDate.value);
-  }
-
-  void switchFormat(CalendarFormat format) {
-    rxCalendarFormat.value = format;
+    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
+    postProfileWorkByDay(strSelectedDay);
   }
 
   // profile work data
@@ -81,15 +65,16 @@ class ProfileWorkViewModel extends GetxController {
     rxProfileWorkStatistic.value = res.statistic!;
   }
 
-
   Future<void> postProfileWorkByDay(String day) async {
     final url = Uri.parse(apiPostProfile);
     print('loading');
-    String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
+    //,"dayInMonth": "$day"
+    String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!;
+    rxProfileWorkStatistic.value = res.statistic!;
   }
 
   Future<void> postProfileWorkByWeek(String datefrom, String dateTo) async {
@@ -101,6 +86,7 @@ class ProfileWorkViewModel extends GetxController {
     print(response.body);
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!;
+    rxProfileWorkStatistic.value = res.statistic!;
   }
 
   Future<void> postProfileWorkByMonth() async {
@@ -110,8 +96,10 @@ class ProfileWorkViewModel extends GetxController {
         await http.post(url, headers: headers, body: jsonGetByMonth);
     print(response.body);
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
-    rxProfileWorkList.value = res.items!;
+    rxProfileWorkList.value = res.items!; rxProfileWorkStatistic.value = res.statistic!;
+
   }
+
   Future<void> postProfileWorkByFilter(String status) async {
     final url = Uri.parse(apiPostProfile);
     print('loading');
@@ -120,9 +108,6 @@ class ProfileWorkViewModel extends GetxController {
     print(response.body);
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!;
-
+    rxProfileWorkStatistic.value = res.statistic!;
   }
-
-
-
 }

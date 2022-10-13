@@ -21,19 +21,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => ThemeProvider(),
-      child: Consumer<ThemeProvider>(builder: (context, ThemeProvider themeProvider ,child){
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: themeProvider.darkTheme! ? ThemeClass.darkTheme :ThemeClass.lightTheme,
-          home: MainScreen(),
-        );
-      },),
-
+      child: Consumer<ThemeProvider>(
+        builder: (context, ThemeProvider themeProvider, child) {
+          return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: themeProvider.darkTheme!
+                ? ThemeClass.darkTheme
+                : ThemeClass.lightTheme,
+            home: const MainScreen(),
+          );
+        },
+      ),
     );
   }
 }
-
-
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -45,11 +46,11 @@ class MainScreen extends StatefulWidget {
 class MainScreenStage extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  static  final List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     const ChartScreen(),
-     HomePage(),
-     SettingScreen()
+    HomePage(),
+    SettingScreen()
   ];
 
   void _onItemTapped(int index) {

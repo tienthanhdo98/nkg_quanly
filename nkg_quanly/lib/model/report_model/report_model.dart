@@ -1,5 +1,6 @@
 class ReportModel {
   List<ReportListItems>? items;
+  ReportStatistic? statistic;
   int? pageIndex;
   int? pageSize;
   int? totalRecords;
@@ -7,6 +8,7 @@ class ReportModel {
 
   ReportModel(
       {this.items,
+        this.statistic,
         this.pageIndex,
         this.pageSize,
         this.totalRecords,
@@ -19,6 +21,9 @@ class ReportModel {
         items!.add(new ReportListItems.fromJson(v));
       });
     }
+    statistic = json['statistic'] != null
+        ? new ReportStatistic.fromJson(json['statistic'])
+        : null;
     pageIndex = json['pageIndex'];
     pageSize = json['pageSize'];
     totalRecords = json['totalRecords'];
@@ -29,6 +34,9 @@ class ReportModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.items != null) {
       data['items'] = this.items!.map((v) => v.toJson()).toList();
+    }
+    if (this.statistic != null) {
+      data['statistic'] = this.statistic!.toJson();
     }
     data['pageIndex'] = this.pageIndex;
     data['pageSize'] = this.pageSize;
@@ -87,6 +95,47 @@ class ReportListItems {
     data['detail'] = this.detail;
     data['level'] = this.level;
     data['state'] = this.state;
+    return data;
+  }
+}
+
+class ReportStatistic {
+  int? tong;
+  int? daTiepNhan;
+  int? daGiao;
+  int? dungHan;
+  int? chuaDenHan;
+  int? somHan;
+  int? quaHan;
+
+  ReportStatistic(
+      {this.tong,
+        this.daTiepNhan,
+        this.daGiao,
+        this.dungHan,
+        this.chuaDenHan,
+        this.somHan,
+        this.quaHan});
+
+  ReportStatistic.fromJson(Map<String, dynamic> json) {
+    tong = json['tong'];
+    daTiepNhan = json['daTiepNhan'];
+    daGiao = json['daGiao'];
+    dungHan = json['dungHan'];
+    chuaDenHan = json['chuaDenHan'];
+    somHan = json['somHan'];
+    quaHan = json['quaHan'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['tong'] = this.tong;
+    data['daTiepNhan'] = this.daTiepNhan;
+    data['daGiao'] = this.daGiao;
+    data['dungHan'] = this.dungHan;
+    data['chuaDenHan'] = this.chuaDenHan;
+    data['somHan'] = this.somHan;
+    data['quaHan'] = this.quaHan;
     return data;
   }
 }

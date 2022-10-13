@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/const/api.dart';
-
-import '../../const.dart';
-import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../const/const.dart';
+import '../../model/ChartModel.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../viewmodel/home_viewmodel.dart';
 import '../theme/theme_data.dart';
 
 class ProfileChart extends StatefulWidget {
-  const ProfileChart({
-    this.homeViewModel, this.listBaseChart
-  });
+  const ProfileChart({this.homeViewModel, this.listBaseChart});
 
   final HomeViewModel? homeViewModel;
   final List<FilterItems>? listBaseChart;
 
   @override
   State<StatefulWidget> createState() => ProfileChartState();
-
-
 }
 
 class ProfileChartState extends State<ProfileChart> {
@@ -36,9 +30,24 @@ class ProfileChartState extends State<ProfileChart> {
   @override
   void initState() {
     selected = 0;
-    listCharData.add(ChartSampleData(x:  widget.listBaseChart![0].name!, y: widget.listBaseChart![0].quantity!, color: kViolet),);
-    listCharData.add(ChartSampleData(x: 'Chưa HT', y: widget.listBaseChart![2].quantity!, color: kBlueChart),);
-    listCharData.add(ChartSampleData(x: widget.listBaseChart![3].name!, y: widget.listBaseChart![3].quantity!, color: kOrange),);
+    listCharData.add(
+      ChartSampleData(
+          x: widget.listBaseChart![0].name!,
+          y: widget.listBaseChart![0].quantity!,
+          color: kViolet),
+    );
+    listCharData.add(
+      ChartSampleData(
+          x: 'Chưa HT',
+          y: widget.listBaseChart![2].quantity!,
+          color: kBlueChart),
+    );
+    listCharData.add(
+      ChartSampleData(
+          x: widget.listBaseChart![3].name!,
+          y: widget.listBaseChart![3].quantity!,
+          color: kOrange),
+    );
     // // for (var element in widget.listBaseChart!) {
     // getdata(apiGetProfileFilter1);
     super.initState();
@@ -55,39 +64,35 @@ class ProfileChartState extends State<ProfileChart> {
             children: [
               Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: ElevatedButton(
-                      style: selected == 0
-                          ? activeButtonStyle
-                          : unActiveButtonStyle,
-                      onPressed: () {
-                        selected = 0;
-                      //  getdata(apiGetProfileFilter1);
-                      },
-                      child: const Text("Mức độ"),
-                    ),
-                  )),
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                child: ElevatedButton(
+                  style:
+                      selected == 0 ? activeButtonStyle : unActiveButtonStyle,
+                  onPressed: () {
+                    selected = 0;
+                    //  getdata(apiGetProfileFilter1);
+                  },
+                  child: const Text("Mức độ"),
+                ),
+              )),
               Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                    child: ElevatedButton(
-                      style: selected == 1
-                          ? activeButtonStyle
-                          : unActiveButtonStyle,
-                      onPressed: () {
-                        setState(() {
-                          selected = 1;
-                        //  getdata(apiGetProfileFilter0);
-                        });
-                      },
-                      child: const Text("Trạng thái"),
-                    ),
-                  ))
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                child: ElevatedButton(
+                  style:
+                      selected == 1 ? activeButtonStyle : unActiveButtonStyle,
+                  onPressed: () {
+                    setState(() {
+                      selected = 1;
+                      //  getdata(apiGetProfileFilter0);
+                    });
+                  },
+                  child: const Text("Trạng thái"),
+                ),
+              ))
             ],
           ),
-          SizedBox(
-              height: 230,
-              child: _buildDefaultColumnChart()),
+          SizedBox(height: 230, child: _buildDefaultColumnChart()),
           Center(child: Text('Biểu đồ minh họa'))
         ],
       ),
@@ -104,8 +109,7 @@ class ProfileChartState extends State<ProfileChart> {
             axisLine: const AxisLine(width: 0),
             labelFormat: '{value}',
             majorTickLines: const MajorTickLines(size: 0)),
-        series: _getDefaultColumnSeries()
-    );
+        series: _getDefaultColumnSeries());
   }
 
   List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSeries() {

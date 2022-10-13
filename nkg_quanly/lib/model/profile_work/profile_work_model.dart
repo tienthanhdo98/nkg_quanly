@@ -8,11 +8,11 @@ class ProfileWorkModel {
 
   ProfileWorkModel(
       {this.items,
-        this.statistic,
-        this.pageIndex,
-        this.pageSize,
-        this.totalRecords,
-        this.pageCount});
+      this.statistic,
+      this.pageIndex,
+      this.pageSize,
+      this.totalRecords,
+      this.pageCount});
 
   ProfileWorkModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
@@ -58,13 +58,13 @@ class ProfileWorkListItems {
 
   ProfileWorkListItems(
       {this.id,
-        this.code,
-        this.name,
-        this.innitiatedDate,
-        this.toDate,
-        this.endDate,
-        this.handler,
-        this.status});
+      this.code,
+      this.name,
+      this.innitiatedDate,
+      this.toDate,
+      this.endDate,
+      this.handler,
+      this.status});
 
   ProfileWorkListItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -102,12 +102,12 @@ class ProfileWorkStatistic {
 
   ProfileWorkStatistic(
       {this.tong,
-        this.taoMoi,
-        this.daThuHoi,
-        this.dangXuLy,
-        this.daHoanThanh,
-        this.quaHan,
-        this.trongHanXuLy});
+      this.taoMoi,
+      this.daThuHoi,
+      this.dangXuLy,
+      this.daHoanThanh,
+      this.quaHan,
+      this.trongHanXuLy});
 
   ProfileWorkStatistic.fromJson(Map<String, dynamic> json) {
     tong = json['tong'];

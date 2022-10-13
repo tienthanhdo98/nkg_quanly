@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
 import 'calendar_work_screen.dart';
 
@@ -22,9 +22,9 @@ class CalendarWorkSearch extends GetView {
                   color: Theme.of(context).cardColor,
                   border: Border(
                       bottom: BorderSide(
-                        width: 1,
-                        color: Theme.of(context).dividerColor,
-                      ))),
+                    width: 1,
+                    color: Theme.of(context).dividerColor,
+                  ))),
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Row(
@@ -39,19 +39,19 @@ class CalendarWorkSearch extends GetView {
                         height: 18,
                       ),
                     ),
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                    const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                     Expanded(
                       child: Container(
                           decoration: BoxDecoration(
                               color: kgray,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
+                              borderRadius: BorderRadius.circular(10)),
                           height: 50,
                           width: double.infinity,
                           child: Row(
                             children: [
-                              const Padding(padding: EdgeInsets.fromLTRB(10, 0, 10, 0),child: Icon(Icons.search)),
+                              const Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  child: Icon(Icons.search)),
                               SizedBox(
                                 width: 200,
                                 child: TextField(
@@ -60,15 +60,15 @@ class CalendarWorkSearch extends GetView {
                                     border: InputBorder.none,
                                     hintText: 'Tìm kiếm...',
                                   ),
-                                  style: const TextStyle(
-                                      color: Colors.black),
-                                  onSubmitted: (value){
+                                  style: const TextStyle(color: Colors.black),
+                                  onSubmitted: (value) {
                                     print(value);
-                                    searchController.searchDataCalendarWork(value);
+                                    searchController
+                                        .searchDataCalendarWork(value);
                                   },
                                   onChanged: (value) {
                                     //print(value);
-                                   // searchController.searchData(value);
+                                    // searchController.searchData(value);
                                   },
                                 ),
                               )
@@ -92,10 +92,13 @@ class CalendarWorkSearch extends GetView {
                           return InkWell(
                               onTap: () {
                                 Get.to(() => DocumentnonapprovedDetail(
-                                    id: searchController.listDataCalendarWork[index].id!));
+                                    id: searchController
+                                        .listDataCalendarWork[index].id!));
                               },
-                              child:
-                              CalendarWorkItem(index, searchController.listDataCalendarWork[index]));
+                              child: CalendarWorkItem(
+                                  index,
+                                  searchController
+                                      .listDataCalendarWork[index]));
                         })),
                   ),
                 ),

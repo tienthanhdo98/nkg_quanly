@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_list.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
-import '../../const.dart';
-import '../../model/workbook/group_workbook_model.dart';
+import '../../const/const.dart';
+import '../../const/style.dart';
 
 class AddNewWorkScreen extends GetView {
   final workBookViewModel = Get.put(WorkBookViewModel());
@@ -93,14 +93,13 @@ class AddNewWorkScreen extends GetView {
                               onChanged: (value) {
                                 groupWorkerStateChange(
                                     () => groupWorkName = value.toString());
-                                for (var element in workBookViewModel.rxGroupWorkBookListItems) {
-                                  if(element.groupWorkName == value.toString())
-                                    {
-                                      groupWorkId = element.id;
-                                    }
+                                for (var element in workBookViewModel
+                                    .rxGroupWorkBookListItems) {
+                                  if (element.groupWorkName ==
+                                      value.toString()) {
+                                    groupWorkId = element.id;
+                                  }
                                 }
-
-
                               },
                               isExpanded: false,
                               hint: const Text(

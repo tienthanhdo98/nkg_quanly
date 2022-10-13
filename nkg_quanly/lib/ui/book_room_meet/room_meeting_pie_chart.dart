@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/model/document_unprocess/document_filter.dart';
-
-import '../../const.dart';
-import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../const/const.dart';
+import '../../const/style.dart';
+import '../../const/utils.dart';
+import '../../const/widget.dart';
+import '../../model/ChartModel.dart';
 import '../../model/meeting_room/meeting_room_statistic_model.dart';
 import '../theme/theme_data.dart';
 
@@ -29,8 +30,10 @@ class RoomMeetingPieChartState extends State<RoomMeetingPieChart2> {
     var total = widget.statisticModel!.total!;
     var num1 = widget.statisticModel!.vacancy;
     var num2 = widget.statisticModel!.booked;
-    listChartData.add(PieCharData(title: calcuPercen(num1!,total),value: num1,color: kOrange));
-    listChartData.add(PieCharData(title: calcuPercen(num2!,total),value: num2,color: kBlueChart));
+    listChartData.add(PieCharData(
+        title: calcuPercen(num1!, total), value: num1, color: kOrange));
+    listChartData.add(PieCharData(
+        title: calcuPercen(num2!, total), value: num2, color: kBlueChart));
     // listChartData = <PieCharData>[
     //   PieCharData(title: "44%", value: 44, color: kOrange),
     //   PieCharData(title: "56%", value: 56, color: kBlueChart),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/const.dart';
+import 'package:nkg_quanly/const/const.dart';
 
 import 'home_screen.dart';
 
 class ListAllItemKGS extends StatelessWidget {
+  const ListAllItemKGS({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,13 +16,12 @@ class ListAllItemKGS extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 border: Border(
-                  bottom: BorderSide( //                    <--- top side
+                  bottom: BorderSide(
+                    //                    <--- top side
                     color: Theme.of(context).dividerColor,
                     width: 1,
                   ),
-                )
-            ),
-
+                )),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Row(
@@ -58,7 +59,8 @@ class ListAllItemKGS extends StatelessWidget {
               children: List.generate(list.length, (index) {
                 return InkWell(
                   onTap: () {
-                    toScreen(list[index].type!, list[index].title, list[index].img);
+                    toScreen(
+                        list[index].type!, list[index].title, list[index].img);
                   },
                   child: Column(
                     children: [

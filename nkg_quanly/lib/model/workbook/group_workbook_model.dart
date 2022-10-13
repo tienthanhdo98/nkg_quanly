@@ -7,10 +7,10 @@ class GroupWorkbookModel {
 
   GroupWorkbookModel(
       {this.items,
-        this.pageIndex,
-        this.pageSize,
-        this.totalRecords,
-        this.pageCount});
+      this.pageIndex,
+      this.pageSize,
+      this.totalRecords,
+      this.pageCount});
 
   GroupWorkbookModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
@@ -44,7 +44,8 @@ class GroupWorkbookListItems {
   String? createdDate;
   String? description;
 
-  GroupWorkbookListItems({this.id, this.groupWorkName, this.createdDate, this.description});
+  GroupWorkbookListItems(
+      {this.id, this.groupWorkName, this.createdDate, this.description});
 
   GroupWorkbookListItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];

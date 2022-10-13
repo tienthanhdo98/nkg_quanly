@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/const.dart';
+import 'package:nkg_quanly/const/const.dart';
 
 import 'home_screen.dart';
 
 class ListAllItemEOffice extends StatelessWidget {
+  const ListAllItemEOffice({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,13 +16,12 @@ class ListAllItemEOffice extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 border: Border(
-                  bottom: BorderSide( //                    <--- top side
+                  bottom: BorderSide(
+                    //                    <--- top side
                     color: Theme.of(context).dividerColor,
                     width: 1,
                   ),
-                )
-            ),
-
+                )),
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Row(
@@ -58,7 +59,8 @@ class ListAllItemEOffice extends StatelessWidget {
               children: List.generate(listEOffice.length, (index) {
                 return InkWell(
                   onTap: () {
-                    toScreenEoffice(listEOffice[index].type!, listEOffice[index].title, listEOffice[index].img);
+                    toScreenEoffice(listEOffice[index].type!,
+                        listEOffice[index].title, listEOffice[index].img);
                   },
                   child: Column(
                     children: [

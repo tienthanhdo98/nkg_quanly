@@ -8,11 +8,11 @@ class BookingCarModel {
 
   BookingCarModel(
       {this.items,
-        this.statistic,
-        this.pageIndex,
-        this.pageSize,
-        this.totalRecords,
-        this.pageCount});
+      this.statistic,
+      this.pageIndex,
+      this.pageSize,
+      this.totalRecords,
+      this.pageCount});
 
   BookingCarModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
@@ -58,13 +58,13 @@ class BookingCarListItems {
 
   BookingCarListItems(
       {this.id,
-        this.code,
-        this.innitiatedDate,
-        this.registrationDate,
-        this.registrationTime,
-        this.registerUser,
-        this.content,
-        this.status});
+      this.code,
+      this.innitiatedDate,
+      this.registrationDate,
+      this.registrationTime,
+      this.registerUser,
+      this.content,
+      this.status});
 
   BookingCarListItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];

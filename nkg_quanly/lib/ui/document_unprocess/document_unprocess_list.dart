@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import '../../const/style.dart';
-import '../../const/ultils.dart';
+import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/document/document_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
 import '../document_nonapproved/document_nonapproved_search.dart';
-import '../document_nonapproved/document_nonapproved_viewmodel.dart';
 import '../theme/theme_data.dart';
 import 'document_unprocess_viewmodel.dart';
 
 class DocumentUnprocessList extends GetView {
   final String? header;
-  final MenuController menuController = Get.put(MenuController());
+
   final documentUnprocessViewModel = Get.put(DocumentUnprocessViewModel());
 
   DocumentUnprocessList({this.header});
-
 
   @override
   Widget build(BuildContext context) {
@@ -37,70 +33,7 @@ class DocumentUnprocessList extends GetView {
               ),
               context),
           //date table
-          Container(
-            color: kgray,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Text(
-                    "${dateNow.year} Tháng ${dateNow.month}",
-                    style: Theme.of(context).textTheme.headline1,
-                  ),
-                ),
-                //date header
-                Obx(() => TableCalendar(
-                    locale: 'vi_VN',
-                    headerVisible: false,
-                    calendarFormat:
-                        documentUnprocessViewModel.rxCalendarFormat.value,
-                    firstDay: DateTime.utc(2010, 10, 16),
-                    lastDay: DateTime.utc(2030, 3, 14),
-                    focusedDay: documentUnprocessViewModel.rxSelectedDay.value,
-                    selectedDayPredicate: (day) {
-                      return isSameDay(
-                          documentUnprocessViewModel.rxSelectedDay.value, day);
-                    },
-                    onDaySelected: (selectedDay, focusedDay) async {
-                      if (!isSameDay(
-                          documentUnprocessViewModel.rxSelectedDay.value,
-                          selectedDay)) {
-                        documentUnprocessViewModel.onSelectDay(selectedDay);
-                      }
-                    },
-                    onFormatChanged: (format) {
-                      if (documentUnprocessViewModel.rxCalendarFormat.value !=
-                          format) {
-                        // Call `setState()` when updating calendar format
-                        documentUnprocessViewModel.rxCalendarFormat.value =
-                            format;
-                      }
-                    })),
-                Center(
-                    child: InkWell(
-                  onTap: () {
-                    if (documentUnprocessViewModel.rxCalendarFormat.value !=
-                        CalendarFormat.month) {
-                      documentUnprocessViewModel
-                          .switchFormat(CalendarFormat.month);
-                    } else {
-                      documentUnprocessViewModel
-                          .switchFormat(CalendarFormat.week);
-                    }
-                  },
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                      child: Image.asset(
-                        "assets/icons/ic_showmore.png",
-                        height: 15,
-                        width: 80,
-                      )),
-                ))
-                //list work
-              ],
-            ),
-          ),
+          headerTableDatePicker(context, documentUnprocessViewModel),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -129,7 +62,6 @@ class DocumentUnprocessList extends GetView {
                               return SizedBox(
                                   height: 600,
                                   child: FilterDocUnprocessBottomSheet(
-                                      menuController,
                                       documentUnprocessViewModel));
                             },
                           );
@@ -151,6 +83,7 @@ class DocumentUnprocessList extends GetView {
           Expanded(
               child: Obx(() => (documentUnprocessViewModel.rxItems.isNotEmpty)
                   ? ListView.builder(
+                      controller: documentUnprocessViewModel.controller,
                       itemCount: documentUnprocessViewModel.rxItems.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -162,7 +95,7 @@ class DocumentUnprocessList extends GetView {
                             child: DocumentNonProcessListItem(index,
                                 documentUnprocessViewModel.rxItems[index]));
                       })
-                  : const Text("Hôm nay không có văn bản đến nào"))),
+                  : noData())),
           //bottom
           Obx(() => Container(
                 decoration: BoxDecoration(
@@ -177,8 +110,7 @@ class DocumentUnprocessList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          documentUnprocessViewModel.rxSelectedDay.value =
-                              DateTime.now();
+                          menuController.rxSelectedDay.value = DateTime.now();
                           documentUnprocessViewModel
                               .onSelectDay(DateTime.now());
                           documentUnprocessViewModel.swtichBottomButton(0);
@@ -246,14 +178,15 @@ class DocumentNonProcessListItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                "${index! + 1}. ${docModel!.name}",
-                style: Theme.of(context).textTheme.headline3,
-              ),
               Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: priorityWidget(docModel!))),
+                child: Text(
+                  "${index! + 1}. ${docModel!.name}",
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: priorityWidget(docModel!)),
             ],
           ),
           signWidget(docModel!),
@@ -273,9 +206,9 @@ class DocumentNonProcessListItem extends StatelessWidget {
                     const Text('Đơn vị ban hành',
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child:  Text(docModel!.departmentPublic!,
-                          style: Theme.of(context).textTheme.headline5))
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(docModel!.departmentPublic!,
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
@@ -284,9 +217,9 @@ class DocumentNonProcessListItem extends StatelessWidget {
                     const Text('Ngày đến',
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Text(formatDate(docModel!.toDate!),
-                          style: Theme.of(context).textTheme.headline5))
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(formatDate(docModel!.toDate!),
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
@@ -295,9 +228,9 @@ class DocumentNonProcessListItem extends StatelessWidget {
                     const Text('Thời hạn',
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child:  Text(formatDate(docModel!.endDate!),
-                          style: Theme.of(context).textTheme.headline5))
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(formatDate(docModel!.endDate!),
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
               ],
@@ -313,10 +246,8 @@ class DocumentNonProcessListItem extends StatelessWidget {
 }
 
 class FilterDocUnprocessBottomSheet extends StatelessWidget {
-  const FilterDocUnprocessBottomSheet(this.menuController, this.reportViewModel,
-      {Key? key})
+  const FilterDocUnprocessBottomSheet(this.reportViewModel, {Key? key})
       : super(key: key);
-  final MenuController? menuController;
   final DocumentUnprocessViewModel? reportViewModel;
 
   @override
@@ -849,8 +780,8 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                             var department = "";
                             if (menuController!.listPriorityStatus
                                 .containsKey(0)) {
-                              reportViewModel!
-                                  .getDocumentByFilter(status, level, department);
+                              reportViewModel!.getDocumentByFilter(
+                                  status, level, department);
                             } else {
                               menuController!.listPriorityStatus
                                   .forEach((key, value) {
@@ -886,57 +817,50 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
 }
 
 Widget signWidget(DocumentInListItems docModel) {
-  if(docModel.status == "Đã xử lý")
-    {
-      return  Row(
-        children: [
-          Image.asset(
-            'assets/icons/ic_sign.png',
-            height: 14,
-            width: 14,
-          ),
-          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-          const Text(
-            "Đã xử lý",
-            style: TextStyle(color: kGreenSign),
-          )
-        ],
-      );
-    }
-  else if(docModel.status == "Đang xử lý")
-    {
-      return Row(
-        children: [
-          Image.asset(
-            'assets/icons/ic_not_sign.png',
-            height: 14,
-            width: 14,
-          ),
-          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-          const Text(
-            "Đang xử lý",
-            style: TextStyle(color: kOrangeSign),
-          )
-        ],
-      );
-    }
-  else
-    {
-     return Row(
-        children: [
-          Image.asset(
-            'assets/icons/ic_still.png',
-            height: 14,
-            width: 14,
-          ),
-          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-          const Text(
-            "Chưa xử lý",
-            style: TextStyle(color: Colors.black),
-          )
-        ],
-      );
-    }
-
+  if (docModel.status == "Đã xử lý") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        const Text(
+          "Đã xử lý",
+          style: TextStyle(color: kGreenSign),
+        )
+      ],
+    );
+  } else if (docModel.status == "Đang xử lý") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_not_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        const Text(
+          "Đang xử lý",
+          style: TextStyle(color: kOrangeSign),
+        )
+      ],
+    );
+  } else {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_still.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        const Text(
+          "Chưa xử lý",
+          style: TextStyle(color: Colors.black),
+        )
+      ],
+    );
+  }
 }
-

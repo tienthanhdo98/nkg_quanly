@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:nkg_quanly/viewmodel/date_picker_controller.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import '../../const/style.dart';
-import '../../const/ultils.dart';
+import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/document_out_model/document_out_model.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
@@ -17,132 +16,95 @@ import 'document_out_search.dart';
 class DocumentOutList extends GetView {
   final String? header;
 
-  final MenuController menuController = Get.put(MenuController());
   final documentOutViewModel = Get.put(DocumentOutViewModel());
-  int selectedButton = 0;
-  DocumentOutList({this.header});
 
-  int selected = 0;
+  DocumentOutList({this.header});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
           child: Column(
-            children: [
-              //header
-              headerWidgetSeatch(header!,DocumenOutSearch(
+        children: [
+          //header
+          headerWidgetSeatch(
+              header!,
+              DocumenOutSearch(
                 header: header,
-              ),context),
-              //date table
-          headerTableDate( Obx(() =>  TableCalendar(
-              locale: 'vi_VN',
-              headerVisible: false,
-              calendarFormat:  documentOutViewModel.rxCalendarFormat.value,
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: documentOutViewModel.rxSelectedDay.value,
-              selectedDayPredicate: (day) {
-                return isSameDay(
-                    documentOutViewModel
-                        .rxSelectedDay.value,
-                    day);
-              },
-              onDaySelected: (selectedDay, focusedDay) async {
-                if (!isSameDay(
-                    documentOutViewModel
-                        .rxSelectedDay.value,
-                    selectedDay)) {
-                  documentOutViewModel.onSelectDay(selectedDay);
-                }
-              },
-              onFormatChanged: (format) {
-                if (documentOutViewModel.rxCalendarFormat.value != format) {
-                  // Call `setState()` when updating calendar format
-                  documentOutViewModel.rxCalendarFormat.value = format;
-                }
-              }
-          )),
-              Center(child: InkWell(
-                onTap: (){
-                  if(documentOutViewModel.rxCalendarFormat.value != CalendarFormat.month)
-                  {
-                    documentOutViewModel.switchFormat(CalendarFormat.month);
-                  }
-                  else
-                  {
-                    documentOutViewModel.switchFormat(CalendarFormat.week);
-                  }
-                },
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                    child: Image.asset("assets/icons/ic_showmore.png",height: 15,width: 80,)),
-              )),context),
-              //list
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: Row(
-                  children: [
-                    Text(
-                      'Tất cả văn bản đi chờ phát hành',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    Expanded(
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: ElevatedButton(
-                            style: elevetedButtonWhite,
-                            onPressed: () {
-                              showModalBottomSheet<void>(
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
-                                  ),
-                                ),
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SizedBox(
-                                      height: 400,
-                                      child: FilterDocumentOutBottomSheet(
-                                          menuController, documentOutViewModel));
-                                },
-                              );
-                            },
-                            child: const Text(
-                              'Bộ lọc',
-                              style: TextStyle(color: kVioletButton),
-                            ),
-                          )),
-                    )
-                  ],
-                ),
               ),
-              const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: Divider(
-                    thickness: 1,
-                  )),
-              Expanded(
-                  child:Obx(() => (documentOutViewModel.rxDocumentOutItems.isNotEmpty) ? ListView.builder(
+              context),
+          //date table
+          headerTableDatePicker(context, documentOutViewModel),
+          //list
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Row(
+              children: [
+                Text(
+                  'Tất cả văn bản đi chờ phát hành',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+                Expanded(
+                  child: Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        style: elevetedButtonWhite,
+                        onPressed: () {
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SizedBox(
+                                  height: 400,
+                                  child: FilterDocumentOutBottomSheet(documentOutViewModel));
+                            },
+                          );
+                        },
+                        child: const Text(
+                          'Bộ lọc',
+                          style: TextStyle(color: kVioletButton),
+                        ),
+                      )),
+                )
+              ],
+            ),
+          ),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+              child: Divider(
+                thickness: 1,
+              )),
+          Expanded(
+              child: Obx(() => (documentOutViewModel
+                      .rxDocumentOutItems.isNotEmpty)
+                  ? ListView.builder(
                       itemCount: documentOutViewModel.rxDocumentOutItems.length,
                       itemBuilder: (context, index) {
                         return InkWell(
                             onTap: () {
                               Get.to(() => DocumentnonapprovedDetail(
-                                  id:documentOutViewModel.rxDocumentOutItems[index].id!));
+                                  id: documentOutViewModel
+                                      .rxDocumentOutItems[index].id!));
                             },
-                            child:
-                            DocOutListItem(index, documentOutViewModel.rxDocumentOutItems[index],false));
-                      }) :   const Text("Hôm nay không có văn bản nào"))),
-              //bottom
-              Obx(() =>  Container(
+                            child: DocOutListItem(
+                                index,
+                                documentOutViewModel.rxDocumentOutItems[index],
+                                false));
+                      })
+                  : noData())),
+          //bottom
+          Obx(() => Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     border: Border(
-                        top: BorderSide(
-                            color: Theme.of(context).dividerColor))),
+                        top:
+                            BorderSide(color: Theme.of(context).dividerColor))),
                 height: 50,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -150,7 +112,7 @@ class DocumentOutList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          documentOutViewModel.rxSelectedDay.value = DateTime.now();
+                          menuController.rxSelectedDay.value = DateTime.now();
                           documentOutViewModel.onSelectDay(DateTime.now());
                           documentOutViewModel.swtichBottomButton(0);
                         },
@@ -161,13 +123,15 @@ class DocumentOutList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime datefrom =  DateTime.now();
-                          DateTime dateTo =  datefrom.add(const Duration(days: 7));
+                          DateTime datefrom = DateTime.now();
+                          DateTime dateTo =
+                              datefrom.add(const Duration(days: 7));
                           String strdateFrom = formatDateToString(datefrom);
                           String strdateTo = formatDateToString(dateTo);
                           print(strdateFrom);
                           print(strdateTo);
-                          documentOutViewModel.getDocumentOutByWeek(strdateFrom,strdateTo);
+                          documentOutViewModel.getDocumentOutByWeek(
+                              strdateFrom, strdateTo);
                           documentOutViewModel.swtichBottomButton(1);
                         },
                         child: bottomDateButton("Tuần",
@@ -181,20 +145,20 @@ class DocumentOutList extends GetView {
                           documentOutViewModel.swtichBottomButton(2);
                         },
                         child: bottomDateButton("Tháng",
-                          documentOutViewModel.selectedBottomButton.value, 2),
+                            documentOutViewModel.selectedBottomButton.value, 2),
                       ),
                     )
                   ],
                 ),
               ))
-            ],
-          )),
+        ],
+      )),
     );
   }
 }
 
 class DocOutListItem extends StatelessWidget {
-  DocOutListItem(this.index, this.docModel,this.isNonApprove);
+  DocOutListItem(this.index, this.docModel, this.isNonApprove);
 
   final int? index;
   final DocumentOutItems? docModel;
@@ -208,14 +172,15 @@ class DocOutListItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                "${index! + 1}. ${docModel!.name}",
-                style: Theme.of(context).textTheme.headline3,
-              ),
               Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: priorityWidget(docModel!))),
+                child: Text(
+                  "${index! + 1}. ${docModel!.name}",
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: priorityWidget(docModel!)),
             ],
           ),
           signWidget(docModel!),
@@ -232,22 +197,34 @@ class DocOutListItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Đơn vị ban hành',style: CustomTextStyle.grayColorTextStyle),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0), child: Text(docModel!.departmentPublic!,style: Theme.of(context).textTheme.headline5))
+                    const Text('Đơn vị ban hành',
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(docModel!.departmentPublic!,
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Ngày đến',style: CustomTextStyle.grayColorTextStyle),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0), child: Text(formatDate(docModel!.toDate!),style: Theme.of(context).textTheme.headline5))
+                    const Text('Ngày đến',
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(formatDate(docModel!.toDate!),
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Thời hạn',style: CustomTextStyle.grayColorTextStyle),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0), child: Text(formatDate(docModel!.endDate!),style: Theme.of(context).textTheme.headline5))
+                    const Text('Thời hạn',
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(formatDate(docModel!.endDate!),
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
               ],
@@ -262,12 +239,10 @@ class DocOutListItem extends StatelessWidget {
   }
 }
 
-
 class FilterDocumentOutBottomSheet extends StatelessWidget {
-  const FilterDocumentOutBottomSheet(this.menuController, this.documentOutViewModel,
+  const FilterDocumentOutBottomSheet(this.documentOutViewModel,
       {Key? key})
       : super(key: key);
-  final MenuController? menuController;
   final DocumentOutViewModel? documentOutViewModel;
 
   @override
@@ -295,23 +270,23 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
                   ),
                   Obx(() => (documentOutViewModel!.mapAllFilter.containsKey(0))
                       ? InkWell(
-                      onTap: () {
-                        documentOutViewModel!.checkboxFilterAll(false, 0);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
+                          onTap: () {
+                            documentOutViewModel!.checkboxFilterAll(false, 0);
+                          },
+                          child: Image.asset(
+                            'assets/icons/ic_checkbox_active.png',
+                            width: 30,
+                            height: 30,
+                          ))
                       : InkWell(
-                      onTap: () {
-                        documentOutViewModel!.checkboxFilterAll(true, 0);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                          onTap: () {
+                            documentOutViewModel!.checkboxFilterAll(true, 0);
+                          },
+                          child: Image.asset(
+                            'assets/icons/ic_checkbox_unactive.png',
+                            width: 30,
+                            height: 30,
+                          )))
                 ],
               ),
             ),
@@ -332,23 +307,23 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
                   ),
                   Obx(() => (documentOutViewModel!.mapAllFilter.containsKey(3))
                       ? InkWell(
-                      onTap: () {
-                        documentOutViewModel!.checkboxFilterAll(false, 3);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
+                          onTap: () {
+                            documentOutViewModel!.checkboxFilterAll(false, 3);
+                          },
+                          child: Image.asset(
+                            'assets/icons/ic_checkbox_active.png',
+                            width: 30,
+                            height: 30,
+                          ))
                       : InkWell(
-                      onTap: () {
-                        documentOutViewModel!.checkboxFilterAll(true, 3);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                          onTap: () {
+                            documentOutViewModel!.checkboxFilterAll(true, 3);
+                          },
+                          child: Image.asset(
+                            'assets/icons/ic_checkbox_unactive.png',
+                            width: 30,
+                            height: 30,
+                          )))
                 ],
               ),
             ),
@@ -378,29 +353,27 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
                                 ),
                               ),
                               Obx(() => (documentOutViewModel!.mapStatusFilter
-                                  .containsKey(index))
+                                      .containsKey(index))
                                   ? InkWell(
-                                  onTap: () {
-                                    documentOutViewModel!
-                                        .checkboxStatus(
-                                        false, index, "$item;");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_active.png',
-                                    width: 30,
-                                    height: 30,
-                                  ))
+                                      onTap: () {
+                                        documentOutViewModel!.checkboxStatus(
+                                            false, index, "$item;");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_active.png',
+                                        width: 30,
+                                        height: 30,
+                                      ))
                                   : InkWell(
-                                  onTap: () {
-                                    documentOutViewModel!
-                                        .checkboxStatus(
-                                        true, index, "$item;");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_unactive.png',
-                                    width: 30,
-                                    height: 30,
-                                  )))
+                                      onTap: () {
+                                        documentOutViewModel!.checkboxStatus(
+                                            true, index, "$item;");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_unactive.png',
+                                        width: 30,
+                                        height: 30,
+                                      )))
                             ],
                           ),
                         ),
@@ -436,7 +409,8 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
                       child: ElevatedButton(
                           onPressed: () {
                             var status = "";
-                            if (documentOutViewModel!.mapAllFilter.containsKey(0)) {
+                            if (documentOutViewModel!.mapAllFilter
+                                .containsKey(0)) {
                               documentOutViewModel!.postDocOutByFilter(
                                 status,
                               );
@@ -444,17 +418,17 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
                               if (documentOutViewModel!.mapAllFilter
                                   .containsKey(3)) {
                                 status = "";
-                              }
-                              else
-                              {
-                                documentOutViewModel!.mapStatusFilter.forEach((key, value) {
+                              } else {
+                                documentOutViewModel!.mapStatusFilter
+                                    .forEach((key, value) {
                                   status += value;
                                 });
                               }
                             }
                             print(status);
                             documentOutViewModel!.postDocOutByFilter(
-                                status,);
+                              status,
+                            );
                             Get.back();
                           },
                           style: buttonFilterBlue,
@@ -470,39 +444,36 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
     );
   }
 }
-var lisStatus= ["Chưa xử lý","Đã xử lý"];
 
-
-
+var lisStatus = ["Chưa xử lý", "Đã xử lý"];
 
 Widget signWidget(DocumentOutItems docModel) {
-
-    if (docModel.status == "Đã xử lý") {
-      return Row(
-        children: [
-          Image.asset(
-            'assets/icons/ic_sign.png',
-            height: 14,
-            width: 14,
-          ),
-          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-           Text(
-            docModel.status!,
-            style: const TextStyle(color: kGreenSign),
-          )
-        ],
-      );
-    } else {
-      return Row(
-        children: [
-          Image.asset(
-            'assets/icons/ic_not_sign.png',
-            height: 14,
-            width: 14,
-          ),
-          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-           Text(docModel.status!, style: const TextStyle(color: kOrangeSign))
-        ],
-      );
-    }
+  if (docModel.status == "Đã xử lý") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(
+          docModel.status!,
+          style: const TextStyle(color: kGreenSign),
+        )
+      ],
+    );
+  } else {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_not_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.status!, style: const TextStyle(color: kOrangeSign))
+      ],
+    );
+  }
 }

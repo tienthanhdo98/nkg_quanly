@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_list.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
+import '../../const/style.dart';
 import '../../model/workbook/workbook_model.dart';
 import '../theme/theme_data.dart';
-import 'add_new_work_screen.dart';
 
 class UpdateWorkBookScreen extends StatefulWidget {
   UpdateWorkBookScreen(this.workBookListItems);
@@ -101,9 +101,9 @@ class UpdateWorkBookState extends State<UpdateWorkBookScreen> {
                                 .toList(),
                             onChanged: (value) {
                               setState(() => groupWorkName = value.toString());
-                              for (var element in workBookViewModel.rxGroupWorkBookListItems) {
-                                if(element.groupWorkName == value.toString())
-                                {
+                              for (var element in workBookViewModel
+                                  .rxGroupWorkBookListItems) {
+                                if (element.groupWorkName == value.toString()) {
                                   groupWorkId = element.id;
                                 }
                               }
@@ -308,7 +308,8 @@ class UpdateWorkBookState extends State<UpdateWorkBookScreen> {
                                         status!,
                                         important!,
                                         groupWorkId!);
-                                    Get.to(() => WorkBookList(header: "Sổ tay công việc"));
+                                    Get.to(() => WorkBookList(
+                                        header: "Sổ tay công việc"));
                                   }
                                 },
                                 style: ButtonStyle(

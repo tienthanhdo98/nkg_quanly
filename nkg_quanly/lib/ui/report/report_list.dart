@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
+import 'package:nkg_quanly/viewmodel/date_picker_controller.dart';
 import 'package:nkg_quanly/ui/report/report_detail.dart';
 import 'package:nkg_quanly/ui/report/report_search.dart';
 import 'package:nkg_quanly/ui/report/report_viewmodel.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import '../../const/style.dart';
-import '../../const/ultils.dart';
+import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/report_model/report_model.dart';
 import '../theme/theme_data.dart';
@@ -17,7 +17,6 @@ class ReportList extends GetView {
   final reportController = Get.put(ReportViewModel());
 
   ReportList({Key? key, this.header}) : super(key: key);
-  final MenuController menuController = Get.put(MenuController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,64 +32,7 @@ class ReportList extends GetView {
               ),
               context),
           //date table
-          Container(
-            color: kgray,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Text(
-                    "${dateNow.year} Tháng ${dateNow.month}",
-                    style: Theme.of(context).textTheme.headline1,
-                  ),
-                ),
-                //date header
-                Obx(() => TableCalendar(
-                    locale: 'vi_VN',
-                    headerVisible: false,
-                    calendarFormat: reportController.rxCalendarFormat.value,
-                    firstDay: DateTime.utc(2010, 10, 16),
-                    lastDay: DateTime.utc(2030, 3, 14),
-                    focusedDay: reportController.rxSelectedDay.value,
-                    selectedDayPredicate: (day) {
-                      return isSameDay(
-                          reportController.rxSelectedDay.value, day);
-                    },
-                    onDaySelected: (selectedDay, focusedDay) async {
-                      if (!isSameDay(
-                          reportController.rxSelectedDay.value, selectedDay)) {
-                        reportController.onSelectDay(selectedDay);
-                      }
-                    },
-                    onFormatChanged: (format) {
-                      if (reportController.rxCalendarFormat.value != format) {
-                        // Call `setState()` when updating calendar format
-                        reportController.rxCalendarFormat.value = format;
-                      }
-                    })),
-                Center(
-                    child: InkWell(
-                  onTap: () {
-                    if (reportController.rxCalendarFormat.value !=
-                        CalendarFormat.month) {
-                      reportController.switchFormat(CalendarFormat.month);
-                    } else {
-                      reportController.switchFormat(CalendarFormat.week);
-                    }
-                  },
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                      child: Image.asset(
-                        "assets/icons/ic_showmore.png",
-                        height: 15,
-                        width: 80,
-                      )),
-                ))
-                //list work
-              ],
-            ),
-          ),
+          headerTableDatePicker(context, reportController),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -134,8 +76,8 @@ class ReportList extends GetView {
                             builder: (BuildContext context) {
                               return SizedBox(
                                   height: 600,
-                                  child:
-                                  FilterReportBottomSheet(menuController,reportController));
+                                  child: FilterReportBottomSheet(
+                                      reportController));
                             },
                           );
                         },
@@ -156,6 +98,7 @@ class ReportList extends GetView {
           Expanded(
               child: Obx(() => (reportController.rxReportListItems.isNotEmpty)
                   ? ListView.builder(
+                      controller: reportController.controller,
                       itemCount: reportController.rxReportListItems.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -167,7 +110,7 @@ class ReportList extends GetView {
                             child: ReportItem(index,
                                 reportController.rxReportListItems[index]));
                       })
-                  : Text("Hôm nay không có báo cáo nào"))),
+                  : noData())),
           //bottom
           Obx(() => Container(
                 decoration: BoxDecoration(
@@ -182,7 +125,7 @@ class ReportList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          reportController.rxSelectedDay.value = DateTime.now();
+                          menuController.rxSelectedDay.value = DateTime.now();
                           reportController.onSelectDay(DateTime.now());
                           reportController.selectedBottomButton(0);
                         },
@@ -238,14 +181,15 @@ class ReportItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                "${index! + 1}. ${docModel!.name}",
-                style: Theme.of(context).textTheme.headline3,
-              ),
               Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: priorityWidget(docModel!))),
+                child: Text(
+                  "${index! + 1}. ${docModel!.name}",
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: priorityWidget(docModel!)),
             ],
           ),
           signReportWidget(docModel!),
@@ -309,8 +253,8 @@ class ReportItem extends StatelessWidget {
 }
 
 class FilterReportBottomSheet extends StatelessWidget {
-  const FilterReportBottomSheet(this.menuController,this.reportViewModel, {Key? key}) : super(key: key);
- final MenuController? menuController;
+  const FilterReportBottomSheet(this.reportViewModel, {Key? key})
+      : super(key: key);
   final ReportViewModel? reportViewModel;
 
   @override
@@ -671,21 +615,24 @@ class FilterReportBottomSheet extends StatelessWidget {
                       child: ElevatedButton(
                           onPressed: () {
                             Get.back();
-                            var status ="";
-                            var level ="";
+                            var status = "";
+                            var level = "";
                             if (menuController!.listPriorityStatus
                                 .containsKey(0)) {
-                              reportViewModel!.postReportByFilter(status,level);
+                              reportViewModel!
+                                  .postReportByFilter(status, level);
                             } else {
-                              menuController!.listPriorityStatus.forEach((key, value) {
+                              menuController!.listPriorityStatus
+                                  .forEach((key, value) {
                                 level += value;
                               });
-                              menuController!.listStateStatus.forEach((key, value) {
+                              menuController!.listStateStatus
+                                  .forEach((key, value) {
                                 status += value;
                               });
-                              reportViewModel!.postReportByFilter(status,level);
+                              reportViewModel!
+                                  .postReportByFilter(status, level);
                             }
-
                           },
                           style: buttonFilterBlue,
                           child: const Text('Áp dụng')),
@@ -702,7 +649,7 @@ class FilterReportBottomSheet extends StatelessWidget {
 }
 
 Widget signReportWidget(ReportListItems docModel) {
-  if (docModel.status == "Đã giao") {
+  if (docModel.state == "Đúng hạn") {
     return Row(
       children: [
         Image.asset(
@@ -711,7 +658,59 @@ Widget signReportWidget(ReportListItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.status!, style: const TextStyle(color: kGreenSign))
+        Text(docModel.state!, style: const TextStyle(color: kGreenSign))
+      ],
+    );
+  } else if (docModel.state == "Sớm hạn") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_still.png',
+          height: 14,
+          color: kLightBlueSign,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.state!, style: const TextStyle(color: kLightBlueSign))
+      ],
+    );
+  } else if (docModel.state == "Chưa đến hạn") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_still.png',
+          height: 14,
+          color: kRedChart,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.state!, style: const TextStyle(color: kRedChart))
+      ],
+    );
+  } else if (docModel.state == "Quá hạn") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_outdate.png',
+          height: 14,
+          color: kRedChart,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.state!, style: const TextStyle(color: kRedChart))
+      ],
+    );
+  } else if (docModel.state == "Đã tiếp nhận") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_still.png',
+          height: 14,
+          color: kGreenSign,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.state!, style: const TextStyle(color: kGreenSign))
       ],
     );
   } else {

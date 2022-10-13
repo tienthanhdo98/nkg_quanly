@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:nkg_quanly/const/ultils.dart';
+import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
 import 'package:nkg_quanly/ui/document_nonapproved/document_nonapproved_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_screen.dart';
 import 'package:nkg_quanly/ui/report/report_screen.dart';
-
-import '../../const.dart';
+import '../../const/const.dart';
+import '../../const/widget.dart';
 import '../../viewmodel/home_viewmodel.dart';
+import '../PMis/PMis_screen.dart';
 import '../birthday/birthday_screen.dart';
 import '../book_room_meet/book_meeting_screen.dart';
 import '../book_room_meet/e_office/book_room_e_office_list.dart';
@@ -16,15 +16,20 @@ import '../calendarwork/e_office/calendar_work_e_office_screen.dart';
 import '../document_out/document_out_list.dart';
 import '../document_unprocess/document_unprocess _screen.dart';
 import '../document_unprocess/e_office/document_in_e_office_list.dart';
-import '../misstion/e_office/mission__e_office_list.dart';
-import '../misstion/mission_screen.dart';
+import '../helpdesk/help_desk_screen.dart';
+import '../mission/e_office/mission__e_office_list.dart';
+import '../mission/mission_screen.dart';
 import '../profile/e_office/profile_e_office_list.dart';
+import '../profile_procedure_/profile_procedure_home/profile_procedure_menu_screen.dart';
 import '../profile_procedure_/profiles_procedure_screen.dart';
 import '../profile_work/e_office/profile_work_e_office_list.dart';
 import '../profile_work/profile_work_screen.dart';
+import '../report/report_in_menuhome/report_in_menuhome_list.dart';
+import '../utility/utility_screen.dart';
 import '../workbook/workbook_list.dart';
 import 'list_all_item_e_office.dart';
 import 'list_all_item_kgs.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScreen extends GetView {
   final homeController = Get.put(HomeViewModel());
@@ -133,6 +138,9 @@ class HomeScreen extends GetView {
                     context),
               )
             ]),
+            //
+
+            //
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text('Menu chức năng',
@@ -143,9 +151,9 @@ class HomeScreen extends GetView {
                 physics: const BouncingScrollPhysics(),
                 // Create a grid with 2 columns. If you change the scrollDirection to
                 // horizontal, this produces 2 rows.
-                crossAxisCount: 3,
+                crossAxisCount: 4,
                 shrinkWrap: true,
-                childAspectRatio: 1.1,
+                mainAxisSpacing: 15,
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 // Generate 100 widgets that display their index in the List.
                 children: List.generate(listMenuHome.length, (index) {
@@ -175,7 +183,7 @@ class HomeScreen extends GetView {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              padding: const EdgeInsets.fromLTRB(20, 15, 20, 20),
               child: Container(
                 height: 160,
                 decoration: BoxDecoration(
@@ -185,6 +193,7 @@ class HomeScreen extends GetView {
                     fit: BoxFit.cover,
                   ),
                 ),
+
                 child: Row(children: [
                   Expanded(
                     child: Padding(
@@ -194,7 +203,7 @@ class HomeScreen extends GetView {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            convertDateToViDate(dateNow),
+                            convertDateToViDate(),
                             style: const TextStyle(
                                 color: kWhite,
                                 fontSize: 18,
@@ -223,15 +232,29 @@ class HomeScreen extends GetView {
                                     color: kWhite,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500)),
-                            Image.asset(
-                              'assets/icons/ic_rain.png',
-                              fit: BoxFit.cover,
-                              height: 90,
-                              width: 90,
-                            )
+                            SizedBox(
+                              height:80,
+                              width: 80,
+                              child: CachedNetworkImage(
+                                  imageUrl: (homeController.rxWeatherModel.value.linkIcon != null) ? homeController.rxWeatherModel.value.linkIcon! : "",
+                                  imageBuilder: (context, imageProvider) => Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.fill
+
+                                      ),
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) => Image.asset("assets/default.webp")
+                              ),
+                            ),
+
+
                           ],
                         )),
-                  )
+                  ),
+
                 ]) /* add child content here */,
               ),
             )
@@ -264,9 +287,11 @@ List<MenuItem> listMenuHome = [
   MenuItem('Không gian số', 'assets/icons/ic_kgs.png', "", 1),
   MenuItem('Hệ thống E-Office', 'assets/icons/ic_eoffice.png', "", 2),
   MenuItem('Hệ thống PMis', 'assets/icons/ic_pmis.png', "", 3),
-  MenuItem('Dịch vụ công hành chính', 'assets/icons/ic_dichvucong.png', "", 4),
-  MenuItem('Phân tích hiển thị số', 'assets/icons/ic_phantich.png', "", 5),
-  MenuItem('Báo cáo bộ', 'assets/icons/ic_report_bo.png', "", 6),
+  MenuItem('Helpdesk', 'assets/icons/ic_helpdesk.png', "", 4),
+  MenuItem('Dịch vụ công hành chính', 'assets/icons/ic_dichvucong.png', "", 5),
+  MenuItem('Phân tích hiển thị số', 'assets/icons/ic_phantich.png', "", 6),
+  MenuItem('Báo cáo bộ', 'assets/icons/ic_report_bo.png', "", 7),
+  MenuItem('Tiện ích', 'assets/icons/ic_tienich.png', "", 8),
 ];
 
 List<MenuItem> list = [
@@ -279,8 +304,7 @@ List<MenuItem> list = [
   MenuItem('Lịch họp', 'assets/icons/ic_meet.png', "", 7),
   MenuItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 8),
   MenuItem('Sinh nhật', 'assets/icons/ic_birthday.png', "", 9),
-  MenuItem(
-      'Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 10),
+  MenuItem('Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 10),
   MenuItem('Sổ tay Công việc', 'assets/icons/ic_sotay.png', "", 11),
 ];
 List<MenuItem> listEOffice = [
@@ -388,10 +412,25 @@ void toScreen(int type, String? header, String? icon) {
 void menuToScreen(int type, String? header, String? icon) {
   switch (type) {
     case 1:
-      Get.to(() => ListAllItemKGS());
+      Get.to(() => const ListAllItemKGS());
       break;
     case 2:
-      Get.to(() => ListAllItemEOffice());
+      Get.to(() => const ListAllItemEOffice());
+      break;
+      case 3:
+      Get.to(() => PMisScreen(header: header));
+      break;
+      case 4:
+      Get.to(() => HelpDeskScreen(header: header,icon : icon));
+      break;
+      case 5:
+      Get.to(() => ProfileProcMenuScreen());
+      break;
+      case 7:
+      Get.to(() =>  ReportInMenuHomeList(header: header));
+      break;
+      case 8:
+      Get.to(() => const UtilityScreen());
       break;
   }
 }
@@ -409,17 +448,25 @@ void toScreenEoffice(int type, String? header, String? icon) {
     case 2:
       Get.to(() => DocumentInEOfficeList(header: header));
       break;
-      case 3:
-      Get.to(() => ProfileEOfficeList(header: header,));
+    case 3:
+      Get.to(() => ProfileEOfficeList(
+            header: header,
+          ));
       break;
-        case 4:
-      Get.to(() => ProfileWorkEOfficeList(header: header,));
+    case 4:
+      Get.to(() => ProfileWorkEOfficeList(
+            header: header,
+          ));
       break;
     case 5:
-      Get.to(() => BookRoomEOfficeList(header: header,));
+      Get.to(() => BookRoomEOfficeList(
+            header: header,
+          ));
       break;
-      case 7:
-      Get.to(() => MissionEOfficeList(header: header,));
+    case 7:
+      Get.to(() => MissionEOfficeList(
+            header: header,
+          ));
       break;
   }
 }

@@ -1,189 +1,164 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/const/ultils.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
+import 'package:nkg_quanly/const/utils.dart';
+import 'package:nkg_quanly/viewmodel/date_picker_controller.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_proc_detail.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_proc_search.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profiles_procedure_viewmodel.dart';
-import '../../const.dart';
+
+import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/widget.dart';
 import '../../model/profile_procedure_model/profile_procedure_model.dart';
 
-
 class ProfilesProcedureList extends GetView {
   final String? header;
-  final MenuController menuController = Get.put(MenuController());
+
   final profilesProcedureController = Get.put(ProfilesProcedureViewModel());
-  int selectedButton = 0;
 
   ProfilesProcedureList({this.header});
-
-  int selected = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
           child: Column(
-            children: [
-              //header
-              headerWidgetSeatch(header!,ProfileProcSearch(
+        children: [
+          //header
+          headerWidgetSeatch(
+              header!,
+              ProfileProcSearch(
                 header: header,
-              ),context),
-          headerTableDate(   Obx(() =>  TableCalendar(
-              locale: 'vi_VN',
-              headerVisible: false,
-              calendarFormat:  profilesProcedureController.rxCalendarFormat.value,
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: profilesProcedureController.rxSelectedDay.value,
-              selectedDayPredicate: (day) {
-                return isSameDay(
-                    profilesProcedureController
-                        .rxSelectedDay.value,
-                    day);
-              },
-              onDaySelected: (selectedDay, focusedDay) async {
-                if (!isSameDay(
-                    profilesProcedureController
-                        .rxSelectedDay.value,
-                    selectedDay)) {
-                  profilesProcedureController.onSelectDay(selectedDay);
-                }
-              },
-              onFormatChanged: (format) {
-                if (profilesProcedureController.rxCalendarFormat.value != format) {
-                  // Call `setState()` when updating calendar format
-                  profilesProcedureController.rxCalendarFormat.value = format;
-                }
-              }
-          )),
-              Center(child: InkWell(
-                onTap: (){
-                  if(profilesProcedureController.rxCalendarFormat.value != CalendarFormat.month)
-                  {
-                    profilesProcedureController.switchFormat(CalendarFormat.month);
-                  }
-                  else
-                  {
-                    profilesProcedureController.switchFormat(CalendarFormat.week);
-                  }
-                },
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                    child: Image.asset("assets/icons/ic_showmore.png",height: 15,width: 80,)),
-              )),context),
-              //date table
-              //list
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: Row(
-                  children: [
-                    Text(
-                      'Tất cả thủ tục hành chính',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    Expanded(
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                MaterialStateProperty.resolveWith<Color>(
-                                      (Set<MaterialState> states) {
-                                    if (states
-                                        .contains(MaterialState.pressed)) {
-                                      return kVioletBg;
-                                    } else {
-                                      return kWhite;
-                                    } // Use the component's default.
-                                  },
-                                ),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(12.0),
-                                        side: const BorderSide(
-                                            color: kVioletButton)))),
-                            onPressed: () {
-                              showModalBottomSheet<void>(
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
-                                  ),
-                                ),
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SizedBox(
-                                      height: 600,
-                                      child: FilterProfileProcBottomSheet(menuController,profilesProcedureController));
-                                },
-                              );
-                            },
-                            child: const Text(
-                              'Bộ lọc',
-                              style: TextStyle(color: kVioletButton),
-                            ),
-                          )),
-                    ),
-                  ],
-                ),
               ),
-              const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: Divider(
-                    thickness: 1,
-                  )),
-              Expanded(
-                  child: Obx(() => (profilesProcedureController.rxProfileProcedureListItems.isNotEmpty) ? ListView.builder(
-                      itemCount: profilesProcedureController.rxProfileProcedureListItems.length,
+              context),
+          headerTableDatePicker(context, profilesProcedureController),
+          //date table
+          //list
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Row(
+              children: [
+                Text(
+                  'Tất cả thủ tục hành chính',
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+                Expanded(
+                  child: Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.pressed)) {
+                                  return kVioletBg;
+                                } else {
+                                  return kWhite;
+                                } // Use the component's default.
+                              },
+                            ),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    side: const BorderSide(
+                                        color: kVioletButton)))),
+                        onPressed: () {
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SizedBox(
+                                  height: 600,
+                                  child: FilterProfileProcBottomSheet(
+                                      profilesProcedureController));
+                            },
+                          );
+                        },
+                        child: const Text(
+                          'Bộ lọc',
+                          style: TextStyle(color: kVioletButton),
+                        ),
+                      )),
+                ),
+              ],
+            ),
+          ),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: Divider(
+                thickness: 1,
+              )),
+          Expanded(
+              child: Obx(() => (profilesProcedureController
+                      .rxProfileProcedureListItems.isNotEmpty)
+                  ? ListView.builder(
+                       shrinkWrap: true,
+                      controller: profilesProcedureController.controller,
+                      itemCount: profilesProcedureController
+                          .rxProfileProcedureListItems.length,
                       itemBuilder: (context, index) {
                         return InkWell(
                             onTap: () {
                               Get.to(() => ProfileProcDetail(
-                                  id: profilesProcedureController.rxProfileProcedureListItems[index].maSoBienNhan!));
+                                  id: profilesProcedureController
+                                      .rxProfileProcedureListItems[index]
+                                      .maSoBienNhan!));
                             },
-                            child:
-                            ProfileProcItem(index, profilesProcedureController.rxProfileProcedureListItems[index]));
-                      }) : const SizedBox.shrink())),
-              //bottom
-              Obx(() =>  Container(
+                            child: ProfileProcItem(
+                                index,
+                                profilesProcedureController
+                                    .rxProfileProcedureListItems[index]));
+                      })
+                  : const SizedBox.shrink())),
+          //bottom
+          Obx(() => Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     border: Border(
-                        top: BorderSide(
-                            color: Theme.of(context).dividerColor))),
+                        top:
+                            BorderSide(color: Theme.of(context).dividerColor))),
                 height: 50,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: () {
-                          profilesProcedureController.rxSelectedDay.value = DateTime.now();
-                          profilesProcedureController.onSelectDay(DateTime.now());
-                          profilesProcedureController.swtichBottomButton(0);
-                        },
-                        child: bottomDateButton("Ngày",
-                            profilesProcedureController.selectedBottomButton.value, 0)
-                      ),
+                          onTap: () {
+                            menuController.rxSelectedDay.value = DateTime.now();
+                            profilesProcedureController
+                                .onSelectDay(DateTime.now());
+                            profilesProcedureController.swtichBottomButton(0);
+                          },
+                          child: bottomDateButton(
+                              "Ngày",
+                              profilesProcedureController
+                                  .selectedBottomButton.value,
+                              0)),
                     ),
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime dateTo =  dateNow.add(const Duration(days: 7));
+                          DateTime dateTo =
+                              dateNow.add(const Duration(days: 7));
                           String strdateFrom = formatDateToString(dateNow);
                           String strdateTo = formatDateToString(dateTo);
-                          profilesProcedureController.postProfileProcByWeek(strdateFrom,strdateTo);
+                          profilesProcedureController.postProfileProcByWeek(
+                              strdateFrom, strdateTo);
                           profilesProcedureController.swtichBottomButton(1);
                         },
-                        child: bottomDateButton("Tuần",
-                            profilesProcedureController.selectedBottomButton.value, 1),
+                        child: bottomDateButton(
+                            "Tuần",
+                            profilesProcedureController
+                                .selectedBottomButton.value,
+                            1),
                       ),
                     ),
                     Expanded(
@@ -192,21 +167,24 @@ class ProfilesProcedureList extends GetView {
                           profilesProcedureController.postProfileProcByMonth();
                           profilesProcedureController.swtichBottomButton(2);
                         },
-                        child: bottomDateButton("Tháng",
-                            profilesProcedureController.selectedBottomButton.value, 2),
+                        child: bottomDateButton(
+                            "Tháng",
+                            profilesProcedureController
+                                .selectedBottomButton.value,
+                            2),
                       ),
                     )
                   ],
                 ),
               ))
-            ],
-          )),
+        ],
+      )),
     );
   }
 }
 
 class ProfileProcItem extends StatelessWidget {
-    ProfileProcItem(this.index, this.docModel);
+  ProfileProcItem(this.index, this.docModel);
 
   final int? index;
   final ProfileProcedureListItems? docModel;
@@ -230,7 +208,7 @@ class ProfileProcItem extends StatelessWidget {
                   child: priorityProfileProcWidget(docModel!)),
             ],
           ),
-          signWidget(docModel!),
+          signProfileProcWidget(docModel!),
           SizedBox(
             height: 70,
             child: GridView.count(
@@ -246,7 +224,10 @@ class ProfileProcItem extends StatelessWidget {
                   children: [
                     const Text('Người xử lý',
                         style: CustomTextStyle.grayColorTextStyle),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),child: Text(docModel!.chuHoSo!,style: Theme.of(context).textTheme.headline5))
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(docModel!.chuHoSo!,
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
@@ -254,7 +235,10 @@ class ProfileProcItem extends StatelessWidget {
                   children: [
                     const Text('Thời hạn',
                         style: CustomTextStyle.grayColorTextStyle),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),child:Text(formatDate(docModel!.ngayHenTraKetQua!),style: Theme.of(context).textTheme.headline5))
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(formatDate(docModel!.ngayHenTraKetQua!),
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
@@ -262,7 +246,10 @@ class ProfileProcItem extends StatelessWidget {
                   children: [
                     const Text('Ngày xử lý',
                         style: CustomTextStyle.grayColorTextStyle),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),child:Text(formatDate(docModel!.ngayNhanHoSo!),style: Theme.of(context).textTheme.headline5))
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(formatDate(docModel!.ngayNhanHoSo!),
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
               ],
@@ -276,50 +263,54 @@ class ProfileProcItem extends StatelessWidget {
     );
   }
 }
-Widget priorityProfileProcWidget(ProfileProcedureListItems docModel) {
-  switch(docModel.level)
-  {
-    case "Cao" : {
-      return Container(
-          decoration: BoxDecoration(
-            color: kRedPriority,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: const Padding(
-              padding: EdgeInsets.all(5),
-              child: Text('Cao', style: TextStyle(color: kWhite,fontSize: 14))));
-    }
-    case "Thấp" : {
-      return Container(
-          decoration: BoxDecoration(
-            color: kGrayPriority,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: const Padding(
-              padding: EdgeInsets.all(5),
-              child: Text('Thấp', style: TextStyle(color: kWhite,fontSize: 14))));
-    }
-    default : {
-      return Container(
-          decoration: BoxDecoration(
-            color: kBluePriority,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: const Padding(
-              padding: EdgeInsets.all(5),
-              child: Text(
-                'Trung bình',
-                style: TextStyle(color: kWhite,fontSize: 14),
-              )));
-  }
-  }
 
+Widget priorityProfileProcWidget(ProfileProcedureListItems docModel) {
+  switch (docModel.level) {
+    case "Cao":
+      {
+        return Container(
+            decoration: BoxDecoration(
+              color: kRedPriority,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: const Padding(
+                padding: EdgeInsets.all(5),
+                child: Text('Cao',
+                    style: TextStyle(color: kWhite, fontSize: 14))));
+      }
+    case "Thấp":
+      {
+        return Container(
+            decoration: BoxDecoration(
+              color: kGrayPriority,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: const Padding(
+                padding: EdgeInsets.all(5),
+                child: Text('Thấp',
+                    style: TextStyle(color: kWhite, fontSize: 14))));
+      }
+    default:
+      {
+        return Container(
+            decoration: BoxDecoration(
+              color: kBluePriority,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: const Padding(
+                padding: EdgeInsets.all(5),
+                child: Text(
+                  'Trung bình',
+                  style: TextStyle(color: kWhite, fontSize: 14),
+                )));
+      }
+  }
 }
+
 class FilterProfileProcBottomSheet extends StatelessWidget {
-  const FilterProfileProcBottomSheet(this.menuController, this.profilesProcedureController,
+  const FilterProfileProcBottomSheet(this.profilesProcedureController,
       {Key? key})
       : super(key: key);
-  final MenuController? menuController;
   final ProfilesProcedureViewModel? profilesProcedureController;
 
   @override
@@ -345,25 +336,28 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                           fontSize: 16),
                     ),
                   ),
-                  Obx(() => (profilesProcedureController!.mapAllFilter.containsKey(0))
-                      ? InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(false, 0);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
-                      : InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(true, 0);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                  Obx(() =>
+                      (profilesProcedureController!.mapAllFilter.containsKey(0))
+                          ? InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(false, 0);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_active.png',
+                                width: 30,
+                                height: 30,
+                              ))
+                          : InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(true, 0);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_unactive.png',
+                                width: 30,
+                                height: 30,
+                              )))
                 ],
               ),
             ),
@@ -382,25 +376,28 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (profilesProcedureController!.mapAllFilter.containsKey(1))
-                      ? InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(false, 1);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
-                      : InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(true, 1);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                  Obx(() =>
+                      (profilesProcedureController!.mapAllFilter.containsKey(1))
+                          ? InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(false, 1);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_active.png',
+                                width: 30,
+                                height: 30,
+                              ))
+                          : InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(true, 1);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_unactive.png',
+                                width: 30,
+                                height: 30,
+                              )))
                 ],
               ),
             ),
@@ -414,9 +411,11 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
-                  itemCount: profilesProcedureController!.rxListAgenciesList.length,
+                  itemCount:
+                      profilesProcedureController!.rxListAgenciesList.length,
                   itemBuilder: (context, index) {
-                    var item = profilesProcedureController!.rxListAgenciesList[index];
+                    var item =
+                        profilesProcedureController!.rxListAgenciesList[index];
                     return Column(
                       children: [
                         Padding(
@@ -429,30 +428,31 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (profilesProcedureController!.mapAgenciesFilter
-                                  .containsKey(index))
+                              Obx(() => (profilesProcedureController!
+                                      .mapAgenciesFilter
+                                      .containsKey(index))
                                   ? InkWell(
-                                  onTap: () {
-                                    profilesProcedureController!
-                                        .checkboxAgencies(
-                                        false, index, "${item.id};");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_active.png',
-                                    width: 30,
-                                    height: 30,
-                                  ))
+                                      onTap: () {
+                                        profilesProcedureController!
+                                            .checkboxAgencies(
+                                                false, index, "${item.id};");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_active.png',
+                                        width: 30,
+                                        height: 30,
+                                      ))
                                   : InkWell(
-                                  onTap: () {
-                                    profilesProcedureController!
-                                        .checkboxAgencies(
-                                        true, index, "${item.id};");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_unactive.png',
-                                    width: 30,
-                                    height: 30,
-                                  )))
+                                      onTap: () {
+                                        profilesProcedureController!
+                                            .checkboxAgencies(
+                                                true, index, "${item.id};");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_unactive.png',
+                                        width: 30,
+                                        height: 30,
+                                      )))
                             ],
                           ),
                         ),
@@ -477,25 +477,28 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (profilesProcedureController!.mapAllFilter.containsKey(2))
-                      ? InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(false, 2);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
-                      : InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(true, 2);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                  Obx(() =>
+                      (profilesProcedureController!.mapAllFilter.containsKey(2))
+                          ? InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(false, 2);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_active.png',
+                                width: 30,
+                                height: 30,
+                              ))
+                          : InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(true, 2);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_unactive.png',
+                                width: 30,
+                                height: 30,
+                              )))
                 ],
               ),
             ),
@@ -524,30 +527,31 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (profilesProcedureController!.mapBranchFilter
-                                  .containsKey(index))
+                              Obx(() => (profilesProcedureController!
+                                      .mapBranchFilter
+                                      .containsKey(index))
                                   ? InkWell(
-                                  onTap: () {
-                                    profilesProcedureController!
-                                        .checkboxBranch(
-                                        false, index, "${item.id};");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_active.png',
-                                    width: 30,
-                                    height: 30,
-                                  ))
+                                      onTap: () {
+                                        profilesProcedureController!
+                                            .checkboxBranch(
+                                                false, index, "${item.id};");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_active.png',
+                                        width: 30,
+                                        height: 30,
+                                      ))
                                   : InkWell(
-                                  onTap: () {
-                                    profilesProcedureController!
-                                        .checkboxBranch(
-                                        true, index, "${item.id};");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_unactive.png',
-                                    width: 30,
-                                    height: 30,
-                                  )))
+                                      onTap: () {
+                                        profilesProcedureController!
+                                            .checkboxBranch(
+                                                true, index, "${item.id};");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_unactive.png',
+                                        width: 30,
+                                        height: 30,
+                                      )))
                             ],
                           ),
                         ),
@@ -572,25 +576,28 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (profilesProcedureController!.mapAllFilter.containsKey(3))
-                      ? InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(false, 3);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
-                      : InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(true, 3);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                  Obx(() =>
+                      (profilesProcedureController!.mapAllFilter.containsKey(3))
+                          ? InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(false, 3);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_active.png',
+                                width: 30,
+                                height: 30,
+                              ))
+                          : InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(true, 3);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_unactive.png',
+                                width: 30,
+                                height: 30,
+                              )))
                 ],
               ),
             ),
@@ -619,30 +626,31 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (profilesProcedureController!.mapStatusFilter
-                                  .containsKey(index))
+                              Obx(() => (profilesProcedureController!
+                                      .mapStatusFilter
+                                      .containsKey(index))
                                   ? InkWell(
-                                  onTap: () {
-                                    profilesProcedureController!
-                                        .checkboxStatus(
-                                        false, index, "${item.id};");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_active.png',
-                                    width: 30,
-                                    height: 30,
-                                  ))
+                                      onTap: () {
+                                        profilesProcedureController!
+                                            .checkboxStatus(
+                                                false, index, "${item.id};");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_active.png',
+                                        width: 30,
+                                        height: 30,
+                                      ))
                                   : InkWell(
-                                  onTap: () {
-                                    profilesProcedureController!
-                                        .checkboxStatus(
-                                        true, index, "${item.id};");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_unactive.png',
-                                    width: 30,
-                                    height: 30,
-                                  )))
+                                      onTap: () {
+                                        profilesProcedureController!
+                                            .checkboxStatus(
+                                                true, index, "${item.id};");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_unactive.png',
+                                        width: 30,
+                                        height: 30,
+                                      )))
                             ],
                           ),
                         ),
@@ -667,25 +675,28 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (profilesProcedureController!.mapAllFilter.containsKey(4))
-                      ? InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(false, 4);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
-                      : InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(true, 4);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                  Obx(() =>
+                      (profilesProcedureController!.mapAllFilter.containsKey(4))
+                          ? InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(false, 4);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_active.png',
+                                width: 30,
+                                height: 30,
+                              ))
+                          : InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(true, 4);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_unactive.png',
+                                width: 30,
+                                height: 30,
+                              )))
                 ],
               ),
             ),
@@ -699,9 +710,11 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
-                  itemCount: profilesProcedureController!.rxListProcedure.length,
+                  itemCount:
+                      profilesProcedureController!.rxListProcedure.length,
                   itemBuilder: (context, index) {
-                    var item = profilesProcedureController!.rxListProcedure[index];
+                    var item =
+                        profilesProcedureController!.rxListProcedure[index];
                     return Column(
                       children: [
                         Padding(
@@ -714,30 +727,31 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (profilesProcedureController!.mapProcedureFilter
-                                  .containsKey(index))
+                              Obx(() => (profilesProcedureController!
+                                      .mapProcedureFilter
+                                      .containsKey(index))
                                   ? InkWell(
-                                  onTap: () {
-                                    profilesProcedureController!
-                                        .checkboxProcedure(
-                                        false, index, "${item.id};");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_active.png',
-                                    width: 30,
-                                    height: 30,
-                                  ))
+                                      onTap: () {
+                                        profilesProcedureController!
+                                            .checkboxProcedure(
+                                                false, index, "${item.id};");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_active.png',
+                                        width: 30,
+                                        height: 30,
+                                      ))
                                   : InkWell(
-                                  onTap: () {
-                                    profilesProcedureController!
-                                        .checkboxProcedure(
-                                        true, index, "${item.id};");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_unactive.png',
-                                    width: 30,
-                                    height: 30,
-                                  )))
+                                      onTap: () {
+                                        profilesProcedureController!
+                                            .checkboxProcedure(
+                                                true, index, "${item.id};");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_unactive.png',
+                                        width: 30,
+                                        height: 30,
+                                      )))
                             ],
                           ),
                         ),
@@ -762,25 +776,28 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (profilesProcedureController!.mapAllFilter.containsKey(5))
-                      ? InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(false, 5);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
-                      : InkWell(
-                      onTap: () {
-                        profilesProcedureController!.checkboxFilterAll(true, 5);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                  Obx(() =>
+                      (profilesProcedureController!.mapAllFilter.containsKey(5))
+                          ? InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(false, 5);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_active.png',
+                                width: 30,
+                                height: 30,
+                              ))
+                          : InkWell(
+                              onTap: () {
+                                profilesProcedureController!
+                                    .checkboxFilterAll(true, 5);
+                              },
+                              child: Image.asset(
+                                'assets/icons/ic_checkbox_unactive.png',
+                                width: 30,
+                                height: 30,
+                              )))
                 ],
               ),
             ),
@@ -794,9 +811,11 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
-                  itemCount: profilesProcedureController!.rxListGroupProcedure.length,
+                  itemCount:
+                      profilesProcedureController!.rxListGroupProcedure.length,
                   itemBuilder: (context, index) {
-                    var item = profilesProcedureController!.rxListGroupProcedure[index];
+                    var item = profilesProcedureController!
+                        .rxListGroupProcedure[index];
                     return Column(
                       children: [
                         Padding(
@@ -809,30 +828,31 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                                   style: CustomTextStyle.roboto400s16TextStyle,
                                 ),
                               ),
-                              Obx(() => (profilesProcedureController!.mapGroupProcedureFilter
-                                  .containsKey(index))
+                              Obx(() => (profilesProcedureController!
+                                      .mapGroupProcedureFilter
+                                      .containsKey(index))
                                   ? InkWell(
-                                  onTap: () {
-                                    profilesProcedureController!
-                                        .checkboxGroupProcedure(
-                                        false, index, "${item.id};");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_active.png',
-                                    width: 30,
-                                    height: 30,
-                                  ))
+                                      onTap: () {
+                                        profilesProcedureController!
+                                            .checkboxGroupProcedure(
+                                                false, index, "${item.id};");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_active.png',
+                                        width: 30,
+                                        height: 30,
+                                      ))
                                   : InkWell(
-                                  onTap: () {
-                                    profilesProcedureController!
-                                        .checkboxGroupProcedure(
-                                        true, index, "${item.id};");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_unactive.png',
-                                    width: 30,
-                                    height: 30,
-                                  )))
+                                      onTap: () {
+                                        profilesProcedureController!
+                                            .checkboxGroupProcedure(
+                                                true, index, "${item.id};");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_unactive.png',
+                                        width: 30,
+                                        height: 30,
+                                      )))
                             ],
                           ),
                         ),
@@ -867,28 +887,49 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
                       child: ElevatedButton(
                           onPressed: () {
                             Get.back();
-                            var agencies= "";
+                            var agencies = "";
                             var branch = "";
                             var status = "";
                             var procedure = "";
                             var groupProcedure = "";
-                            if (profilesProcedureController!.mapAllFilter.containsKey(0)) {
-                              profilesProcedureController!.postProfileProcByFilter(
-                                  agencies,branch,status,procedure,groupProcedure);
+                            if (profilesProcedureController!.mapAllFilter
+                                .containsKey(0)) {
+                              profilesProcedureController!
+                                  .postProfileProcByFilter(agencies, branch,
+                                      status, procedure, groupProcedure);
                             } else {
-                              agencies = getStringFilterFromMap(profilesProcedureController!.mapAllFilter,profilesProcedureController!.mapAgenciesFilter,1);
-                              branch = getStringFilterFromMap(profilesProcedureController!.mapAllFilter,profilesProcedureController!.mapBranchFilter,2);
-                              status = getStringFilterFromMap(profilesProcedureController!.mapAllFilter,profilesProcedureController!.mapStatusFilter,3);
-                              procedure = getStringFilterFromMap(profilesProcedureController!.mapAllFilter,profilesProcedureController!.mapProcedureFilter,4);
-                              groupProcedure = getStringFilterFromMap(profilesProcedureController!.mapAllFilter,profilesProcedureController!.mapGroupProcedureFilter,5);
+                              agencies = getStringFilterFromMap(
+                                  profilesProcedureController!.mapAllFilter,
+                                  profilesProcedureController!
+                                      .mapAgenciesFilter,
+                                  1);
+                              branch = getStringFilterFromMap(
+                                  profilesProcedureController!.mapAllFilter,
+                                  profilesProcedureController!.mapBranchFilter,
+                                  2);
+                              status = getStringFilterFromMap(
+                                  profilesProcedureController!.mapAllFilter,
+                                  profilesProcedureController!.mapStatusFilter,
+                                  3);
+                              procedure = getStringFilterFromMap(
+                                  profilesProcedureController!.mapAllFilter,
+                                  profilesProcedureController!
+                                      .mapProcedureFilter,
+                                  4);
+                              groupProcedure = getStringFilterFromMap(
+                                  profilesProcedureController!.mapAllFilter,
+                                  profilesProcedureController!
+                                      .mapGroupProcedureFilter,
+                                  5);
 
                               print(agencies);
                               print(branch);
                               print(status);
                               print(procedure);
                               print(groupProcedure);
-                              profilesProcedureController!.postProfileProcByFilter(
-                                  agencies,branch,status,procedure,groupProcedure);
+                              profilesProcedureController!
+                                  .postProfileProcByFilter(agencies, branch,
+                                      status, procedure, groupProcedure);
                             }
                           },
                           style: buttonFilterBlue,
@@ -905,7 +946,7 @@ class FilterProfileProcBottomSheet extends StatelessWidget {
   }
 }
 
-Widget signWidget(ProfileProcedureListItems docModel) {
+Widget signProfileProcWidget(ProfileProcedureListItems docModel) {
   if (docModel.status == "Hoàn thành") {
     return Row(
       children: [
@@ -930,7 +971,7 @@ Widget signWidget(ProfileProcedureListItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text( docModel.status!, style: const TextStyle(color: kOrangeSign))
+        Text(docModel.status!, style: const TextStyle(color: kOrangeSign))
       ],
     );
   }

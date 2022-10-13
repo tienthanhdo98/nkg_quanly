@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/const/api.dart';
+import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/ui/char3/collum_chart_doc_nonprocess.dart';
+import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profiles_procedure_list_withstatistic.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profiles_procedure_list.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profiles_procedure_viewmodel.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
+import '../../const/style.dart';
 import '../../const/widget.dart';
-import '../../model/profile_procedure_model/ProfileProcStatisticModel.dart';
 import '../theme/theme_data.dart';
 
 class ProfilesProcedureScreen extends GetView {
   String? header;
   String? icon;
 
-  final profilesProcedureController = Get.put(ProfilesProcedureViewModel());
+  final profilesProcedureViewModel = Get.put(ProfilesProcedureViewModel());
 
   ProfilesProcedureScreen({Key? key, this.header, this.icon}) : super(key: key);
 
@@ -23,21 +25,18 @@ class ProfilesProcedureScreen extends GetView {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: FutureBuilder(
-          future: profilesProcedureController.geProfileProcStatistic(),
-          builder: (context,
-              AsyncSnapshot<ProfileProcedureStatisticModel> snapshot) {
-            if (snapshot.hasData) {
-              var itemStatistic = snapshot.data;
-              return Column(children: [
-                headerWidget(header!, context),
-                Expanded(child:  SingleChildScrollView(
+        child: Column(
+          children: [
+            headerWidget(header!, context),
+            Expanded(
+                child: SingleChildScrollView(
                   child: Column(children: [
                     Stack(
                       children: [
                         Image.asset("assets/bgtophome.png",
-                            height: 220, width: double.infinity, fit: BoxFit.cover),
-
+                            height: 220,
+                            width: double.infinity,
+                            fit: BoxFit.cover),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
                           child: border(
@@ -53,13 +52,13 @@ class ProfilesProcedureScreen extends GetView {
                                           const Text('Tổng hồ sơ',
                                               style: CustomTextStyle
                                                   .robotow400s12TextStyle),
-                                          Text(
-                                            itemStatistic!.tongSoHoSo.toString(),
-                                            style: const TextStyle(
-                                                color: kBlueButton,
-                                                fontSize: 40,
-                                                fontFamily: 'Roboto'),
-                                          )
+                                         Obx(() => Text(
+                                           checkingNullNumberAndConvertToString(profilesProcedureViewModel.rxProfileProcedureStatistic.value.tongSoHoSo),
+                                           style: const TextStyle(
+                                               color: kBlueButton,
+                                               fontSize: 40,
+                                               fontFamily: 'Roboto'),
+                                         ))
                                         ],
                                       ),
                                       Expanded(
@@ -75,8 +74,9 @@ class ProfilesProcedureScreen extends GetView {
                                     ],
                                   ),
                                   const Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                                  SizedBox(
+                                      padding:
+                                      EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                                 Obx(() => SizedBox(
                                     child: GridView.count(
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
@@ -97,10 +97,12 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.hoSoTiepNhanTrucTuyen
-                                                    .toString(),
+                                                checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value
+                                                    .hoSoTiepNhanTrucTuyen
+                                            ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -116,10 +118,12 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.hoSoTiepNhanTrucTiep
-                                                    .toString(),
+                                                checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatistic.value
+                                                    .hoSoTiepNhanTrucTiep
+                                            ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -129,16 +133,16 @@ class ProfilesProcedureScreen extends GetView {
                                           children: [
                                             const SizedBox(
                                               height: 30,
-                                              child: Text(
-                                                  'Hồ sơ đúng hạn',
+                                              child: Text('Hồ sơ đúng hạn',
                                                   style: CustomTextStyle
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.hoSoDungHan
-                                                    .toString(),
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.hoSoDungHan
+                                              ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -148,16 +152,16 @@ class ProfilesProcedureScreen extends GetView {
                                           children: [
                                             const SizedBox(
                                               height: 30,
-                                              child: Text(
-                                                  'Hồ sơ sớm hạn',
+                                              child: Text('Hồ sơ sớm hạn',
                                                   style: CustomTextStyle
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.hoSoSomHan
-                                                    .toString(),
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.hoSoSomHan
+                                              ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -173,10 +177,11 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.hoSoChuaDenHan
-                                                    .toString(),
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.hoSoChuaDenHan
+                                              ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -186,16 +191,16 @@ class ProfilesProcedureScreen extends GetView {
                                           children: [
                                             const SizedBox(
                                               height: 30,
-                                              child: Text(
-                                                  'Hồ sơ quá hạn',
+                                              child: Text('Hồ sơ quá hạn',
                                                   style: CustomTextStyle
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.hoSoQuaHan
-                                                    .toString(),
+                                              checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatistic.value.hoSoQuaHan
+                                              ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -211,10 +216,11 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.choTiepNhan
-                                                    .toString(),
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.choTiepNhan
+                                              ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -224,16 +230,16 @@ class ProfilesProcedureScreen extends GetView {
                                           children: [
                                             const SizedBox(
                                               height: 30,
-                                              child: Text(
-                                                  'Hồ sơ chờ bổ sung',
+                                              child: Text('Hồ sơ chờ bổ sung',
                                                   style: CustomTextStyle
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.choBoSung
-                                                    .toString(),
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.choBoSung
+                                              ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -249,10 +255,11 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.choTraKetQua
-                                                    .toString(),
+                                              checkingNullNumberAndConvertToString(profilesProcedureViewModel.rxProfileProcedureStatistic.value.choTraKetQua
+                                              ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -262,16 +269,16 @@ class ProfilesProcedureScreen extends GetView {
                                           children: [
                                             const SizedBox(
                                               height: 30,
-                                              child: Text(
-                                                  'Hồ sơ đã bổ sung',
+                                              child: Text('Hồ sơ đã bổ sung',
                                                   style: CustomTextStyle
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.daBoSung
-                                                    .toString(),
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.daBoSung
+                                              ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -281,16 +288,16 @@ class ProfilesProcedureScreen extends GetView {
                                           children: [
                                             const SizedBox(
                                               height: 30,
-                                              child: Text(
-                                                  'Hồ sơ đang xử lý',
+                                              child: Text('Hồ sơ đang xử lý',
                                                   style: CustomTextStyle
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.dangXuLy
-                                                    .toString(),
+                                                checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatistic.value.dangXuLy
+                                                  ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -300,16 +307,16 @@ class ProfilesProcedureScreen extends GetView {
                                           children: [
                                             const SizedBox(
                                               height: 30,
-                                              child: Text(
-                                                  'Hồ sơ đã xử lý',
+                                              child: Text('Hồ sơ đã xử lý',
                                                   style: CustomTextStyle
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.daXuLy
-                                                    .toString(),
+                                                checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatistic.value.daXuLy
+                                                    ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -325,10 +332,11 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.choGiaiQuyet
-                                                    .toString(),
+                                                checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.choGiaiQuyet
+                                                   ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -344,10 +352,11 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.dangTrinhKy
-                                                    .toString(),
+                                                checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.dangTrinhKy
+                                                   ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -363,10 +372,11 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.dangPhanCong
-                                                    .toString(),
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.dangPhanCong
+                                                   ),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
@@ -382,16 +392,16 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                snapshot.data!.choPhanCongThuLy
-                                                    .toString(),
+                                              checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatistic.value.choPhanCongThuLy),
                                                 style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
+                                                    fontWeight:
+                                                    FontWeight.bold,
                                                     fontSize: 20))
                                           ],
                                         ),
                                       ],
                                     ),
-                                  )
+                                  ))
                                 ]),
                               ),
                               context),
@@ -407,16 +417,16 @@ class ProfilesProcedureScreen extends GetView {
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                                 child: Obx(() => ElevatedButton(
-                                  style: profilesProcedureController
+                                  style: profilesProcedureViewModel
                                       .selectedChartButton.value ==
                                       0
                                       ? activeButtonStyle
                                       : unActiveButtonStyle,
                                   onPressed: () async {
-                                    await profilesProcedureController
+                                    await profilesProcedureViewModel
                                         .getFilterForChart(
                                         apiGetProfileProcedureChart0);
-                                    profilesProcedureController
+                                    profilesProcedureViewModel
                                         .selectedChartButton(0);
                                   },
                                   child: const Text("Mức độ"),
@@ -424,19 +434,21 @@ class ProfilesProcedureScreen extends GetView {
                               )),
                           Expanded(
                               child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      10, 0, 10, 10),
                                   child: Obx(
                                         () => ElevatedButton(
-                                      style: profilesProcedureController
-                                          .selectedChartButton.value ==
+                                      style: profilesProcedureViewModel
+                                          .selectedChartButton
+                                          .value ==
                                           1
                                           ? activeButtonStyle
                                           : unActiveButtonStyle,
                                       onPressed: () async {
-                                        await profilesProcedureController
+                                        await profilesProcedureViewModel
                                             .getFilterForChart(
                                             apiGetProfileProcedureChart1);
-                                        profilesProcedureController
+                                        profilesProcedureViewModel
                                             .swtichChartButton(1);
                                       },
                                       child: const Text("Trạng thái"),
@@ -445,17 +457,7 @@ class ProfilesProcedureScreen extends GetView {
                         ],
                       ),
                     ),
-                    Obx(() =>
-                    (profilesProcedureController.selectedChartButton.value == 0)
-                        ? Obx(() => CollumChartWidget(
-                        key: UniqueKey(),
-                        documentFilterModel: profilesProcedureController
-                            .rxDocumentFilterModel.value))
-                        : Obx(() => CollumChartWidget(
-                      key: UniqueKey(),
-                      documentFilterModel: profilesProcedureController
-                          .rxDocumentFilterModel.value,
-                    ))),
+                    Obx(() =>ProfileProcChart(profilesProcedureViewModel.selectedBottomButton.value,profilesProcedureViewModel)),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: SizedBox(
@@ -464,7 +466,7 @@ class ProfilesProcedureScreen extends GetView {
                           padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                           child: ElevatedButton(
                             onPressed: () {
-                              Get.to(() => ProfilesProcedureList(
+                              Get.to(() => ProfilesProcedureListWithStatistic(
                                 header: header,
                               ));
                             },
@@ -477,17 +479,35 @@ class ProfilesProcedureScreen extends GetView {
                     )
                   ]),
                 ))
-
-              ],
-              );
-            } else if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
+          ],
         ),
       ),
     );
+  }
+}
+Widget ProfileProcChart(int selectedButtonIndex,ProfilesProcedureViewModel profilesProcedureViewModel)
+{
+  var res;
+  if(profilesProcedureViewModel
+      .rxDocumentFilterModel.value.totalRecords != null) {
+    if (selectedButtonIndex ==
+        0) {
+      res =  CollumChartWidget(
+          key: UniqueKey(),
+          documentFilterModel: profilesProcedureViewModel
+              .rxDocumentFilterModel.value);
+    }
+    else if (selectedButtonIndex == 1) {
+      res = CollumChartWidget(
+        key: UniqueKey(),
+        documentFilterModel: profilesProcedureViewModel
+            .rxDocumentFilterModel.value,
+      );
+    }
+    return res;
+  }
+  else {
+    return SizedBox(height: 200,);
   }
 }
 

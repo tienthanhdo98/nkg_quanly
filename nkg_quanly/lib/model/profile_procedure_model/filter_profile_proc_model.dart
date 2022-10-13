@@ -8,11 +8,11 @@ class FilterProfileProcModel {
 
   FilterProfileProcModel(
       {this.id,
-        this.ten,
-        this.trangThai,
-        this.tenLinhVuc,
-        this.ma,
-        this.nhomThuTucHanhChinhId});
+      this.ten,
+      this.trangThai,
+      this.tenLinhVuc,
+      this.ma,
+      this.nhomThuTucHanhChinhId});
 
   FilterProfileProcModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/model/document_unprocess/document_filter.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
-
-import '../../const.dart';
-import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../const/const.dart';
+import '../../const/style.dart';
+import '../../const/utils.dart';
+import '../../const/widget.dart';
+import '../../model/ChartModel.dart';
 import '../theme/theme_data.dart';
 
 class DocumentOutPieChart extends StatefulWidget {
-  DocumentOutPieChart({this.documentFilterModel,this.homeViewModel});
+  DocumentOutPieChart({this.documentFilterModel, this.homeViewModel});
 
   final DocumentFilterModel? documentFilterModel;
   final HomeViewModel? homeViewModel;
@@ -30,8 +32,10 @@ class DocumentOutPieChartState extends State<DocumentOutPieChart> {
     var total = widget.documentFilterModel!.totalRecords;
     var num1 = widget.documentFilterModel!.items![0].quantity;
     var num2 = widget.documentFilterModel!.items![1].quantity;
-    listChartData.add(PieCharData(title: calcuPercen(num1!,total!),value: num1,color: kOrange));
-    listChartData.add(PieCharData(title: calcuPercen(num2!,total),value: num2,color: kBlueChart));
+    listChartData.add(PieCharData(
+        title: calcuPercen(num1!, total!), value: num1, color: kOrange));
+    listChartData.add(PieCharData(
+        title: calcuPercen(num2!, total), value: num2, color: kBlueChart));
     // listChartData = <PieCharData>[
     //   PieCharData(title: "44%", value: 44, color: kOrange),
     //   PieCharData(title: "56%", value: 56, color: kBlueChart),

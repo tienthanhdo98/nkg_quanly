@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/const.dart';
+import 'package:nkg_quanly/const/const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
@@ -40,32 +40,47 @@ class ThemeProvider extends ChangeNotifier {
 
 class ThemeClass {
   static ThemeData lightTheme = ThemeData(
-    scaffoldBackgroundColor: kWhite,
-    fontFamily: 'Roboto',
-    colorScheme: const ColorScheme.light(),
-    cardColor: kWhite,
-    primaryColor: kWhite,
-    splashColor: kWhite,
-    dividerColor: kBackGround,
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      selectedItemColor: kBlueButton,
-      unselectedItemColor: Colors.black,
-      showUnselectedLabels: true,
-    ),
-    iconTheme: const IconThemeData(color: Colors.black),
-    textTheme: const TextTheme(
+      scaffoldBackgroundColor: kWhite,
+      fontFamily: 'Roboto',
+      colorScheme: const ColorScheme.light(),
+      cardColor: kWhite,
+      primaryColor: kWhite,
+      splashColor: kWhite,
+      dividerColor: kBackGround,
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        selectedItemColor: kBlueButton,
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+      ),
+      iconTheme: const IconThemeData(color: Colors.black),
+      textTheme: const TextTheme(
         //header screen like so tay, nhien vu
         headline1: TextStyle(
-            color: Colors.black, fontSize: 20,  fontFamily: 'Inter',fontWeight: FontWeight.w500),
+            color: Colors.black,
+            fontSize: 20,
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w500),
         headline2: TextStyle(
-            color: Colors.black, fontSize: 18, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
+            color: Colors.black,
+            fontSize: 18,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w500),
         headline3: TextStyle(
-            color: Colors.black, fontSize: 16, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
+            color: Colors.black,
+            fontSize: 16,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w500),
         headline4: TextStyle(
-            color: Colors.black, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w400),
+            color: Colors.black,
+            fontSize: 14,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w400),
         headline5: TextStyle(
-            color: Colors.black, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w500),)
-  );
+            color: Colors.black,
+            fontSize: 14,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w500),
+      ));
 
   static ThemeData darkTheme = ThemeData(
       scaffoldBackgroundColor: kDBackGround,
@@ -88,16 +103,31 @@ class ThemeClass {
       textTheme: const TextTheme(
         //header screen like so tay, nhien vu
         headline1: TextStyle(
-            color: Colors.white, fontSize: 20,  fontFamily: 'Inter',fontWeight: FontWeight.w500),
+            color: Colors.white,
+            fontSize: 20,
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w500),
         headline2: TextStyle(
-            color: Colors.white, fontSize: 18, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
+            color: Colors.white,
+            fontSize: 18,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w500),
         headline3: TextStyle(
-            color: Colors.white, fontSize: 16, fontFamily: 'Roboto',fontWeight: FontWeight.w500),
+            color: Colors.white,
+            fontSize: 16,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w500),
         headline4: TextStyle(
-            color: Colors.white, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w400),
+            color: Colors.white,
+            fontSize: 14,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w400),
         headline5: TextStyle(
-            color: Colors.white, fontSize: 14, fontFamily: 'Roboto',fontWeight: FontWeight.w500),));
-
+            color: Colors.white,
+            fontSize: 14,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w500),
+      ));
 }
 
 final unActiveButtonStyle = ElevatedButton.styleFrom(
@@ -174,4 +204,3 @@ const blueTextStyle = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
     fontFamily: 'Roboto');
-

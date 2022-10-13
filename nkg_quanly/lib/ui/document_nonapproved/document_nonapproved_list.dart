@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
+import 'package:nkg_quanly/viewmodel/date_picker_controller.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import '../../const/style.dart';
-import '../../const/ultils.dart';
+import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/document/document_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
 import '../theme/theme_data.dart';
 import 'document_nonapproved_detail.dart';
 import 'document_nonapproved_search.dart';
@@ -15,14 +14,12 @@ import 'document_nonapproved_viewmodel.dart';
 
 class DocumentNonapprovedList extends GetView {
   final String? header;
-  final MenuController menuController = Get.put(MenuController());
+
   final documentNonApproveViewModel = Get.put(DocumentNonApproveViewModel());
-  int selectedButton = 0;
+
   final bool isNonapproved;
 
   DocumentNonapprovedList({this.header, this.isNonapproved = true});
-
-  int selected = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,55 +36,7 @@ class DocumentNonapprovedList extends GetView {
               ),
               context),
           //date table
-          headerTableDate(
-              Obx(() => TableCalendar(
-                  locale: 'vi_VN',
-                  headerVisible: false,
-                  calendarFormat:
-                      documentNonApproveViewModel.rxCalendarFormat.value,
-                  firstDay: DateTime.utc(2010, 10, 16),
-                  lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: documentNonApproveViewModel.rxSelectedDay.value,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(
-                        documentNonApproveViewModel.rxSelectedDay.value, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) async {
-                    if (!isSameDay(
-                        documentNonApproveViewModel.rxSelectedDay.value,
-                        selectedDay)) {
-                      documentNonApproveViewModel.onSelectDay(selectedDay);
-                    }
-                  },
-                  onFormatChanged: (format) {
-                    if (documentNonApproveViewModel.rxCalendarFormat.value !=
-                        format) {
-                      // Call `setState()` when updating calendar format
-                      documentNonApproveViewModel.rxCalendarFormat.value =
-                          format;
-                    }
-                  })),
-              Center(
-                  child: InkWell(
-                onTap: () {
-                  if (documentNonApproveViewModel.rxCalendarFormat.value !=
-                      CalendarFormat.month) {
-                    documentNonApproveViewModel
-                        .switchFormat(CalendarFormat.month);
-                  } else {
-                    documentNonApproveViewModel
-                        .switchFormat(CalendarFormat.week);
-                  }
-                },
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                    child: Image.asset(
-                      "assets/icons/ic_showmore.png",
-                      height: 15,
-                      width: 80,
-                    )),
-              )),
-              context),
+          headerTableDatePicker(context, documentNonApproveViewModel),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -116,7 +65,6 @@ class DocumentNonapprovedList extends GetView {
                               return SizedBox(
                                   height: 600,
                                   child: FilterDocNonprocessBottomSheet(
-                                      menuController,
                                       documentNonApproveViewModel));
                             },
                           );
@@ -138,6 +86,7 @@ class DocumentNonapprovedList extends GetView {
           Expanded(
               child: Obx(() => (documentNonApproveViewModel.rxItems.isNotEmpty)
                   ? ListView.builder(
+                controller: documentNonApproveViewModel.controller,
                       itemCount: documentNonApproveViewModel.rxItems.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -147,11 +96,11 @@ class DocumentNonapprovedList extends GetView {
                                       .rxItems[index].id!));
                             },
                             child: DocumentNonApproveListItem(
-                                index,
-                                documentNonApproveViewModel.rxItems[index],
-                               ));
+                              index,
+                              documentNonApproveViewModel.rxItems[index],
+                            ));
                       })
-                  : const Text("Hôm nay không có văn bản đến nào"))),
+                  : noData())),
           //bottom
           Obx(() => Container(
                 decoration: BoxDecoration(
@@ -166,8 +115,7 @@ class DocumentNonapprovedList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          documentNonApproveViewModel.rxSelectedDay.value =
-                              DateTime.now();
+                          menuController.rxSelectedDay.value = DateTime.now();
                           documentNonApproveViewModel
                               .onSelectDay(DateTime.now());
                           documentNonApproveViewModel.swtichBottomButton(0);
@@ -235,14 +183,15 @@ class DocumentNonApproveListItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                "${index! + 1}. ${docModel!.name}",
-                style: Theme.of(context).textTheme.headline2,
-              ),
               Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: priorityWidget(docModel!))),
+                child: Text(
+                  "${index! + 1}. ${docModel!.name}",
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: priorityWidget(docModel!)),
             ],
           ),
           signWidget(docModel!),
@@ -293,11 +242,9 @@ class DocumentNonApproveListItem extends StatelessWidget {
 }
 
 class FilterDocNonprocessBottomSheet extends StatelessWidget {
-  const FilterDocNonprocessBottomSheet(
-      this.menuController, this.reportViewModel,
+  const FilterDocNonprocessBottomSheet(this.reportViewModel,
       {Key? key})
       : super(key: key);
-  final MenuController? menuController;
   final DocumentNonApproveViewModel? reportViewModel;
 
   @override
@@ -360,10 +307,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController!.listPriorityStatus.containsKey(1))
+                  Obx(() => (menuController.listPriorityStatus.containsKey(1))
                       ? InkWell(
                           onTap: () {
-                            menuController!.checkboxPriorityState(
+                            menuController.checkboxPriorityState(
                                 false, 1, "Cao;Trung bình;Thấp;");
                           },
                           child: Image.asset(
@@ -373,7 +320,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            menuController!.checkboxPriorityState(
+                            menuController.checkboxPriorityState(
                                 true, 1, "Cao;Trung bình;Thấp;");
                           },
                           child: Image.asset(
@@ -401,10 +348,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController!.listPriorityStatus.containsKey(2))
+                  Obx(() => (menuController.listPriorityStatus.containsKey(2))
                       ? InkWell(
                           onTap: () {
-                            menuController!
+                            menuController
                                 .checkboxPriorityState(false, 2, "Cao;");
                           },
                           child: Image.asset(
@@ -414,7 +361,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            menuController!
+                            menuController
                                 .checkboxPriorityState(true, 2, "Cao;");
                           },
                           child: Image.asset(
@@ -442,10 +389,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController!.listPriorityStatus.containsKey(3))
+                  Obx(() => (menuController.listPriorityStatus.containsKey(3))
                       ? InkWell(
                           onTap: () {
-                            menuController!
+                            menuController
                                 .checkboxPriorityState(false, 3, "Trung bình;");
                           },
                           child: Image.asset(
@@ -455,7 +402,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            menuController!
+                            menuController
                                 .checkboxPriorityState(true, 3, "Trung bình;");
                           },
                           child: Image.asset(
@@ -483,10 +430,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController!.listPriorityStatus.containsKey(4))
+                  Obx(() => (menuController.listPriorityStatus.containsKey(4))
                       ? InkWell(
                           onTap: () {
-                            menuController!
+                            menuController
                                 .checkboxPriorityState(false, 4, "Thấp;");
                           },
                           child: Image.asset(

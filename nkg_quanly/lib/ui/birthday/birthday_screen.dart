@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/const.dart';
+import 'package:nkg_quanly/const/const.dart';
 
-import '../../const/ultils.dart';
+import '../../const/style.dart';
+import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/birthday_model/birthday_model.dart';
 import 'birthday_search.dart';
 import 'birthday_viewmodel.dart';
 
 class BirthDayScreen extends GetView {
-
-  int selected = 0;
-  int selectedButton = 0;
   String? header;
   String? icon;
 
@@ -30,56 +28,17 @@ class BirthDayScreen extends GetView {
             //header
             headerWidgetSeatch(header!, BirthDaySearch(), context),
             //date table
-            headerTableDate(
-                Obx(() => TableCalendar(
-                    locale: 'vi_VN',
-                    headerVisible: false,
-                    calendarFormat: birthDayViewModel.rxCalendarFormat.value,
-                    firstDay: DateTime.utc(2010, 10, 16),
-                    lastDay: DateTime.utc(2030, 3, 14),
-                    focusedDay: birthDayViewModel.rxSelectedDay.value,
-                    selectedDayPredicate: (day) {
-                      return isSameDay(
-                          birthDayViewModel.rxSelectedDay.value, day);
-                    },
-                    onDaySelected: (selectedDay, focusedDay) async {
-                      if (!isSameDay(
-                          birthDayViewModel.rxSelectedDay.value, selectedDay)) {
-                        birthDayViewModel.onSelectDay(selectedDay);
-                      }
-                    },
-                    onFormatChanged: (format) {
-                      if (birthDayViewModel.rxCalendarFormat.value != format) {
-                        // Call `setState()` when updating calendar format
-                        birthDayViewModel.rxCalendarFormat.value = format;
-                      }
-                    })),
-                Center(
-                    child: InkWell(
-                  onTap: () {
-                    if (birthDayViewModel.rxCalendarFormat.value !=
-                        CalendarFormat.month) {
-                      birthDayViewModel.switchFormat(CalendarFormat.month);
-                    } else {
-                      birthDayViewModel.switchFormat(CalendarFormat.week);
-                    }
-                  },
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                      child: Image.asset(
-                        "assets/icons/ic_showmore.png",
-                        height: 15,
-                        width: 80,
-                      )),
-                )),
-                context),
+            headerTableDatePicker(context, birthDayViewModel),
             //
             Padding(
               padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
               child: Obx(() => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Tổng sinh nhật',style: Theme.of(context).textTheme.headline5,),
+                      Text(
+                        'Tổng sinh nhật',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
                       (birthDayViewModel.rxBirthDayModel.value.totalRecords !=
                               null)
                           ? Text(
@@ -126,21 +85,19 @@ class BirthDayScreen extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            birthDayViewModel.rxSelectedDay.value =
-                                DateTime.now();
+                            menuController.rxSelectedDay.value = DateTime.now();
                             birthDayViewModel.onSelectDay(DateTime.now());
                             birthDayViewModel.swtichBottomButton(0);
                           },
                           child: bottomDateButton("Ngày",
-                              birthDayViewModel
-                                  .selectedBottomButton.value, 0),
+                              birthDayViewModel.selectedBottomButton.value, 0),
                         ),
                       ),
                       Expanded(
                         child: InkWell(
                           onTap: () {
                             DateTime dateTo =
-                            dateNow.add(const Duration(days: 7));
+                                dateNow.add(const Duration(days: 7));
                             String strdateFrom = formatDateToString(dateNow);
                             String strdateTo = formatDateToString(dateTo);
                             print(strdateFrom);
@@ -150,8 +107,7 @@ class BirthDayScreen extends GetView {
                             birthDayViewModel.swtichBottomButton(1);
                           },
                           child: bottomDateButton("Tuần",
-                              birthDayViewModel
-                                  .selectedBottomButton.value, 1),
+                              birthDayViewModel.selectedBottomButton.value, 1),
                         ),
                       ),
                       Expanded(
@@ -161,8 +117,7 @@ class BirthDayScreen extends GetView {
                             birthDayViewModel.swtichBottomButton(2);
                           },
                           child: bottomDateButton("Tháng",
-                              birthDayViewModel
-                                  .selectedBottomButton.value, 2),
+                              birthDayViewModel.selectedBottomButton.value, 2),
                         ),
                       )
                     ],
@@ -218,7 +173,10 @@ class BirthDayItem extends StatelessWidget {
                   children: [
                     const Text('Ngày sinh',
                         style: CustomTextStyle.grayColorTextStyle),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),child: Text(formatDate(docModel!.dateOfBirth!),style: Theme.of(context).textTheme.headline5))
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(formatDate(docModel!.dateOfBirth!),
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
@@ -226,7 +184,10 @@ class BirthDayItem extends StatelessWidget {
                   children: [
                     const Text('Chức vụ',
                         style: CustomTextStyle.grayColorTextStyle),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),child: Text(docModel!.position!,style: Theme.of(context).textTheme.headline5))
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(docModel!.position!,
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
                 Column(
@@ -234,7 +195,10 @@ class BirthDayItem extends StatelessWidget {
                   children: [
                     const Text('Đơn vị',
                         style: CustomTextStyle.grayColorTextStyle),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),child: Text(docModel!.organizationName!,style: Theme.of(context).textTheme.headline5))
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(docModel!.organizationName!,
+                            style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
               ],

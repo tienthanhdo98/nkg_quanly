@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/report/report_viewmodel.dart';
 import 'package:nkg_quanly/ui/workbook/update_work_screen.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
-import '../../const.dart';
-import '../../model/report_model/report_model.dart';
+import '../../const/const.dart';
+import '../../const/style.dart';
 import '../../model/workbook/workbook_model.dart';
 
-class WorkBookDetail extends GetView{
+class WorkBookDetail extends GetView {
   final String? id;
 
   final workBookViewModel = Get.put(WorkBookViewModel());
 
-  WorkBookDetail({Key? key,this.id}) : super(key: key);
+  WorkBookDetail({Key? key, this.id}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(
-      child: FutureBuilder(
-        future: workBookViewModel.getWorkbookModelDetail(id!),
-        builder: (context,AsyncSnapshot<WorkBookListItems> snapshot)
-        {
-          if(snapshot.hasData)
-            {
+    print("sss $id");
+    return Scaffold(
+      body: SafeArea(
+        child: FutureBuilder(
+          future: workBookViewModel.getWorkbookModelDetail(id!),
+          builder: (context, AsyncSnapshot<WorkBookListItems> snapshot) {
+            if (snapshot.hasData) {
               var item = snapshot.data;
-              return  SingleChildScrollView(
+              return SingleChildScrollView(
                 child: Column(
                   children: [
                     //header
-                    headerWidget("Chi tiết công việc ${item!.workName!}", context),
+                    headerWidget(
+                        "Chi tiết công việc ${item!.workName!}", context),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                       child: Column(
@@ -43,7 +44,7 @@ class WorkBookDetail extends GetView{
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          borderText(item.workName!,context),
+                          borderText(item.workName!, context),
                           //nhom cong viec
                           const Padding(
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -52,7 +53,7 @@ class WorkBookDetail extends GetView{
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          borderText(item.groupWorkName!,context),
+                          borderText(item.groupWorkName!, context),
                           //mota
                           const Padding(
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -61,7 +62,7 @@ class WorkBookDetail extends GetView{
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          borderText(item.description!,context),
+                          borderText(item.description!, context),
                           //nguoi thuc hien
                           const Padding(
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -70,7 +71,11 @@ class WorkBookDetail extends GetView{
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          borderText((item.worker?.isNotEmpty == true) ? item.worker : "",context),
+                          borderText(
+                              (item.worker?.isNotEmpty == true)
+                                  ? item.worker
+                                  : "",
+                              context),
                           //nguoi thuc hien
                           const Padding(
                             padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -80,7 +85,8 @@ class WorkBookDetail extends GetView{
                             ),
                           ),
                           //trangthai
-                          borderText((item.status! == true) ? "Có" : "Không",context),
+                          borderText(
+                              (item.status! == true) ? "Có" : "Không", context),
                           //quan trong
                           Row(
                             children: [
@@ -90,22 +96,20 @@ class WorkBookDetail extends GetView{
                               ),
                               Expanded(
                                   child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: SizedBox(
-                                      width: 50,
-                                      height: 50,
-                                      child: StatefulBuilder(
-                                        builder:
-                                            (BuildContext context, StateSetter setState) {
-                                          return Switch(
-                                              value: item.important!,
-                                              onChanged: (value) {
-
-                                              });
-                                        },
-                                      ),
-                                    ),
-                                  ))
+                                alignment: Alignment.centerRight,
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSetter setState) {
+                                      return Switch(
+                                          value: item.important!,
+                                          onChanged: (value) {});
+                                    },
+                                  ),
+                                ),
+                              ))
                             ],
                           ),
                           //
@@ -119,7 +123,8 @@ class WorkBookDetail extends GetView{
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                     child: ElevatedButton(
                                         onPressed: () {
                                           Get.back();
@@ -130,26 +135,30 @@ class WorkBookDetail extends GetView{
                                           onPrimary: kBlueButton,
                                           //change text color of button
                                           shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(25),
-                                              side:
-                                              const BorderSide(color: kVioletButton)),
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                              side: const BorderSide(
+                                                  color: kVioletButton)),
                                         ),
                                         child: const Text('Đóng')),
                                   ),
                                 ),
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                     child: ElevatedButton(
                                         onPressed: () {
-                                          Get.to(() => UpdateWorkBookScreen(item));
+                                          Get.to(
+                                              () => UpdateWorkBookScreen(item));
                                         },
                                         style: ButtonStyle(
                                             backgroundColor:
-                                            MaterialStateProperty.resolveWith<Color>(
-                                                  (Set<MaterialState> states) {
-                                                if (states
-                                                    .contains(MaterialState.pressed)) {
+                                                MaterialStateProperty
+                                                    .resolveWith<Color>(
+                                              (Set<MaterialState> states) {
+                                                if (states.contains(
+                                                    MaterialState.pressed)) {
                                                   return kBlueButton;
                                                 } else {
                                                   return kBlueButton;
@@ -157,10 +166,11 @@ class WorkBookDetail extends GetView{
                                               },
                                             ),
                                             shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
+                                                    RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(18.0),
-                                                ))),
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                            ))),
                                         child: const Text('Chỉnh sửa')),
                                   ),
                                 )
@@ -174,16 +184,13 @@ class WorkBookDetail extends GetView{
                   ],
                 ),
               );
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
             }
-          else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          return const Center(child: CircularProgressIndicator());
-
-        },
-
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
-    ),);
+    );
   }
-
 }

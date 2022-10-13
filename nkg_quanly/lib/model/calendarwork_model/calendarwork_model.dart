@@ -7,10 +7,10 @@ class CalendarWorkModel {
 
   CalendarWorkModel(
       {this.items,
-        this.pageIndex,
-        this.pageSize,
-        this.totalRecords,
-        this.pageCount});
+      this.pageIndex,
+      this.pageSize,
+      this.totalRecords,
+      this.pageCount});
 
   CalendarWorkModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
@@ -52,15 +52,15 @@ class CalendarWorkListItems {
 
   CalendarWorkListItems(
       {this.id,
-        this.name,
-        this.time,
-        this.date,
-        this.location,
-        this.type,
-        this.linkMeet,
-        this.description,
-        this.creator,
-        this.participants});
+      this.name,
+      this.time,
+      this.date,
+      this.location,
+      this.type,
+      this.linkMeet,
+      this.description,
+      this.creator,
+      this.participants});
 
   CalendarWorkListItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];

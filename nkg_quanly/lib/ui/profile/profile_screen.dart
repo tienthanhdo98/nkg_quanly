@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/profile/profile_chart.dart';
 import 'package:nkg_quanly/ui/profile/profile_list.dart';
 import 'package:nkg_quanly/ui/profile/profile_viewmodel.dart';
-import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import '../../const/api.dart';
 import '../../const/widget.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../char3/collum_chart_doc_nonprocess.dart';
 import '../theme/theme_data.dart';
+import 'e_office/profile_e_office_list.dart';
 
 class ProfileScreen extends GetView {
   String? header;
@@ -26,9 +25,9 @@ class ProfileScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: FutureBuilder(
-          future: profileViewModel.getQuantityDocumentBuUrl("${apiGetProfileFilter}1"),
-          builder:
-              (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
+          future: profileViewModel
+              .getQuantityDocumentBuUrl("${apiGetProfileFilter}1"),
+          builder: (context, AsyncSnapshot<DocumentFilterModel> snapshot) {
             if (snapshot.hasData) {
               return Column(children: [
                 Stack(
@@ -50,8 +49,7 @@ class ProfileScreen extends GetView {
                                     children: [
                                       const Text('Tổng văn bản'),
                                       Text(
-                                        snapshot.data!.totalRecords
-                                            .toString(),
+                                        snapshot.data!.totalRecords.toString(),
                                         style: const TextStyle(
                                             color: kBlueButton, fontSize: 40),
                                       )
@@ -95,7 +93,7 @@ class ProfileScreen extends GetView {
                                       ),
                                       Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           const Text("Chưa HT"),
                                           Text(
@@ -108,7 +106,7 @@ class ProfileScreen extends GetView {
                                       ),
                                       Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           const Text("Quá hạn"),
                                           Text(
@@ -121,7 +119,7 @@ class ProfileScreen extends GetView {
                                       ),
                                       Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           const Text("HT quá hạn"),
                                           Text(
@@ -142,40 +140,51 @@ class ProfileScreen extends GetView {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-                  child:   Row(
+                  child: Row(
                     children: [
                       Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                            child:Obx(() =>  ElevatedButton(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                        child: Obx(() => ElevatedButton(
                               style:
-                              profileViewModel.selectedChartButton.value == 0 ? activeButtonStyle : unActiveButtonStyle,
+                                  profileViewModel.selectedChartButton.value ==
+                                          0
+                                      ? activeButtonStyle
+                                      : unActiveButtonStyle,
                               onPressed: () async {
-                                await profileViewModel
-                               . getFilterForChart("${apiGetProfileFilter}0");
+                                await profileViewModel.getFilterForChart(
+                                    "${apiGetProfileFilter}0");
                                 profileViewModel.selectedChartButton(0);
                               },
                               child: const Text("Mức độ"),
                             )),
-                          )),
+                      )),
                       Expanded(
                           child: Padding(
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                              child: Obx(() =>ElevatedButton(
-                                style:
-                                profileViewModel.selectedChartButton.value == 1 ? activeButtonStyle : unActiveButtonStyle,
-                                onPressed: () async {
-                                  await profileViewModel
-                                  .getFilterForChart("${apiGetProfileFilter}1");
-                                  profileViewModel.selectedChartButton(1);
-                                },
-                                child: const Text("Trạng thái"),
-                              ),)
-                          ))
+                              child: Obx(
+                                () => ElevatedButton(
+                                  style: profileViewModel
+                                              .selectedChartButton.value ==
+                                          1
+                                      ? activeButtonStyle
+                                      : unActiveButtonStyle,
+                                  onPressed: () async {
+                                    await profileViewModel.getFilterForChart(
+                                        "${apiGetProfileFilter}1");
+                                    profileViewModel.selectedChartButton(1);
+                                  },
+                                  child: const Text("Trạng thái"),
+                                ),
+                              )))
                     ],
                   ),
                 ),
-                Obx(() => chartItemForProfile(profileViewModel.selectedChartButton.value,profileViewModel),),
+                Obx(
+                  () => chartItemForProfile(
+                      profileViewModel.selectedChartButton.value,
+                      profileViewModel),
+                ),
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
@@ -185,12 +194,12 @@ class ProfileScreen extends GetView {
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(() => ProfileList(
+                            Get.to(() => ProfileEOfficeList(
                                   header: header,
                                 ));
                           },
                           child:
-                           buttonShowListScreen("Xem danh sách hồ sơ trình"),
+                              buttonShowListScreen("Xem danh sách hồ sơ trình"),
                           style: bottomButtonStyle,
                         ),
                       ),
@@ -208,22 +217,15 @@ class ProfileScreen extends GetView {
     );
   }
 }
-Widget chartItemForProfile(int index,ProfileViewModel profileViewModel){
-  if(index == 0)
-  {
-    return Obx(() =>CollumChartWidget(
+
+Widget chartItemForProfile(int index, ProfileViewModel profileViewModel) {
+  if (index == 0) {
+    return Obx(() => CollumChartWidget(
         key: UniqueKey(),
-        documentFilterModel:
-        profileViewModel.rxDocumentFilterModel.value));
-  }
-  else
-  {
-    return  Obx(() => CollumChartWidget(
+        documentFilterModel: profileViewModel.rxDocumentFilterModel.value));
+  } else {
+    return Obx(() => CollumChartWidget(
         key: UniqueKey(),
-        documentFilterModel:
-        profileViewModel.rxDocumentFilterModel.value));
+        documentFilterModel: profileViewModel.rxDocumentFilterModel.value));
   }
-
-
-
 }

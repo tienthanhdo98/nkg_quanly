@@ -1,26 +1,28 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
-import 'package:nkg_quanly/const/ultils.dart';
-import '../../const.dart';
+import 'package:nkg_quanly/const/utils.dart';
+
+import '../../const/const.dart';
 import '../../model/calendarwork_model/calendarwork_model.dart';
 
 class CalendarWorkViewModel extends GetxController {
-
   Map<String, String> headers = {"Content-type": "application/json"};
-  Rx<String> rxDate = "".obs;
+  ScrollController controller = ScrollController();
   Rx<int> selectedBottomButton = 0.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;
-  Rx<CalendarFormat> rxCalendarFormat = CalendarFormat.week.obs;
+  CalendarWorkModel calendarWorkModel = CalendarWorkModel();
+
   RxList<CalendarWorkListItems> rxCalendarWorkListItems =
       <CalendarWorkListItems>[].obs;
 
   @override
   void onInit() {
-    initCurrentDate();
-    postCalendarWorkByDay(rxDate.value);
+    postCalendarWorkByDay(formatDateToString(dateNow));
+
     super.onInit();
   }
 
@@ -28,25 +30,12 @@ class CalendarWorkViewModel extends GetxController {
     selectedBottomButton.value = button;
   }
 
-  void initCurrentDate() {
-    rxDate.value = DateFormat('yyyy-MM-dd').format(dateNow);
-  }
-
   void onSelectDay(DateTime selectedDay) {
-    rxSelectedDay.value = selectedDay;
-    var a = DateFormat('yyyy-MM-dd').format(selectedDay);
-    print("a $a");
-    rxDate.value = formatDateToString(selectedDay);
-    print("data ${rxDate.value}");
-    postCalendarWorkByDay(rxDate.value);
-  }
-
-  void switchFormat(CalendarFormat format) {
-    rxCalendarFormat.value = format;
+    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
+    postCalendarWorkByDay(strSelectedDay);
   }
 
   //calendar work
-
 
   Future<CalendarWorkModel> postCalendarWorkAll() async {
     final url = Uri.parse(apiPostCalendarWork);
@@ -62,9 +51,26 @@ class CalendarWorkViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    CalendarWorkModel res =
-        CalendarWorkModel.fromJson(jsonDecode(response.body));
-    rxCalendarWorkListItems.value = res.items!;
+    calendarWorkModel = CalendarWorkModel.fromJson(jsonDecode(response.body));
+    rxCalendarWorkListItems.value = calendarWorkModel.items!;
+    //loadmore
+    var page = 1;
+    if (controller.hasClients) {
+      controller.jumpTo(0);
+    }
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore day");
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
+        http.Response response =
+            await http.post(url, headers: headers, body: json);
+        calendarWorkModel =
+            CalendarWorkModel.fromJson(jsonDecode(response.body));
+        rxCalendarWorkListItems.addAll(calendarWorkModel.items!);
+        print("loadmore day at $page");
+      }
+    });
   }
 
   Future<void> postCalendarWorkByWeek(String datefrom, String dateTo) async {
@@ -74,18 +80,49 @@ class CalendarWorkViewModel extends GetxController {
         '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
-    CalendarWorkModel res =
-        CalendarWorkModel.fromJson(jsonDecode(response.body));
-    rxCalendarWorkListItems.value = res.items!;
+    calendarWorkModel = CalendarWorkModel.fromJson(jsonDecode(response.body));
+    rxCalendarWorkListItems.value = calendarWorkModel.items!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+        http.Response response =
+            await http.post(url, headers: headers, body: json);
+        calendarWorkModel =
+            CalendarWorkModel.fromJson(jsonDecode(response.body));
+        rxCalendarWorkListItems.addAll(calendarWorkModel.items!);
+        print("loadmore w at $page");
+      }
+    });
   }
 
   Future<void> postCalendarWorkByMonth() async {
     final url = Uri.parse(apiPostCalendarWork);
     print('loading');
-    http.Response response = await http.post(url, headers: headers, body: jsonGetByMonth);
+    http.Response response =
+        await http.post(url, headers: headers, body: jsonGetByMonth);
     print(response.body);
-    CalendarWorkModel res =
-        CalendarWorkModel.fromJson(jsonDecode(response.body));
-    rxCalendarWorkListItems.value = res.items!;
+    calendarWorkModel = CalendarWorkModel.fromJson(jsonDecode(response.body));
+    rxCalendarWorkListItems.value = calendarWorkModel.items!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore m");
+        page++;
+        String jsonGetByMonth =
+            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dateFrom":"${formatDateToString(dateNow)}"}';
+        http.Response response =
+            await http.post(url, headers: headers, body: jsonGetByMonth);
+        calendarWorkModel =
+            CalendarWorkModel.fromJson(jsonDecode(response.body));
+        rxCalendarWorkListItems.addAll(calendarWorkModel.items!);
+        print("loadmore m at $page");
+      }
+    });
   }
 }

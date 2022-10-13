@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
 import 'package:nkg_quanly/ui/workbook/update_work_screen.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_detail.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import '../../const/style.dart';
-import '../../const/ultils.dart';
+import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/workbook/workbook_model.dart';
 import '../document_nonapproved/document_nonapproved_search.dart';
@@ -16,13 +15,9 @@ import 'add_new_work_screen.dart';
 
 class WorkBookList extends GetView {
   String? header;
-  final menuController = Get.put(MenuController());
   final workBookViewModel = Get.put(WorkBookViewModel());
 
-
   WorkBookList({Key? key, this.header}) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,51 +33,7 @@ class WorkBookList extends GetView {
               ),
               context),
           //date table
-          headerTableDate(
-              Obx(() => TableCalendar(
-                  locale: 'vi_VN',
-                  headerVisible: false,
-                  calendarStyle: CalendarStyle(
-                      defaultTextStyle: Theme.of(context).textTheme.headline2!),
-                  calendarFormat: workBookViewModel.rxCalendarFormat.value,
-                  firstDay: DateTime.utc(2010, 10, 16),
-                  lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: workBookViewModel.rxSelectedDay.value,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(
-                        workBookViewModel.rxSelectedDay.value, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) async {
-                    if (!isSameDay(
-                        workBookViewModel.rxSelectedDay.value, selectedDay)) {
-                      workBookViewModel.onSelectDay(selectedDay);
-                    }
-                  },
-                  onFormatChanged: (format) {
-                    if (workBookViewModel.rxCalendarFormat.value != format) {
-                      // Call `setState()` when updating calendar format
-                      workBookViewModel.rxCalendarFormat.value = format;
-                    }
-                  })),
-              Center(
-                  child: InkWell(
-                onTap: () {
-                  if (workBookViewModel.rxCalendarFormat.value !=
-                      CalendarFormat.month) {
-                    workBookViewModel.switchFormat(CalendarFormat.month);
-                  } else {
-                    workBookViewModel.switchFormat(CalendarFormat.week);
-                  }
-                },
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                    child: Image.asset(
-                      "assets/icons/ic_showmore.png",
-                      height: 15,
-                      width: 80,
-                    )),
-              )),
-              context),
+          headerTableDatePicker(context, workBookViewModel),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
@@ -99,21 +50,6 @@ class WorkBookList extends GetView {
                   child:
                       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     ElevatedButton(
-                      onPressed: () {Get.to(() => AddNewWorkScreen());},
-                      style: elevetedButtonBlue,
-                      child: Row(
-                        children: const <Widget>[
-                          Icon(
-                            Icons.add,
-                            color: kWhite,
-                            size: 24.0,
-                          ),
-                          Text("Tạo mới", style: TextStyle(fontSize: 14)),
-                        ],
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                    ElevatedButton(
                       style: elevetedButtonWhite,
                       onPressed: () {
                         showModalBottomSheet<void>(
@@ -129,7 +65,7 @@ class WorkBookList extends GetView {
                             return SizedBox(
                                 height: 600,
                                 child: FilterWorkbookFilterBottomSheet(
-                                    menuController, workBookViewModel));
+                                    workBookViewModel));
                           },
                         );
                       },
@@ -137,7 +73,24 @@ class WorkBookList extends GetView {
                         'Bộ lọc',
                         style: TextStyle(color: kVioletButton),
                       ),
-                    )
+                    ),
+                    const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.to(() => AddNewWorkScreen());
+                      },
+                      style: elevetedButtonBlue,
+                      child: Row(
+                        children: const <Widget>[
+                          Icon(
+                            Icons.add,
+                            color: kWhite,
+                            size: 24.0,
+                          ),
+                          Text("Thêm mới", style: TextStyle(fontSize: 14)),
+                        ],
+                      ),
+                    ),
                   ]),
                 )
               ],
@@ -149,7 +102,7 @@ class WorkBookList extends GetView {
                 thickness: 1,
               )),
           Expanded(
-              child: Obx(() => ListView.builder(
+              child: Obx(() => (workBookViewModel.rxWorkBookListItems.isNotEmpty) ? ListView.builder(
                   itemCount: workBookViewModel.rxWorkBookListItems.length,
                   itemBuilder: (context, index) {
                     return InkWell(
@@ -162,57 +115,7 @@ class WorkBookList extends GetView {
                             index,
                             workBookViewModel.rxWorkBookListItems[index],
                             workBookViewModel));
-                  }))),
-          //bottom
-          Obx(() => Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    border: Border(
-                        top:
-                            BorderSide(color: Theme.of(context).dividerColor))),
-                height: 50,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          workBookViewModel.rxSelectedDay.value =
-                              DateTime.now();
-                          workBookViewModel.onSelectDay(DateTime.now());
-                          workBookViewModel.swtichBottomButton(0);
-                        },
-                        child: bottomDateButton("Ngày",
-                            workBookViewModel.selectedBottomButton.value, 0),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          // DateTime datefrom =  DateTime.now();
-                          // DateTime dateTo =  datefrom.add(const Duration(days: 7));
-                          // String strdateTo = formatDateToString(dateTo);
-                          // print(strdateTo);
-                          // workBookViewModel.postWorkBookByDay(strdateTo);
-                          workBookViewModel.swtichBottomButton(1);
-                        },
-                        child: bottomDateButton("Tuần",
-                            workBookViewModel.selectedBottomButton.value, 1),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          // workBookViewModel.postWorkBookAll();
-                          workBookViewModel.swtichBottomButton(2);
-                        },
-                        child: bottomDateButton("Tháng",
-                            workBookViewModel.selectedBottomButton.value, 2),
-                      ),
-                    )
-                  ],
-                ),
-              ))
+                  }) : loadingIcon())),
         ],
       )),
     );
@@ -235,35 +138,35 @@ class WorkBookItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                "${index! + 1}. ${docModel!.workName!}",
-                style: Theme.of(context).textTheme.headline3,
-              ),
               Expanded(
-                child: InkWell(
-                  onTap: () {
-                    showModalBottomSheet<void>(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
-                      ),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return SizedBox(
-                            height: 300,
-                            child: MenuItemWorkBookSheetBottomSheet(
-                              docModel: docModel,
-                              workBookViewModel: workBookViewModel,
-                            ));
-                      },
-                    );
-                  },
-                  child: const Align(
-                      alignment: Alignment.centerRight,
-                      child: Icon(Icons.more_vert)),
+                child: Text(
+                  "${index! + 1}. ${docModel!.workName!}",
+                  style: Theme.of(context).textTheme.headline3,
                 ),
+              ),
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet<void>(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SizedBox(
+                          height: 300,
+                          child: MenuItemWorkBookSheetBottomSheet(
+                            docModel: docModel,
+                            workBookViewModel: workBookViewModel,
+                          ));
+                    },
+                  );
+                },
+                child: const Align(
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.more_vert)),
               ),
             ],
           ),
@@ -292,8 +195,10 @@ class WorkBookItem extends StatelessWidget {
                   children: [
                     const Text('Người thực hiện',
                         style: CustomTextStyle.grayColorTextStyle),
-                    (docModel!.worker?.isNotEmpty == true) ?  Text(docModel!.worker!,
-                        style: Theme.of(context).textTheme.headline4) : Text("")
+                    (docModel!.worker?.isNotEmpty == true)
+                        ? Text(docModel!.worker!,
+                            style: Theme.of(context).textTheme.headline4)
+                        : const Text("")
                   ],
                 ),
                 Column(
@@ -336,7 +241,7 @@ Widget signWidget(WorkBookListItems docModel) {
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         Text(
           docModel.status!,
-          style: TextStyle(color: kGreenSign),
+          style: const TextStyle(color: kGreenSign),
         )
       ],
     );
@@ -349,7 +254,7 @@ Widget signWidget(WorkBookListItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.status!, style: TextStyle(color: kOrangeSign))
+        Text(docModel.status!, style: const TextStyle(color: kOrangeSign))
       ],
     );
   }
@@ -449,7 +354,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
                   child: Row(
                     children: [
                       Image.asset(
-                        "assets/icons/ic_modify.png",
+                        "assets/icons/ic_trash_del.png",
                         height: 20,
                         width: 20,
                       ),
@@ -486,19 +391,11 @@ class DeleteItemWorkBookSheetBottomSheet extends StatelessWidget {
             "Thông báo",
             style: Theme.of(context).textTheme.headline1,
           ),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(40, 15, 40, 0),
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: 'Bạn có chắc chắn muốn xóa bản ghi ',
-                  style: CustomTextStyle.roboto400s16TextStyle,
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: docModel!.workName!,
-                        style: CustomTextStyle.roboto700TextStyle),
-                  ],
-                ),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(40, 15, 40, 0),
+              child: Text(
+                'Bạn chắc chắn muốn xóa bản ghi?',
+                style: CustomTextStyle.roboto400s16TextStyle,
               )),
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -524,9 +421,8 @@ class DeleteItemWorkBookSheetBottomSheet extends StatelessWidget {
                             Get.back();
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: kWhite,
-                            //change background color of button
-                            onPrimary: kBlueButton,
+                            foregroundColor: kBlueButton,
+                            backgroundColor: kWhite,
                             //change text color of button
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25),
@@ -574,11 +470,8 @@ class DeleteItemWorkBookSheetBottomSheet extends StatelessWidget {
 }
 
 class FilterWorkbookFilterBottomSheet extends StatelessWidget {
-  const FilterWorkbookFilterBottomSheet(
-      this.menuController, this.workBookViewModel,
-      {Key? key})
+  const FilterWorkbookFilterBottomSheet(this.workBookViewModel, {Key? key})
       : super(key: key);
-  final MenuController? menuController;
   final WorkBookViewModel? workBookViewModel;
 
   @override
@@ -592,78 +485,65 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
             //tatca
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Tất cả công việc',
-                      style: TextStyle(
-                          color: kBlueButton,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Roboto',
-                          fontSize: 16),
-                    ),
-                  ),
-                  Obx(() => (workBookViewModel!.mapAllFilter.containsKey(0))
-                      ? InkWell(
-                          onTap: () {
-                            workBookViewModel!.checkboxFilterAll(false, 0);
-                          },
-                          child: Image.asset(
+              child: Obx(() => (workBookViewModel!.mapAllFilter.containsKey(0))
+                  ? InkWell(
+                      onTap: () {
+                      checkboxFilterValue(
+                            false, 0, "", workBookViewModel!.mapAllFilter);
+                      },
+                      child: Row(
+                        children: [
+                          const Expanded(
+                            child: Text(
+                              'Tất cả công việc',
+                              style: TextStyle(
+                                  color: kBlueButton,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16),
+                            ),
+                          ),
+                          Image.asset(
                             'assets/icons/ic_checkbox_active.png',
                             width: 30,
                             height: 30,
-                          ))
-                      : InkWell(
-                          onTap: () {
-                            workBookViewModel!.checkboxFilterAll(true, 0);
-                          },
-                          child: Image.asset(
+                          )
+                        ],
+                      ),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        checkboxFilterValue(
+                            true, 0, "", workBookViewModel!.mapAllFilter);
+                      },
+                      child: Row(
+                        children: [
+                          const Expanded(
+                            child: Text(
+                              'Tất cả công việc',
+                              style: TextStyle(
+                                  color: kBlueButton,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Roboto',
+                                  fontSize: 16),
+                            ),
+                          ),
+                          Image.asset(
                             'assets/icons/ic_checkbox_unactive.png',
                             width: 30,
                             height: 30,
-                          )))
-                ],
-              ),
+                          )
+                        ],
+                      ),
+                    )),
             ),
             // tat ca muc do
-            const Divider (
+            const Divider(
               thickness: 1,
               color: kBlueButton,
             ),
             // Tất cả van de trinh
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Tất cả độ quan trọng',
-                      style: CustomTextStyle.roboto700TextStyle,
-                    ),
-                  ),
-                  Obx(() => (workBookViewModel!.mapAllFilter.containsKey(1))
-                      ? InkWell(
-                          onTap: () {
-                            workBookViewModel!.checkboxFilterAll(false, 1);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
-                      : InkWell(
-                          onTap: () {
-                            workBookViewModel!.checkboxFilterAll(true, 1);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
-                ],
-              ),
-            ),
+            FilterAllItem( "Tất cả độ quan trọng", 1,workBookViewModel!.mapAllFilter),
             const Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Divider(
@@ -674,90 +554,16 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
             SizedBox(
               child: ListView.builder(
                   shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: listImportant.length,
                   itemBuilder: (context, index) {
                     var item = listImportant[index];
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item,
-                                  style: CustomTextStyle.roboto400s16TextStyle,
-                                ),
-                              ),
-                              Obx(() => (workBookViewModel!.mapImportantFilter
-                                      .containsKey(index))
-                                  ? InkWell(
-                                      onTap: () {
-                                        workBookViewModel!.checkboxmapImportantFilter(
-                                            false, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_active.png',
-                                        width: 30,
-                                        height: 30,
-                                      ))
-                                  : InkWell(
-                                      onTap: () {
-                                        workBookViewModel!.checkboxmapImportantFilter(
-                                            true, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_unactive.png',
-                                        width: 30,
-                                        height: 30,
-                                      )))
-                            ],
-                          ),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Divider(
-                              thickness: 1,
-                              color: kgray,
-                            )),
-                      ],
-                    );
+                    return FilterItem(item,item,index,
+                        workBookViewModel!.mapImportantFilter);
                   }),
             ),
             // Tất cả loai phieu trinh
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Tất cả trạng thái',
-                      style: CustomTextStyle.roboto700TextStyle,
-                    ),
-                  ),
-                  Obx(() => (workBookViewModel!.mapAllFilter.containsKey(2))
-                      ? InkWell(
-                          onTap: () {
-                            workBookViewModel!.checkboxFilterAll(false, 2);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
-                      : InkWell(
-                          onTap: () {
-                            workBookViewModel!.checkboxFilterAll(true, 2);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
-                ],
-              ),
-            ),
+            FilterAllItem( "Tất cả trạng thái", 2,workBookViewModel!.mapAllFilter),
             const Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Divider(
@@ -767,55 +573,12 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
             SizedBox(
               child: ListView.builder(
                   shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: lisStatus.length,
                   itemBuilder: (context, index) {
                     var item = lisStatus[index];
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item,
-                                  style: CustomTextStyle.roboto400s16TextStyle,
-                                ),
-                              ),
-                              Obx(() => (workBookViewModel!.mapStatusFilter
-                                      .containsKey(index))
-                                  ? InkWell(
-                                      onTap: () {
-                                        workBookViewModel!.checkboxStatus(
-                                            false, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_active.png',
-                                        width: 30,
-                                        height: 30,
-                                      ))
-                                  : InkWell(
-                                      onTap: () {
-                                        workBookViewModel!.checkboxStatus(
-                                            true, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_unactive.png',
-                                        width: 30,
-                                        height: 30,
-                                      )))
-                            ],
-                          ),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Divider(
-                              thickness: 1,
-                              color: kgray,
-                            )),
-                      ],
-                    );
+                    return FilterItem(item,item,index,
+                        workBookViewModel!.mapStatusFilter);
                   }),
             ),
 
@@ -888,8 +651,143 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
     );
   }
 }
+//
+// class FilterItem extends StatelessWidget {
+//   const FilterItem(
+//       this.item, this.workBookViewModel, this.index, this.rxMapFilter,
+//       {Key? key})
+//       : super(key: key);
+//
+//   final String item;
+//   final WorkBookViewModel? workBookViewModel;
+//   final int index;
+//   final RxMap rxMapFilter;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         Padding(
+//           padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+//           child: Obx(() => (rxMapFilter.containsKey(index))
+//               ? InkWell(
+//                   onTap: () {
+//                     workBookViewModel!.checkboxFilterValue(
+//                         false, index, "$item;", rxMapFilter);
+//                   },
+//                   child: Row(
+//                     children: [
+//                       Expanded(
+//                         child: Text(
+//                           item,
+//                           style: CustomTextStyle.roboto400s16TextStyle,
+//                         ),
+//                       ),
+//                       Image.asset(
+//                         'assets/icons/ic_checkbox_active.png',
+//                         width: 30,
+//                         height: 30,
+//                       )
+//                     ],
+//                   ),
+//                 )
+//               : InkWell(
+//             onTap: () {
+//               workBookViewModel!.checkboxFilterValue(
+//                   true, index, "$item;", rxMapFilter);
+//             },
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: Text(
+//                     item,
+//                     style: CustomTextStyle.roboto400s16TextStyle,
+//                   ),
+//                 ),
+//                 Image.asset(
+//                   'assets/icons/ic_checkbox_unactive.png',
+//                   width: 30,
+//                   height: 30,
+//                 )
+//               ],
+//             ),
+//           )),
+//         ),
+//         const Padding(
+//             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+//             child: Divider(
+//               thickness: 1,
+//               color: kgray,
+//             )),
+//       ],
+//     );
+//   }
+// }
+//
+// class FilterAllItem extends StatelessWidget {
+//   const FilterAllItem(
+//     this.workBookViewModel,
+//     this.title,
+//     this.index, {
+//     Key? key,
+//   }) : super(key: key);
+//
+//   final WorkBookViewModel? workBookViewModel;
+//   final String title;
+//   final int index;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+//         child: Obx(
+//           () => (workBookViewModel!.mapAllFilter.containsKey(index)
+//               ? InkWell(
+//                   onTap: () {
+//                     workBookViewModel!.checkboxFilterValue(
+//                         false, index, "", workBookViewModel!.mapAllFilter);
+//                   },
+//                   child: Row(
+//                     children: [
+//                       Expanded(
+//                         child: Text(
+//                           title,
+//                           style: CustomTextStyle.roboto700TextStyle,
+//                         ),
+//                       ),
+//                       Image.asset(
+//                         'assets/icons/ic_checkbox_active.png',
+//                         width: 30,
+//                         height: 30,
+//                       )
+//                     ],
+//                   ),
+//                 )
+//               : InkWell(
+//                   onTap: () {
+//                     workBookViewModel!.checkboxFilterValue(
+//                         true, index, "", workBookViewModel!.mapAllFilter);
+//                   },
+//                   child: Row(
+//                     children: [
+//                       Expanded(
+//                         child: Text(
+//                           title,
+//                           style: CustomTextStyle.roboto700TextStyle,
+//                         ),
+//                       ),
+//                       Image.asset(
+//                         'assets/icons/ic_checkbox_unactive.png',
+//                         width: 30,
+//                         height: 30,
+//                       )
+//                     ],
+//                   ),
+//                 )),
+//         ));
+//   }
+// }
 
-var listImportant= ["Không quan trọng", "Quan trọng"];
+var listImportant = ["Không quan trọng", "Quan trọng"];
 var lisStatus = ["Chưa xử lý", "Đã xử lý"];
 final List<String> dropdownStatus = ["Chưa xử lý", "Đã xử lý"];
-

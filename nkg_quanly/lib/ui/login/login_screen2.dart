@@ -1,4 +1,3 @@
-
 import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
@@ -9,16 +8,13 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 class LoginScreen2 extends StatefulWidget {
   const LoginScreen2({Key? key}) : super(key: key);
 
-
-
   @override
-  State<StatefulWidget> createState() =>LoginState();
-
+  State<StatefulWidget> createState() => LoginState();
 }
-class LoginState extends State<LoginScreen2>{
+
+class LoginState extends State<LoginScreen2> {
   InAppWebViewController? webViewController;
   late ContextMenu contextMenu;
-
 
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
@@ -64,15 +60,12 @@ class LoginState extends State<LoginScreen2>{
               contextMenuItemClicked.title);
         });
 
-
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Column(
         children: [
           Container(
@@ -111,15 +104,17 @@ class LoginState extends State<LoginScreen2>{
               },
             ),
           ),
-          ElevatedButton(onPressed: (){
-            Clipboard.setData(const ClipboardData(text: "lcloi@moet.gov.vn"));
-          }, child: Text("username")),
-          ElevatedButton(onPressed: (){
-            Clipboard.setData(const ClipboardData(text: "sdtech@123#"));
-          }, child: Text("pass")),
-
-
-
+          ElevatedButton(
+              onPressed: () {
+                Clipboard.setData(
+                    const ClipboardData(text: "lcloi@moet.gov.vn"));
+              },
+              child: Text("username")),
+          ElevatedButton(
+              onPressed: () {
+                Clipboard.setData(const ClipboardData(text: "sdtech@123#"));
+              },
+              child: Text("pass")),
         ],
       ),
     );

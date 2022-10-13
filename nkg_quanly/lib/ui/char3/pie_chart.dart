@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/model/document_unprocess/document_filter.dart';
-
-import '../../const.dart';
-import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../theme/theme_data.dart';
+import '../../const/const.dart';
+import '../../const/utils.dart';
+import '../../const/widget.dart';
+import '../../model/ChartModel.dart';
 
 class PieChartWidget extends StatefulWidget {
-   PieChartWidget({UniqueKey? key, this.documentFilterModel}): super(key: key);
+  PieChartWidget({UniqueKey? key, this.documentFilterModel}) : super(key: key);
 
   final DocumentFilterModel? documentFilterModel;
 
@@ -17,19 +17,21 @@ class PieChartWidget extends StatefulWidget {
 }
 
 class PieChartState extends State<PieChartWidget> {
-
   List<PieCharData> listChartData = [];
   DocumentFilterModel? documentFilterModel;
   List<FilterItems>? listQuantity;
+
   @override
   void initState() {
-
     documentFilterModel = widget.documentFilterModel;
     int total = documentFilterModel!.totalRecords!;
     listQuantity = documentFilterModel!.items!;
     print(listQuantity!.length);
-    for (int i =0; i < listQuantity!.length; i++) {
-      listChartData.add(PieCharData(title: calcuPercen(listQuantity![i].quantity!,total),value: listQuantity![i].quantity!,color: listColorChart[i]));
+    for (int i = 0; i < listQuantity!.length; i++) {
+      listChartData.add(PieCharData(
+          title: calcuPercen(listQuantity![i].quantity!, total),
+          value: listQuantity![i].quantity!,
+          color: listColorChart[i]));
     }
     super.initState();
   }

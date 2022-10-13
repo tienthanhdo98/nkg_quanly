@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../../const.dart';
-import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../../const/const.dart';
+import '../../const/style.dart';
+import '../../const/widget.dart';
+import '../../model/ChartModel.dart';
 
 class PieChart extends StatefulWidget {
   const PieChart({
@@ -11,17 +13,15 @@ class PieChart extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => PieChartState();
-
-
-
-
 }
-class PieChartState extends State<PieChart>{
+
+class PieChartState extends State<PieChart> {
   // final TooltipBehavior? _tooltipBehavior =
   //     TooltipBehavior(enable: true, format: 'point.x : point.y%');
   var selected = 0;
 
-  List<PieCharData> listChartData =  [];
+  List<PieCharData> listChartData = [];
+
   @override
   void initState() {
     listChartData = <PieCharData>[
@@ -30,69 +30,82 @@ class PieChartState extends State<PieChart>{
     ];
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15),
-      child: borderItem(Column(
-        children: [
-          headerChartTable("Văn bản đến chưa bút phê", "5.987",context),
-          Row(
+      child: borderItem(
+          Column(
             children: [
-              Expanded(
-                  child: Padding(
+              headerChartTable("Văn bản đến chưa bút phê", "5.987", context),
+              Row(
+                children: [
+                  Expanded(
+                      child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                     child: ElevatedButton(
-                      style: selected == 0 ? kActiveButtonStyle : kUnActiveButtonStyle,
+                      style: selected == 0
+                          ? kActiveButtonStyle
+                          : kUnActiveButtonStyle,
                       onPressed: () {
                         setState(() {
                           selected = 0;
-                          listChartData =  <PieCharData>[
-                            PieCharData(title: "44%", value: 44, color: kOrange),
-                            PieCharData(title: "56%", value: 56, color: kBlueChart),
+                          listChartData = <PieCharData>[
+                            PieCharData(
+                                title: "44%", value: 44, color: kOrange),
+                            PieCharData(
+                                title: "56%", value: 56, color: kBlueChart),
                           ];
                         });
                       },
                       child: const Text("Mức độ"),
                     ),
                   )),
-              Expanded(
-                  child: Padding(
+                  Expanded(
+                      child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                     child: ElevatedButton(
-                      style: selected == 1 ? kActiveButtonStyle : kUnActiveButtonStyle,
+                      style: selected == 1
+                          ? kActiveButtonStyle
+                          : kUnActiveButtonStyle,
                       onPressed: () {
                         setState(() {
                           selected = 1;
-                          listChartData =  <PieCharData>[
-                            PieCharData(title: "23%", value: 23, color: kOrange),
-                            PieCharData(title: "77%", value: 77, color: kBlueChart),
+                          listChartData = <PieCharData>[
+                            PieCharData(
+                                title: "23%", value: 23, color: kOrange),
+                            PieCharData(
+                                title: "77%", value: 77, color: kBlueChart),
                           ];
                         });
                       },
                       child: const Text("Trạng thái"),
                     ),
                   ))
+                ],
+              ),
+              IntrinsicHeight(
+                child: Row(
+                  children: [
+                    SizedBox(
+                        height: 200,
+                        width: 200,
+                        child: _buildGroupingPieChart()),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          legendChart("Đã bút phê", kBlueChart),
+                          legendChart("Đã bút phê", kOrange),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
             ],
           ),
-          IntrinsicHeight(
-            child: Row(
-              children: [
-                SizedBox(
-                    height: 200, width: 200, child: _buildGroupingPieChart()),
-                Expanded(
-                  child: Column(
-                    children: [
-                      legendChart("Đã bút phê",kBlueChart),
-                      legendChart("Đã bút phê",kOrange),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),context),
+          context),
     );
   }
 

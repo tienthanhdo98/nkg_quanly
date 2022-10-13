@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/model/profile_work/profile_work_model.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
 
-import '../../../const.dart';
+import '../../../const/const.dart';
 import '../../../const/style.dart';
-import '../../../const/ultils.dart';
+import '../../../const/utils.dart';
 import '../../../const/widget.dart';
-import '../../../model/misstion/mission_detail.dart';
-import '../../misstion/e_office/filter_mission_screen.dart';
-import '../../misstion/mission_detail.dart';
-import '../../misstion/mission_viewmodel.dart';
-import '../../misstion/misstion_search.dart';
+import '../../mission/misstion_search.dart';
 import '../../theme/theme_data.dart';
 import '../profile_work_viewmodel.dart';
 
 class ProfileWorkEOfficeList extends GetView {
   final String? header;
-  final MenuController menuController = Get.put(MenuController());
+
   final profileWorkViewModel = Get.put(ProfileWorkViewModel());
-  final int selectedButton = 0;
 
   ProfileWorkEOfficeList({this.header});
-
-  int selected = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,49 +30,7 @@ class ProfileWorkEOfficeList extends GetView {
               ),
               context),
           //date table
-          headerTableDate(
-              Obx(() => TableCalendar(
-                  locale: 'vi_VN',
-                  headerVisible: false,
-                  calendarFormat: profileWorkViewModel.rxCalendarFormat.value,
-                  firstDay: DateTime.utc(2010, 10, 16),
-                  lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: profileWorkViewModel.rxSelectedDay.value,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(
-                        profileWorkViewModel.rxSelectedDay.value, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) async {
-                    if (!isSameDay(profileWorkViewModel.rxSelectedDay.value,
-                        selectedDay)) {
-                      profileWorkViewModel.onSelectDay(selectedDay);
-                    }
-                  },
-                  onFormatChanged: (format) {
-                    if (profileWorkViewModel.rxCalendarFormat.value != format) {
-                      // Call `setState()` when updating calendar format
-                      profileWorkViewModel.rxCalendarFormat.value = format;
-                    }
-                  })),
-              Center(
-                  child: InkWell(
-                onTap: () {
-                  if (profileWorkViewModel.rxCalendarFormat.value !=
-                      CalendarFormat.month) {
-                    profileWorkViewModel.switchFormat(CalendarFormat.month);
-                  } else {
-                    profileWorkViewModel.switchFormat(CalendarFormat.week);
-                  }
-                },
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                    child: Image.asset(
-                      "assets/icons/ic_showmore.png",
-                      height: 15,
-                      width: 80,
-                    )),
-              )),
-              context),
+          headerTableDatePicker(context, profileWorkViewModel),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -114,7 +64,7 @@ class ProfileWorkEOfficeList extends GetView {
                                           .rxProfileWorkStatistic.value.tong
                                           .toString(),
                                       style: textBlueCountTotalStyle)
-                                  :const Text("")),
+                                  : const Text("")),
                               const Padding(
                                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                   child: Icon(
@@ -145,7 +95,7 @@ class ProfileWorkEOfficeList extends GetView {
                                 return SizedBox(
                                     height: 560,
                                     child: FilterProfileWorkEOfficeBottomSheet(
-                                        menuController, profileWorkViewModel));
+                                        profileWorkViewModel));
                               },
                             );
                           },
@@ -265,37 +215,39 @@ class ProfileWorkEOfficeList extends GetView {
                 thickness: 1,
               )),
           Expanded(
-              child: Obx(() => (profileWorkViewModel
-                      .rxProfileWorkList.isNotEmpty)
-                  ? ListView.builder(
-                      itemCount: profileWorkViewModel.rxProfileWorkList.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                            onTap: () {
-                              showModalBottomSheet<void>(
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
-                                  ),
+            child: Obx (() => (profileWorkViewModel
+                .rxProfileWorkList.isNotEmpty)
+                ? ListView.builder(
+                    itemCount: profileWorkViewModel.rxProfileWorkList.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
                                 ),
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SizedBox(
-                                      height: 350,
-                                      child: DetailProfileWorkBottomSheet(
-                                          index,
-                                          profileWorkViewModel
-                                              .rxProfileWorkList[index]));
-                                },
-                              );
-                            },
-                            child: ProfileWorkItem(index,
-                                profileWorkViewModel.rxProfileWorkList[index]));
-                      })
-                  : const SizedBox.shrink())),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: 350,
+                                    child: DetailProfileWorkBottomSheet(
+                                        index,
+                                        profileWorkViewModel
+                                            .rxProfileWorkList[index]));
+                              },
+                            );
+                          },
+                          child: ProfileWorkItem(index,
+                              profileWorkViewModel.rxProfileWorkList[index]));
+                    })
+                : const Text("Không có hồ sơ trình nào")),
+          ),
           //bottom
+
           Obx(() => Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
@@ -309,8 +261,7 @@ class ProfileWorkEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          profileWorkViewModel.rxSelectedDay.value =
-                              DateTime.now();
+                          menuController.rxSelectedDay.value = DateTime.now();
                           profileWorkViewModel.onSelectDay(DateTime.now());
                           profileWorkViewModel.switchBottomButton(0);
                         },
@@ -472,8 +423,7 @@ Widget signWidgetProfileWork(ProfileWorkListItems docModel) {
             style: const TextStyle(color: kRedPriority, fontSize: 12))
       ],
     );
-  }
-  else if (docModel.status == "Tạo mới") {
+  } else if (docModel.status == "Tạo mới") {
     return Row(
       children: [
         Image.asset(
@@ -486,7 +436,7 @@ Widget signWidgetProfileWork(ProfileWorkListItems docModel) {
             style: const TextStyle(color: kGreenSign, fontSize: 12))
       ],
     );
-  }else if (docModel.status == "Đã thu hồi") {
+  } else if (docModel.status == "Đã thu hồi") {
     return Row(
       children: [
         Image.asset(
@@ -499,8 +449,7 @@ Widget signWidgetProfileWork(ProfileWorkListItems docModel) {
             style: const TextStyle(color: Colors.black, fontSize: 12))
       ],
     );
-  }
-  else {
+  } else {
     return Row(
       children: [
         Image.asset(
@@ -542,9 +491,11 @@ class DetailProfileWorkBottomSheet extends StatelessWidget {
             color: kBlueButton,
           ),
           const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-          Text(
-            "${index! + 1}. ${docModel!.name}",
-            style: Theme.of(context).textTheme.headline3,
+          Expanded(
+            child: Text(
+              "${index! + 1}. ${docModel!.name}",
+              style: Theme.of(context).textTheme.headline3,
+            ),
           ),
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
@@ -557,7 +508,7 @@ class DetailProfileWorkBottomSheet extends StatelessWidget {
               primary: false,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               crossAxisSpacing: 10,
-              childAspectRatio: 3/2,
+              childAspectRatio: 3 / 2,
               mainAxisSpacing: 0,
               crossAxisCount: 3,
               children: <Widget>[
@@ -649,11 +600,10 @@ class DetailProfileWorkBottomSheet extends StatelessWidget {
 }
 
 class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
-  const FilterProfileWorkEOfficeBottomSheet(
-      this.menuController, this.profileWorkViewModel,
+  const FilterProfileWorkEOfficeBottomSheet(this.profileWorkViewModel,
       {Key? key})
       : super(key: key);
-  final MenuController? menuController;
+
   final ProfileWorkViewModel? profileWorkViewModel;
 
   @override
@@ -664,39 +614,8 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
           child: Column(children: [
-            // Tất cả loai phieu trinh
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Tất cả trạng thái',
-                      style: CustomTextStyle.roboto700TextStyle,
-                    ),
-                  ),
-                  Obx(() => (profileWorkViewModel!.mapAllFilter.containsKey(3))
-                      ? InkWell(
-                          onTap: () {
-                            profileWorkViewModel!.checkboxFilterAll(false, 3);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
-                      : InkWell(
-                          onTap: () {
-                            profileWorkViewModel!.checkboxFilterAll(true, 3);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
-                ],
-              ),
-            ),
+            // Tất cả trang thai
+            FilterAllItem( "Tất cả trạng thái", 3,profileWorkViewModel!.mapAllFilter),
             const Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Divider(
@@ -710,51 +629,9 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
                   itemCount: listProfileWorkStatus.length,
                   itemBuilder: (context, index) {
                     var item = listProfileWorkStatus[index];
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item,
-                                  style: CustomTextStyle.roboto400s16TextStyle,
-                                ),
-                              ),
-                              Obx(() => (profileWorkViewModel!.mapStatus
-                                      .containsKey(index))
-                                  ? InkWell(
-                                      onTap: () {
-                                        profileWorkViewModel!.checkboxStatus(
-                                            false, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_active.png',
-                                        width: 30,
-                                        height: 30,
-                                      ))
-                                  : InkWell(
-                                      onTap: () {
-                                        profileWorkViewModel!.checkboxStatus(
-                                            true, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_unactive.png',
-                                        width: 30,
-                                        height: 30,
-                                      )))
-                            ],
-                          ),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Divider(
-                              thickness: 1,
-                              color: kgray,
-                            )),
-                      ],
-                    );
+                    return
+                      FilterItem(item,item,index,
+                          profileWorkViewModel!.mapStatus);
                   }),
             ),
 

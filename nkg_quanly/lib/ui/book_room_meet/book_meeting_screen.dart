@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/book_room_meet/pie_chart_room_meeting.dart';
-import 'package:nkg_quanly/ui/book_room_meet/room_meeting_pie_chart.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import '../../const/widget.dart';
-import '../../model/meeting_room/meeting_room_statistic_model.dart';
 import '../theme/theme_data.dart';
 import 'book_room_list.dart';
-
 
 class BookMeetingScreen extends GetView {
   final String? header;
   final String? icon;
 
-  final RoomMeetingViewModel roomMeetingViewModel = Get.put(RoomMeetingViewModel());
+  final  roomMeetingViewModel =
+      Get.put(RoomMeetingViewModel());
 
   BookMeetingScreen({Key? key, this.header, this.icon}) : super(key: key);
 
@@ -24,7 +22,7 @@ class BookMeetingScreen extends GetView {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child:  Column(children: [
+        child: Column(children: [
           Stack(
             children: [
               Image.asset("assets/bgtophome.png",
@@ -39,15 +37,17 @@ class BookMeetingScreen extends GetView {
                         Row(
                           children: [
                             Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text('Tổng số phòng họp'),
-                                Obx(() => Text(
-                                  roomMeetingViewModel.rxMeetingRoomStatistic.value.total.toString(),
-                                  style: const TextStyle(
-                                      color: kBlueButton, fontSize: 40),
-                                ))
+                                Obx(() => Text((roomMeetingViewModel
+                                    .rxMeetingRoomStatistic.value.total != null) ?
+                                      roomMeetingViewModel
+                                          .rxMeetingRoomStatistic.value.total
+                                          .toString() : "0",
+                                      style: const TextStyle(
+                                          color: kBlueButton, fontSize: 40),
+                                    ))
                               ],
                             ),
                             Expanded(
@@ -71,31 +71,34 @@ class BookMeetingScreen extends GetView {
                         Row(
                           children: [
                             Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text('Còn trống'),
-                                Text(
-                                    roomMeetingViewModel.rxMeetingRoomStatistic.value.vacancy!.toString(),
+                                Obx(() => Text((roomMeetingViewModel
+                                    .rxMeetingRoomStatistic.value.vacancy != null) ?
+                                    roomMeetingViewModel
+                                        .rxMeetingRoomStatistic.value.vacancy
+                                        .toString() : "0",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 20))
+                                        fontSize: 20)))
                               ],
                             ),
                             const Padding(
-                                padding:
-                                EdgeInsets.fromLTRB(20, 0, 0, 0)),
+                                padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
                             Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text('Đã đặt'),
-                                Text(
-                                  roomMeetingViewModel.rxMeetingRoomStatistic.value.booked.toString(),
+                                Obx(() => Text((roomMeetingViewModel
+                                    .rxMeetingRoomStatistic.value.booked != null) ?
+                                  roomMeetingViewModel
+                                      .rxMeetingRoomStatistic.value.booked
+                                      .toString() : "",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20),
-                                )
+                                ))
                               ],
                             )
                           ],
@@ -106,7 +109,11 @@ class BookMeetingScreen extends GetView {
               )
             ],
           ),
-          PieChartRoomMeetingWidget(documentFilterModel:   roomMeetingViewModel.rxMeetingRoomStatistic.value,),
+       Obx(() =>( roomMeetingViewModel.rxMeetingRoomStatistic.value.total != null) ? PieChartRoomMeetingWidget(
+         key: UniqueKey(),
+         documentFilterModel:
+         roomMeetingViewModel.rxMeetingRoomStatistic.value,
+       ) : const  SizedBox.shrink()),
           Expanded(
             child: Align(
               alignment: Alignment.bottomCenter,
@@ -117,8 +124,8 @@ class BookMeetingScreen extends GetView {
                   child: ElevatedButton(
                     onPressed: () {
                       Get.to(() => BookRoomList(
-                        header: header,
-                      ));
+                            header: header,
+                          ));
                     },
                     child: buttonShowListScreen("Xem danh sách Phòng họp"),
                     style: bottomButtonStyle,

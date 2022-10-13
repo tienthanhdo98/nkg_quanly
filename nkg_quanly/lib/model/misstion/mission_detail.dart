@@ -16,19 +16,19 @@ class MissionItem {
 
   MissionItem(
       {this.id,
-        this.code,
-        this.name,
-        this.organizationName,
-        this.organizationId,
-        this.innitiatedDate,
-        this.assignmentDate,
-        this.deadline,
-        this.processingDate,
-        this.processingBy,
-        this.level,
-        this.status,
-        this.state,
-        this.timelines});
+      this.code,
+      this.name,
+      this.organizationName,
+      this.organizationId,
+      this.innitiatedDate,
+      this.assignmentDate,
+      this.deadline,
+      this.processingDate,
+      this.processingBy,
+      this.level,
+      this.status,
+      this.state,
+      this.timelines});
 
   MissionItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];

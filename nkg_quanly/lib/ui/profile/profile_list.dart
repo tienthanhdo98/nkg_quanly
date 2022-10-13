@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/model/proflie_model/profile_model.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
+import 'package:nkg_quanly/viewmodel/date_picker_controller.dart';
 import 'package:nkg_quanly/ui/profile/profile_viewmodel.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
 import '../../const/style.dart';
-import '../../const/ultils.dart';
+import '../../const/utils.dart';
 import '../../const/widget.dart';
-import '../../viewmodel/home_viewmodel.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
-import '../document_nonapproved/document_nonapproved_list.dart';
 import '../document_out/document_out_search.dart';
-import '../report/report_list.dart';
 import '../theme/theme_data.dart';
 
 class ProfileList extends GetView {
   final String? header;
 
-  final MenuController menuController = Get.put(MenuController());
   final profileViewModel = Get.put(ProfileViewModel());
 
   ProfileList({this.header});
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,48 +33,7 @@ class ProfileList extends GetView {
               ),
               context),
           //date table
-          headerTableDate(
-              Obx(() => TableCalendar(
-                  locale: 'vi_VN',
-                  headerVisible: false,
-                  calendarFormat: profileViewModel.rxCalendarFormat.value,
-                  firstDay: DateTime.utc(2010, 10, 16),
-                  lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: profileViewModel.rxSelectedDay.value,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(profileViewModel.rxSelectedDay.value, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) async {
-                    if (!isSameDay(
-                        profileViewModel.rxSelectedDay.value, selectedDay)) {
-                      profileViewModel.onSelectDay(selectedDay);
-                    }
-                  },
-                  onFormatChanged: (format) {
-                    if (profileViewModel.rxCalendarFormat.value != format) {
-                      // Call `setState()` when updating calendar format
-                      profileViewModel.rxCalendarFormat.value = format;
-                    }
-                  })),
-              Center(
-                  child: InkWell(
-                onTap: () {
-                  if (profileViewModel.rxCalendarFormat.value !=
-                      CalendarFormat.month) {
-                    profileViewModel.switchFormat(CalendarFormat.month);
-                  } else {
-                    profileViewModel.switchFormat(CalendarFormat.week);
-                  }
-                },
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                    child: Image.asset(
-                      "assets/icons/ic_showmore.png",
-                      height: 15,
-                      width: 80,
-                    )),
-              )),
-              context),
+          headerTableDatePicker(context, profileViewModel),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -107,8 +61,7 @@ class ProfileList extends GetView {
                             builder: (BuildContext context) {
                               return SizedBox(
                                   height: 600,
-                                  child: FilterProfileBottomSheet(
-                                      menuController, profileViewModel));
+                                  child: FilterProfileBottomSheet(profileViewModel));
                             },
                           );
                         },
@@ -140,7 +93,7 @@ class ProfileList extends GetView {
                             child: ProfileListItem(
                                 index, profileViewModel.rxProfileItems[index]));
                       })
-                  : const Text("Hôm nay không có hồ sơ trình nào"))),
+                  : noData())),
           //bottom
           Obx(() => Container(
                 decoration: BoxDecoration(
@@ -155,7 +108,7 @@ class ProfileList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          profileViewModel.rxSelectedDay.value = DateTime.now();
+                          menuController.rxSelectedDay.value = DateTime.now();
                           profileViewModel.onSelectDay(DateTime.now());
                           profileViewModel.swtichBottomButton(0);
                         },
@@ -211,14 +164,15 @@ class ProfileListItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                "${index! + 1}. ${docModel!.name}",
-                style: Theme.of(context).textTheme.headline2,
-              ),
               Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: priorityWidget(docModel!))),
+                child: Text(
+                  "${index! + 1}. ${docModel!.name}",
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: priorityWidget(docModel!)),
             ],
           ),
           signWidget(docModel!),
@@ -704,10 +658,9 @@ class ProfileListItem extends StatelessWidget {
 
 //filter by ui
 class FilterProfileBottomSheet extends StatelessWidget {
-  const FilterProfileBottomSheet(this.menuController, this.profileViewModel,
+  const FilterProfileBottomSheet( this.profileViewModel,
       {Key? key})
       : super(key: key);
-  final MenuController? menuController;
   final ProfileViewModel? profileViewModel;
 
   @override
@@ -735,23 +688,23 @@ class FilterProfileBottomSheet extends StatelessWidget {
                   ),
                   Obx(() => (profileViewModel!.mapAllFilter.containsKey(0))
                       ? InkWell(
-                      onTap: () {
-                        profileViewModel!.checkboxFilterAll(false, 0);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
+                          onTap: () {
+                            profileViewModel!.checkboxFilterAll(false, 0);
+                          },
+                          child: Image.asset(
+                            'assets/icons/ic_checkbox_active.png',
+                            width: 30,
+                            height: 30,
+                          ))
                       : InkWell(
-                      onTap: () {
-                        profileViewModel!.checkboxFilterAll(true, 0);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                          onTap: () {
+                            profileViewModel!.checkboxFilterAll(true, 0);
+                          },
+                          child: Image.asset(
+                            'assets/icons/ic_checkbox_unactive.png',
+                            width: 30,
+                            height: 30,
+                          )))
                 ],
               ),
             ),
@@ -773,23 +726,23 @@ class FilterProfileBottomSheet extends StatelessWidget {
                   ),
                   Obx(() => (profileViewModel!.mapAllFilter.containsKey(1))
                       ? InkWell(
-                      onTap: () {
-                        profileViewModel!.checkboxFilterAll(false, 1);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
+                          onTap: () {
+                            profileViewModel!.checkboxFilterAll(false, 1);
+                          },
+                          child: Image.asset(
+                            'assets/icons/ic_checkbox_active.png',
+                            width: 30,
+                            height: 30,
+                          ))
                       : InkWell(
-                      onTap: () {
-                        profileViewModel!.checkboxFilterAll(true, 1);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                          onTap: () {
+                            profileViewModel!.checkboxFilterAll(true, 1);
+                          },
+                          child: Image.asset(
+                            'assets/icons/ic_checkbox_unactive.png',
+                            width: 30,
+                            height: 30,
+                          )))
                 ],
               ),
             ),
@@ -819,29 +772,27 @@ class FilterProfileBottomSheet extends StatelessWidget {
                                 ),
                               ),
                               Obx(() => (profileViewModel!.mapLevelFilter
-                                  .containsKey(index))
+                                      .containsKey(index))
                                   ? InkWell(
-                                  onTap: () {
-                                    profileViewModel!
-                                        .checkboxLevel(
-                                        false, index, "$item;");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_active.png',
-                                    width: 30,
-                                    height: 30,
-                                  ))
+                                      onTap: () {
+                                        profileViewModel!.checkboxLevel(
+                                            false, index, "$item;");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_active.png',
+                                        width: 30,
+                                        height: 30,
+                                      ))
                                   : InkWell(
-                                  onTap: () {
-                                    profileViewModel!
-                                        .checkboxLevel(
-                                        true, index, "$item;");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_unactive.png',
-                                    width: 30,
-                                    height: 30,
-                                  )))
+                                      onTap: () {
+                                        profileViewModel!.checkboxLevel(
+                                            true, index, "$item;");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_unactive.png',
+                                        width: 30,
+                                        height: 30,
+                                      )))
                             ],
                           ),
                         ),
@@ -868,23 +819,23 @@ class FilterProfileBottomSheet extends StatelessWidget {
                   ),
                   Obx(() => (profileViewModel!.mapAllFilter.containsKey(2))
                       ? InkWell(
-                      onTap: () {
-                        profileViewModel!.checkboxFilterAll(false, 2);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      ))
+                          onTap: () {
+                            profileViewModel!.checkboxFilterAll(false, 2);
+                          },
+                          child: Image.asset(
+                            'assets/icons/ic_checkbox_active.png',
+                            width: 30,
+                            height: 30,
+                          ))
                       : InkWell(
-                      onTap: () {
-                        profileViewModel!.checkboxFilterAll(true, 2);
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )))
+                          onTap: () {
+                            profileViewModel!.checkboxFilterAll(true, 2);
+                          },
+                          child: Image.asset(
+                            'assets/icons/ic_checkbox_unactive.png',
+                            width: 30,
+                            height: 30,
+                          )))
                 ],
               ),
             ),
@@ -914,29 +865,27 @@ class FilterProfileBottomSheet extends StatelessWidget {
                                 ),
                               ),
                               Obx(() => (profileViewModel!.mapStatusFilter
-                                  .containsKey(index))
+                                      .containsKey(index))
                                   ? InkWell(
-                                  onTap: () {
-                                    profileViewModel!
-                                        .checkboxStatus(
-                                        false, index, "$item;");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_active.png',
-                                    width: 30,
-                                    height: 30,
-                                  ))
+                                      onTap: () {
+                                        profileViewModel!.checkboxStatus(
+                                            false, index, "$item;");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_active.png',
+                                        width: 30,
+                                        height: 30,
+                                      ))
                                   : InkWell(
-                                  onTap: () {
-                                    profileViewModel!
-                                        .checkboxStatus(
-                                        true, index, "$item;");
-                                  },
-                                  child: Image.asset(
-                                    'assets/icons/ic_checkbox_unactive.png',
-                                    width: 30,
-                                    height: 30,
-                                  )))
+                                      onTap: () {
+                                        profileViewModel!.checkboxStatus(
+                                            true, index, "$item;");
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/ic_checkbox_unactive.png',
+                                        width: 30,
+                                        height: 30,
+                                      )))
                             ],
                           ),
                         ),
@@ -1020,8 +969,10 @@ class FilterProfileBottomSheet extends StatelessWidget {
     );
   }
 }
-var lisLevel = ["Thấp","Trung bình","Cao"];
-var lisStatus= ["Tạo mới","Hoàn thành","Hoàn thành quá hạn","Quá hạn"];
+
+var lisLevel = ["Thấp", "Trung bình", "Cao"];
+var lisStatus = ["Tạo mới", "Hoàn thành", "Hoàn thành quá hạn", "Quá hạn"];
+
 Widget signWidget(ProfileItems docModel) {
   if (docModel.status == "Hoàn thành") {
     return Row(
@@ -1062,7 +1013,7 @@ Widget signWidget(ProfileItems docModel) {
         Text(docModel.status!, style: TextStyle(color: kRedPriority))
       ],
     );
-  } else if(docModel.status == "Hoàn thành quá hạn"){
+  } else if (docModel.status == "Hoàn thành quá hạn") {
     return Row(
       children: [
         Image.asset(
@@ -1074,8 +1025,7 @@ Widget signWidget(ProfileItems docModel) {
         Text(docModel.status!, style: TextStyle(color: Colors.black))
       ],
     );
-  }
-  else {
+  } else {
     return Row(
       children: [
         Image.asset(

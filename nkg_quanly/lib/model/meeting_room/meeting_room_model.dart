@@ -10,11 +10,11 @@ class MeetingRoomModel {
 
   MeetingRoomModel(
       {this.items,
-        this.statistic,
-        this.pageIndex,
-        this.pageSize,
-        this.totalRecords,
-        this.pageCount});
+      this.statistic,
+      this.pageIndex,
+      this.pageSize,
+      this.totalRecords,
+      this.pageCount});
 
   MeetingRoomModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
@@ -89,13 +89,13 @@ class Mettings {
 
   Mettings(
       {this.id,
-        this.code,
-        this.roomName,
-        this.name,
-        this.registerUser,
-        this.date,
-        this.fromTime,
-        this.toTime});
+      this.code,
+      this.roomName,
+      this.name,
+      this.registerUser,
+      this.date,
+      this.fromTime,
+      this.toTime});
 
   Mettings.fromJson(Map<String, dynamic> json) {
     id = json['id'];

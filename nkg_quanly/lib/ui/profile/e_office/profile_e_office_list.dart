@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:nkg_quanly/model/proflie_model/profile_model.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
 import 'package:nkg_quanly/ui/profile/e_office/profile_filter_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_viewmodel.dart';
 
-import '../../../const.dart';
+import '../../../const/const.dart';
 import '../../../const/style.dart';
-import '../../../const/ultils.dart';
+import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../document_out/document_out_search.dart';
-import '../../misstion/mission_detail.dart';
-import '../../misstion/profile_detail.dart';
+import '../../mission/profile_detail.dart';
 import '../../theme/theme_data.dart';
 
 class ProfileEOfficeList extends GetView {
   final String? header;
 
-  final MenuController menuController = Get.put(MenuController());
   final profileViewModel = Get.put(ProfileViewModel());
 
   ProfileEOfficeList({this.header});
@@ -36,48 +32,7 @@ class ProfileEOfficeList extends GetView {
               ),
               context),
           //date table
-          headerTableDate(
-              Obx(() => TableCalendar(
-                  locale: 'vi_VN',
-                  headerVisible: false,
-                  calendarFormat: profileViewModel.rxCalendarFormat.value,
-                  firstDay: DateTime.utc(2010, 10, 16),
-                  lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: profileViewModel.rxSelectedDay.value,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(profileViewModel.rxSelectedDay.value, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) async {
-                    if (!isSameDay(
-                        profileViewModel.rxSelectedDay.value, selectedDay)) {
-                      profileViewModel.onSelectDay(selectedDay);
-                    }
-                  },
-                  onFormatChanged: (format) {
-                    if (profileViewModel.rxCalendarFormat.value != format) {
-                      // Call `setState()` when updating calendar format
-                      profileViewModel.rxCalendarFormat.value = format;
-                    }
-                  })),
-              Center(
-                  child: InkWell(
-                onTap: () {
-                  if (profileViewModel.rxCalendarFormat.value !=
-                      CalendarFormat.month) {
-                    profileViewModel.switchFormat(CalendarFormat.month);
-                  } else {
-                    profileViewModel.switchFormat(CalendarFormat.week);
-                  }
-                },
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                    child: Image.asset(
-                      "assets/icons/ic_showmore.png",
-                      height: 15,
-                      width: 80,
-                    )),
-              )),
-              context),
+          headerTableDatePicker(context, profileViewModel),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -104,11 +59,14 @@ class ProfileEOfficeList extends GetView {
                             padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                             child: Row(children: [
                               Obx(() => (profileViewModel
-                              .rxProfileStatistic.value.hoSoTrinh != null) ?Text(
-                                  profileViewModel
-                                      .rxProfileStatistic.value.hoSoTrinh
-                                      .toString(),
-                                  style: textBlueCountTotalStyle) : const Text("0")),
+                                          .rxProfileStatistic.value.hoSoTrinh !=
+                                      null)
+                                  ? Text(
+                                      profileViewModel
+                                          .rxProfileStatistic.value.hoSoTrinh
+                                          .toString(),
+                                      style: textBlueCountTotalStyle)
+                                  : const Text("0")),
                               const Padding(
                                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                   child: Icon(
@@ -312,7 +270,7 @@ class ProfileEOfficeList extends GetView {
                             child: ProfileListItem(
                                 index, profileViewModel.rxProfileItems[index]));
                       })
-                  : const Text("Hôm nay không có hồ sơ trình nào"))),
+                  : const Text("Không có hồ sơ trình nào"))),
           //bottom
           Obx(() => Container(
                 decoration: BoxDecoration(
@@ -327,7 +285,7 @@ class ProfileEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          profileViewModel.rxSelectedDay.value = DateTime.now();
+                          menuController.rxSelectedDay.value = DateTime.now();
                           profileViewModel.onSelectDay(DateTime.now());
                           profileViewModel.swtichBottomButton(0);
                         },
@@ -383,14 +341,15 @@ class ProfileListItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                "${index! + 1}. ${docModel!.name}",
-                style: Theme.of(context).textTheme.headline2,
-              ),
               Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: priorityWidget(docModel!))),
+                child: Text(
+                  "${index! + 1}. ${docModel!.name}",
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: priorityWidget(docModel!)),
             ],
           ),
           Padding(
@@ -473,14 +432,15 @@ class DetailProfileBottomSheet extends StatelessWidget {
           const Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 0)),
           Row(
             children: [
-              Text(
-                "${index! + 1}. ${docModel!.name}",
-                style: Theme.of(context).textTheme.headline2,
-              ),
               Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: priorityWidget(docModel!))),
+                child: Text(
+                  "${index! + 1}. ${docModel!.name}",
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: priorityWidget(docModel!)),
             ],
           ),
           signWidget(docModel!),

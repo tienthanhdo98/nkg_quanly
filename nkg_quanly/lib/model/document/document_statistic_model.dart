@@ -15,18 +15,18 @@ class DocumentStatisticModel {
 
   DocumentStatisticModel(
       {this.tong,
-        this.chuaXuLy,
-        this.dangXuLy,
-        this.daXuLy,
-        this.chuaButPhe,
-        this.daButPhe,
-        this.trongHan,
-        this.quaHan,
-        this.hoanThanhTruocHan,
-        this.chuaHoanThanhTrongHan,
-        this.hoanThanhTrongHan,
-        this.chuaHoanThanhQuaHan,
-        this.hoanThanhQuaHan});
+      this.chuaXuLy,
+      this.dangXuLy,
+      this.daXuLy,
+      this.chuaButPhe,
+      this.daButPhe,
+      this.trongHan,
+      this.quaHan,
+      this.hoanThanhTruocHan,
+      this.chuaHoanThanhTrongHan,
+      this.hoanThanhTrongHan,
+      this.chuaHoanThanhQuaHan,
+      this.hoanThanhQuaHan});
 
   DocumentStatisticModel.fromJson(Map<String, dynamic> json) {
     tong = json['tong'];

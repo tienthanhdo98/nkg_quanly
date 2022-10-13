@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/const/api.dart';
-
-import '../../const.dart';
-import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../const/const.dart';
+import '../../model/ChartModel.dart';
 import '../../model/document_unprocess/document_filter.dart';
 
 class CollumChartReport extends StatefulWidget {
-  CollumChartReport({ this.documentFilterModel});
+  CollumChartReport({this.documentFilterModel});
+
   final DocumentFilterModel? documentFilterModel;
 
   @override
@@ -16,7 +15,6 @@ class CollumChartReport extends StatefulWidget {
 }
 
 class CollumChartReportState extends State<CollumChartReport> {
-
   List<ChartSampleData> listCharData = [];
   DocumentFilterModel? documentFilterModel;
 
@@ -26,13 +24,22 @@ class CollumChartReportState extends State<CollumChartReport> {
     List<FilterItems> listQuantity = documentFilterModel!.items!;
 
     listCharData.add(
-      ChartSampleData(x: listQuantity[0].name!, y: listQuantity[0].quantity!, color:  kOrange),
+      ChartSampleData(
+          x: listQuantity[0].name!,
+          y: listQuantity[0].quantity!,
+          color: kOrange),
     );
     listCharData.add(
-      ChartSampleData(x: listQuantity[1].name!, y: listQuantity[1].quantity!, color:  kViolet),
+      ChartSampleData(
+          x: listQuantity[1].name!,
+          y: listQuantity[1].quantity!,
+          color: kViolet),
     );
     listCharData.add(
-      ChartSampleData(x: listQuantity[2].name!, y: listQuantity[2].quantity!, color: kBlueChart),
+      ChartSampleData(
+          x: listQuantity[2].name!,
+          y: listQuantity[2].quantity!,
+          color: kBlueChart),
     );
 
     super.initState();

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/const/api.dart';
-
-import '../../const.dart';
-import '../../model/ChartModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../const/const.dart';
+import '../../model/ChartModel.dart';
 import '../../model/document_unprocess/document_filter.dart';
 
 class CollumChartWidget extends StatefulWidget {

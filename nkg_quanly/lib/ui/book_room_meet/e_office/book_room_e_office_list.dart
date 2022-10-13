@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_search.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
-import '../../../const.dart';
+import 'package:nkg_quanly/viewmodel/date_picker_controller.dart';
+
+import '../../../const/const.dart';
 import '../../../const/style.dart';
-import '../../../const/ultils.dart';
+import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../../model/meeting_room/meeting_room_model.dart';
-import '../meeting_room_detail.dart';
+import '../book_room_list.dart';
 
 class BookRoomEOfficeList extends GetView {
   final String? header;
-  final MenuController menuController = Get.put(MenuController());
+
   final roomMeetingViewModel = Get.put(RoomMeetingViewModel());
 
   BookRoomEOfficeList({this.header});
@@ -32,49 +33,7 @@ class BookRoomEOfficeList extends GetView {
               ),
               context),
           //date table
-          headerTableDate(
-              Obx(() => TableCalendar(
-                  locale: 'vi_VN',
-                  headerVisible: false,
-                  calendarFormat: roomMeetingViewModel.rxCalendarFormat.value,
-                  firstDay: DateTime.utc(2010, 10, 16),
-                  lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: roomMeetingViewModel.rxSelectedDay.value,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(
-                        roomMeetingViewModel.rxSelectedDay.value, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) async {
-                    if (!isSameDay(roomMeetingViewModel.rxSelectedDay.value,
-                        selectedDay)) {
-                      roomMeetingViewModel.onSelectDay(selectedDay);
-                    }
-                  },
-                  onFormatChanged: (format) {
-                    if (roomMeetingViewModel.rxCalendarFormat.value != format) {
-                      // Call `setState()` when updating calendar format
-                      roomMeetingViewModel.rxCalendarFormat.value = format;
-                    }
-                  })),
-              Center(
-                  child: InkWell(
-                onTap: () {
-                  if (roomMeetingViewModel.rxCalendarFormat.value !=
-                      CalendarFormat.month) {
-                    roomMeetingViewModel.switchFormat(CalendarFormat.month);
-                  } else {
-                    roomMeetingViewModel.switchFormat(CalendarFormat.week);
-                  }
-                },
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                    child: Image.asset(
-                      "assets/icons/ic_showmore.png",
-                      height: 15,
-                      width: 80,
-                    )),
-              )),
-              context),
+          headerTableDatePicker(context, roomMeetingViewModel),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -96,12 +55,15 @@ class BookRoomEOfficeList extends GetView {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                     child: Row(children: [
-                     Obx(() => (roomMeetingViewModel
-                      .rxMeetingRoomStatistic.value.total != null) ? Text(
-                         roomMeetingViewModel
-                             .rxMeetingRoomStatistic.value.total
-                             .toString(),
-                         style: textBlueCountTotalStyle) : const Text("")) ,
+                      Obx(() => (roomMeetingViewModel
+                                  .rxMeetingRoomStatistic.value.total !=
+                              null)
+                          ? Text(
+                              roomMeetingViewModel
+                                  .rxMeetingRoomStatistic.value.total
+                                  .toString(),
+                              style: textBlueCountTotalStyle)
+                          : const Text("")),
                       const Padding(
                           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                           child: Icon(
@@ -212,9 +174,12 @@ class BookRoomEOfficeList extends GetView {
                                   //     id: roomMeetingViewModel
                                   //         .rxMeetingRoomItems[index]!));
                                 },
-                                child: Text(""));
+                                child: MeetingRoomItem(
+                                    index,
+                                    roomMeetingViewModel
+                                        .rxMeetingRoomItems[index]));
                           })
-                      : const Text("Hôm nay không có lịch họp nào"))),
+                      : noData())),
               //bottom
               //MeetingRoomItem(
               //                                     index,
@@ -235,8 +200,7 @@ class BookRoomEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          roomMeetingViewModel.rxSelectedDay.value =
-                              DateTime.now();
+                          menuController.rxSelectedDay.value = DateTime.now();
                           roomMeetingViewModel.onSelectDay(DateTime.now());
                           roomMeetingViewModel.swtichBottomButton(0);
                         },
@@ -279,7 +243,6 @@ class BookRoomEOfficeList extends GetView {
     );
   }
 }
-
 
 //
 // class MeetingRoomItem extends StatelessWidget {
@@ -353,11 +316,9 @@ class BookRoomEOfficeList extends GetView {
 // }
 
 class FilterRoomMeetingBottomSheet extends StatelessWidget {
-  const FilterRoomMeetingBottomSheet(
-      this.menuController, this.roomMeetingViewModel,
+  const FilterRoomMeetingBottomSheet(this.roomMeetingViewModel,
       {Key? key})
       : super(key: key);
-  final MenuController? menuController;
   final RoomMeetingViewModel? roomMeetingViewModel;
 
   @override

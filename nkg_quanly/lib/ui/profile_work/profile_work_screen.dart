@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 
-import '../../const.dart';
+import '../../const/const.dart';
+import '../../const/widget.dart';
 import '../../model/document/document_statistic_model.dart';
 import '../chart/column_chart2.dart';
 import '../document_nonapproved/document_nonapproved_list.dart';
@@ -69,7 +70,7 @@ class ProfileWorkScreen extends GetView {
                               SizedBox(
                                 height: 120,
                                 child: GridView.count(
-                                  childAspectRatio: 3/2,
+                                  childAspectRatio: 3 / 2,
                                   crossAxisSpacing: 20,
                                   mainAxisSpacing: 1,
                                   crossAxisCount: 3,
@@ -87,7 +88,7 @@ class ProfileWorkScreen extends GetView {
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text('Đã thu hồi'),
                                         Text('300',
@@ -98,7 +99,7 @@ class ProfileWorkScreen extends GetView {
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text('Đang xử lý'),
                                         Text('300',
@@ -109,7 +110,7 @@ class ProfileWorkScreen extends GetView {
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text('Đã hoàn thành'),
                                         Text('300',
@@ -120,7 +121,7 @@ class ProfileWorkScreen extends GetView {
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text('Quá hạn xủ lý'),
                                         Text('300',
@@ -131,7 +132,7 @@ class ProfileWorkScreen extends GetView {
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text('Trong hạn xử lý'),
                                         Text('300',
@@ -140,8 +141,6 @@ class ProfileWorkScreen extends GetView {
                                                 fontSize: 20))
                                       ],
                                     ),
-
-
                                   ],
                                 ),
                               ),

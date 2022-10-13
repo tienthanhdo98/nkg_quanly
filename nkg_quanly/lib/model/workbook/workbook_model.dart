@@ -7,10 +7,10 @@ class WorkbookModel {
 
   WorkbookModel(
       {this.items,
-        this.pageIndex,
-        this.pageSize,
-        this.totalRecords,
-        this.pageCount});
+      this.pageIndex,
+      this.pageSize,
+      this.totalRecords,
+      this.pageCount});
 
   WorkbookModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
@@ -52,15 +52,15 @@ class WorkBookListItems {
 
   WorkBookListItems(
       {this.id,
-        this.workName,
-        this.groupWorkName,
-        this.groupWorkId,
-        this.description,
-        this.createdDate,
-        this.worker,
-        this.workBy,
-        this.status,
-        this.important});
+      this.workName,
+      this.groupWorkName,
+      this.groupWorkId,
+      this.description,
+      this.createdDate,
+      this.worker,
+      this.workBy,
+      this.status,
+      this.important});
 
   WorkBookListItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];

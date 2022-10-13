@@ -7,10 +7,10 @@ class BirthDayModel {
 
   BirthDayModel(
       {this.items,
-        this.pageIndex,
-        this.pageSize,
-        this.totalRecords,
-        this.pageCount});
+      this.pageIndex,
+      this.pageSize,
+      this.totalRecords,
+      this.pageCount});
 
   BirthDayModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
@@ -48,11 +48,11 @@ class BirthDayListItems {
 
   BirthDayListItems(
       {this.id,
-        this.employeeName,
-        this.dateOfBirth,
-        this.position,
-        this.organizationId,
-        this.organizationName});
+      this.employeeName,
+      this.dateOfBirth,
+      this.position,
+      this.organizationId,
+      this.organizationName});
 
   BirthDayListItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];

@@ -9,12 +9,12 @@ class ReportStatisticModel {
 
   ReportStatisticModel(
       {this.tong,
-        this.daTiepNhan,
-        this.daGiao,
-        this.dungHan,
-        this.chuaDenHan,
-        this.somHan,
-        this.quaHan});
+      this.daTiepNhan,
+      this.daGiao,
+      this.dungHan,
+      this.chuaDenHan,
+      this.somHan,
+      this.quaHan});
 
   ReportStatisticModel.fromJson(Map<String, dynamic> json) {
     tong = json['tong'];

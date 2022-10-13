@@ -2,23 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_search.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
-import 'package:nkg_quanly/ui/menu/MenuController.dart';
-import '../../const.dart';
+import 'package:nkg_quanly/viewmodel/date_picker_controller.dart';
+
+import '../../const/const.dart';
 import '../../const/style.dart';
-import '../../const/ultils.dart';
+import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/meeting_room/meeting_room_model.dart';
-import 'meeting_room_detail.dart';
 
 class BookRoomList extends GetView {
   String? header;
-  final MenuController menuController = Get.put(MenuController());
+
   final roomMeetingViewModel = Get.put(RoomMeetingViewModel());
-  int selectedButton = 0;
 
   BookRoomList({this.header});
-
-  int selected = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,48 +31,7 @@ class BookRoomList extends GetView {
               ),
               context),
           //date table
-          headerTableDate( Obx(() => TableCalendar(
-              locale: 'vi_VN',
-              headerVisible: false,
-              calendarFormat: roomMeetingViewModel.rxCalendarFormat.value,
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: roomMeetingViewModel.rxSelectedDay.value,
-              selectedDayPredicate: (day) {
-                return isSameDay(
-                    roomMeetingViewModel.rxSelectedDay.value, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) async {
-                if (!isSameDay(roomMeetingViewModel.rxSelectedDay.value,
-                    selectedDay)) {
-                  roomMeetingViewModel.onSelectDay(selectedDay);
-                }
-              },
-              onFormatChanged: (format) {
-                if (roomMeetingViewModel.rxCalendarFormat.value !=
-                    format) {
-                  // Call `setState()` when updating calendar format
-                  roomMeetingViewModel.rxCalendarFormat.value = format;
-                }
-              })),
-              Center(
-                  child: InkWell(
-                    onTap: () {
-                      if (roomMeetingViewModel.rxCalendarFormat.value !=
-                          CalendarFormat.month) {
-                        roomMeetingViewModel.switchFormat(CalendarFormat.month);
-                      } else {
-                        roomMeetingViewModel.switchFormat(CalendarFormat.week);
-                      }
-                    },
-                    child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                        child: Image.asset(
-                          "assets/icons/ic_showmore.png",
-                          height: 15,
-                          width: 80,
-                        )),
-                  )),context),
+          headerTableDatePicker(context, roomMeetingViewModel),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -111,7 +67,7 @@ class BookRoomList extends GetView {
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "Cả ngày",
+                            "Tên phòng họp",
                             style: Theme.of(context).textTheme.headline5,
                           ),
                         ),
@@ -146,9 +102,12 @@ class BookRoomList extends GetView {
                                   //     id: roomMeetingViewModel
                                   //         .rxMeetingRoomItems[index].id!));
                                 },
-                                child: Text(""));
+                                child: MeetingRoomItem(
+                                    index,
+                                    roomMeetingViewModel
+                                        .rxMeetingRoomItems[index]));
                           })
-                      : const Text("Hôm nay không có lịch họp nào"))),
+                      : noData())),
               //bottom
             ]),
           )),
@@ -165,8 +124,7 @@ class BookRoomList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          roomMeetingViewModel.rxSelectedDay.value =
-                              DateTime.now();
+                          menuController.rxSelectedDay.value = DateTime.now();
                           roomMeetingViewModel.onSelectDay(DateTime.now());
                           roomMeetingViewModel.swtichBottomButton(0);
                         },
@@ -177,9 +135,8 @@ class BookRoomList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-
                           DateTime dateTo =
-                          dateNow.add(const Duration(days: 7));
+                              dateNow.add(const Duration(days: 7));
                           String strdateFrom = formatDateToString(dateNow);
                           String strdateTo = formatDateToString(dateTo);
                           print(strdateFrom);
@@ -211,81 +168,62 @@ class BookRoomList extends GetView {
   }
 }
 
-// class MeetingRoomItem extends StatelessWidget {
-//   MeetingRoomItem(this.index, this.docModel);
-//
-//   int? index;
-//   MeetingRoomItems? docModel;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.fromLTRB(0, 0, 0, 25),
-//       child: Row(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//            Padding(
-//             padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-//             child: SizedBox(
-//               width: 100,
-//               child: Text(formatDateToStringHour(docModel!.fromTime!,docModel!.toTime!)),
-//             ),
-//           ),
-//           Flexible(
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(
-//                   "${docModel!.name}",
-//                   style: Theme.of(context).textTheme.headline5,
-//                 ),
-//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-//                 signWidget(docModel!),
-//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-//                 Row(
-//                   children: [
-//                     Image.asset(
-//                       "assets/icons/ic_camera.png",
-//                       height: 18,
-//                       width: 18,
-//                       fit: BoxFit.fill,
-//                     ),
-//                     const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
-//                     Text(docModel!.roomName!,
-//                         style: CustomTextStyle.grayColorTextStyle)
-//                   ],
-//                 ),
-//                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-//                 Row(
-//                   children: [
-//                     Image.asset(
-//                       'assets/icons/ic_user.png',
-//                       width: 30,
-//                       height: 30,
-//                     ),
-//                     const Padding(padding: EdgeInsets.fromLTRB(8, 0, 0, 0)),
-//                     Text(
-//                       docModel!.registerUser!,
-//                       style: const TextStyle(
-//                           fontSize: 12, fontWeight: FontWeight.w500),
-//                     )
-//                   ],
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+class MeetingRoomItem extends StatelessWidget {
+  MeetingRoomItem(this.index, this.docModel);
+
+  int? index;
+  MeetingRoomItems? docModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: SizedBox(
+                  width: 100,
+                  child: Text(docModel!.roomName!, style: Theme.of(context).textTheme.headline5),
+                ),
+              ),
+
+              Expanded(
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: docModel!.mettings!.length,
+                      itemBuilder: (context, index) {
+                        var itemMeeting = docModel!.mettings![index];
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(formatDateToStringHour(itemMeeting.fromTime!,itemMeeting.toTime!), style: Theme.of(context).textTheme.headline5),
+                              Text(itemMeeting.name!)
+                            ],
+                          ),
+                        );
+                      })),
+
+            ],
+          ),
+        ),
+        const Divider(thickness: 3,),
+      ],
+    );
+  }
+}
 
 class FilterRoomMeetingBottomSheet extends StatelessWidget {
-  const FilterRoomMeetingBottomSheet(
-      this.menuController, this.roomMeetingViewModel,
-      {Key? key})
+  const FilterRoomMeetingBottomSheet(this.roomMeetingViewModel, {Key? key})
       : super(key: key);
-  final MenuController? menuController;
   final RoomMeetingViewModel? roomMeetingViewModel;
 
   @override
@@ -466,7 +404,6 @@ class FilterRoomMeetingBottomSheet extends StatelessWidget {
                                   status += value;
                                 });
                               }
-
                             }
                             print(status);
                             roomMeetingViewModel!

@@ -7,10 +7,10 @@ class DocumentOutModel {
 
   DocumentOutModel(
       {this.items,
-        this.pageIndex,
-        this.pageSize,
-        this.totalRecords,
-        this.pageCount});
+      this.pageIndex,
+      this.pageSize,
+      this.totalRecords,
+      this.pageCount});
 
   DocumentOutModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
@@ -54,17 +54,17 @@ class DocumentOutItems {
 
   DocumentOutItems(
       {this.id,
-        this.code,
-        this.name,
-        this.toDate,
-        this.departmentPublic,
-        this.endDate,
-        this.status,
-        this.released,
-        this.dateDone,
-        this.state,
-        this.level,
-        this.detail});
+      this.code,
+      this.name,
+      this.toDate,
+      this.departmentPublic,
+      this.endDate,
+      this.status,
+      this.released,
+      this.dateDone,
+      this.state,
+      this.level,
+      this.detail});
 
   DocumentOutItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];
