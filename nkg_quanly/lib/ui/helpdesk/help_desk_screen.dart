@@ -22,93 +22,98 @@ class HelpDeskScreen extends GetView {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child:SingleChildScrollView(
-          child: Column(children: [
-            Stack(
-              children: [
-                Image.asset("assets/bgtophome.png",
-                    height: 220, width: double.infinity, fit: BoxFit.cover),
-                headerWidget(header!, context),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
-                  child: border(
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Column(children: [
-                          Row(
-                            children: [
-                              Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  const Text('Tổng số câu hỏi'),
-                                  Obx(() => Text(
-                                   checkingStringNull( helpdeskViewModel.rxHelpdeskModel.value.totalRecords?.toString()),
-                                    style: const TextStyle(
-                                        color: kBlueButton, fontSize: 40),
-                                  ))
-                                ],
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Image.asset(
-                                    icon!,
-                                    width: 50,
-                                    height: 50,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            child: Divider(
-                              thickness: 1,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 60,
-                            child:Obx(() => GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4,
-                              ),
-                              itemCount: helpdeskViewModel.rxHelpdeskListStatistic.length,
-                              itemBuilder: (context,index){
-                                var item = helpdeskViewModel.rxHelpdeskListStatistic[index];
-                                return   Column(
+        child:Center(
+          child: SingleChildScrollView(
+            child: Obx(() =>(helpdeskViewModel.rxIsLoadingScreen.value == false) ? Column(children: [
+              Stack(
+                children: [
+                  Image.asset("assets/bgtophome.png",
+                      height: 220, width: double.infinity, fit: BoxFit.cover),
+                  headerWidget(header!, context),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
+                    child: border(
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(children: [
+                            Row(
+                              children: [
+                                Column(
                                   crossAxisAlignment:
                                   CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      height: 30,
-                                      child: Text(item.name!,
-                                          style: CustomTextStyle
-                                              .robotow400s12TextStyle),
-                                    ),
-                                    Text(
-                                        item.total.toString()
-                                            .toString(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20))
+                                    const Text('Tổng số câu hỏi'),
+                                    Obx(() => Text(
+                                     checkingStringNull( helpdeskViewModel.rxHelpdeskModel.value.totalRecords?.toString()),
+                                      style: const TextStyle(
+                                          color: kBlueButton, fontSize: 40),
+                                    ))
                                   ],
-                                );
-                              },
-                            )),
-                          )
-                        ]),
-                      ),
-                      context),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Padding(
+                                ),
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Image.asset(
+                                      icon!,
+                                      width: 50,
+                                      height: 50,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              child: Divider(
+                                thickness: 1,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 60,
+                              child:Obx(() => GridView.builder(
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4,
+                                ),
+                                itemCount: helpdeskViewModel.rxHelpdeskListStatistic.length,
+                                itemBuilder: (context,index){
+                                  var item = helpdeskViewModel.rxHelpdeskListStatistic[index];
+                                  return   Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 30,
+                                        child: Text(item.name!,
+                                            style: CustomTextStyle
+                                                .robotow400s12TextStyle),
+                                      ),
+                                      Text(
+                                          item.total.toString()
+                                              .toString(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20))
+                                    ],
+                                  );
+                                },
+                              )),
+                            )
+                          ]),
+                        ),
+                        context),
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                child: SizedBox(
+                  height: 50,
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    children: [
+                      Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                         child: Obx(() => ElevatedButton(
                           style:
@@ -122,9 +127,8 @@ class HelpDeskScreen extends GetView {
                           },
                           child: const Text("Tình hình xử lý"),
                         )),
-                      )),
-                  Expanded(
-                      child: Padding(
+                      ),
+                      Padding(
                           padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                           child: Obx(
                                 () => ElevatedButton(
@@ -138,35 +142,37 @@ class HelpDeskScreen extends GetView {
                                 helpdeskViewModel.selectedChartButton(1);
                               },
                               child:
-                              const Text("SL câu hỏi 5 ngày gần nhất"),
+                              const Text("SL câu hỏi 5 ngày gần nhất",  maxLines: 1,),
                             ),
-                          )))
-                ],
-              ),
-            ),
-            Obx(
-                  () => chartItemForProfile(
-                      helpdeskViewModel.selectedChartButton.value,
-                      helpdeskViewModel,
+                          ))
+                    ],
                   ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Get.to(() => HelpDeskList(
-                      header: header,
-                    ));
-                  },
-                  child:
-                  buttonShowListScreen("Xem danh sách câu hỏi"),
-                  style: bottomButtonStyle,
-                ),
+                )
               ),
-            )
-          ]),
+              Obx(
+                    () => chartItemForProfile(
+                        helpdeskViewModel.selectedChartButton.value,
+                        helpdeskViewModel,
+                    ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Get.to(() => HelpDeskList(
+                        header: header,
+                      ));
+                    },
+                    child:
+                    buttonShowListScreen("Xem danh sách câu hỏi"),
+                    style: bottomButtonStyle,
+                  ),
+                ),
+              )
+            ]) : loadingIcon(),
+          )),
         ),
       ),
     );
@@ -191,6 +197,6 @@ Widget chartItemForProfile(int index, HelpdeskViewModel helpdeskViewModel) {
   }
   else
     {
-      return SizedBox(height: 300,);
+      return const SizedBox(height: 300,);
     }
 }

@@ -165,27 +165,11 @@ class PMisScreen extends GetView {
                                     padding: const EdgeInsets.fromLTRB(
                                         15, 15, 15, 15),
                                     child: Column(children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                              child: Text(
-                                            "SỐ LƯỢNG CÔNG CHỨC THEO ĐƠN VỊ",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline1,
-                                          )),
-                                          const Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  15, 0, 0, 0)),
-                                          InkWell(
-                                              onTap: () {
-                                                refreshChart(pmisViewModel);
-                                              },
-                                              child: Image.asset(
-                                                  "assets/icons/ic_refresh.png",
-                                                  width: 16,
-                                                  height: 16)),
-                                        ],
+                                      Text(
+                                        "SỐ LƯỢNG CÔNG CHỨC THEO ĐƠN VỊ",
+                                        style: Theme.of(context)
+                                        .textTheme
+                                        .headline1,
                                       ),
                                       PmisCollumChartWidget(
                                         key: UniqueKey(),
@@ -203,27 +187,11 @@ class PMisScreen extends GetView {
                                     padding: const EdgeInsets.fromLTRB(
                                         15, 15, 15, 15),
                                     child: Column(children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                              child: Text(
-                                            "SỐ LƯỢNG CÔNG CHỨC THEO NĂM",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline1,
-                                          )),
-                                          const Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  15, 0, 0, 0)),
-                                          InkWell(
-                                              onTap: () {
-                                                refreshChart(pmisViewModel);
-                                              },
-                                              child: Image.asset(
-                                                  "assets/icons/ic_refresh.png",
-                                                  width: 16,
-                                                  height: 16)),
-                                        ],
+                                      Text(
+                                        "SỐ LƯỢNG CÔNG CHỨC THEO NĂM",
+                                        style: Theme.of(context)
+                                        .textTheme
+                                        .headline1,
                                       ),
                                       PmisCollumChartWidget(
                                         key: UniqueKey(),
@@ -297,7 +265,6 @@ class FilterPmisUnitBottomSheet extends StatelessWidget {
                         style:
                             const TextStyle(color: Colors.black, fontSize: 14),
                         onSubmitted: (value) {
-                          // contactOrganizationViewModel!.rxOrganList.where((item) => item.name!.contains(value));
                           pmisViewModel!.searchInnUnitList(value);
                         },
                       ),

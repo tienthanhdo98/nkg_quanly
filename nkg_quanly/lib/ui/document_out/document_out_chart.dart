@@ -98,7 +98,7 @@ class DocumentOutPieChartState extends State<DocumentOutPieChart> {
               legendChart("Phát hành", kOrange),
             ],
           ),
-          Text('Biểu đồ minh họa')
+
         ],
       ),
     );
@@ -116,7 +116,7 @@ class DocumentOutPieChartState extends State<DocumentOutPieChart> {
     return <PieSeries<PieCharData, String>>[
       PieSeries<PieCharData, String>(
           radius: '85%',
-          dataLabelMapper: (PieCharData data, _) => data.title,
+          dataLabelMapper: (PieCharData data, _) => (data.title != "0%") ?  data.title : " ",
           dataLabelSettings: const DataLabelSettings(isVisible: true),
           dataSource: listChartData,
           startAngle: 100,

@@ -13,6 +13,7 @@ import '../../theme/theme_data.dart';
 import 'add_new_contact_screen.dart';
 import 'contact_individual_detail.dart';
 import 'contact_individual_viewmodel.dart';
+import 'individual_contact_search.dart';
 
 class IndividualContactsList extends GetView {
   String? header;
@@ -27,10 +28,10 @@ class IndividualContactsList extends GetView {
           child: Column(
             children: [
               //header
-              headerWidgetSeatch(
+              headerWidgetSearch(
                   "Danh bạ điện tử cá nhân",
-                  DocumentnonapprovedSearch(
-                    header: 'Danh bạ điện tử cá nhân',
+                  IndividualContactsSearch(
+                      contactIndividualViewModel
                   ),
                   context),
               //list
@@ -107,7 +108,7 @@ class IndividualContactsList extends GetView {
                       itemCount:
                       contactIndividualViewModel.rxContactListItems.length,
                       itemBuilder: (context, index) {
-                        return ContactsItem(
+                        return IndividualContactsItem(
                             index,
                             contactIndividualViewModel
                                 .rxContactListItems[index],
@@ -119,8 +120,8 @@ class IndividualContactsList extends GetView {
   }
 }
 
-class ContactsItem extends StatelessWidget {
-  ContactsItem(this.index, this.docModel, this.contactIndividualViewModel);
+class IndividualContactsItem extends StatelessWidget {
+  IndividualContactsItem(this.index, this.docModel, this.contactIndividualViewModel);
 
   final int? index;
   final ContactListItems? docModel;

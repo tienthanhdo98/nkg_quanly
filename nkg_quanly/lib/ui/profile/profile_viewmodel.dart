@@ -162,6 +162,8 @@ class ProfileViewModel extends GetxController {
     rxProfileItems.value = profileModel.items!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");
@@ -190,6 +192,8 @@ class ProfileViewModel extends GetxController {
     rxProfileItems.value = profileModel.items!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");
@@ -216,6 +220,8 @@ class ProfileViewModel extends GetxController {
     rxProfileItems.value = profileModel.items!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");
@@ -244,6 +250,8 @@ class ProfileViewModel extends GetxController {
     rxProfileItems.value = profileModel.items!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");
@@ -272,6 +280,8 @@ class ProfileViewModel extends GetxController {
     rxProfileItems.value = profileModel.items!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");

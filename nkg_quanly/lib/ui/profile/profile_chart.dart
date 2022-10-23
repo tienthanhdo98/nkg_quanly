@@ -93,7 +93,7 @@ class ProfileChartState extends State<ProfileChart> {
             ],
           ),
           SizedBox(height: 230, child: _buildDefaultColumnChart()),
-          Center(child: Text('Biểu đồ minh họa'))
+
         ],
       ),
     );

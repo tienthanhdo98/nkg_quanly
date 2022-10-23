@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/const/widget.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../const/const.dart';
@@ -66,6 +67,7 @@ class MissionSearch extends GetView {
                                   onSubmitted: (value) {
                                     print(value);
                                     searchController.searchDataMission(value);
+                                    searchController.changeLoadingState(true);
                                   },
                                   onChanged: (value) {
                                     //print(value);
@@ -84,10 +86,11 @@ class MissionSearch extends GetView {
               child: Container(
                 height: double.infinity,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                   child: SizedBox(
                     height: 200,
-                    child: Obx(() => ListView.builder(
+                    child: Obx(() => (searchController.isLoading.value == false) ? ListView.builder(
+                        controller: searchController.controller,
                         itemCount: searchController.listDataMission.length,
                         itemBuilder: (context, index) {
                           return InkWell(
@@ -98,7 +101,7 @@ class MissionSearch extends GetView {
                               },
                               child: MissionListItem(index,
                                   searchController.listDataMission[index]));
-                        })),
+                        }) : loadingIcon()),
                   ),
                 ),
               ),

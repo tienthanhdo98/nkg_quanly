@@ -26,7 +26,7 @@ class ProfileList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
               DocumenOutSearch(
                 header: header,

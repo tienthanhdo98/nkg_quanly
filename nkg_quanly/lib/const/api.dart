@@ -139,3 +139,15 @@ const getGuidelineDownload = "http://123.31.31.237:6002/api/guidelines/download-
 //group work book
 const apiSearchGroupWorkBook = "http://123.31.31.237:6002/api/groupworkbook/search";
 const apiActionSearchGroupWorkBook = "http://123.31.31.237:6002/api/groupworkbook";
+
+//analysis report
+const  getAnalysisReportProvince = "http://123.31.31.237:6002/api/analysisreport/get-province";
+const  getAnalysisReportRegion = "http://123.31.31.237:6002/api/analysisreport/get-region";
+const  getAnalysisReportSemester = "http://123.31.31.237:6002/api/analysisreport/get-semester";
+const  getAnalysisReportSchoolYear = "http://123.31.31.237:6002/api/analysisreport/get-schoolyear";
+const  getAnalysisReportSchoolLevel = "http://123.31.31.237:6002/api/analysisreport/get-schoollevel";
+const  getClassification = "http://123.31.31.237:6002/api/analysisreport/get-classification";
+const  getPoint = "http://123.31.31.237:6002/api/analysisreport/get-point";
+const  postPreSchoolChart = "http://123.31.31.237:6002/api/statisticpreschool/get-statistic-chart";
+const  postEducationChart = "http://123.31.31.237:6002/api/statisticuniversaleducation/get-statistic-chart";
+

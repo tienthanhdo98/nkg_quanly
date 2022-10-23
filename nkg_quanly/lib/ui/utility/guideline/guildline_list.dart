@@ -24,10 +24,9 @@ class GuidelineList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               "Hướng dẫn sử dụng",
               DocumentnonapprovedSearch(
-                header: 'Hướng dẫn sử dụng',
               ),
               context),
 
@@ -43,11 +42,27 @@ class GuidelineList extends GetView {
                   itemCount:
                       guildlineViewModel.rxGuideLineListItems.length,
                   itemBuilder: (context, index) {
-                    return GuideItem(
-                        index,
-                        guildlineViewModel
-                            .rxGuideLineListItems[index],
-                        guildlineViewModel);
+                  var item =  guildlineViewModel.rxGuideLineListItems[index];
+                    return InkWell(
+                      onTap: ()async {
+                        var urlFile = "http://123.31.31.237:6002/api/guidelines/download-file/${item.id}";
+                        print(urlFile);
+                        if(await canLaunchUrl(Uri.parse(urlFile))) {
+                          launchUrl(
+                            Uri.parse(urlFile),
+                            webViewConfiguration: const WebViewConfiguration(
+                                enableJavaScript: true,
+                                enableDomStorage: true
+                            ),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
+                      },
+                      child: GuideItem(
+                          index,
+                          item,
+                          guildlineViewModel),
+                    );
                   }) : loadingIcon())),
         ],
       )),
@@ -77,11 +92,7 @@ class GuideItem extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
             child: Text("File đính kèm",style: CustomTextStyle.grayColorTextStyle),
           ),
-          InkWell(
-              onTap: ()async {
-                  launchUrl(Uri.parse(await guildlineViewModel!.getLinkDowloadGuilde(docModel!.id!)));
-                },
-              child: Text(docModel!.fileName!,style: blueTextStyle)),
+          Text(docModel!.fileName!,style: blueTextStyle),
           const Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 10)),
           const Divider(
             thickness: 1.5,

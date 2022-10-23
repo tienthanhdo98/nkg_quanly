@@ -33,6 +33,7 @@ class HelpHeskChartWidgetState extends State<HelpHeskChartWidget> {
           title: calcuPercen(listHelpDeskStatistic![i].total!, total),
           value: listHelpDeskStatistic![i].total!,
           color: listColorChart[i]));
+      print(calcuPercen(listHelpDeskStatistic![i].total!, total));
     }
     super.initState();
   }
@@ -45,23 +46,20 @@ class HelpHeskChartWidgetState extends State<HelpHeskChartWidget> {
         children: [
           SizedBox(height: 200, width: 220, child: _buildGroupingPieChart()),
           const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 10)),
-          SizedBox(
-            child: Center(
-              child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisExtent: 30,
-                  ),
-                  itemCount: listHelpDeskStatistic!.length,
-                  itemBuilder: (context, index) {
-                    var item = listHelpDeskStatistic![index];
-                    return Align(
-                        alignment: Alignment.center,
-                        child: legendChart(item.name!, listColorChart[index]));
-                  }),
-            ),
+          Container(
+            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 30,
+                ),
+                itemCount: listHelpDeskStatistic!.length,
+                itemBuilder: (context, index) {
+                  var item = listHelpDeskStatistic![index];
+                  return legendChart(item.name!, listColorChart[index]);
+                }),
           ),
         ],
       ),
@@ -80,16 +78,15 @@ class HelpHeskChartWidgetState extends State<HelpHeskChartWidget> {
     return <PieSeries<PieCharData, String>>[
       PieSeries<PieCharData, String>(
           radius: '100%',
-          dataLabelMapper: (PieCharData data, _) => data.title,
+          dataLabelMapper: (PieCharData data, _) =>(data.title != "0%") ?  data.title : " ",
           dataLabelSettings: const DataLabelSettings(isVisible: true),
           dataSource: listChartData,
           startAngle: 100,
           endAngle: 100,
-
           /// To enable and specify the group mode for pie chart.
           pointColorMapper: (PieCharData data, _) => data.color,
           xValueMapper: (PieCharData data, _) => data.title,
-          yValueMapper: (PieCharData data, _) => data.value)
+          yValueMapper: (PieCharData data, _) =>  data.value )
     ];
   }
 }

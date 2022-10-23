@@ -27,7 +27,7 @@ class DocumentOutList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
               DocumenOutSearch(
                 header: header,
@@ -62,7 +62,8 @@ class DocumentOutList extends GetView {
                             builder: (BuildContext context) {
                               return SizedBox(
                                   height: 400,
-                                  child: FilterDocumentOutBottomSheet(documentOutViewModel));
+                                  child: FilterDocumentOutBottomSheet(
+                                      documentOutViewModel));
                             },
                           );
                         },
@@ -84,6 +85,7 @@ class DocumentOutList extends GetView {
               child: Obx(() => (documentOutViewModel
                       .rxDocumentOutItems.isNotEmpty)
                   ? ListView.builder(
+                      controller: documentOutViewModel.controller,
                       itemCount: documentOutViewModel.rxDocumentOutItems.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -208,7 +210,7 @@ class DocOutListItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Ngày đến',
+                    const Text('Ngày khởi tạo',
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -219,7 +221,7 @@ class DocOutListItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Thời hạn',
+                    const Text('Hạn xử lý',
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -240,8 +242,7 @@ class DocOutListItem extends StatelessWidget {
 }
 
 class FilterDocumentOutBottomSheet extends StatelessWidget {
-  const FilterDocumentOutBottomSheet(this.documentOutViewModel,
-      {Key? key})
+  const FilterDocumentOutBottomSheet(this.documentOutViewModel, {Key? key})
       : super(key: key);
   final DocumentOutViewModel? documentOutViewModel;
 
@@ -295,38 +296,8 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
               color: kBlueButton,
             ),
             // Tất cả trang thai
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Tất cả trạng thái',
-                      style: CustomTextStyle.roboto700TextStyle,
-                    ),
-                  ),
-                  Obx(() => (documentOutViewModel!.mapAllFilter.containsKey(3))
-                      ? InkWell(
-                          onTap: () {
-                            documentOutViewModel!.checkboxFilterAll(false, 3);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
-                      : InkWell(
-                          onTap: () {
-                            documentOutViewModel!.checkboxFilterAll(true, 3);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
-                ],
-              ),
-            ),
+            FilterAllItem(
+                'Tất cả trạng thái', 3, documentOutViewModel!.mapAllFilter),
             const Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Divider(
@@ -340,51 +311,8 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
                   itemCount: lisStatus.length,
                   itemBuilder: (context, index) {
                     var item = lisStatus[index];
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item,
-                                  style: CustomTextStyle.roboto400s16TextStyle,
-                                ),
-                              ),
-                              Obx(() => (documentOutViewModel!.mapStatusFilter
-                                      .containsKey(index))
-                                  ? InkWell(
-                                      onTap: () {
-                                        documentOutViewModel!.checkboxStatus(
-                                            false, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_active.png',
-                                        width: 30,
-                                        height: 30,
-                                      ))
-                                  : InkWell(
-                                      onTap: () {
-                                        documentOutViewModel!.checkboxStatus(
-                                            true, index, "$item;");
-                                      },
-                                      child: Image.asset(
-                                        'assets/icons/ic_checkbox_unactive.png',
-                                        width: 30,
-                                        height: 30,
-                                      )))
-                            ],
-                          ),
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Divider(
-                              thickness: 1,
-                              color: kgray,
-                            )),
-                      ],
-                    );
+                    return FilterItem(item, item.toString(), index,
+                        documentOutViewModel!.mapStatusFilter);
                   }),
             ),
 

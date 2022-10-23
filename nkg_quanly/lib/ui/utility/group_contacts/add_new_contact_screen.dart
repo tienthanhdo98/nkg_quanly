@@ -12,15 +12,17 @@ import 'contact_organization_viewmodel.dart';
 class AddNewContactScreen extends GetView {
   final contactOrganizationViewModel = Get.put(ContactOrganizationViewModel());
 
+  AddNewContactScreen({Key? key}) : super(key: key);
+  String? employeeName ;
+  String? organizationId;
+  String? organizationName ;
+  String? phoneNumber;
+  String? email;
+  String? address;
+  String? position;
   @override
   Widget build(BuildContext context) {
-    String? employeeName ;
-    String? organizationId;
-    String? organizationName ;
-    String? phoneNumber;
-    String? email;
-    String? address;
-    String? position;
+
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -179,6 +181,7 @@ class AddNewContactScreen extends GetView {
                                 hintStyle: const TextStyle(color: Colors.black),
                                 hintText: "Nhập số điện thoại",
                                 fillColor: kWhite),
+                            keyboardType: TextInputType.number,
                             style: Theme.of(context).textTheme.headline4,
                             onChanged: (value) {
                               phoneNumber = value;
@@ -286,10 +289,10 @@ class AddNewContactScreen extends GetView {
                                           print(email);
                                           print(address);
                                           print(position);
-                                          if (employeeName!.isNotEmpty ||
-                                              organizationName!.isNotEmpty ||
-                                              phoneNumber!.isNotEmpty ||
-                                              email!.isNotEmpty ||address!.isNotEmpty ||  position!.isNotEmpty) {
+                                          if (employeeName?.isNotEmpty == true ||
+                                              organizationName?.isNotEmpty== true ||
+                                              phoneNumber?.isNotEmpty == true||
+                                              email?.isNotEmpty == true||address?.isNotEmpty== true ||  position?.isNotEmpty== true) {
                                             contactOrganizationViewModel.addContact(
                                                 employeeName!,
                                                 position!,

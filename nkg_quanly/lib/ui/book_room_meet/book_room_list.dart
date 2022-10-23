@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/book_room_meet/room_meeting_search.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
-import 'package:nkg_quanly/viewmodel/date_picker_controller.dart';
+
 
 import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/meeting_room/meeting_room_model.dart';
+import 'booking_meeting_search.dart';
 
 class BookRoomList extends GetView {
   String? header;
@@ -24,10 +24,10 @@ class BookRoomList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
-              RoomMeetingSearch(
-                header: header,
+              BookingMeetingSearch(
+                  roomMeetingViewModel
               ),
               context),
           //date table

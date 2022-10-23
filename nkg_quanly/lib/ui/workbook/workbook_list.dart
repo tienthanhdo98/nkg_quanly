@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/workbook/update_work_screen.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_detail.dart';
+import 'package:nkg_quanly/ui/workbook/workbook_search.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
 import '../../const/const.dart';
@@ -26,10 +27,10 @@ class WorkBookList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
-              DocumentnonapprovedSearch(
-                header: header,
+              WorkbookSearch(
+                  workBookViewModel
               ),
               context),
           //date table
@@ -103,18 +104,13 @@ class WorkBookList extends GetView {
               )),
           Expanded(
               child: Obx(() => (workBookViewModel.rxWorkBookListItems.isNotEmpty) ? ListView.builder(
+                controller: workBookViewModel.controller,
                   itemCount: workBookViewModel.rxWorkBookListItems.length,
                   itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                          Get.to(() => WorkBookDetail(
-                              id: workBookViewModel
-                                  .rxWorkBookListItems[index].id!));
-                        },
-                        child: WorkBookItem(
-                            index,
-                            workBookViewModel.rxWorkBookListItems[index],
-                            workBookViewModel));
+                    return WorkBookItem(
+                        index,
+                        workBookViewModel.rxWorkBookListItems[index],
+                        workBookViewModel);
                   }) : loadingIcon())),
         ],
       )),
@@ -277,6 +273,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
+                  Get.back();
                   Get.to(() => WorkBookDetail(
                         id: docModel!.id!,
                       ));
@@ -306,6 +303,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
+                  Get.back();
                   Get.to(() => UpdateWorkBookScreen(docModel!));
                 },
                 child: Padding(
@@ -331,6 +329,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
+                  Get.back();
                   showModalBottomSheet<void>(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
@@ -651,143 +650,8 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
     );
   }
 }
-//
-// class FilterItem extends StatelessWidget {
-//   const FilterItem(
-//       this.item, this.workBookViewModel, this.index, this.rxMapFilter,
-//       {Key? key})
-//       : super(key: key);
-//
-//   final String item;
-//   final WorkBookViewModel? workBookViewModel;
-//   final int index;
-//   final RxMap rxMapFilter;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         Padding(
-//           padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-//           child: Obx(() => (rxMapFilter.containsKey(index))
-//               ? InkWell(
-//                   onTap: () {
-//                     workBookViewModel!.checkboxFilterValue(
-//                         false, index, "$item;", rxMapFilter);
-//                   },
-//                   child: Row(
-//                     children: [
-//                       Expanded(
-//                         child: Text(
-//                           item,
-//                           style: CustomTextStyle.roboto400s16TextStyle,
-//                         ),
-//                       ),
-//                       Image.asset(
-//                         'assets/icons/ic_checkbox_active.png',
-//                         width: 30,
-//                         height: 30,
-//                       )
-//                     ],
-//                   ),
-//                 )
-//               : InkWell(
-//             onTap: () {
-//               workBookViewModel!.checkboxFilterValue(
-//                   true, index, "$item;", rxMapFilter);
-//             },
-//             child: Row(
-//               children: [
-//                 Expanded(
-//                   child: Text(
-//                     item,
-//                     style: CustomTextStyle.roboto400s16TextStyle,
-//                   ),
-//                 ),
-//                 Image.asset(
-//                   'assets/icons/ic_checkbox_unactive.png',
-//                   width: 30,
-//                   height: 30,
-//                 )
-//               ],
-//             ),
-//           )),
-//         ),
-//         const Padding(
-//             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-//             child: Divider(
-//               thickness: 1,
-//               color: kgray,
-//             )),
-//       ],
-//     );
-//   }
-// }
-//
-// class FilterAllItem extends StatelessWidget {
-//   const FilterAllItem(
-//     this.workBookViewModel,
-//     this.title,
-//     this.index, {
-//     Key? key,
-//   }) : super(key: key);
-//
-//   final WorkBookViewModel? workBookViewModel;
-//   final String title;
-//   final int index;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-//         child: Obx(
-//           () => (workBookViewModel!.mapAllFilter.containsKey(index)
-//               ? InkWell(
-//                   onTap: () {
-//                     workBookViewModel!.checkboxFilterValue(
-//                         false, index, "", workBookViewModel!.mapAllFilter);
-//                   },
-//                   child: Row(
-//                     children: [
-//                       Expanded(
-//                         child: Text(
-//                           title,
-//                           style: CustomTextStyle.roboto700TextStyle,
-//                         ),
-//                       ),
-//                       Image.asset(
-//                         'assets/icons/ic_checkbox_active.png',
-//                         width: 30,
-//                         height: 30,
-//                       )
-//                     ],
-//                   ),
-//                 )
-//               : InkWell(
-//                   onTap: () {
-//                     workBookViewModel!.checkboxFilterValue(
-//                         true, index, "", workBookViewModel!.mapAllFilter);
-//                   },
-//                   child: Row(
-//                     children: [
-//                       Expanded(
-//                         child: Text(
-//                           title,
-//                           style: CustomTextStyle.roboto700TextStyle,
-//                         ),
-//                       ),
-//                       Image.asset(
-//                         'assets/icons/ic_checkbox_unactive.png',
-//                         width: 30,
-//                         height: 30,
-//                       )
-//                     ],
-//                   ),
-//                 )),
-//         ));
-//   }
-// }
+
 
 var listImportant = ["Không quan trọng", "Quan trọng"];
-var lisStatus = ["Chưa xử lý", "Đã xử lý"];
-final List<String> dropdownStatus = ["Chưa xử lý", "Đã xử lý"];
+var lisStatus = ["Đang xử lý", "Hoàn thành"];
+final List<String> dropdownStatus = ["Đang xử lý", "Hoàn thành"];

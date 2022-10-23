@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/workbook/workbook_list.dart';
-import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
-import '../../../model/contact_model/contact_model.dart';
 import '../../../model/group_workbook/group_workbook_model.dart';
+import '../../theme/theme_data.dart';
 import 'group_workbook_viewmodel.dart';
 
 
@@ -79,18 +77,8 @@ class UpdateGroupWorkBookScreen extends GetView {
                         ),
                       ),
                       TextField(
-                        controller: TextEditingController()..text = name!,
-                        decoration: InputDecoration(
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: kDarkGray, width: 1),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            filled: true,
-                            hintStyle: const TextStyle(color: Colors.black),
-                            hintText: "Nhập tên cán bộ",
-                            fillColor: kWhite),
+                        controller: TextEditingController()..text = checkingStringNull(name),
+                        decoration: decoTextField,
                         style: Theme.of(context).textTheme.headline4,
                         onChanged: (value) {
                           name = value;
@@ -108,18 +96,8 @@ class UpdateGroupWorkBookScreen extends GetView {
                         ),
                       ),
                       TextField(
-                        controller: TextEditingController()..text = dess!,
-                        decoration: InputDecoration(
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: kDarkGray, width: 1),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            filled: true,
-                            hintStyle: const TextStyle(color: Colors.black),
-                            hintText: "Nhập tên cán bộ",
-                            fillColor: kWhite),
+                        controller: TextEditingController()..text = checkingStringNull(dess),
+                        decoration: decoTextField,
                         style: Theme.of(context).textTheme.headline4,
                         onChanged: (value) {
                           dess = value;
@@ -146,9 +124,7 @@ class UpdateGroupWorkBookScreen extends GetView {
                                       Get.back();
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: kWhite,
-                                      //change background color of button
-                                      onPrimary: kBlueButton,
+                                      foregroundColor: kBlueButton, backgroundColor: kWhite,
                                       //change text color of button
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(25),

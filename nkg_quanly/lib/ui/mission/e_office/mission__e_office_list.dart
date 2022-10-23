@@ -25,7 +25,7 @@ class MissionEOfficeList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
               MissionSearch(
                 header: header,
@@ -205,6 +205,7 @@ class MissionEOfficeList extends GetView {
           Expanded(
               child: Obx(() => (missionViewModel.rxMissionItem.isNotEmpty)
                   ? ListView.builder(
+                      controller:   missionViewModel.controller,
                       itemCount: missionViewModel.rxMissionItem.length,
                       itemBuilder: (context, index) {
                         return InkWell(

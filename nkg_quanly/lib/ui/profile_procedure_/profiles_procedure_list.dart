@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/const/utils.dart';
-import 'package:nkg_quanly/viewmodel/date_picker_controller.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_proc_detail.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_proc_search.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profiles_procedure_viewmodel.dart';
@@ -26,7 +25,7 @@ class ProfilesProcedureList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
               ProfileProcSearch(
               ),
@@ -132,8 +131,10 @@ class ProfilesProcedureList extends GetView {
                       child: InkWell(
                           onTap: () {
                             menuController.rxSelectedDay.value = DateTime.now();
-                            profilesProcedureController
-                                .onSelectDay(DateTime.now());
+                            String strdateFrom = formatDateToString(dateNow);
+                            String strdateTo = formatDateToString(dateNow);
+                            profilesProcedureController.postProfileProcByWeek(
+                                strdateFrom, strdateTo);
                             profilesProcedureController.swtichBottomButton(0);
                           },
                           child: bottomDateButton(
@@ -163,7 +164,12 @@ class ProfilesProcedureList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          profilesProcedureController.postProfileProcByMonth();
+                          DateTime dateTo =
+                          dateNow.add(const Duration(days: 7));
+                          String strdateFrom = formatDateToString(dateNow);
+                          String strdateTo = formatDateToString(dateTo);
+                          profilesProcedureController.postProfileProcByWeek(
+                              strdateFrom, strdateTo);
                           profilesProcedureController.swtichBottomButton(2);
                         },
                         child: bottomDateButton(

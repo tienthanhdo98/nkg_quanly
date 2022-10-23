@@ -7,6 +7,7 @@ import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../mission/misstion_search.dart';
 import '../../theme/theme_data.dart';
+import '../profile_work_search.dart';
 import '../profile_work_viewmodel.dart';
 
 class ProfileWorkEOfficeList extends GetView {
@@ -23,10 +24,10 @@ class ProfileWorkEOfficeList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
-              MissionSearch(
-                header: header,
+              ProfileWorkSearch(
+                  profileWorkViewModel
               ),
               context),
           //date table
@@ -233,7 +234,7 @@ class ProfileWorkEOfficeList extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: 350,
+                                    height: 400,
                                     child: DetailProfileWorkBottomSheet(
                                         index,
                                         profileWorkViewModel

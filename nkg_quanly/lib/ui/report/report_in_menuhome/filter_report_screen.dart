@@ -7,7 +7,6 @@ import '../../../const/widget.dart';
 import '../../theme/theme_data.dart';
 import '../report_viewmodel.dart';
 
-// TextEditingController()..text = formatDateToStringtype2(menuController.rxSelectedDay.value)
 class FilterReportScreen extends GetView {
   FilterReportScreen(this.reportViewModel, {Key? key}) : super(key: key);
   final ReportViewModel? reportViewModel;
@@ -19,29 +18,99 @@ class FilterReportScreen extends GetView {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Column(
-            children: [
-              //header
-              headerWidget("Bộ lọc", context),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      //nhom đơn vị ban hành
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                        child: Text(
-                          "Đơn vị xử lý:",
-                          style: CustomTextStyle.grayColorTextStyle,
+    return WillPopScope(
+      onWillPop: () async {
+        menuController.clearEndDate();
+        return true;
+      },
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SafeArea(
+            child: Column(
+              children: [
+                //header
+                headerWidget("Bộ lọc", context),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //nhom đơn vị ban hành
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Text(
+                            "Đơn vị xử lý:",
+                            style: CustomTextStyle.grayColorTextStyle,
+                          ),
                         ),
-                      ),
-                      InkWell(
-                          onTap: () {
+                        InkWell(
+                            onTap: () {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: 300,
+                                      child: FilterDepartmentBottomSheet(
+                                          reportViewModel));
+                                },
+                              );
+                            },
+                            child: Obx(() => borderTextFilterEOffice(
+                                (reportViewModel!.rxSelectedDeparment.value != "")
+                                    ? reportViewModel!.rxSelectedDeparment.value
+                                    : "Chọn đơn vị",
+                                context))),
+
+                        //trang thai
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Text(
+                            "Trạng thái:",
+                            style: CustomTextStyle.grayColorTextStyle,
+                          ),
+                        ),
+                        InkWell(
+                            onTap: () {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: 450,
+                                      child: FilterStatusBottomSheet(
+                                          reportViewModel));
+                                },
+                              );
+                            },
+                            child: Obx(() => borderTextFilterEOffice(
+                                (reportViewModel!.rxSelectedStatus.value != "")
+                                    ? reportViewModel!.rxSelectedStatus.value
+                                    : "Chọn trạng thái",
+                                context))),
+                        //han xu ly
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Text(
+                            "Chọn hạn xử lý:",
+                            style: CustomTextStyle.grayColorTextStyle,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: (){
                             showModalBottomSheet<void>(
                               isScrollControlled: true,
                               shape: const RoundedRectangleBorder(
@@ -54,146 +123,118 @@ class FilterReportScreen extends GetView {
                               builder: (BuildContext context) {
                                 return SizedBox(
                                     height: 300,
-                                    child: FilterDepartmentBottomSheet(
-                                        reportViewModel));
+                                    child: DayPickerBottomSheet(
+                                        reportViewModel, END_DATE));
                               },
                             );
                           },
-                          child: Obx(() => borderTextFilterEOffice(
-                              (reportViewModel!.rxSelectedDeparment.value != "")
-                                  ? reportViewModel!.rxSelectedDeparment.value
-                                  : "Chọn đơn vị",
-                              context))),
-
-                      //trang thai
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                        child: Text(
-                          "Trạng thái:",
-                          style: CustomTextStyle.grayColorTextStyle,
-                        ),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            showModalBottomSheet<void>(
-                              isScrollControlled: true,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: kDarkGray,
                                 ),
-                              ),
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SizedBox(
-                                    height: 450,
-                                    child: FilterStatusBottomSheet(
-                                        reportViewModel));
-                              },
-                            );
-                          },
-                          child: Obx(() => borderTextFilterEOffice(
-                              (reportViewModel!.rxSelectedStatus.value != "")
-                                  ? reportViewModel!.rxSelectedStatus.value
-                                  : "Chọn trạng thái",
-                              context))),
-                      //han xu ly
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                        child: Text(
-                          "Chọn hạn xử lý:",
-                          style: CustomTextStyle.grayColorTextStyle,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: (){
-                          showModalBottomSheet<void>(
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return SizedBox(
-                                  height: 300,
-                                  child: DayPickerBottomSheet(
-                                      reportViewModel, DATE_PICKER));
-                            },
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(15),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: kDarkGray,
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                  5) // use instead of BorderRadius.all(Radius.circular(20))
-                              ),
-                          child: Row(children: [
-                            Expanded(
-                                child: Obx(
-                              () => Text( menuController.rxFromDateWithoutWeekDay.value,),
-                            )),
-                            Image.asset(
-                              "assets/icons/ic_date.png",
-                              width: 25,
-                              height: 25,
-                            ),
-                          ]),
-                        ),
-                      ),
-                      const Spacer(),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Get.back();
-                                if (reportViewModel!.rxSelectedDeparment
-                                    .contains("Tất cả")) {
-                                  department = "";
-                                } else {
-                                  department = reportViewModel!
-                                      .rxSelectedDeparment.value;
-                                }
-                                if (reportViewModel!.rxSelectedStatus
-                                    .contains("Tất cả")) {
-                                  state = "";
-                                } else {
-                                  state =
-                                      reportViewModel!.rxSelectedStatus.value;
-                                }
-
-                                endDate = formatDateToString(
-                                    menuController.rxSelectedDay.value);
-
-                                print(endDate);
-                                print(state);
-                                print(department);
-                                reportViewModel!.postReportInMenuByFilter(
-                                    state, department, endDate);
-                              },
-                              child: buttonShowListScreen("Tìm kiếm"),
-                              style: bottomButtonStyle,
-                            ),
+                                borderRadius: BorderRadius.circular(
+                                    5) // use instead of BorderRadius.all(Radius.circular(20))
+                                ),
+                            child: Row(children: [
+                              Expanded(
+                                  child: Obx(
+                                () => Text( menuController.rxEndDateToUi.value,),
+                              )),
+                              Obx(() => (menuController
+                                  .rxEndDateToUi.value !=
+                                  "")
+                                  ? IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Image.asset(
+                                  "assets/icons/ic_close_2.png",
+                                  width: 15,
+                                  height: 15,
+                                ),
+                                onPressed: () {
+                                  menuController.clearEndDate();
+                                },
+                              )
+                                  : IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Image.asset(
+                                  "assets/icons/ic_date.png",
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                onPressed: () {
+                                  showModalBottomSheet<void>(
+                                    isScrollControlled: true,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                          height: 300,
+                                          child: DayPickerBottomSheet(
+                                              reportViewModel, END_DATE));
+                                    },
+                                  );
+                                },
+                              ))
+                            ]),
                           ),
                         ),
-                      )
-                    ],
+                        const Spacer(),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.back();
+                                  if (reportViewModel!.rxSelectedDeparment
+                                      .contains("Tất cả")) {
+                                    department = "";
+                                  } else {
+                                    department = reportViewModel!
+                                        .rxSelectedDeparment.value;
+                                  }
+                                  if (reportViewModel!.rxSelectedStatus
+                                      .contains("Tất cả")) {
+                                    state = "";
+                                  } else {
+                                    state =
+                                        reportViewModel!.rxSelectedStatus.value;
+                                  }
+
+                                  endDate =
+                                      menuController.rxEndDateToApi.value;
+
+                                  print(endDate);
+                                  print(state);
+                                  print(department);
+                                  reportViewModel!.postReportInMenuByFilter(
+                                      state, department, endDate);
+                                  menuController.clearEndDate();
+                                },
+                                child: buttonShowListScreen("Tìm kiếm"),
+                                style: bottomButtonStyle,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
-        ));
+                )
+              ],
+            ),
+          )),
+    );
   }
 }
 
@@ -343,6 +384,7 @@ class FilterStatusBottomSheet extends StatelessWidget {
                               reportViewModel!
                                   .changeValueSelectedStatus(status);
                             }
+
                             Get.back();
                           },
                           style: buttonFilterBlue,

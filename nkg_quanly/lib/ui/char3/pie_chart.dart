@@ -51,8 +51,7 @@ class PieChartState extends State<PieChartWidget> {
               legendChart(listQuantity![1].name.toString(), listColorChart[1]),
               legendChart(listQuantity![0].name.toString(), listColorChart[0]),
             ],
-          ),
-          const Text('Biểu đồ minh họa')
+          )
         ],
       ),
     );

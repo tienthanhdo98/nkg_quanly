@@ -18,13 +18,15 @@ class ReportViewModel extends GetxController {
 
   RxList<ReportListItems> rxReportListItems = <ReportListItems>[].obs;
   Rx<ReportStatistic>   rxReportStatistic= ReportStatistic().obs;
+  Rx<ReportStatistic>   rxReportStatisticTotal = ReportStatistic().obs;
   ScrollController controller = ScrollController();
   ReportModel  reportMode =  ReportModel();
   @override
   void onInit() {
     getFilterForChart(apiGetReportChart0);
 
-    postReport();
+    getReportStatisticTotal();
+    postReportByDay(formatDateToString(dateNow));
     getReportDeparmentFilter();
     super.onInit();
   }
@@ -55,31 +57,14 @@ class ReportViewModel extends GetxController {
     });
   }
 
-
-  Future<void> postReport() async {
+  Future<void> getReportStatisticTotal() async {
     final url = Uri.parse(apiGetReportModel);
     String json = '{"pageIndex":1,"pageSize":10}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
     reportMode = ReportModel.fromJson(jsonDecode(response.body));
-    rxReportListItems.value = reportMode.items!;
-    rxReportStatistic.value = reportMode.statistic!;
-    //loadmore
-    var page = 1;
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
-        page++;
-        String json = '{"pageIndex":$page,"pageSize":10}';
-        response = await http.post(url, headers: headers, body: json);
-        print(response.body);
-        reportMode =
-            ReportModel.fromJson(jsonDecode(response.body));
-        rxReportListItems.addAll(reportMode.items!);
-        print("loadmore day at $page");
-      }
-    });
+    rxReportStatisticTotal.value = reportMode.statistic!;
   }
 
   Future<void> postReportByDay(String day) async {
@@ -89,11 +74,12 @@ class ReportViewModel extends GetxController {
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
     reportMode = ReportModel.fromJson(jsonDecode(response.body));
-
     rxReportListItems.value = reportMode.items!;
     rxReportStatistic.value = reportMode.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore day");
@@ -110,32 +96,37 @@ class ReportViewModel extends GetxController {
   }
 
   Future<void> postReportByWeek(String datefrom, String dateTo) async {
-    final url = Uri.parse(apiGetReportModel);
-    String json =
-        '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
-    print('loading');
-    print('$datefrom');
-    print('$dateTo');
-    http.Response response = await http.post(url, headers: headers, body: json);
-    reportMode = ReportModel.fromJson(jsonDecode(response.body));
-    rxReportListItems.value = reportMode.items!;
-    rxReportStatistic.value = reportMode.statistic!;
-    //loadmore
-    var page = 1;
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
-        page++;
-        String json =
-            '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
-        response = await http.post(url, headers: headers, body: json);
-        print(response.body);
-        reportMode =
-            ReportModel.fromJson(jsonDecode(response.body));
-        rxReportListItems.addAll(reportMode.items!);
-        print("loadmore day at $page");
-      }
-    });
+    if(datefrom != "" || dateTo != "" ) {
+      final url = Uri.parse(apiGetReportModel);
+      String json =
+          '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+      print('loading');
+      print('$datefrom');
+      print('$dateTo');
+      http.Response response = await http.post(
+          url, headers: headers, body: json);
+      reportMode = ReportModel.fromJson(jsonDecode(response.body));
+      rxReportListItems.value = reportMode.items!;
+      rxReportStatistic.value = reportMode.statistic!;
+      //loadmore
+      var page = 1;
+      controller.dispose();
+      controller = ScrollController();
+      controller.addListener(() async {
+        if (controller.position.maxScrollExtent == controller.position.pixels) {
+          print("loadmore day");
+          page++;
+          String json =
+              '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+          response = await http.post(url, headers: headers, body: json);
+          print(response.body);
+          reportMode =
+              ReportModel.fromJson(jsonDecode(response.body));
+          rxReportListItems.addAll(reportMode.items!);
+          print("loadmore day at $page");
+        }
+      });
+    }
   }
 
   Future<void> postReportByMonth() async {
@@ -150,6 +141,8 @@ class ReportViewModel extends GetxController {
     print(reportMode.statistic!.tong!);
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore day");
@@ -178,6 +171,8 @@ class ReportViewModel extends GetxController {
     rxReportStatistic.value = reportMode.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore day");
@@ -218,33 +213,6 @@ class ReportViewModel extends GetxController {
     rxSelectedStatus.value = value;
   }
 
-  void checkboxFilterAll(bool value, int key) {
-    if (value == true) {
-      var map = {key: ""};
-      mapAllFilter.addAll(map);
-    } else {
-      mapAllFilter.remove(key);
-    }
-  }
-
-  void checkboxDepartment(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapDepartmentFilter.addAll(map);
-    } else {
-      mapDepartmentFilter.remove(key);
-    }
-  }
-
-  void checkboxStatus(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapStatusFilter.addAll(map);
-    } else {
-      mapStatusFilter.remove(key);
-    }
-  }
-
   Future<void> getReportDeparmentFilter() async {
     final url = Uri.parse(apiGetDepartmentFilter);
     http.Response response = await http.get(url);
@@ -254,6 +222,7 @@ class ReportViewModel extends GetxController {
     rxListDepartmentFilter.value = listDeparmentFilter;
     print(listDeparmentFilter);
   }
+
   Future<void> postReportInMenuByFilter(String state, String departmentHandle,String endDate) async {
     final url = Uri.parse(apiGetReportModel);
     String json = "";

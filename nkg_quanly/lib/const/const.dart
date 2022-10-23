@@ -64,6 +64,7 @@ const kVioletBg = Color(0xFFEDECFF);
 const kGrayButton = Color(0xFFD9D9D9);
 const kDarkBlueChart = Color(0xFF3701AA);
 const kDarkGreenChart = Color(0xFF005837);
+const kGreenChart= Color(0xFF28a745);
 
 Map<String, String> headers = {"Content-type": "application/json"};
 //string
@@ -76,7 +77,8 @@ var listColorChart = [
   kViolet,
   kRedPriority,
   kDarkBlueChart,
-  kDarkGreenChart
+  kDarkGreenChart,
+  kDarkGreenChart,
 ];
 var listLevel = ["Thấp", "Trung bình", "Cao"];
 var listProfileWorkStatus = [
@@ -119,8 +121,6 @@ var listReportState = [
   "Đã giao",
 ];
 
-
-
 //string
 String jsonGetByMonth =
     '{"pageIndex":1,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
@@ -128,13 +128,8 @@ String jsonGetByMonth =
 //
 final DatePickerController menuController = Get.put(DatePickerController());
 
-
-
-
-
 void loadDataByRangeDay(
     GetxController viewModel, String fromDate, String toDate) {
-
   if (viewModel is MissionViewModel) {
     viewModel.getMissionByWeek(fromDate, toDate);
     Get.back();
@@ -192,14 +187,12 @@ void loadDataByRangeDay(
   }
 }
 
-
 const DATE_PICKER = "DatePicker";
 const TO_DATE = "ToDate";
 const FROM_DATE = "FromDate";
+const END_DATE = "EndDate";
 
-
-
-Widget headerWidgetSeatch(
+Widget headerWidgetSearch(
     String header, GetView searchScreen, BuildContext context) {
   return Container(
     color: Theme.of(context).cardColor,
@@ -209,6 +202,7 @@ Widget headerWidgetSeatch(
         children: [
           InkWell(
             onTap: () {
+              menuController.clearAllDateData();
               Get.back();
             },
             child: const Icon(Icons.arrow_back_ios_outlined),
@@ -222,21 +216,21 @@ Widget headerWidgetSeatch(
           ),
           InkWell(
             onTap: () {
-          Get.to(() => searchScreen);
+              Get.to(() => searchScreen);
             },
             child: Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-                padding: const EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                  color: kgray,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: Image.asset(
-                  'assets/icons/ic_search.png',
-                  width: 20,
-                  height: 20,
-                ))),
+                alignment: Alignment.centerRight,
+                child: Container(
+                    padding: const EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      color: kgray,
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Image.asset(
+                      'assets/icons/ic_search.png',
+                      width: 20,
+                      height: 20,
+                    ))),
           )
         ],
       ),
@@ -255,7 +249,7 @@ Widget headerTableDatePicker(BuildContext context, GetxController viewModel) {
             Padding(
               padding: const EdgeInsets.all(15),
               child: Obx(() => Text(
-                    "${menuController.rxYear} Tháng ${menuController.rxMonth}",
+                    "Tháng ${menuController.rxMonth}/${menuController.rxYear}",
                     style: Theme.of(context).textTheme.headline2,
                   )),
             ),
@@ -364,9 +358,9 @@ class DayPickerBottomSheet extends StatelessWidget {
                 color: kBlueButton),
           )),
       Obx(() => Text(
-        "${converWeekday(menuController.rxWeekDay.value)}, ${menuController.rxDay} tháng ${menuController.rxMonth}, ${menuController.rxYear}",
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-      )),
+            "${converWeekday(menuController.rxWeekDay.value)}, ${menuController.rxDay} tháng ${menuController.rxMonth}, ${menuController.rxYear}",
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          )),
       Expanded(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -376,7 +370,7 @@ class DayPickerBottomSheet extends StatelessWidget {
                 return NumberPicker(
                   textStyle: const TextStyle(color: kDarkGray, fontSize: 24),
                   selectedTextStyle:
-                  const TextStyle(color: Colors.black, fontSize: 24),
+                      const TextStyle(color: Colors.black, fontSize: 24),
                   value: day,
                   minValue: 1,
                   maxValue: 31,
@@ -396,7 +390,7 @@ class DayPickerBottomSheet extends StatelessWidget {
                 return NumberPicker(
                   textStyle: const TextStyle(color: kDarkGray, fontSize: 24),
                   selectedTextStyle:
-                  const TextStyle(color: Colors.black, fontSize: 24),
+                      const TextStyle(color: Colors.black, fontSize: 24),
                   value: month,
                   minValue: 1,
                   maxValue: 12,
@@ -416,18 +410,18 @@ class DayPickerBottomSheet extends StatelessWidget {
                 return NumberPicker(
                     textStyle: const TextStyle(color: kDarkGray, fontSize: 24),
                     selectedTextStyle:
-                    const TextStyle(color: Colors.black, fontSize: 24),
+                        const TextStyle(color: Colors.black, fontSize: 24),
                     value: year,
                     minValue: 2000,
                     maxValue: 2030,
                     onChanged: (value) => dayStateChange(() {
-                      year = value;
-                      menuController.changeYearInDateTable(year);
-                      strSelectedDate = "$day/$month/$year";
-                      selectedDate = convertStringToDate(strSelectedDate);
-                      menuController
-                          .changeWeekDayInDateTable(selectedDate.weekday);
-                    }));
+                          year = value;
+                          menuController.changeYearInDateTable(year);
+                          strSelectedDate = "$day/$month/$year";
+                          selectedDate = convertStringToDate(strSelectedDate);
+                          menuController
+                              .changeWeekDayInDateTable(selectedDate.weekday);
+                        }));
               },
             ),
           ],
@@ -458,28 +452,57 @@ class DayPickerBottomSheet extends StatelessWidget {
                         menuController
                             .changeSelectedDayInDateTable(selectedDay);
                         loadDataByDay(viewModel!);
-                      } else if (dataType == TO_DATE) {
+                      }
+                      //get todate
+                      else if (dataType == TO_DATE) {
                         var strSelectedDay = "$year-$month-$day";
                         var selectedDay =
-                        convertStringToDateYYYYMMdd(strSelectedDay);
+                            convertStringToDateYYYYMMdd(strSelectedDay);
                         menuController.changeToDate(
                             convertDateToWeekDayFormat(selectedDay),
-                            formatDateToString(selectedDay),selectedDay);
-                        Get.back();
-                      } else if (dataType == FROM_DATE) {
-                        var strSelectedDay = "$year-$month-$day";
-                        var selectedDay =
-                        convertStringToDateYYYYMMdd(strSelectedDay);
-                        menuController.changeFromDate(
-                            convertDateToWeekDayFormat(selectedDay),
-                            formatDateToString(selectedDay),selectedDay);
+                            formatDateToString(selectedDay),
+                            selectedDay);
                         Get.back();
                       }
-                      else{
-                        var strSelectedDay = "$day/$month/$year";
-                        var selectedDay = convertStringToDate(strSelectedDay);
-                        menuController
-                            .changeSelectedDayInDateTable(selectedDay);
+                      //get fromdate
+                      else if (dataType == FROM_DATE) {
+                        var strSelectedDay = "$year-$month-$day";
+                        var selectedDay =
+                            convertStringToDateYYYYMMdd(strSelectedDay);
+                        menuController.changeFromDate(
+                            convertDateToWeekDayFormat(selectedDay),
+                            formatDateToString(selectedDay),
+                            selectedDay);
+                        Get.back();
+                      } else if (dataType == END_DATE) {
+                        var strMonth = "";
+                        var strDay= "";
+
+                        if(month < 10)
+                          {
+                            strMonth = "0$month";
+                          }
+                        else
+                          {
+                            strMonth = "$month";
+                          }
+                        if(day < 10)
+                        {
+                          strDay = "0$day";
+                        }
+                        else
+                        {
+                          strDay = "$day";
+                        }
+
+                        var strSelectedDay = "$year-$strMonth-$strDay";
+                        var selectedDay =
+                            convertStringToDateYYYYMMdd(strSelectedDay);
+                        menuController.changeEndDate(
+                            convertDateToWeekDayFormatWithoutWeeked(
+                                selectedDay),
+                            strSelectedDay);
+                        Get.back();
                       }
                     },
                     style: buttonFilterBlue,
@@ -494,8 +517,7 @@ class DayPickerBottomSheet extends StatelessWidget {
 }
 
 class DayPickerBottomSheetForLunarCalendar extends StatelessWidget {
-  const DayPickerBottomSheetForLunarCalendar( {Key? key})
-      : super(key: key);
+  const DayPickerBottomSheetForLunarCalendar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -517,9 +539,9 @@ class DayPickerBottomSheetForLunarCalendar extends StatelessWidget {
                 color: kBlueButton),
           )),
       Obx(() => Text(
-        "${converWeekday(menuController.rxWeekDay.value)}, ${menuController.rxDay} tháng ${menuController.rxMonth}, ${menuController.rxYear}",
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-      )),
+            "${converWeekday(menuController.rxWeekDay.value)}, ${menuController.rxDay} tháng ${menuController.rxMonth}, ${menuController.rxYear}",
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          )),
       Expanded(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -529,7 +551,7 @@ class DayPickerBottomSheetForLunarCalendar extends StatelessWidget {
                 return NumberPicker(
                   textStyle: const TextStyle(color: kDarkGray, fontSize: 24),
                   selectedTextStyle:
-                  const TextStyle(color: Colors.black, fontSize: 24),
+                      const TextStyle(color: Colors.black, fontSize: 24),
                   value: day,
                   infiniteLoop: true,
                   minValue: 1,
@@ -550,7 +572,7 @@ class DayPickerBottomSheetForLunarCalendar extends StatelessWidget {
                 return NumberPicker(
                   textStyle: const TextStyle(color: kDarkGray, fontSize: 24),
                   selectedTextStyle:
-                  const TextStyle(color: Colors.black, fontSize: 24),
+                      const TextStyle(color: Colors.black, fontSize: 24),
                   value: month,
                   minValue: 1,
                   infiniteLoop: true,
@@ -571,18 +593,18 @@ class DayPickerBottomSheetForLunarCalendar extends StatelessWidget {
                 return NumberPicker(
                     textStyle: const TextStyle(color: kDarkGray, fontSize: 24),
                     selectedTextStyle:
-                    const TextStyle(color: Colors.black, fontSize: 24),
+                        const TextStyle(color: Colors.black, fontSize: 24),
                     value: year,
                     minValue: 2000,
                     maxValue: 2030,
                     onChanged: (value) => dayStateChange(() {
-                      year = value;
-                      menuController.changeYearInDateTable(year);
-                      strSelectedDate = "$day/$month/$year";
-                      selectedDate = convertStringToDate(strSelectedDate);
-                      menuController
-                          .changeWeekDayInDateTable(selectedDate.weekday);
-                    }));
+                          year = value;
+                          menuController.changeYearInDateTable(year);
+                          strSelectedDate = "$day/$month/$year";
+                          selectedDate = convertStringToDate(strSelectedDate);
+                          menuController
+                              .changeWeekDayInDateTable(selectedDate.weekday);
+                        }));
               },
             ),
           ],
@@ -607,11 +629,10 @@ class DayPickerBottomSheetForLunarCalendar extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 child: ElevatedButton(
                     onPressed: () {
-                        var strSelectedDay = "$day/$month/$year";
-                        var selectedDay = convertStringToDate(strSelectedDay);
-                        menuController
-                            .changeSelectedDayInDateTable(selectedDay);
-                        Get.back();
+                      var strSelectedDay = "$day/$month/$year";
+                      var selectedDay = convertStringToDate(strSelectedDay);
+                      menuController.changeSelectedDayInDateTable(selectedDay);
+                      Get.back();
                     },
                     style: buttonFilterBlue,
                     child: const Text('Chọn')),
@@ -631,135 +652,210 @@ class RangeDayPickerBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            headerWidget("Chọn khoảng thời gian", context),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 10),
-                        child: Text("Từ ngày")),
-                    InkWell(
-                      onTap: () {
-                        showModalBottomSheet<void>(
-                          isScrollControlled: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
+    return WillPopScope(
+      onWillPop: () async {
+        menuController.clearAllDateData();
+        return true;
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              headerWidget("Chọn khoảng thời gian", context),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 15, 0, 10),
+                          child: Text("Từ ngày")),
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
                             ),
-                          ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SizedBox(
-                                height: 300,
-                                child:
-                                    DayPickerBottomSheet(viewModel, FROM_DATE));
-                          },
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(15),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: kDarkGray,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SizedBox(
+                                  height: 300,
+                                  child:
+                                      DayPickerBottomSheet(viewModel, FROM_DATE));
+                            },
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: kDarkGray,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                  5) // use instead of BorderRadius.all(Radius.circular(20))
+                              ),
+                          child: Row(children: [
+                            Expanded(
+                              child: Obx(() => Text(
+                                    menuController.rxFromDateWithWeekDay.value,
+                                  )),
                             ),
-                            borderRadius: BorderRadius.circular(
-                                5) // use instead of BorderRadius.all(Radius.circular(20))
-                            ),
-                        child: Row(children: [
-                          Expanded(
-                            child: Obx(() => Text(
-                                  menuController.rxFromDateWithWeekDay.value,
-                                )),
-                          ),
-                          Image.asset(
-                            "assets/icons/ic_date.png",
-                            width: 25,
-                            height: 25,
-                          ),
-                        ]),
+                            Obx(() => (menuController
+                                        .rxFromDateWithWeekDay.value !=
+                                    "")
+                                ? IconButton(
+                                    padding: EdgeInsets.zero,
+                                    icon: Image.asset(
+                                      "assets/icons/ic_close_2.png",
+                                      width: 15,
+                                      height: 15,
+                                    ),
+                                    onPressed: () {
+                                      menuController.clearDataDateFrom();
+                                    },
+                                  )
+                                : IconButton(
+                                    padding: EdgeInsets.zero,
+                                    icon: Image.asset(
+                                      "assets/icons/ic_date.png",
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                    onPressed: () {
+                                      showModalBottomSheet<void>(
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(20),
+                                          ),
+                                        ),
+                                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return SizedBox(
+                                              height: 300,
+                                              child: DayPickerBottomSheet(
+                                                  viewModel, FROM_DATE));
+                                        },
+                                      );
+                                    },
+                                  ))
+                          ]),
+                        ),
                       ),
-                    ),
-                    //den ngay
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 15, 0, 10),
-                        child: Text("Đến ngày")),
-                    InkWell(
-                      onTap: () {
-                        showModalBottomSheet<void>(
-                          isScrollControlled: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
+                      //den ngay
+                      const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 15, 0, 10),
+                          child: Text("Đến ngày")),
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
                             ),
-                          ),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return SizedBox(
-                                height: 300,
-                                child:
-                                    DayPickerBottomSheet(viewModel, TO_DATE));
-                          },
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(15),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              color: kDarkGray,
-                            ),
-                            borderRadius: BorderRadius.circular(
-                                5) // use instead of BorderRadius.all(Radius.circular(20))
-                            ),
-                        child: Row(children: [
-                          Expanded(
-                              child: Obx(
-                            () => Text(
-                              menuController.rxToDateWithWeekDay.value,
-                            ),
-                          )),
-                          Image.asset(
-                            "assets/icons/ic_date.png",
-                            width: 25,
-                            height: 25,
-                          ),
-                        ]),
-                      ),
-                    )
-                  ],
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return SizedBox(
+                                  height: 300,
+                                  child:
+                                      DayPickerBottomSheet(viewModel, TO_DATE));
+                            },
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: kDarkGray,
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                  5) // use instead of BorderRadius.all(Radius.circular(20))
+                              ),
+                          child: Row(children: [
+                            Expanded(
+                                child: Obx(
+                              () => Text(
+                                menuController.rxToDateWithWeekDay.value,
+                              ),
+                            )),
+                            Obx(() => (menuController.rxToDateWithWeekDay.value !=
+                                    "")
+                                ? IconButton(
+                                    padding: EdgeInsets.zero,
+                                    icon: Image.asset(
+                                      "assets/icons/ic_close_2.png",
+                                      width: 15,
+                                      height: 15,
+                                    ),
+                                    onPressed: () {
+                                      menuController.clearDataDateTo();
+                                    },
+                                  )
+                                : IconButton(
+                                    padding: EdgeInsets.zero,
+                                    icon: Image.asset(
+                                      "assets/icons/ic_date.png",
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                    onPressed: () {
+                                      showModalBottomSheet<void>(
+                                        isScrollControlled: true,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(20),
+                                          ),
+                                        ),
+                                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return SizedBox(
+                                              height: 300,
+                                              child: DayPickerBottomSheet(
+                                                  viewModel, TO_DATE));
+                                        },
+                                      );
+                                    },
+                                  ))
+                          ]),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const Divider(
-              thickness: 1,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
-                child: ElevatedButton(
-                  onPressed: () {
-                    loadDataByRangeDay(
-                        viewModel!,
-                        menuController.rxFromDate.value,
-                        menuController.rxToDate.value);
-                  },
-                  child: buttonShowListScreen("Chọn"),
-                  style: bottomButtonStyle,
-                ),
+              const Divider(
+                thickness: 1,
               ),
-            )
-          ],
+              SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      loadDataByRangeDay(
+                          viewModel!,
+                          menuController.rxFromDate.value,
+                          menuController.rxToDate.value);
+                    },
+                    child: buttonShowListScreen("Chọn"),
+                    style: bottomButtonStyle,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -884,15 +980,16 @@ Widget headerWidget(String header, BuildContext context) {
         color: Theme.of(context).cardColor,
         border: Border(
             bottom: BorderSide(
-              width: 1,
-              color: Theme.of(context).dividerColor,
-            ))),
+          width: 1,
+          color: Theme.of(context).dividerColor,
+        ))),
     child: Padding(
       padding: const EdgeInsets.all(15),
       child: Row(
         children: [
           InkWell(
             onTap: () {
+              menuController.clearAllDateData();
               Get.back();
             },
             child: Image.asset(
@@ -956,7 +1053,7 @@ void loadDataByDay(GetxController viewModel) {
     Get.back();
   }
   if (viewModel is ProfilesProcedureViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
+    viewModel.    postProfileProcByWeek(formatDateToString(menuController.rxSelectedDay.value),formatDateToString(menuController.rxSelectedDay.value));
     Get.back();
   }
   if (viewModel is ProfileWorkViewModel) {
@@ -964,11 +1061,11 @@ void loadDataByDay(GetxController viewModel) {
     Get.back();
   }
   if (viewModel is WorkBookViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
+    //  viewModel.onSelectDay(menuController.rxSelectedDay.value);
     Get.back();
   }
   if (viewModel is HelpdeskViewModel) {
-
+    viewModel.posHelpdeskListByWeek(formatDateToString(menuController.rxSelectedDay.value),formatDateToString(menuController.rxSelectedDay.value));
     Get.back();
   }
 }
@@ -976,60 +1073,46 @@ void loadDataByDay(GetxController viewModel) {
 void loadDataByDayNoBack(GetxController viewModel) {
   if (viewModel is MissionViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is CalendarWorkViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is ReportViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is DocumentUnprocessViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is BirthDayViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is RoomMeetingViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is BookingCarViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is DocumentNonApproveViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is DocumentOutViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is ProfileViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is ProfilesProcedureViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
+    viewModel.    postProfileProcByWeek(formatDateToString(menuController.rxSelectedDay.value),formatDateToString(menuController.rxSelectedDay.value));
   }
   if (viewModel is ProfileWorkViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
-
   }
   if (viewModel is WorkBookViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
+    //viewModel.onSelectDay(menuController.rxSelectedDay.value);
 
   }
+  if (viewModel is HelpdeskViewModel) {
+    viewModel.posHelpdeskListByWeek(formatDateToString(menuController.rxSelectedDay.value),formatDateToString(menuController.rxSelectedDay.value));
 
+  }
 }
-
-
-
-
-

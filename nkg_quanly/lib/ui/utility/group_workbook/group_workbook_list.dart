@@ -12,6 +12,7 @@ import '../../../model/workbook/workbook_model.dart';
 import '../../document_nonapproved/document_nonapproved_search.dart';
 import '../../theme/theme_data.dart';
 import 'add_new_group_wb_screen.dart';
+import 'group_workbook_search.dart';
 import 'group_workbook_viewmodel.dart';
 
 class GroupWorkBookList extends GetView {
@@ -27,10 +28,10 @@ class GroupWorkBookList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               'Danh sách nhóm công việc',
-              DocumentnonapprovedSearch(
-                header: "Danh sách nhóm công việc",
+              GroupWorkbookSearch(
+                  groupWorkBookViewModel
               ),
               context),
           //list
@@ -201,6 +202,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
+                  Get.back();
                   Get.to(() => GroupWorkBookDetail(
                         id: docModel!.id!,
                       ));
@@ -230,6 +232,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
+                  Get.back();
                   Get.to(() => UpdateGroupWorkBookScreen(docModel!));
                 },
                 child: Padding(

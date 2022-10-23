@@ -58,7 +58,7 @@ class ThemeClass {
         headline1: TextStyle(
             color: Colors.black,
             fontSize: 20,
-            fontFamily: 'Inter',
+            fontFamily: 'Roboto',
             fontWeight: FontWeight.w500),
         headline2: TextStyle(
             color: Colors.black,
@@ -105,7 +105,7 @@ class ThemeClass {
         headline1: TextStyle(
             color: Colors.white,
             fontSize: 20,
-            fontFamily: 'Inter',
+            fontFamily: 'Roboto',
             fontWeight: FontWeight.w500),
         headline2: TextStyle(
             color: Colors.white,

@@ -13,12 +13,11 @@ class AddNewGroupWorkBookScreen extends GetView {
   final groupWorkBookViewModel = Get.put(GroupWorkBookViewModel());
 
   AddNewGroupWorkBookScreen({Key? key}) : super(key: key);
-
+  String? nameWB ;
+  String? desnameWB;
   @override
   Widget build(BuildContext context) {
-    String? nameWB ;
-    String? desnameWB;
-    String? position;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -124,8 +123,8 @@ class AddNewGroupWorkBookScreen extends GetView {
                                     onPressed: () {
                                       print(nameWB);
                                       print(desnameWB);
-                                      if (nameWB!.isNotEmpty ||
-                                          desnameWB!.isNotEmpty) {
+                                      if (nameWB?.isNotEmpty == true ||
+                                          desnameWB?.isNotEmpty == true) {
                                         groupWorkBookViewModel.addGroupWorkBookAll(
                                             nameWB!,
                                             desnameWB!);

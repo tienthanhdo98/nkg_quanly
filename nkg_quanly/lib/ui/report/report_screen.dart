@@ -49,7 +49,7 @@ class ReportScreen extends GetView {
                                     style: CustomTextStyle
                                         .robotow400s12TextStyle),
                                 Text(
-                                  checkingNullNumberAndConvertToString(reportViewModel.rxReportStatistic.value.tong),
+                                  checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.tong),
                                   style: const TextStyle(
                                       color: kBlueButton, fontSize: 40),
                                 )
@@ -82,7 +82,7 @@ class ReportScreen extends GetView {
                                 const Text('Đã tiếp nhận',
                                     style: CustomTextStyle
                                         .robotow400s12TextStyle),
-                                Text(  checkingNullNumberAndConvertToString(reportViewModel.rxReportStatistic.value.daTiepNhan),
+                                Text(  checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.daTiepNhan),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20))
@@ -99,7 +99,7 @@ class ReportScreen extends GetView {
                                     style: CustomTextStyle
                                         .robotow400s12TextStyle),
                                 Text(
-                                  checkingNullNumberAndConvertToString(reportViewModel.rxReportStatistic.value.daGiao),
+                                  checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.daGiao),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20),

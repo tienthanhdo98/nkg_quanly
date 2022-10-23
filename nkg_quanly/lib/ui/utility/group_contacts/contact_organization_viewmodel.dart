@@ -67,27 +67,34 @@ class ContactOrganizationViewModel extends GetxController {
   }
 
   Future<void> getContactList() async {
-    var url = Uri.parse(apiPostSearchListContactOrganization);
-    print('loading');
-    String json = '{"pageIndex":1,"pageSize":10}';
-    http.Response response = await http.post(url,headers: headers,body : json);
-    print(response.body);
-    contactModel =  ContactModel.fromJson(jsonDecode(response.body));
-    rxContactListItems.value = contactModel.items!;
-    //loadmore
-    var page = 1;
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
-        page++;
-        String json = '{"pageIndex":$page,"pageSize":10}';
-        http.Response response =
-        await http.post(url, headers: headers, body: json);
-        contactModel =  ContactModel.fromJson(jsonDecode(response.body));
-        rxContactListItems.addAll(contactModel.items!);
-        print("loadmore day at $page");
+
+      var url = Uri.parse(apiPostSearchListContactOrganization);
+      print('loading');
+      String json = '{"pageIndex":1,"pageSize":10}';
+      http.Response response = await http.post(
+          url, headers: headers, body: json);
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        contactModel = ContactModel.fromJson(jsonDecode(response.body));
+        rxContactListItems.value = contactModel.items!;
+        //loadmore
+        var page = 1;
+        controller.addListener(() async {
+          if (controller.position.maxScrollExtent ==
+              controller.position.pixels) {
+            print("loadmore day");
+            page++;
+            String json = '{"pageIndex":$page,"pageSize":10}';
+            http.Response response =
+            await http.post(url, headers: headers, body: json);
+            contactModel = ContactModel.fromJson(jsonDecode(response.body));
+            rxContactListItems.addAll(contactModel.items!);
+            print("loadmore day at $page");
+          }
+        });
       }
-    });
+
   }
   Future<void> getContactListByFilter(String organizationId ) async {
     var url = Uri.parse(apiPostSearchListContactOrganization);

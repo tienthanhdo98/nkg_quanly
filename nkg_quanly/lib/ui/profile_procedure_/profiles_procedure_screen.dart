@@ -4,7 +4,6 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/ui/char3/collum_chart_doc_nonprocess.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profiles_procedure_list_withstatistic.dart';
-import 'package:nkg_quanly/ui/profile_procedure_/profiles_procedure_list.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profiles_procedure_viewmodel.dart';
 
 import '../../const/const.dart';

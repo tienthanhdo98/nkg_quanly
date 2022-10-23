@@ -96,6 +96,8 @@ class MissionViewModel extends GetxController {
     rxMissionStatistic.value = missionModel.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");
@@ -151,6 +153,8 @@ class MissionViewModel extends GetxController {
     rxMissionStatistic.value = missionModel.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");
@@ -166,33 +170,38 @@ class MissionViewModel extends GetxController {
   }
 
   Future<void> getMissionByWeek(String datefrom, String dateTo) async {
-    final url = Uri.parse(apiGetMission);
-    print('loading');
-    print('$datefrom');
-    print('$dateTo');
-    String json =
-        '{"pageIndex":1,"pageSize":10,"fromDate":"$datefrom","toDate":"$dateTo"}';
-    http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
-    missionModel = MissionModel.fromJson(jsonDecode(response.body));
-    rxMissionItem.value = missionModel.items!;
-    rxMissionStatistic.value = missionModel.statistic!;
-    //loadmore
-    var page = 1;
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore week");
-        page++;
-        String json =
-            '{"pageIndex":$page,"pageSize":10,"fromDate":"$datefrom","toDate":"$dateTo"}';
-        http.Response response =
-        await http.post(url, headers: headers, body: json);
-        missionModel = MissionModel.fromJson(jsonDecode(response.body));
-        rxMissionItem.addAll(missionModel.items!);
-        print("loadmore w at $page");
-      }
-    });
+    if(datefrom != "" || dateTo != "" ) {
+      final url = Uri.parse(apiGetMission);
+      print('loading');
+      print('date from $datefrom');
+      print('date to $dateTo');
+      String json =
+          '{"pageIndex":1,"pageSize":10,"fromDate":"$datefrom","toDate":"$dateTo"}';
+      http.Response response = await http.post(
+          url, headers: headers, body: json);
+      print(response.body);
 
+      missionModel = MissionModel.fromJson(jsonDecode(response.body));
+      rxMissionItem.value = missionModel.items!;
+      rxMissionStatistic.value = missionModel.statistic!;
+      //loadmore
+      var page = 1;
+      controller.dispose();
+      controller = ScrollController();
+      controller.addListener(() async {
+        if (controller.position.maxScrollExtent == controller.position.pixels) {
+          print("loadmore week");
+          page++;
+          String json =
+              '{"pageIndex":$page,"pageSize":10,"fromDate":"$datefrom","toDate":"$dateTo"}';
+          http.Response response =
+          await http.post(url, headers: headers, body: json);
+          missionModel = MissionModel.fromJson(jsonDecode(response.body));
+          rxMissionItem.addAll(missionModel.items!);
+          print("loadmore w at $page");
+        }
+      });
+    }
   }
 
   Future<void> getMissionByMonth() async {
@@ -206,6 +215,8 @@ class MissionViewModel extends GetxController {
     rxMissionStatistic.value = missionModel.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");

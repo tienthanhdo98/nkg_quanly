@@ -4,9 +4,10 @@ import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
+import '../../model/helpdesk_model/helpdesk_filter_model.dart';
 import '../../model/helpdesk_model/helpdesk_model.dart';
-import '../document_out/document_out_search.dart';
 import '../theme/theme_data.dart';
+import 'helpdesk_search.dart';
 import 'helpdesk_viewmodel.dart';
 
 class HelpDeskList extends GetView {
@@ -14,7 +15,7 @@ class HelpDeskList extends GetView {
 
   final helpdeskViewModel = Get.put(HelpdeskViewModel());
 
-  HelpDeskList({this.header});
+  HelpDeskList({Key? key, this.header}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +24,10 @@ class HelpDeskList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
-              DocumenOutSearch(
-                header: header,
+              HelpdeskSearch(
+                  helpdeskViewModel
               ),
               context),
           //date table
@@ -89,7 +90,7 @@ class HelpDeskList extends GetView {
                               //         .rxHelpdeskListItems[index].id!));
                             },
                             child: HelpDeskListItem(
-                                index, helpdeskViewModel.rxHelpdeskListItems[index]));
+                                index, helpdeskViewModel.rxHelpdeskListItems[index],helpdeskViewModel));
                       })
                   : noData())),
           //bottom
@@ -107,7 +108,10 @@ class HelpDeskList extends GetView {
                       child: InkWell(
                         onTap: () {
                           menuController.rxSelectedDay.value = DateTime.now();
-                          // helpdeskViewModel.onSelectDay(DateTime.now());
+                          String strdateFrom = formatDateToString(dateNow);
+                          String strdateTo = formatDateToString(dateNow);
+                          helpdeskViewModel.posHelpdeskListByWeek(
+                              strdateFrom, strdateTo);
                           helpdeskViewModel.swtichBottomButton(0);
                         },
                         child: bottomDateButton("Ngày",
@@ -118,9 +122,9 @@ class HelpDeskList extends GetView {
                       child: InkWell(
                         onTap: () {
                           DateTime dateTo =
-                              dateNow.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateTo);
+                              dateNow.subtract(const Duration(days: 7));
+                          String strdateFrom = formatDateToString(dateTo);
+                          String strdateTo = formatDateToString(dateNow);
                           helpdeskViewModel.posHelpdeskListByWeek(
                               strdateFrom, strdateTo);
                           helpdeskViewModel.swtichBottomButton(1);
@@ -132,7 +136,12 @@ class HelpDeskList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          // helpdeskViewModel.postProfileByMonth();
+                          DateTime dateTo =
+                          dateNow.subtract(const Duration(days: 30));
+                          String strdateFrom = formatDateToString(dateTo);
+                          String strdateTo = formatDateToString(dateNow);
+                          helpdeskViewModel.posHelpdeskListByWeek(
+                              strdateFrom, strdateTo);
                           helpdeskViewModel.swtichBottomButton(2);
                         },
                         child: bottomDateButton("Tháng",
@@ -149,10 +158,11 @@ class HelpDeskList extends GetView {
 }
 
 class HelpDeskListItem extends StatelessWidget {
-  HelpDeskListItem(this.index, this.docModel);
+  HelpDeskListItem(this.index, this.docModel,this.helpdeskViewModel);
 
   final int? index;
   final HelpDeskListItems? docModel;
+  HelpdeskViewModel? helpdeskViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -167,13 +177,14 @@ class HelpDeskListItem extends StatelessWidget {
           ),
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-              child: textCodeStyle(docModel!.code!)),
-          signWidget(docModel!),
+              child: textCodeStyle(checkingStringNull(docModel!.code))),
+          signWidget(docModel!,helpdeskViewModel!.rxHelpdeskFilterList),
           SizedBox(
-            height: 70,
+            height: 80,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
+              shrinkWrap: true,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               crossAxisSpacing: 10,
               mainAxisSpacing: 0,
@@ -184,7 +195,7 @@ class HelpDeskListItem extends StatelessWidget {
                   children: [
                     const Text('Người xử lý',
                         style: CustomTextStyle.secondTextStyle),
-                    Text(checkingStringNull(docModel!.organizationUnitName))
+                    Text(checkingStringNull(docModel!.organizationUnitName),maxLines: 3,overflow: TextOverflow.ellipsis,)
                   ],
                 ),
                 Column(
@@ -303,8 +314,33 @@ class FilterHelpDeskBottomSheet extends StatelessWidget {
   }
 }
 
-Widget signWidget(HelpDeskListItems docModel) {
-  if (docModel.isFinish == true) {
+Widget signWidget(HelpDeskListItems docModel, RxList<HelpdeskFilterModel> rxListStatusFilter) {
+
+  var status = "";
+  for (var element in rxListStatusFilter) {
+      if(docModel.problemStatus == element.status.toString())
+        {
+            status = element.name!;
+        }
+  }
+  if(status == "Hoàn thành")
+    {
+      return Row(
+        children: [
+          Image.asset(
+            'assets/icons/ic_sign.png',
+            height: 14,
+            width: 14,
+          ),
+          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+          Text(
+            status,
+            style: TextStyle(color: kGreenSign),
+          )
+        ],
+      );
+    }
+  else if(status =="Đang xử lý"){
     return Row(
       children: [
         Image.asset(
@@ -313,13 +349,31 @@ Widget signWidget(HelpDeskListItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-       const Text(
-         "Hoàn thành",
-          style: const TextStyle(color: kGreenSign),
+        Text(
+          status,
+          style: TextStyle(color: kGreenSign),
         )
       ],
     );
-  } else {
+  }
+  else if(status == "Chờ tiếp nhận"){
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_still.png',
+          height: 14,
+          color: kOrangeSign,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(
+          status,
+          style: TextStyle(color: kOrangeSign),
+        )
+      ],
+    );
+  }
+  else {
     return Row(
       children: [
         Image.asset(
@@ -328,8 +382,13 @@ Widget signWidget(HelpDeskListItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        const Text("Chưa hoàn thành", style: const TextStyle(color: Colors.black))
+        Text(
+          status,
+          style: TextStyle(color: kRedChart),
+        )
       ],
     );
   }
-}
+
+  }
+

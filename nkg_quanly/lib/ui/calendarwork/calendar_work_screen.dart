@@ -22,7 +22,7 @@ class CalendarWorkScreen extends GetView {
         child: Column(
           children: [
             //header
-            headerWidgetSeatch("Lịch làm việc", CalendarWorkSearch(), context),
+            headerWidgetSearch("Lịch làm việc", CalendarWorkSearch(), context),
             //date table
             headerTableDatePicker(context, calendarWorkController),
             //list work

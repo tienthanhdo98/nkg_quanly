@@ -90,6 +90,8 @@ class DocumentNonApproveViewModel extends GetxController {
     rxDocumentInStatistic.value = documentInModel.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore m");
@@ -116,6 +118,8 @@ class DocumentNonApproveViewModel extends GetxController {
     rxDocumentInStatistic.value = documentInModel.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore m");
@@ -142,6 +146,8 @@ class DocumentNonApproveViewModel extends GetxController {
     rxDocumentInStatistic.value = documentInModel.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore m");
@@ -170,6 +176,8 @@ class DocumentNonApproveViewModel extends GetxController {
     rxDocumentInStatistic.value = documentInModel.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore m");

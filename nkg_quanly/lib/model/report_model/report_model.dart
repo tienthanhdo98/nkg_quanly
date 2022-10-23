@@ -30,10 +30,12 @@ class ReportModel {
     pageCount = json['pageCount'];
   }
 
+
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.items != null) {
-      data['items'] = this.items!.map((v) => v.toJson()).toList();
+      data['iteqqqqms'] = this.items!.map((v) => v.toJson()).toList();
     }
     if (this.statistic != null) {
       data['statistic'] = this.statistic!.toJson();

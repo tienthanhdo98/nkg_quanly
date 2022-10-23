@@ -18,42 +18,10 @@ class UtilityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    border: Border(
-                      bottom: BorderSide(
-                        //                    <--- top side
-                        color: Theme.of(context).dividerColor,
-                        width: 1,
-                      ),
-                    )),
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(Icons.arrow_back_ios_outlined),
-                      ),
-                      const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                      Text(
-                        "Tiện ích",
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                      const Expanded(
-                          child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Text('Chỉnh sửa',
-                                  style: TextStyle(color: kBlueButton))))
-                    ],
-                  ),
-                ),
-              ),
+              headerWidget("Tiện ích", context),
               SizedBox(
                 child: GridView.count(
                   physics: const BouncingScrollPhysics(),

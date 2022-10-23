@@ -21,7 +21,7 @@ class CalendarWorkEOfficeScreen extends GetView {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //header
-            headerWidgetSeatch("Lịch làm việc", CalendarWorkSearch(), context),
+            headerWidgetSearch("Lịch làm việc", CalendarWorkSearch(), context),
             //date table
             headerTableDatePicker(context, calendarWorkController),
             // Padding(
@@ -96,7 +96,7 @@ class CalendarWorkEOfficeScreen extends GetView {
                         calendarWorkController.rxCalendarWorkListItems.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return CalendarWorkItem(
+                          return CalendarEOfficeWorkItem(
                               index,
                               calendarWorkController
                                   .rxCalendarWorkListItems[index]);
@@ -168,8 +168,8 @@ class CalendarWorkEOfficeScreen extends GetView {
   }
 }
 
-class CalendarWorkItem extends StatelessWidget {
-  const CalendarWorkItem(this.index, this.item, {Key? key}) : super(key: key);
+class CalendarEOfficeWorkItem extends StatelessWidget {
+  const CalendarEOfficeWorkItem(this.index, this.item, {Key? key}) : super(key: key);
   final int? index;
   final CalendarWorkListItems item;
 

@@ -1,4 +1,3 @@
-
 import 'package:nkg_quanly/const/utils.dart';
 
 class DatePickerController extends GetxController {
@@ -19,24 +18,59 @@ class DatePickerController extends GetxController {
 
   //31 thang 10,2020
   Rx<String> rxToDateWithoutWeekDay = "".obs;
-  Rx<String> rxFromDateWithoutWeekDay ="".obs;
+  Rx<String> rxToDateWithoutWeekDayToApi = "".obs;
+  Rx<String> rxFromDateWithoutWeekDay = "".obs;
+  Rx<String> rxFromDateWithoutWeekDayToApi = "".obs;
 
   //han xu ly
-  Rx<String> rxEndDate = "".obs;
+  Rx<String> rxEndDateToUi = "".obs;
+  Rx<String> rxEndDateToApi = "".obs;
 
   Rx<String> rxToDate = formatDateToString(dateNow).obs;
   Rx<String> rxFromDate = formatDateToString(dateNow).obs;
 
+  void clearEndDate() {
+    rxEndDateToUi.value = "";
+    rxEndDateToApi.value = "";
+  }
 
+  void clearDataDateFrom() {
+    rxFromDateWithWeekDay.value = "";
+    rxFromDateWithoutWeekDay.value = "";
+    rxFromDate.value = "";
+    rxFromDateWithoutWeekDay.value = "";
+    rxFromDateWithoutWeekDayToApi.value = "";
+  }
+
+  void clearDataDateTo() {
+    rxToDateWithWeekDay.value = "";
+    rxToDateWithoutWeekDay.value = "";
+    rxToDate.value = "";
+    rxToDateWithoutWeekDay.value = "";
+    rxToDateWithoutWeekDayToApi.value = "";
+  }
+
+  void clearAllDateData() {
+    rxToDateWithWeekDay.value = "";
+    rxFromDateWithWeekDay.value = "";
+    rxFromDateWithoutWeekDay.value = "";
+    rxToDateWithoutWeekDay.value = "";
+    rxFromDate.value = "";
+    rxToDate.value = "";
+    rxToDateWithoutWeekDay.value = "";
+    rxToDateWithoutWeekDayToApi.value = "";
+    rxFromDateWithoutWeekDay.value = "";
+    rxFromDateWithoutWeekDayToApi.value = "";
+  }
 
   void switchFormat(CalendarFormat format) {
     rxCalendarFormat.value = format;
   }
 
-  void changeEndDate(int value) {
-    rxEndDate.value = value;
+  void changeEndDate(String valueToUI, String valueToApi) {
+    rxEndDateToUi.value = valueToUI;
+    rxEndDateToApi.value = valueToApi;
   }
-
 
   void changeMonthInDateTable(int value) {
     rxMonth.value = value;
@@ -93,16 +127,21 @@ class DatePickerController extends GetxController {
     rxShowStatistic.value = value;
   }
 
-  void changeToDate(String? valueWeekDay, String valueWithoutWeekDay,DateTime date) {
+  void changeToDate(
+      String? valueWeekDay, String valueWithoutWeekDay, DateTime date) {
     rxToDateWithWeekDay.value = valueWeekDay!;
     rxToDate.value = valueWithoutWeekDay;
-    rxToDateWithoutWeekDay.value = convertDateToWeekDayFormatWithoutWeeked(date);
-
+    rxToDateWithoutWeekDay.value =
+        convertDateToWeekDayFormatWithoutWeeked(date);
+    rxToDateWithoutWeekDayToApi.value = formatDateToString(date);
   }
 
-  void changeFromDate(String? valueWeekDay, String valueWithoutWeekDay,DateTime date) {
+  void changeFromDate(
+      String? valueWeekDay, String valueWithoutWeekDay, DateTime date) {
     rxFromDateWithWeekDay.value = valueWeekDay!;
     rxFromDate.value = valueWithoutWeekDay;
-    rxFromDateWithoutWeekDay.value = convertDateToWeekDayFormatWithoutWeeked(date);
+    rxFromDateWithoutWeekDay.value =
+        convertDateToWeekDayFormatWithoutWeeked(date);
+    rxFromDateWithoutWeekDayToApi.value = formatDateToString(date);
   }
 }

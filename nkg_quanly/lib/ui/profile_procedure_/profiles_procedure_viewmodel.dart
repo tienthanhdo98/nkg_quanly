@@ -27,13 +27,12 @@ class ProfilesProcedureViewModel extends GetxController {
   @override
   void onInit() {
     getFilterForChart(apiGetProfileProcedureChart0);
-
+    postProfileProcByWeek(formatDateToString(dateNow),formatDateToString(dateNow));
     getAgenciesList();
     getBranchList();
     getStatusList();
     getProcedureList();
     getGroupProcedureList();
-    postProfileProcByDay(formatDateToString(dateNow));
     super.onInit();
   }
 
@@ -43,11 +42,6 @@ class ProfilesProcedureViewModel extends GetxController {
 
   void swtichBottomButton(int button) {
     selectedBottomButton.value = button;
-  }
-
-  void onSelectDay(DateTime selectedDay) {
-    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
-    postProfileProcByDay(strSelectedDay);
   }
 
   Future<void> getFilterForChart(String url) async {
@@ -63,38 +57,12 @@ class ProfilesProcedureViewModel extends GetxController {
     });
   }
 
-//get data
-  Future<void> postProfileProcByDay(String day) async {
-    final url = Uri.parse(apiPostProfileProcedureModel);
-    String json = '{"currentPage":1,"pageSize":10}';
-    print('loading');
-    http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
-    profileProcedureModel =
-        ProfileProcedureModel.fromJson(jsonDecode(response.body));
-    rxProfileProcedureListItems.value = profileProcedureModel.items!;
-    rxProfileProcedureStatistic.value = profileProcedureModel.statistic!;
-    //loadmore
-    var page = 1;
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
-        page++;
-        json = '{"currentPage":$page,"pageSize":10}';
-        response = await http.post(url, headers: headers, body: json);
-        print(response.body);
-        profileProcedureModel =
-            ProfileProcedureModel.fromJson(jsonDecode(response.body));
-        rxProfileProcedureListItems.addAll(profileProcedureModel.items!);
-        print("loadmore day at $page");
-      }
-    });
-  }
-
   Future<void> postProfileProcByWeek(String datefrom, String dateTo) async {
     final url = Uri.parse(apiPostProfileProcedureModel);
+    print(datefrom);
+    print(dateTo);
     String json =
-        '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+        '{"currentPage":1,"pageSize":10,"tuNgay":"$datefrom","denNgay":"$dateTo"}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
@@ -104,46 +72,20 @@ class ProfilesProcedureViewModel extends GetxController {
     rxProfileProcedureStatistic.value = profileProcedureModel.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore day");
         page++;
         String json =
-            '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+            '{"currentPage":$page,"pageSize":10,"tuNgay":"$datefrom","denNgay":"$dateTo"}';
         response = await http.post(url, headers: headers, body: json);
         print(response.body);
         profileProcedureModel =
             ProfileProcedureModel.fromJson(jsonDecode(response.body));
         rxProfileProcedureListItems.addAll(profileProcedureModel.items!);
-        print("loadmore day at $page");
-      }
-    });
-  }
-
-  Future<void> postProfileProcByMonth() async {
-    final url = Uri.parse(apiPostProfileProcedureModel);
-    print('loading');
-    http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-    print('rxProfileProcedureListItems ${response.body}');
-    profileProcedureModel =
-        ProfileProcedureModel.fromJson(jsonDecode(response.body));
-    rxProfileProcedureListItems.value = profileProcedureModel.items!;
-    rxProfileProcedureStatistic.value = profileProcedureModel.statistic!;
-    //loadmore
-    var page = 1;
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
-        page++;
-        String jsonGetByMonth =
-            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
-        response = await http.post(url, headers: headers, body: jsonGetByMonth);
-        print(response.body);
-        profileProcedureModel =
-            ProfileProcedureModel.fromJson(jsonDecode(response.body));
-        rxProfileProcedureListItems.addAll(profileProcedureModel.items!);
-        print("loadmore day at $page");
+        print("loadmore w at $page");
       }
     });
   }
@@ -296,7 +238,7 @@ class ProfilesProcedureViewModel extends GetxController {
     final url = Uri.parse(apiPostProfileProcedureModel);
     print('loading');
     String json =
-        '{"pageIndex":1,"pageSize":10,"coQuanId":"$agenciesId","linhVuc":"$branch","trangThaiHoSo":"$status","nttId":"$groupProcudereId","ttId":"$procudereId"}';
+        '{"currentPage":1,"pageSize":10,"coQuanId":"$agenciesId","linhVuc":"$branch","trangThaiHoSo":"$status","nttId":"$groupProcudereId","ttId":"$procudereId"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     print('rxProfileProcedureListItems ${response.body}');
     profileProcedureModel =
@@ -306,18 +248,20 @@ class ProfilesProcedureViewModel extends GetxController {
     print('rxProfileProcedureListItems ${rxProfileProcedureListItems.length}');
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore day");
         page++;
         String json =
-            '{"pageIndex":$page,"pageSize":10,"coQuanId":"$agenciesId","linhVuc":"$branch","trangThaiHoSo":"$status","nttId":"$groupProcudereId","ttId":"$procudereId"}';
+            '{"currentPage":$page,"pageSize":10,"coQuanId":"$agenciesId","linhVuc":"$branch","trangThaiHoSo":"$status","nttId":"$groupProcudereId","ttId":"$procudereId"}';
         response = await http.post(url, headers: headers, body: json);
         print(response.body);
         profileProcedureModel =
             ProfileProcedureModel.fromJson(jsonDecode(response.body));
         rxProfileProcedureListItems.addAll(profileProcedureModel.items!);
-        print("loadmore day at $page");
+        print("loadmore f at $page");
       }
     });
   }

@@ -11,6 +11,7 @@ import '../../../model/report_model/report_model.dart';
 import '../../theme/theme_data.dart';
 import '../report_list.dart';
 import 'filter_report_screen.dart';
+
 class ReportInMenuHomeList extends GetView {
   final String? header;
   final reportViewModel = Get.put(ReportViewModel());
@@ -19,391 +20,488 @@ class ReportInMenuHomeList extends GetView {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Column(
-        children: [
-          //header
-          headerWidgetSeatch(
-              header!,
-              ReportSearch(
-                header: header,
-              ),
-              context),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+    return WillPopScope(
+      onWillPop: () async {
+        menuController.rxFromDateWithoutWeekDay.value = "";
+        menuController.rxToDateWithoutWeekDay.value = "";
+        return true;
+      },
+      child: Scaffold(
+        body: SafeArea(
             child: Column(
+          children: [
+            //header
+            headerWidgetSearch(
+                header!,
+                ReportSearch(
+                  header: header,
+                ),
+                context),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Tất cả báo cáo',
+                            style: Theme.of(context).textTheme.headline5,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              if (menuController.rxShowStatistic.value ==
+                                  true) {
+                                menuController.changeStateShowStatistic(false);
+                              } else {
+                                menuController.changeStateShowStatistic(true);
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                              child: Row(children: [
+                                Obx(() => Text(
+                                    checkingNullNumberAndConvertToString(
+                                        reportViewModel
+                                            .rxReportStatistic.value.tong),
+                                    style: textBlueCountTotalStyle)),
+                                const Padding(
+                                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                    child: Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: kBlueButton,
+                                    ))
+                              ]),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            style: elevetedButtonWhite,
+                            onPressed: () {
+                              Get.to(() => FilterReportScreen(reportViewModel));
+                            },
+                            child: const Text(
+                              'Bộ lọc',
+                              style: TextStyle(color: kVioletButton),
+                            ),
+                          ))
+                    ],
+                  ),
+                  Obx(() => (menuController.rxShowStatistic.value == true)
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                          child: SizedBox(
+                            child: GridView.count(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 10,
+                              childAspectRatio: 3 / 2,
+                              mainAxisSpacing: 0,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 28,
+                                      child: Text("Báo cáo đã tiếp nhận",
+                                          style: CustomTextStyle
+                                              .robotow400s12TextStyle),
+                                    ),
+                                    Text(
+                                        checkingNullNumberAndConvertToString(
+                                            reportViewModel.rxReportStatistic
+                                                .value.daTiepNhan),
+                                        style: textBlackCountEofficeStyle)
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 28,
+                                      child: Text("Báo cáo đúng hạn",
+                                          style: CustomTextStyle
+                                              .robotow400s12TextStyle),
+                                    ),
+                                    Text(
+                                        checkingNullNumberAndConvertToString(
+                                            reportViewModel.rxReportStatistic
+                                                .value.dungHan),
+                                        style: textBlackCountEofficeStyle)
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 28,
+                                      child: Text("Báo cáo chưa đến hạn",
+                                          style: CustomTextStyle
+                                              .robotow400s12TextStyle),
+                                    ),
+                                    Text(
+                                        checkingNullNumberAndConvertToString(
+                                            reportViewModel.rxReportStatistic
+                                                .value.chuaDenHan),
+                                        style: textBlackCountEofficeStyle)
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 28,
+                                      child: Text("Báo cáo đã giao",
+                                          style: CustomTextStyle
+                                              .robotow400s12TextStyle),
+                                    ),
+                                    Text(
+                                        checkingNullNumberAndConvertToString(
+                                            reportViewModel.rxReportStatistic
+                                                .value.daGiao),
+                                        style: textBlackCountEofficeStyle)
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 28,
+                                      child: Text("Báo cáo sớm hạn",
+                                          style: CustomTextStyle
+                                              .robotow400s12TextStyle),
+                                    ),
+                                    Text(
+                                        checkingNullNumberAndConvertToString(
+                                            reportViewModel.rxReportStatistic
+                                                .value.somHan),
+                                        style: textBlackCountEofficeStyle)
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 28,
+                                      child: Text("Báo cáo quá hạn",
+                                          style: CustomTextStyle
+                                              .robotow400s12TextStyle),
+                                    ),
+                                    Text(
+                                        checkingNullNumberAndConvertToString(
+                                            reportViewModel.rxReportStatistic
+                                                .value.quaHan),
+                                        style: textBlackCountEofficeStyle)
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink())
+                ],
+              ),
+            ),
+            //
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Column(
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Tất cả báo cáo',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                            child: Text("Từ ngày")),
                         InkWell(
                           onTap: () {
-                            if (menuController.rxShowStatistic.value == true) {
-                              menuController.changeStateShowStatistic(false);
-                            } else {
-                              menuController.changeStateShowStatistic(true);
-                            }
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: 300,
+                                    child: DayPickerBottomSheet(
+                                        reportViewModel, FROM_DATE));
+                              },
+                            );
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: kDarkGray,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                    5) // use instead of BorderRadius.all(Radius.circular(20))
+                                ),
                             child: Row(children: [
-                              Obx(() => Text(
-                                  checkingNullNumberAndConvertToString(
-                                      reportViewModel
-                                          .rxReportStatistic.value.tong),
-                                  style: textBlueCountTotalStyle)),
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                  child: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: kBlueButton,
-                                  ))
+                              Obx(() => Expanded(
+                                    child: Text(
+                                      menuController
+                                          .rxFromDateWithoutWeekDay.value,
+                                    ),
+                                  )),
+                              Obx(() => (menuController
+                                  .rxFromDateWithoutWeekDay.value !=
+                                  "")
+                                  ? IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Image.asset(
+                                  "assets/icons/ic_close_2.png",
+                                  width: 15,
+                                  height: 15,
+                                ),
+                                onPressed: () {
+                                  menuController.clearDataDateFrom();
+                                },
+                              )
+                                  : IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Image.asset(
+                                  "assets/icons/ic_date.png",
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                onPressed: () {
+                                  showModalBottomSheet<void>(
+                                    isScrollControlled: true,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                          height: 300,
+                                          child: DayPickerBottomSheet(
+                                              reportViewModel, FROM_DATE));
+                                    },
+                                  );
+                                },
+                              ))
                             ]),
                           ),
                         ),
                       ],
                     ),
-                    const Spacer(),
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          style: elevetedButtonWhite,
-                          onPressed: () {
-                            Get.to(() => FilterReportScreen(reportViewModel));
-                          },
-                          child: const Text(
-                            'Bộ lọc',
-                            style: TextStyle(color: kVioletButton),
-                          ),
-                        ))
-                  ],
-                ),
-                Obx(() => (menuController.rxShowStatistic.value == true)
-                    ? Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: SizedBox(
-                          child: GridView.count(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 3 / 2,
-                            mainAxisSpacing: 0,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Báo cáo đã tiếp nhận",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          reportViewModel.rxReportStatistic
-                                              .value.daTiepNhan),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Báo cáo đúng hạn",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          reportViewModel
-                                              .rxReportStatistic.value.dungHan),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Báo cáo chưa đến hạn",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          reportViewModel.rxReportStatistic
-                                              .value.chuaDenHan),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Báo cáo đã giao",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          reportViewModel
-                                              .rxReportStatistic.value.daGiao),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Báo cáo sớm hạn",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          reportViewModel
-                                              .rxReportStatistic.value.somHan),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Báo cáo quá hạn",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          reportViewModel
-                                              .rxReportStatistic.value.quaHan),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : const SizedBox.shrink())
-              ],
-            ),
-          ),
-          //
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                          child: Text("Từ ngày")),
-                      InkWell(
-                        onTap: () {
-                          showModalBottomSheet<void>(
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return SizedBox(
-                                  height: 300,
-                                  child: DayPickerBottomSheet(
-                                      reportViewModel, FROM_DATE));
-                            },
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: kDarkGray,
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                  5) // use instead of BorderRadius.all(Radius.circular(20))
-                              ),
-                          child: Row(children: [
-                            Obx(() => Expanded(
-                                  child: Text(
-                                    menuController.rxFromDateWithoutWeekDay.value,
-                                  ),
-                                )),
-                            Image.asset(
-                              "assets/icons/ic_date.png",
-                              width: 25,
-                              color: kDarkGrayIcon,
-                              height: 25,
-                            ),
-                          ]),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
-              ),
-              //den ngay
-              const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-                          child: Text("Đến ngày")),
-                      InkWell(
-                        onTap: () {
-                          showModalBottomSheet<void>(
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return SizedBox(
-                                  height: 300,
-                                  child: DayPickerBottomSheet(
-                                      reportViewModel, TO_DATE));
-                            },
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: kDarkGray,
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                  5) // use instead of BorderRadius.all(Radius.circular(20))
-                              ),
-                          child: Row(children: [
-                            Obx(
-                              () => Expanded(
-                                child: Text(
-                                  menuController.rxToDateWithoutWeekDay.value,
+                //den ngay
+                const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
+                            child: Text("Đến ngày")),
+                        InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
                                 ),
                               ),
-                            ),
-                            Image.asset(
-                              "assets/icons/ic_date.png",
-                              width: 25,
-                              color: kDarkGrayIcon,
-                              height: 25,
-                            ),
-                          ]),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: 300,
+                                    child: DayPickerBottomSheet(
+                                        reportViewModel, TO_DATE));
+                              },
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: kDarkGray,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                    5) // use instead of BorderRadius.all(Radius.circular(20))
+                                ),
+                            child: Row(children: [
+                              Obx(
+                                () => Expanded(
+                                  child: Text(
+                                    menuController.rxToDateWithoutWeekDay.value,
+                                  ),
+                                ),
+                              ),
+                              Obx(() => (menuController
+                                  .rxToDateWithoutWeekDay.value !=
+                                  "")
+                                  ? IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Image.asset(
+                                  "assets/icons/ic_close_2.png",
+                                  width: 15,
+                                  height: 15,
+                                ),
+                                onPressed: () {
+                                  menuController.clearDataDateTo();
+                                },
+                              )
+                                  : IconButton(
+                                padding: EdgeInsets.zero,
+                                icon: Image.asset(
+                                  "assets/icons/ic_date.png",
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                onPressed: () {
+                                  showModalBottomSheet<void>(
+                                    isScrollControlled: true,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                          height: 300,
+                                          child: DayPickerBottomSheet(
+                                              reportViewModel, TO_DATE));
+                                    },
+                                  );
+                                },
+                              ))
+                            ]),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    String strdateFrom =
+                        menuController.rxFromDateWithoutWeekDayToApi.value;
+                    String strdateTo =
+                        menuController.rxToDateWithoutWeekDayToApi.value;
+                    print(strdateFrom);
+                    print(strdateTo);
+                    reportViewModel.postReportByWeek(strdateFrom, strdateTo);
+                  },
+                  child: buttonShowListScreen("Tìm"),
+                  style: bottomButtonStyle,
+                ),
+              ),
+            ),
+            //list
+            const Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Divider(
+                  thickness: 1,
+                )),
+            Expanded(
+                child: Obx(() => (reportViewModel.rxReportListItems.isNotEmpty)
+                    ? ListView.builder(
+                        itemCount: reportViewModel.rxReportListItems.length,
+                        itemBuilder: (context, index) {
+                          var item = reportViewModel.rxReportListItems[index];
+                          return InkWell(
+                              onTap: () async {
+                                // Get.to(() => ReportDetail(
+                                //     id: reportViewModel
+                                //         .rxReportListItems[index].id!));
+                                await launchUrl(Uri.parse(
+                                    "http://123.31.31.237:6002/api/reportapiclient/download-report?id=1"));
+                              },
+                              child: ReportItemInMenu(index, item));
+                        })
+                    : noData())),
+            //bottom
+            Obx(() => Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      border: Border(
+                          top: BorderSide(
+                              color: Theme.of(context).dividerColor))),
+                  height: 50,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            menuController.rxSelectedDay.value = DateTime.now();
+                            reportViewModel.onSelectDay(DateTime.now());
+                            reportViewModel.selectedBottomButton(0);
+                          },
+                          child: bottomDateButton("Ngày",
+                              reportViewModel.selectedBottomButton.value, 0),
                         ),
                       ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            DateTime dateTo =
+                                dateNow.add(const Duration(days: 7));
+                            String strdateFrom = formatDateToString(dateNow);
+                            String strdateTo = formatDateToString(dateTo);
+                            reportViewModel.postReportByWeek(
+                                strdateFrom, strdateTo);
+                            reportViewModel.selectedBottomButton(1);
+                          },
+                          child: bottomDateButton("Tuần",
+                              reportViewModel.selectedBottomButton.value, 1),
+                        ),
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            reportViewModel.postReportByMonth();
+                            reportViewModel.selectedBottomButton(2);
+                          },
+                          child: bottomDateButton("Tháng",
+                              reportViewModel.selectedBottomButton.value, 2),
+                        ),
+                      )
                     ],
                   ),
-                ),
-              )
-            ],
-          ),
-          //list
-          const Padding(
-              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-              child: Divider(
-                thickness: 1,
-              )),
-          Expanded(
-              child: Obx(() => (reportViewModel.rxReportListItems.isNotEmpty)
-                  ? ListView.builder(
-                      itemCount: reportViewModel.rxReportListItems.length,
-                      itemBuilder: (context, index) {
-                        var item =  reportViewModel.rxReportListItems[index];
-                        return InkWell (
-                            onTap: () async {
-                              // Get.to(() => ReportDetail(
-                              //     id: reportViewModel
-                              //         .rxReportListItems[index].id!));
-                              await launchUrl(Uri.parse("http://123.31.31.237:6002/api/reportapiclient/download-report?id=1"));
-                            },
-                            child: ReportItemInMenu(index,
-                                item));
-                      })
-                  : const Text("Không có báo cáo nào"))),
-          //bottom
-          Obx(() => Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    border: Border(
-                        top:
-                            BorderSide(color: Theme.of(context).dividerColor))),
-                height: 50,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          menuController.rxSelectedDay.value = DateTime.now();
-                          reportViewModel.onSelectDay(DateTime.now());
-                          reportViewModel.selectedBottomButton(0);
-                        },
-                        child: bottomDateButton("Ngày",
-                            reportViewModel.selectedBottomButton.value, 0),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          DateTime dateTo =
-                              dateNow.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateTo);
-                          reportViewModel.postReportByWeek(
-                              strdateFrom, strdateTo);
-                          reportViewModel.selectedBottomButton(1);
-                        },
-                        child: bottomDateButton("Tuần",
-                            reportViewModel.selectedBottomButton.value, 1),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          reportViewModel.postReportByMonth();
-                          reportViewModel.selectedBottomButton(2);
-                        },
-                        child: bottomDateButton("Tháng",
-                            reportViewModel.selectedBottomButton.value, 2),
-                      ),
-                    )
-                  ],
-                ),
-              ))
-        ],
-      )),
+                ))
+          ],
+        )),
+      ),
     );
   }
 }
 
 class ReportItemInMenu extends StatelessWidget {
-  const ReportItemInMenu(this.index, this.docModel, {Key? key}) : super(key: key);
+  const ReportItemInMenu(this.index, this.docModel, {Key? key})
+      : super(key: key);
 
   final int? index;
   final ReportListItems? docModel;
@@ -886,4 +984,3 @@ class FilterReportBottomSheet extends StatelessWidget {
     );
   }
 }
-

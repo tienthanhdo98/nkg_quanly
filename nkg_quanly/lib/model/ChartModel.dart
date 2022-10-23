@@ -33,3 +33,11 @@ class ChartCollumTwoValueModel {
   int value2;
   Color color;
 }
+
+class StackedChartModel {
+  StackedChartModel(this.title, this.value1, this.value2, this.value3);
+  final String title;
+  final num value1;
+  final num value2;
+  final num value3;
+}

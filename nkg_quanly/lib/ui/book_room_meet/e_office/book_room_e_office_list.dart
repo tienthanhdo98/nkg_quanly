@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/book_room_meet/room_meeting_search.dart';
+
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
 import 'package:nkg_quanly/viewmodel/date_picker_controller.dart';
 
@@ -10,6 +10,7 @@ import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../../model/meeting_room/meeting_room_model.dart';
 import '../book_room_list.dart';
+import '../booking_meeting_search.dart';
 
 class BookRoomEOfficeList extends GetView {
   final String? header;
@@ -26,10 +27,10 @@ class BookRoomEOfficeList extends GetView {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
-              RoomMeetingSearch(
-                header: header,
+              BookingMeetingSearch(
+                  roomMeetingViewModel
               ),
               context),
           //date table

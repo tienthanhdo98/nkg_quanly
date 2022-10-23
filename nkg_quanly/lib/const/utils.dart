@@ -37,6 +37,7 @@ String formatDateToString(DateTime value) {
     return "";
   }
 }
+
 String formatDateToStringDD(DateTime value) {
   try {
     var format2 = DateFormat("d");
@@ -46,11 +47,12 @@ String formatDateToStringDD(DateTime value) {
     return "";
   }
 }
-String convertDateToLunarDate(DateTime dateTime){
+
+String convertDateToLunarDate(DateTime dateTime) {
   var ngay = dateTime.day;
   var thang = dateTime.month;
   var nam = dateTime.year;
-  List<int> lunarVi = CalendarConverter.solarToLunar(nam,thang,ngay);
+  List<int> lunarVi = CalendarConverter.solarToLunar(nam, thang, ngay);
   print(lunarVi);
   return "${lunarVi[0]}/${lunarVi[1]}";
 }
@@ -80,7 +82,6 @@ String formatDateToStringtype2(DateTime value) {
     return "";
   }
 }
-
 
 String formatDateToStringWithWeekDay(DateTime value) {
   try {
@@ -143,6 +144,7 @@ String convertDateToWeekDayFormat(DateTime value) {
     return "";
   }
 }
+
 String convertDateToWeekDayFormatWithoutWeeked(DateTime value) {
   try {
     var ngay = value.day;
@@ -156,7 +158,6 @@ String convertDateToWeekDayFormatWithoutWeeked(DateTime value) {
     return "";
   }
 }
-
 
 String converWeekday(int weekday) {
   var thu = "";
@@ -283,6 +284,7 @@ String checkingStringNull(String? value) {
     return "";
   }
 }
+
 String checkingNullNumberAndConvertToString(int? value) {
   if (value != null) {
     return value.toString();
@@ -291,62 +293,230 @@ String checkingNullNumberAndConvertToString(int? value) {
   }
 }
 
-
 String calcuPercen(int first, int total) {
   var f = NumberFormat("####.#", "en_US");
   var res = f.format((first / total) * 100).toString();
   return "$res%";
 }
-String findNameOfOrganById (List<OrganModel> listOrgan,String organId){
-  var organName ="";
-    for (var element in listOrgan) {
-      if(element.id == organId)
-        {
-          organName = element.name!;
-        }
+
+String findNameOfOrganById(List<OrganModel> listOrgan, String organId) {
+  var organName = "";
+  for (var element in listOrgan) {
+    if (element.id == organId) {
+      organName = element.name!;
     }
+  }
   return organName;
 }
-String findNameOfDepartById (List<DepartmentModel> listDepartment,String departId){
-  var departIdName ="";
+
+String findNameOfDepartById(
+    List<DepartmentModel> listDepartment, String departId) {
+  var departIdName = "";
   for (var element in listDepartment) {
-    if(element.id == departId)
-    {
+    if (element.id == departId) {
       departIdName = element.name!;
     }
   }
   return departIdName;
 }
-String convertTypeToTitleChartPmis(String value)
-{
+
+String convertTypeToTitleChartPmis(String value) {
   var title = "";
-  switch(value)
-  {
-    case "TyLeGioiTinhCongChuc" : title = "THỐNG KÊ TỈ LỆ GIỚI TÍNH TRONG CÔNG CHỨC";
-    break;
-    case "TyLeDangVienCongChuc" : title = "THỐNG KÊ TỈ LỆ ĐẢNG VIÊN TRONG CÔNG CHỨC";
-    break;
-    case "CoCauCongChucTheoNgach" : title = "CƠ CẤU CÔNG CHỨC THEO NGẠCH CÔNG CHỨC";
-    break;
-    case "CoCauCongChucTheoChuyenMon" : title = "CƠ CẤU CÔNG CHỨC THEO CHUYÊN MÔN";
-    break;
-    case "CoCauCongChucTheoQuanLyNhaNuoc" : title = "CƠ CẤU CÔNG CHỨC THEO NHÀ NƯỚC";
-    break;
-    case "DanTocThieuSoTrongCongChuc" : title = "THỐNG KÊ TỈ LỆ DÂN TỘC THIỂU SỐ TRONG CÔNG CHỨC";
-    break;
-    case "CoCauCongChucTheoChinhTri" : title = "CƠ CẤU CÔNG CHỨC THEO CHÍNH TRỊ";
-    break;
-    case "CoCauCongChucTheoNgoaiNgu" : title = "CƠ CẤU CÔNG CHỨC THEO NGOẠI NGỮ";
-    break;
-    case "CoCauCongChucTheoDoTuoi" : title = "CƠ CẤU CÔNG CHỨC THEO ĐỘ TUỔI";
-    break;
+  switch (value) {
+    case "TyLeGioiTinhCongChuc":
+      title = "THỐNG KÊ TỈ LỆ GIỚI TÍNH TRONG CÔNG CHỨC";
+      break;
+    case "TyLeDangVienCongChuc":
+      title = "THỐNG KÊ TỈ LỆ ĐẢNG VIÊN TRONG CÔNG CHỨC";
+      break;
+    case "CoCauCongChucTheoNgach":
+      title = "CƠ CẤU CÔNG CHỨC THEO NGẠCH CÔNG CHỨC";
+      break;
+    case "CoCauCongChucTheoChuyenMon":
+      title = "CƠ CẤU CÔNG CHỨC THEO CHUYÊN MÔN";
+      break;
+    case "CoCauCongChucTheoQuanLyNhaNuoc":
+      title = "CƠ CẤU CÔNG CHỨC THEO NHÀ NƯỚC";
+      break;
+    case "DanTocThieuSoTrongCongChuc":
+      title = "THỐNG KÊ TỈ LỆ DÂN TỘC THIỂU SỐ TRONG CÔNG CHỨC";
+      break;
+    case "CoCauCongChucTheoChinhTri":
+      title = "CƠ CẤU CÔNG CHỨC THEO CHÍNH TRỊ";
+      break;
+    case "CoCauCongChucTheoNgoaiNgu":
+      title = "CƠ CẤU CÔNG CHỨC THEO NGOẠI NGỮ";
+      break;
+    case "CoCauCongChucTheoDoTuoi":
+      title = "CƠ CẤU CÔNG CHỨC THEO ĐỘ TUỔI";
+      break;
     // case "" : title = "";
     // break;
 
   }
   return title;
 }
-void checkboxFilterValue(bool value, int key, String filterValue,RxMap rxMapFilter) {
+
+String convertNameToEducationChartAnalysicReportViName(String value) {
+  var title = "";
+  switch (value) {
+    case "BieuDoSoSanhPhoCapMamNon":
+      title = "Biểu đồ so sánh phổ cập mầm non";
+      break;
+    case "BieuDoSoSanhPhoCapTieuHoc":
+      title = "Biểu đồ so sánh phổ cập tiểu học";
+      break;
+    case "BieuDoSoSanhPhoCapTrungHocCoSo":
+      title = "Biểu đồ so sánh phổ cập trung học cơ sở";
+      break;
+    case "BieuDoSoSanhMucDoXoaMuChu":
+      title = "Biểu đồ so sánh mức độ xóa mù chữ";
+      break;
+  }
+  return title;
+}
+
+String convertNameToPreSchoolChartAnalysicReportViName(String value) {
+  var title = "";
+  switch (value) {
+    case "BieuDoCoCauTreEmTheoCapHoc":
+      title = "Biểu đồ cơ cấu trẻ em theo cấp học";
+      break;
+    case "BieuDoCoCauTreEmTheoNhom":
+      title = "Biểu đồ cơ cấu trẻ em theo nhóm";
+      break;
+    case "BieuDoCoCauTreEmTheoDonVi":
+      title = "Biểu đồ cơ cấu trẻ em theo đơn vị";
+      break;
+    case "BieuDoCoCauTreEmTheoGioiTinh":
+      title = "Biểu đồ cơ cấu trẻ em theo giới tính";
+      break;
+    case "BieuDoCoCauTreEmTheoDanToc":
+      title = "Biểu đồ cơ cấu trẻ em theo dân tộc";
+      break;
+    case "BieuDoCoCauTreEmTheoHinhThucHoc":
+      title = "Biểu đồ cơ cấu trẻ em theo hình thức học";
+      break;
+    case "BieuDoSoSanhSoLuongTreEm":
+      title = "Biểu đồ so sánh số lượng trẻ em";
+      break;
+    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom12":
+      title = "Biểu đồ so sánh số lượng bình quân trẻ em/nhóm 1-2t";
+      break;
+    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom23":
+      title = "Biểu đồ so sánh số lượng bình quân trẻ em/nhóm 2-3t";
+      break;
+    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom34":
+      title = "Biểu đồ so sánh số lượng bình quân trẻ em/nhóm 3-4t";
+      break;
+    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom45":
+      title = "Biểu đồ so sánh số lượng bình quân trẻ em/nhóm 4-5t";
+      break;
+    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom56":
+      title = "Biểu đồ so sánh số lượng bình quân trẻ em/nhóm 5-6t";
+      break;
+    case "BieuDoTyLeTreTheoDinhDuong":
+      title = "Biểu đồ tỷ lệ trẻ theo dinh dưỡng";
+      break;
+    case "BieuDoSoSanhTyLeTreEmNuSuyDinhDuongTheoDanToc":
+      title = "Biểu đồ thống kê tỷ lệ trẻ em nữ suy dinh dưỡng theo dân tộc";
+      break;
+    case "TongSoTreDuocKiemTraSucKhoe":
+      title = "Tổng số trẻ được kiểm tra sức khỏe";
+      break;
+    case "CoCauMamNonTheoLoaiTruong":
+      title = "Cơ cấu trường mầm non theo loại trường";
+      break;
+    case "CoCauMamNonTheoDonViThanhLap":
+      title = "Cơ cấu trường mầm non theo đơn vị thành lập";
+      break;
+    case "CoCauMamNonTheoMucDoTruongChuanQuocGia":
+      title = "Cơ cấu trường mầm non theo mức độ trường chuẩn quốc gia";
+      break;
+    case "CoCauPhongHocTheoLoaiPhong":
+      title = "Cơ cấu phòng học theo loại phòng";
+      break;
+    case "BieuDoSoSanhSoLuongPhongHoc":
+      title = "Biểu đồ so sánh số lượng phòng học";
+      break;
+    case "BieuDoSoSanhSoLuongPhongHocNhoMuon":
+      title = "Biểu đồ so sánh số lượng phòng học nhờ, mượn";
+      break;
+    case "BieuDoSoSanhSoLuongPhongHocPhucVuHocTap":
+      title = "Biểu đồ so sánh số lượng phòng phục vụ học tập";
+      break;
+    case "BieuDoSoSanhSoLuongPhongHocKhac":
+      title = "Biểu đồ so sánh số lượng phòng khác";
+      break;
+    case "BieuDoSoSanhSoLuongTruong":
+      title = "Biểu đồ so sánh số lượng trường";
+      break;
+    case "BieuDoSoSanhSoLuongTruongDatChuan":
+      title = "Biểu đồ so sánh số lượng trường đạt chuẩn";
+      break;
+    case "BieuDoSoSanhSoLuongLop":
+      title = "Biểu đồ thống kê tỷ lệ trường đạt chuẩn quốc gia";
+      break;
+    case "BieuDoSoSanhSoLuongTheoLop":
+      title = "Biểu đồ so sánh số lượng theo lớp";
+      break;
+    case "BieuDoSoSanhSoLuongTheoNhomTre":
+      title = "Biểu đồ so sánh số lượng theo nhóm trẻ";
+      break;
+    case "BieuDoSoSanhTyLeTruongDatChuanQuocGia":
+      title = "Biểu đồ so sánh số lượng lớp";
+      break;
+    case "BieuDoSoSanhSoLuongNhom":
+      title = "Biểu đồ so sánh số lượng nhóm trẻ theo vùng";
+      break;
+    case "BieuDoCoCauCanBoGiaoVienNhanVienLaNuTheoDanTocThieuSo":
+      title = "Biểu đồ cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số";
+      break;
+    case "BieuDoSoSanhSoLuongCanBoGiaoVienNhanVien":
+      title = "Biểu đồ cơ cấu giáo viên theo trình độ đào tạo";
+      break;
+    case "BieuDoSoSanhBinhQuanSoGiaoVienNhom":
+      title = "Biểu đồ cơ cấu giáo viên theo độ tuổi";
+      break;
+    case "BieuDoSoSanhBinhQuanSoGiaoVienLop":
+      title = "Biểu đồ cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp";
+      break;
+    case "BieuDoSoSanhBinhQuanSoTreNhaTreGiaoVien":
+      title = "";
+      break;
+    case "BieuDoSoSanhBinhQuanSoTreMauGiaoGiaoVien":
+      title = "";
+      break;
+    case "BieuDoCoCauGiaoVienCapMamNonChiaTheoTrinhDoDaoTao":
+      title = "";
+      break;
+    case "BieuDoCoCauGiaoVienCapMamNonChiaTheoDanhGiaChuanChuyenNghiep":
+      title = "";
+      break;
+    case "BieuDoSoSanhSoBinhQuanGiaoVien":
+      title = "";
+      break;
+    case "SoGiaoVienNghiHuuTuyenMoi":
+      title = "";
+      break;
+    case "BieuDoCoCauGiaoVienCapMamNonChiaTheoDoTuoi":
+      title = "";
+      break;
+    case "BieuDoSoSanhSoLuongGiaoVien":
+      title = "";
+      break;
+    case "BieuDoSoSanhSoLuongGiaoVienDatChuan":
+      title = "";
+      break;
+    case "BieuDoSoSanhTyLeGiaoVienDatChuan":
+      title = "";
+      break;
+  }
+  return title;
+}
+
+void checkboxFilterValue(
+    bool value, int key, String filterValue, RxMap rxMapFilter) {
   if (value == true) {
     var map = {key: filterValue};
     rxMapFilter.addAll(map);
@@ -354,8 +524,9 @@ void checkboxFilterValue(bool value, int key, String filterValue,RxMap rxMapFilt
     rxMapFilter.remove(key);
   }
 }
+
 class FilterItem extends StatelessWidget {
-  const FilterItem(this.title,this.valueFilter,this.index, this.rxMapFilter,
+  const FilterItem(this.title, this.valueFilter, this.index, this.rxMapFilter,
       {Key? key})
       : super(key: key);
 
@@ -363,7 +534,6 @@ class FilterItem extends StatelessWidget {
   final String valueFilter;
   final int index;
   final RxMap rxMapFilter;
-
 
   @override
   Widget build(BuildContext context) {
@@ -373,47 +543,47 @@ class FilterItem extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
           child: Obx(() => (rxMapFilter.containsKey(index))
               ? InkWell(
-            onTap: () {
-              checkboxFilterValue(
-                  false, index, "$valueFilter;", rxMapFilter);
-            },
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: CustomTextStyle.roboto400s16TextStyle,
+                  onTap: () {
+                    checkboxFilterValue(
+                        false, index, "$valueFilter;", rxMapFilter);
+                  },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: CustomTextStyle.roboto400s16TextStyle,
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      )
+                    ],
                   ),
-                ),
-                Image.asset(
-                  'assets/icons/ic_checkbox_active.png',
-                  width: 30,
-                  height: 30,
                 )
-              ],
-            ),
-          )
               : InkWell(
-            onTap: () {
-              checkboxFilterValue(
-                  true, index, "$valueFilter;", rxMapFilter);
-            },
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: CustomTextStyle.roboto400s16TextStyle,
+                  onTap: () {
+                    checkboxFilterValue(
+                        true, index, "$valueFilter;", rxMapFilter);
+                  },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: CustomTextStyle.roboto400s16TextStyle,
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )
+                    ],
                   ),
-                ),
-                Image.asset(
-                  'assets/icons/ic_checkbox_unactive.png',
-                  width: 30,
-                  height: 30,
-                )
-              ],
-            ),
-          )),
+                )),
         ),
         const Padding(
             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -428,12 +598,11 @@ class FilterItem extends StatelessWidget {
 
 class FilterAllItem extends StatelessWidget {
   const FilterAllItem(
-      this.title,
-      this.index,
-      this.mapAllFilter,
-      {
-        Key? key,
-      }) : super(key: key);
+    this.title,
+    this.index,
+    this.mapAllFilter, {
+    Key? key,
+  }) : super(key: key);
 
   final String title;
   final int index;
@@ -444,55 +613,51 @@ class FilterAllItem extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
         child: Obx(
-              () => (mapAllFilter.containsKey(index)
+          () => (mapAllFilter.containsKey(index)
               ? InkWell(
-            onTap: () {
-              checkboxFilterValue(
-                  false, index, "", mapAllFilter);
-            },
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: CustomTextStyle.roboto700TextStyle,
+                  onTap: () {
+                    checkboxFilterValue(false, index, "", mapAllFilter);
+                  },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: CustomTextStyle.roboto700TextStyle,
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      )
+                    ],
                   ),
-                ),
-                Image.asset(
-                  'assets/icons/ic_checkbox_active.png',
-                  width: 30,
-                  height: 30,
                 )
-              ],
-            ),
-          )
               : InkWell(
-            onTap: () {
-              checkboxFilterValue(
-                  true, index, "", mapAllFilter);
-            },
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: CustomTextStyle.roboto700TextStyle,
+                  onTap: () {
+                    checkboxFilterValue(true, index, "", mapAllFilter);
+                  },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: CustomTextStyle.roboto700TextStyle,
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )
+                    ],
                   ),
-                ),
-                Image.asset(
-                  'assets/icons/ic_checkbox_unactive.png',
-                  width: 30,
-                  height: 30,
-                )
-              ],
-            ),
-          )),
+                )),
         ));
   }
 }
 
-void changeValueSelectedFilter(Rx<String> rxSelected,String value)
-{
+void changeValueSelectedFilter(Rx<String> rxSelected, String value) {
   rxSelected.value = value;
 }
-

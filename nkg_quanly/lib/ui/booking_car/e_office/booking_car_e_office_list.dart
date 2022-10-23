@@ -8,6 +8,7 @@ import '../../../const/widget.dart';
 import '../../../model/booking_car/booking_car_model;.dart';
 import '../../document_nonapproved/document_nonapproved_search.dart';
 import '../booking_car_list.dart';
+import '../booking_car_search.dart';
 import '../booking_car_viewmodel.dart';
 
 class BookingEOfficeCarList extends GetView {
@@ -24,10 +25,10 @@ class BookingEOfficeCarList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
-              DocumentnonapprovedSearch(
-                header: header,
+              BookingCarSearch(
+                  bookCarViewModel
               ),
               context),
           //date table
@@ -258,7 +259,7 @@ class BookCarEOfficeItem extends StatelessWidget {
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                               child: Text(
-                                  checkingStringNull(docModel!.registerUser!),
+                                  checkingStringNull(docModel!.registerUser),
                                   style: Theme.of(context).textTheme.headline5))
                         ],
                       ),
@@ -283,7 +284,7 @@ class BookCarEOfficeItem extends StatelessWidget {
                           Padding(
                               padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                               child: Text(
-                                checkingStringNull(docModel!.registrationTime!),
+                                checkingStringNull(docModel!.registrationTime),
                                 style: Theme.of(context).textTheme.headline5,
                               ))
                         ],
@@ -350,7 +351,7 @@ class DetailBookingCarsBottomSheet extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(checkingStringNull(docModel!.registerUser!),
+                        child: Text(checkingStringNull(docModel!.registerUser),
                             style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
@@ -375,7 +376,7 @@ class DetailBookingCarsBottomSheet extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(
-                          checkingStringNull(docModel!.registrationTime!),
+                          checkingStringNull(docModel!.registrationTime),
                           style: Theme.of(context).textTheme.headline5,
                         ))
                   ],
@@ -389,7 +390,7 @@ class DetailBookingCarsBottomSheet extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(
                           formatDate(
-                              checkingStringNull(docModel!.innitiatedDate!)),
+                              checkingStringNull(docModel!.innitiatedDate)),
                           style: Theme.of(context).textTheme.headline5,
                         ))
                   ],
@@ -402,7 +403,7 @@ class DetailBookingCarsBottomSheet extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(
-                          checkingStringNull(docModel!.content!),
+                          checkingStringNull(docModel!.content),
                           style: Theme.of(context).textTheme.headline5,
                         ))
                   ],

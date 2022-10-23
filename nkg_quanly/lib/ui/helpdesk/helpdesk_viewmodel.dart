@@ -1,27 +1,31 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/model/helpdesk_model/helpdesk_model.dart';
 
+import '../../const/const.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/helpdesk_model/helpdesk_filter_model.dart';
 
 class HelpdeskViewModel extends GetxController {
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   Rx<int> selectedChartButton = 0.obs;
-  Map<String, String> headers = {"Content-type": "application/json"};
-  Rx<int> selectedBottomButton = 0.obs;
+  Rx<int> selectedBottomButton = 1.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;
   RxList<HelpDeskListItems> rxHelpdeskListItems = <HelpDeskListItems>[].obs;
   RxList<HelpDeskStatistic> rxHelpdeskListStatistic = <HelpDeskStatistic>[].obs;
   Rx<HelpdeskModel> rxHelpdeskModel = HelpdeskModel().obs;
   ScrollController controller = ScrollController();
   HelpdeskModel helpdeskModel = HelpdeskModel();
+  Rx<bool> rxIsLoadingScreen = true.obs;
 
+  void changeLoadingState(bool value)
+  {
+    rxIsLoadingScreen.value = value;
+  }
   //filter
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
 
@@ -50,14 +54,6 @@ class HelpdeskViewModel extends GetxController {
   final RxMap<int, String> mapStatusFilter = <int, String>{}.obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
 
-  void checkboxStatus(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapStatusFilter.addAll(map);
-    } else {
-      mapStatusFilter.remove(key);
-    }
-  }
 
   RxList<HelpdeskFilterModel> rxHelpdeskFilterList =
       <HelpdeskFilterModel>[].obs;
@@ -82,50 +78,71 @@ class HelpdeskViewModel extends GetxController {
   Future<void> postHelpdeskListAndStatistic() async {
     final url = Uri.parse(apiPostHelpDesk);
     print('loading');
-    String json = '{"pageIndex":1,"pageSize":10}';
+    String json = '{"currentPage":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
     helpdeskModel = HelpdeskModel.fromJson(jsonDecode(response.body));
     rxHelpdeskListStatistic.value = helpdeskModel.statistic!;
     rxHelpdeskListItems.value = helpdeskModel.items!;
     rxHelpdeskModel.value = helpdeskModel;
+    changeLoadingState(false);
     //loadmore
+    controller.dispose();
+    controller = ScrollController();
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore Helpdesk");
         page++;
-        String json = '{"pageIndex":$page,"pageSize":10}';
+        String json = '{"currentPage":$page,"pageSize":10}';
         http.Response response =
             await http.post(url, headers: headers, body: json);
         helpdeskModel = HelpdeskModel.fromJson(jsonDecode(response.body));
         rxHelpdeskListItems.addAll(helpdeskModel.items!);
-        print("loadmore Helpdesk at $page");
+        print("loadmore Helpdesk all at $page");
       }
     });
   }
 
-  Future<void> posHelpdeskListByWeek(String datefrom, String dateTo) async {
-    final url = Uri.parse(apiGetProfile);
+  Future<void> posHelpdeskListByWeek(String dateFrom, String dateTo) async {
+    final url = Uri.parse(apiPostHelpDesk);
     print('loading');
-    print(datefrom);
+    print(dateFrom);
     print(dateTo);
     String json =
-        '{"pageIndex":1,"pageSize":10,"createdDateFrom":"$datefrom","createdDateTo":"$dateTo"}';
+        '{"currentPage":1,"pageSize":10,"createdDateFrom":"$dateFrom","createdDateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
-    HelpdeskModel res = HelpdeskModel.fromJson(jsonDecode(response.body));
-    rxHelpdeskListItems.value = res.items!;
+    helpdeskModel = HelpdeskModel.fromJson(jsonDecode(response.body));
+    rxHelpdeskListItems.value = helpdeskModel.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore Helpdesk");
+        page++;
+        String json =
+            '{"currentPage":2,"pageSize":10,"createdDateFrom":"$dateFrom","createdDateTo":"$dateTo"}';
+        response =
+        await http.post(url, headers: headers, body: json);
+        helpdeskModel = HelpdeskModel.fromJson(jsonDecode(response.body));
+        rxHelpdeskListItems.addAll(helpdeskModel.items!);
+        print("loadmore Helpdesk week at $page");
+      }
+    });
   }
+
 
   Future<void> postHelpdeskListByFilter(String status) async {
     final url = Uri.parse(apiPostHelpDesk);
     print('loading');
     String json = "";
     if (status != "") {
-      json = '{"pageIndex":1,"pageSize":10,"status":"$status"}';
+      json = '{"currentPage":1,"pageSize":10,"status":"$status"}';
     } else {
-      json = '{"pageIndex":1,"pageSize":10}';
+      json = '{"currentPage":1,"pageSize":10}';
     }
     http.Response response = await http.post(url, headers: headers, body: json);
     print(response.body);
@@ -133,20 +150,22 @@ class HelpdeskViewModel extends GetxController {
     rxHelpdeskListItems.value = helpdeskModel.items!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore Helpdesk");
         page++;
         if (status != "") {
-          json = '{"pageIndex":$page,"pageSize":10,"status":"$status"}';
+          json = '{"currentPage":$page,"pageSize":10,"status":"$status"}';
         } else {
-          json = '{"pageIndex":$page,"pageSize":10}';
+          json = '{"currentPage":$page,"pageSize":10}';
         }
         http.Response response =
             await http.post(url, headers: headers, body: json);
         helpdeskModel = HelpdeskModel.fromJson(jsonDecode(response.body));
         rxHelpdeskListItems.addAll(helpdeskModel.items!);
-        print("loadmore Helpdesk at $page");
+        print("loadmore Helpdesk filter at $page");
       }
     });
   }

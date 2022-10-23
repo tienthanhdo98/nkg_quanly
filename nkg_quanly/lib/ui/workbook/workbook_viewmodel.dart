@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/const.dart';
@@ -19,6 +20,7 @@ class WorkBookViewModel extends GetxController {
   RxList<GroupWorkbookListItems> rxGroupWorkBookListItems =
       <GroupWorkbookListItems>[].obs;
   Rx<bool> rxSwitchState = false.obs;
+  ScrollController controller = ScrollController();
 
   @override
   void onInit() {
@@ -36,30 +38,39 @@ class WorkBookViewModel extends GetxController {
     selectedBottomButton.value = button;
   }
 
-  void onSelectDay(DateTime selectedDay) {
-    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
-    postWorkBookByDay(strSelectedDay);
-  }
-
   //calendar work
 
   Future<void> postWorkBookAll() async {
     final url = Uri.parse(apiPostWorkBookSearch);
-    print('loading');
+    print('loading BookAll');
     String json = '{"pageIndex":1,"pageSize":10}';
-    http.Response response = await http.post(url, headers: headers, body: json);
+    http.Response response;
+    try {
+      response = await http.post(
+          url, headers: headers, body: json);
+    }
+    catch(_)
+    {
+      print("reload");
+      response = await http.post(
+          url, headers: headers, body: json);
+    }
     WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
     rxWorkBookListItems.value = res.items!;
-  }
-
-  Future<void> postWorkBookByDay(String date) async {
-    final url = Uri.parse(apiPostWorkBookSearch);
-    print('loading');
-    String json = '{"pageIndex":1,"pageSize":30, "date": "$date"}';
-    http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
-    WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
-    rxWorkBookListItems.value = res.items!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10}';
+        http.Response response =
+            await http.post(url, headers: headers, body: json);
+        res = WorkbookModel.fromJson(jsonDecode(response.body));
+        rxWorkBookListItems.addAll(res.items!);
+        print("loadmore w at $page");
+      }
+    });
   }
 
   Future<void> deleteWorkBookItem(String id) async {
@@ -167,8 +178,6 @@ class WorkBookViewModel extends GetxController {
   RxList<String> rxListLevelFilter = <String>[].obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
 
-
-
   Future<void> postWorkBookByFilter(String important, String status) async {
     final url = Uri.parse(apiPostWorkBookSearch);
     print('loading');
@@ -184,10 +193,20 @@ class WorkBookViewModel extends GetxController {
     final url = Uri.parse(apiGroupBookList);
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10}';
-    http.Response response = await http.post(url, headers: headers, body: json);
+    http.Response response;
+    response = await http.post(url, headers: headers, body: json);
+
     print(response.body);
     GroupWorkbookModel res =
         GroupWorkbookModel.fromJson(jsonDecode(response.body));
     rxGroupWorkBookListItems.value = res.items!;
+    // if(res.totalRecords! > 10 )
+    //   {
+    //     String json = '{"pageIndex":2,"pageSize":${res.totalRecords}';
+    //     http.Response response = await http.post(url, headers: headers, body: json);
+    //     res =
+    //     GroupWorkbookModel.fromJson(jsonDecode(response.body));
+    //     rxGroupWorkBookListItems.addAll(res.items!);
+    //   }
   }
 }

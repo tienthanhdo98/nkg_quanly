@@ -6,10 +6,10 @@ import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
 import '../../../model/contact_model/contact_model.dart';
-import '../../document_nonapproved/document_nonapproved_search.dart';
 import '../../theme/theme_data.dart';
 import 'add_new_contact_screen.dart';
 import 'contact_organization_viewmodel.dart';
+import 'organ_contact_search.dart';
 
 class GroupContactsList extends GetView {
   final String? header;
@@ -24,10 +24,10 @@ class GroupContactsList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               "Danh bạ điện tử tổ chức",
-              DocumentnonapprovedSearch(
-                header: 'Danh bạ điện tử tổ chức',
+              OrganContactsSearch(
+                  contactOrganizationViewModel
               ),
               context),
           //list
@@ -104,7 +104,7 @@ class GroupContactsList extends GetView {
                   itemCount:
                       contactOrganizationViewModel.rxContactListItems.length,
                   itemBuilder: (context, index) {
-                    return ContactsItem(
+                    return GroupContactsItem(
                         index,
                         contactOrganizationViewModel
                             .rxContactListItems[index],
@@ -116,8 +116,8 @@ class GroupContactsList extends GetView {
   }
 }
 
-class ContactsItem extends StatelessWidget {
-  ContactsItem(this.index, this.docModel, this.contactOrganizationViewModel);
+class GroupContactsItem extends StatelessWidget {
+  GroupContactsItem(this.index, this.docModel, this.contactOrganizationViewModel);
 
   final int? index;
   final ContactListItems? docModel;

@@ -55,9 +55,8 @@ class CalendarWorkViewModel extends GetxController {
     rxCalendarWorkListItems.value = calendarWorkModel.items!;
     //loadmore
     var page = 1;
-    if (controller.hasClients) {
-      controller.jumpTo(0);
-    }
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore day");
@@ -84,6 +83,8 @@ class CalendarWorkViewModel extends GetxController {
     rxCalendarWorkListItems.value = calendarWorkModel.items!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");
@@ -110,6 +111,8 @@ class CalendarWorkViewModel extends GetxController {
     rxCalendarWorkListItems.value = calendarWorkModel.items!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore m");

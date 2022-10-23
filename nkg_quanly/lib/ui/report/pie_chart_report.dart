@@ -53,8 +53,7 @@ class PieChartReportState extends State<PieChartReport> {
               legendChart(listQuantity![1].name.toString(), kBlueChart),
               legendChart(listQuantity![0].name.toString(), kOrange),
             ],
-          ),
-          Text('Biểu đồ minh họa')
+          )
         ],
       ),
     );
@@ -72,7 +71,7 @@ class PieChartReportState extends State<PieChartReport> {
     return <PieSeries<PieCharData, String>>[
       PieSeries<PieCharData, String>(
           radius: '85%',
-          dataLabelMapper: (PieCharData data, _) => data.title,
+          dataLabelMapper: (PieCharData data, _) => (data.title != "0%") ?  data.title : " ",
           dataLabelSettings: const DataLabelSettings(isVisible: true),
           dataSource: listChartData,
           startAngle: 100,

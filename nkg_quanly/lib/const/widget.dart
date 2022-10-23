@@ -118,7 +118,7 @@ Widget borderTextFilterEOffice(String? value, BuildContext context) {
               style: Theme.of(context).textTheme.headline4,
             ),
           ),
-          const Spacer(),
+          const Padding(padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
           Align(
               alignment: Alignment.centerRight,
               child: Image.asset(
@@ -178,20 +178,17 @@ Widget borderInputText(String value) {
 }
 
 Widget legendChart(String value, Color color) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          height: 15,
-          width: 30,
-          color: color,
-        ),
-        const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
-        Text(value)
-      ],
-    ),
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Container(
+        height: 15,
+        width: 30,
+        color: color,
+      ),
+      const Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
+      Text(value)
+    ],
   );
 }
 Widget legendChartCircleHozi(String value, Color color) {

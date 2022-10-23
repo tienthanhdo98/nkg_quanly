@@ -25,10 +25,9 @@ class DocumentUnprocessList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
               DocumentnonapprovedSearch(
-                header: header,
                 isApprove: true,
               ),
               context),

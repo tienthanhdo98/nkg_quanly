@@ -1,111 +1,141 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/profile/profile_list.dart';
+import 'package:nkg_quanly/const/widget.dart';
+import 'package:nkg_quanly/ui/document_out/search_controller.dart';
+import 'package:nkg_quanly/ui/profile/profile_viewmodel.dart';
 
-import '../../const/const.dart';
-import '../document_nonapproved/document_nonapproved_detail.dart';
-import '../document_out/search_controller.dart';
+import '../../../const/const.dart';
+import 'e_office/profile_e_office_list.dart';
 
-class DocumenOutSearch extends GetView {
-  String? header;
+
+class ProfileSearch  extends GetView {
+
   final searchController = Get.put(SearchController());
 
-  DocumenOutSearch({Key? key, this.header}) : super(key: key);
+  ProfileSearch(this.profileViewModel ,{Key? key})
+      : super(key: key);
+    final ProfileViewModel profileViewModel;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  border: Border(
-                      bottom: BorderSide(
-                    width: 1,
-                    color: Theme.of(context).dividerColor,
-                  ))),
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Image.asset(
-                        'assets/icons/ic_arrow_back.png',
-                        width: 18,
-                        height: 18,
-                      ),
-                    ),
-                    const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                    Expanded(
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: kgray,
-                              borderRadius: BorderRadius.circular(10)),
-                          height: 50,
-                          width: double.infinity,
-                          child: Row(
-                            children: [
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: Icon(Icons.search)),
-                              SizedBox(
-                                width: 200,
-                                child: TextField(
-                                  maxLines: 1,
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Tìm kiếm...',
-                                  ),
-                                  style: const TextStyle(color: Colors.black),
-                                  onSubmitted: (value) {
-                                    print(value);
-                                    searchController.searchDataProfile(value);
-                                  },
-                                  onChanged: (value) {
-                                    //print(value);
-                                    // searchController.searchData(value);
-                                  },
-                                ),
-                              )
-                            ],
-                          )),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                height: double.infinity,
+    return WillPopScope(
+      onWillPop: () async {
+        searchController.rxProfileItems.clear();
+        return true;
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    border: Border(
+                        bottom: BorderSide(
+                      width: 1,
+                      color: Theme.of(context).dividerColor,
+                    ))),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
-                  child: SizedBox(
-                    height: 200,
-                    child: Obx(() => ListView.builder(
-                        itemCount: searchController.listDataProfile.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                              onTap: () {
-                                Get.to(() => DocumentnonapprovedDetail(
-                                    id: searchController
-                                        .listDataProfile[index].id!));
-                              },
-                              child: ProfileListItem(index,
-                                  searchController.listDataProfile[index]));
-                        })),
+                  padding: const EdgeInsets.all(15),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          searchController.rxProfileItems.clear();
+                          Get.back();
+                        },
+                        child: Image.asset(
+                          'assets/icons/ic_arrow_back.png',
+                          width: 18,
+                          height: 18,
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                      Expanded(
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: kgray,
+                                borderRadius: BorderRadius.circular(10)),
+                            height: 50,
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child:  Image.asset(
+                                      'assets/icons/ic_search.png',
+                                      width: 20,
+                                      height: 20,
+                                    )),
+                                SizedBox(
+                                  width: 200,
+                                  child: TextField(
+                                    maxLines: 1,
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Tìm kiếm...',
+                                    ),
+                                    style: const TextStyle(color: Colors.black),
+                                    onSubmitted: (value) {
+                                      searchController.searchProfile(value);
+                                      searchController.changeLoadingState(true);
+                                    },
+                                    // onChanged: (value) {
+                                    //    searchController.searchData(value);
+                                    // },
+                                  ),
+                                )
+                              ],
+                            )),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            )
-          ],
+              Expanded(
+                child: SizedBox(
+                  height: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                    child: SizedBox(
+                      height: 200,
+                      child: Obx(() => (searchController.isLoading.value == false) ? ListView.builder(
+                           controller: searchController.controller,
+                          itemCount: searchController.rxProfileItems.length,
+                          itemBuilder: (context, index) {
+                            var item = searchController.rxProfileItems[index];
+                            return  InkWell(
+                                onTap: () {
+                                  showModalBottomSheet<void>(
+                                    isScrollControlled: true,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return SizedBox(
+                                          height: 320,
+                                          child: DetailProfileBottomSheet(
+                                              index,item));
+                                    },
+                                  );
+                                },
+                                child: ProfileListItem(
+                                    index, item));
+                          }): loadingIcon()),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+

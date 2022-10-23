@@ -26,7 +26,7 @@ class BirthDayScreen extends GetView {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //header
-            headerWidgetSeatch(header!, BirthDaySearch(), context),
+            headerWidgetSearch(header!, BirthDaySearch(), context),
             //date table
             headerTableDatePicker(context, birthDayViewModel),
             //

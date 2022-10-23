@@ -96,7 +96,7 @@ class RoomMeetingPieChartState extends State<RoomMeetingPieChart2> {
               legendChart("Đã bút phê", kOrange),
             ],
           ),
-          Text('Biểu đồ minh họa')
+
         ],
       ),
     );

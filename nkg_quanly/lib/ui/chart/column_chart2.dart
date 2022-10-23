@@ -70,7 +70,6 @@ class ColumnChart2State extends State<ColumnChart2> {
             ],
           ),
           SizedBox(height: 230, child: _buildDefaultColumnChart()),
-          Center(child: Text('Biểu đồ minh họa'))
         ],
       ),
     );

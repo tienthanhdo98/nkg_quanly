@@ -8,6 +8,7 @@ import '../../const/const.dart';
 import '../../const/widget.dart';
 import '../../viewmodel/home_viewmodel.dart';
 import '../PMis/PMis_screen.dart';
+import '../analysis_report/analysis_report_menu.dart';
 import '../birthday/birthday_screen.dart';
 import '../book_room_meet/book_meeting_screen.dart';
 import '../book_room_meet/e_office/book_room_e_office_list.dart';
@@ -157,7 +158,7 @@ class HomeScreen extends GetView {
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 // Generate 100 widgets that display their index in the List.
                 children: List.generate(listMenuHome.length, (index) {
-                  MenuItem item = listMenuHome[index];
+                  var item = listMenuHome[index];
                   return InkWell(
                     onTap: () {
                       menuToScreen(item.type!, item.title, item.img);
@@ -263,68 +264,50 @@ class HomeScreen extends GetView {
   }
 }
 
-class MenuItem {
+
+
+class MenuListItem {
   String? title;
   String? img;
   String? url;
   int? type;
 
-  MenuItem(this.title, this.img, this.url, this.type);
+  MenuListItem(this.title, this.img, this.url, this.type);
 }
 
-class MenuHomeItem {
-  String? title;
-  String? img;
-  String? url;
-  int? type;
-
-  MenuHomeItem(this.title, this.img, this.url, this.type);
-}
-
-List<MenuItem> listMenuHome = [
-  MenuItem('Không gian số', 'assets/icons/ic_kgs.png', "", 1),
-  MenuItem('Hệ thống E-Office', 'assets/icons/ic_eoffice.png', "", 2),
-  MenuItem('Hệ thống PMis', 'assets/icons/ic_pmis.png', "", 3),
-  MenuItem('Helpdesk', 'assets/icons/ic_helpdesk.png', "", 4),
-  MenuItem('Dịch vụ công hành chính', 'assets/icons/ic_dichvucong.png', "", 5),
-  MenuItem('Phân tích hiển thị số', 'assets/icons/ic_phantich.png', "", 6),
-  MenuItem('Báo cáo bộ', 'assets/icons/ic_report_bo.png', "", 7),
-  MenuItem('Tiện ích', 'assets/icons/ic_tienich.png', "", 8),
+List<MenuListItem> listMenuHome = [
+  MenuListItem('Không gian số', 'assets/icons/ic_kgs.png', "", 1),
+  MenuListItem('Hệ thống E-Office', 'assets/icons/ic_eoffice.png', "", 2),
+  MenuListItem('Hệ thống PMIS', 'assets/icons/ic_pmis.png', "", 3),
+  MenuListItem('Helpdesk', 'assets/icons/ic_helpdesk.png', "", 4),
+  MenuListItem('Dịch vụ công hành chính', 'assets/icons/ic_dichvucong.png', "", 5),
+  MenuListItem('Phân tích hiển thị số', 'assets/icons/ic_phantich.png', "", 6),
+  MenuListItem('Báo cáo bộ', 'assets/icons/ic_report_bo.png', "", 7),
+  MenuListItem('Tiện ích', 'assets/icons/ic_tienich.png', "", 8),
 ];
 
-List<MenuItem> list = [
-  MenuItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1),
-  MenuItem('Báo cáo', 'assets/icons/ic_report.png', "", 2),
-  MenuItem('Văn bản đến chưa xử lý', 'assets/icons/ic_doc.png', "", 3),
-  MenuItem('Văn bản đến chưa bút phê', 'assets/icons/ic_doc_sign.png', "", 4),
-  MenuItem('Văn bản đi chờ phát hành', 'assets/icons/ic_doc_push.png', "", 5),
-  MenuItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 6),
-  MenuItem('Lịch họp', 'assets/icons/ic_meet.png', "", 7),
-  MenuItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 8),
-  MenuItem('Sinh nhật', 'assets/icons/ic_birthday.png', "", 9),
-  MenuItem('Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 10),
-  MenuItem('Sổ tay Công việc', 'assets/icons/ic_sotay.png', "", 11),
+List<MenuListItem> list = [
+  MenuListItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1),
+  MenuListItem('Báo cáo', 'assets/icons/ic_report.png', "", 2),
+  MenuListItem('Văn bản đến chưa xử lý', 'assets/icons/ic_doc.png', "", 3),
+  MenuListItem('Văn bản đến chưa bút phê', 'assets/icons/ic_doc_sign.png', "", 4),
+  MenuListItem('Văn bản đi chờ phát hành', 'assets/icons/ic_doc_push.png', "", 5),
+  MenuListItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 6),
+  MenuListItem('Lịch họp', 'assets/icons/ic_meet.png', "", 7),
+  MenuListItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 8),
+  MenuListItem('Sinh nhật', 'assets/icons/ic_birthday.png', "", 9),
+  MenuListItem('Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 10),
+  MenuListItem('Sổ tay công việc', 'assets/icons/ic_sotay.png', "", 11),
 ];
-List<MenuItem> listEOffice = [
-  MenuItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1),
-  MenuItem('Văn bản đến', 'assets/icons/ic_doc_in.png', "", 2),
-  MenuItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 3),
-  MenuItem('Hồ sơ công việc', 'assets/icons/ic_hoso_cv.png', "", 4),
-  MenuItem('Bố trí phòng họp', 'assets/icons/ic_meeting.png', "", 5),
-  MenuItem('Bố trí và điều động xe ô tô', 'assets/icons/ic_booking_car.png', "", 6),
-  MenuItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 7),
+List<MenuListItem> listEOffice = [
+  MenuListItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1),
+  MenuListItem('Văn bản đến', 'assets/icons/ic_doc_in.png', "", 2),
+  MenuListItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 3),
+  MenuListItem('Hồ sơ công việc', 'assets/icons/ic_hoso_cv.png', "", 4),
+  MenuListItem('Bố trí phòng họp', 'assets/icons/ic_meeting.png', "", 5),
+  MenuListItem('Bố trí và điều động xe ô tô', 'assets/icons/ic_booking_car.png', "", 6),
+  MenuListItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 7),
 ];
-
-// List<MenuItem> list2 = [
-//   MenuItem('Sinh nhật', 'assets/icons/ic_birthday.png', "", 9),
-//   MenuItem('Văn bản đến', 'assets/icons/ic_doc_in.png', "", 10),
-//   MenuItem('Đặt lịch phòng họp', 'assets/icons/ic_meeting.png', "", 11),
-//   MenuItem('Điều động bố trí ô tô', 'assets/icons/ic_car.png', "", 12),
-//   MenuItem('Hồ sơ công việc', 'assets/icons/ic_hoso_cv.png', "", 13),
-//   MenuItem('Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 14),
-//   MenuItem('Sổ tay Công việc', 'assets/icons/ic_sotay.png', "", 15),
-//   MenuItem('Báo cáo', 'assets/icons/ic_report2.png', "", 16),
-// ];
 
 void toScreen(int type, String? header, String? icon) {
   switch (type) {
@@ -376,7 +359,6 @@ void toScreen(int type, String? header, String? icon) {
             icon: icon,
           ));
       break;
-      break;
     case 16:
       Get.to(() => BookMeetingScreen(
             header: header,
@@ -423,6 +405,9 @@ void menuToScreen(int type, String? header, String? icon) {
       break;
       case 5:
       Get.to(() => ProfileProcMenuScreen());
+      break;
+      case 6:
+      Get.to(() => AnalysisReportMenu());
       break;
       case 7:
       Get.to(() =>  ReportInMenuHomeList(header: header));

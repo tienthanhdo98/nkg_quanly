@@ -1,20 +1,22 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
+import '../../const/const.dart';
 import '../../model/document_out_model/document_out_model.dart';
 
 class DocumentOutViewModel extends GetxController {
-  Map<String, String> headers = {"Content-type": "application/json"};
+
 
   Rx<int> selectedBottomButton = 0.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;
 
   RxList<DocumentOutItems> rxDocumentOutItems = <DocumentOutItems>[].obs;
-
+  ScrollController controller = ScrollController();
   @override
   void onInit() {
     getDocumentOutByDay(formatDateToString(dateNow));
@@ -39,6 +41,22 @@ class DocumentOutViewModel extends GetxController {
     print(response.body);
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     rxDocumentOutItems.value = res.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = DocumentOutModel.fromJson(jsonDecode(response.body));
+        rxDocumentOutItems.addAll(res.items!);
+        print("loadmore w at $page");
+      }
+    });
   }
 
   Future<void> getDocumentOutByWeek(String datefrom, String dateTo) async {
@@ -50,16 +68,51 @@ class DocumentOutViewModel extends GetxController {
     print(response.body);
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     rxDocumentOutItems.value = res.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = DocumentOutModel.fromJson(jsonDecode(response.body));
+        rxDocumentOutItems.addAll(res.items!);
+        print("loadmore w at $page");
+      }
+    });
   }
 
   Future<void> getDocumentOutByMonth() async {
     final url = Uri.parse(apiGetDocumentOut);
-    String json = '{"pageIndex":1,"pageSize":10,"isMonth": true}';
+    String jsonGetByMonth =
+        '{"pageIndex":1,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
     print('loading');
-    http.Response response = await http.post(url, headers: headers, body: json);
+    http.Response response = await http.post(url, headers: headers, body: jsonGetByMonth);
     print(response.body);
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     rxDocumentOutItems.value = res.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String jsonGetByMonth =
+            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: jsonGetByMonth);
+        res = DocumentOutModel.fromJson(jsonDecode(response.body));
+        rxDocumentOutItems.addAll(res.items!);
+        print("loadmore w at $page");
+      }
+    });
   }
 
   //filter
@@ -97,6 +150,22 @@ class DocumentOutViewModel extends GetxController {
     print(response.body);
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     rxDocumentOutItems.value = res.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore week");
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"status":"$status"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = DocumentOutModel.fromJson(jsonDecode(response.body));
+        rxDocumentOutItems.addAll(res.items!);
+        print("loadmore w at $page");
+      }
+    });
   }
 //end filet
 

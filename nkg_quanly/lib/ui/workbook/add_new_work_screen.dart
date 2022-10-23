@@ -302,10 +302,9 @@ class AddNewWorkScreen extends GetView {
                                   print(status);
                                   print(important);
                                   print(groupWorkId);
-                                  if (workName!.isNotEmpty ||
-                                      groupWorkName!.isNotEmpty ||
-                                      description!.isNotEmpty ||
-                                      worker!.isNotEmpty) {
+                                  if (workName?.isNotEmpty == true ||
+                                      groupWorkName?.isNotEmpty == true ||
+                                      worker?.isNotEmpty== true ) {
                                     workBookViewModel.addWorkBookAll(
                                         workName!,
                                         groupWorkName!,

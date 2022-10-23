@@ -35,12 +35,7 @@ class LineCharWidgetState extends State<LineCharWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
-      child: Column(
-        children: [
-          SizedBox(height: 200, child: _buildDefaultLineChart()),
-          const Text('Biểu đồ minh họa')
-        ],
-      ),
+      child: SizedBox(height: 200, child: _buildDefaultLineChart()),
     );
   }
 

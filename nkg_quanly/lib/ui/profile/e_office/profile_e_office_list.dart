@@ -10,6 +10,7 @@ import '../../../const/widget.dart';
 import '../../document_out/document_out_search.dart';
 import '../../mission/profile_detail.dart';
 import '../../theme/theme_data.dart';
+import '../profile_search.dart';
 
 class ProfileEOfficeList extends GetView {
   final String? header;
@@ -25,10 +26,10 @@ class ProfileEOfficeList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
-              DocumenOutSearch(
-                header: header,
+              ProfileSearch(
+                  profileViewModel
               ),
               context),
           //date table

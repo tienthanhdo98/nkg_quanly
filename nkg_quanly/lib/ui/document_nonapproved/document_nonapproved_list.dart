@@ -28,10 +28,9 @@ class DocumentNonapprovedList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
               DocumentnonapprovedSearch(
-                header: header,
                 isApprove: isNonapproved,
               ),
               context),

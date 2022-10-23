@@ -88,9 +88,8 @@ class DocumentUnprocessViewModel extends GetxController {
     rxDocumentInStatistic.value = documentInModel.statistic!;
     //loadmore
     var page = 1;
-    if (controller.hasClients) {
-      controller.jumpTo(0);
-    }
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore day");
@@ -118,6 +117,8 @@ class DocumentUnprocessViewModel extends GetxController {
     rxItems.value = documentInModel.items!;
     rxDocumentInStatistic.value = documentInModel.statistic!;
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");
@@ -144,6 +145,8 @@ class DocumentUnprocessViewModel extends GetxController {
     rxDocumentInStatistic.value = documentInModel.statistic!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore m");
@@ -173,7 +176,6 @@ class DocumentUnprocessViewModel extends GetxController {
     rxDocumentInStatistic.value = documentInModel.statistic!;
     //loadmore
     var page = 1;
-    controller.jumpTo(0);
     controller.dispose();
     controller = ScrollController();
     controller.addListener(() async {
@@ -201,41 +203,7 @@ class DocumentUnprocessViewModel extends GetxController {
   RxList<String> rxListLevelFilter = <String>[].obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
 
-  void checkboxFilterAll(bool value, int key) {
-    if (value == true) {
-      var map = {key: ""};
-      mapAllFilter.addAll(map);
-    } else {
-      mapAllFilter.remove(key);
-    }
-  }
 
-  void checkboxDepartment(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapDepartmentFilter.addAll(map);
-    } else {
-      mapDepartmentFilter.remove(key);
-    }
-  }
-
-  void checkboxStatus(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapStatusFilter.addAll(map);
-    } else {
-      mapStatusFilter.remove(key);
-    }
-  }
-
-  void checkboxLevel(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapLevelFilter.addAll(map);
-    } else {
-      mapLevelFilter.remove(key);
-    }
-  }
 
   Future<void> getFilterDepartment() async {
     print('loading');

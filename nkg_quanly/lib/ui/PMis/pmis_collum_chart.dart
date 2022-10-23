@@ -69,8 +69,8 @@ class PmisCollumChartState extends State<PmisCollumChartWidget> {
         yValueMapper: (ChartSampleData sales, _) => sales.y,
         pointColorMapper: ((ChartSampleData sales, _) => sales.color),
         dataLabelMapper: (ChartSampleData sales, _) => sales.y.toString(),
-        dataLabelSettings: const DataLabelSettings(
-            isVisible: true, textStyle: TextStyle(fontSize: 8)),
+        dataLabelSettings: DataLabelSettings(
+            isVisible: (listCharData.length < 12 ) ? true : false, textStyle: TextStyle(fontSize: 8)),
       )
     ];
   }

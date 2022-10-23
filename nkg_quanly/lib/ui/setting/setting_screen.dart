@@ -74,7 +74,7 @@ class SettingScreen extends StatelessWidget {
                           physics: const BouncingScrollPhysics(),
                           itemCount: listMenu.length,
                           itemBuilder: (context, index) {
-                            if (index == listMenu.length - 1) {
+                            if (index != listMenu.length - 1) {
                               return Padding(
                                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                 child: Row(
@@ -156,13 +156,15 @@ class MenuItem {
 }
 
 List<MenuItem> listMenu = [
-  MenuItem(icon: Icons.home, title: "Không giam làm việc số"),
-  MenuItem(icon: Icons.pie_chart, title: "Hệ thống PERMIS"),
-  MenuItem(icon: Icons.tag, title: "Tiện ích"),
-  MenuItem(icon: Icons.receipt_long, title: "Báo cáo"),
-  MenuItem(icon: Icons.flag_rounded, title: "Sự kiên"),
-  MenuItem(icon: Icons.account_circle_outlined, title: "Tài khoản"),
-  MenuItem(icon: Icons.message, title: "Tin nhắn"),
-  MenuItem(icon: Icons.settings, title: "Cài đặt"),
-  MenuItem(icon: Icons.nightlight_round, title: "Chế độ đêm"),
+  MenuItem(icon: Icons.logout, title: "Đăng xuất"),
+  // MenuItem(icon: Icons.home, title: "Không giam làm việc số"),
+  // MenuItem(icon: Icons.pie_chart, title: "Hệ thống PERMIS"),
+  // MenuItem(icon: Icons.tag, title: "Tiện ích"),
+  // MenuItem(icon: Icons.receipt_long, title: "Báo cáo"),
+  // MenuItem(icon: Icons.flag_rounded, title: "Sự kiên"),
+  // MenuItem(icon: Icons.account_circle_outlined, title: "Tài khoản"),
+  // MenuItem(icon: Icons.message, title: "Tin nhắn"),
+  // MenuItem(icon: Icons.settings, title: "Cài đặt"),
+  // MenuItem(icon: Icons.nightlight_round, title: "Chế độ đêm"),
+
 ];

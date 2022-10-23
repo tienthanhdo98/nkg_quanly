@@ -27,7 +27,7 @@ class ProfilesProcedureListWithStatistic extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               "Danh sách hồ sơ hành chính",
               ProfileProcSearch(
               ),
@@ -371,7 +371,7 @@ class ProfilesProcedureListWithStatistic extends GetView {
               child: Obx(() => (profilesProcedureViewModel
                       .rxProfileProcedureListItems.isNotEmpty)
                   ? ListView.builder(
-                       shrinkWrap: true,
+                      shrinkWrap: true,
                       controller: profilesProcedureViewModel.controller,
                       itemCount: profilesProcedureViewModel
                           .rxProfileProcedureListItems.length,
@@ -402,7 +402,7 @@ class ProfilesProcedureListWithStatistic extends GetView {
                                 profilesProcedureViewModel
                                     .rxProfileProcedureListItems[index]));
                       })
-                  : loadingIcon())),
+                  : noData())),
           //bottom
           Obx(() => Container(
                 decoration: BoxDecoration(
@@ -418,8 +418,10 @@ class ProfilesProcedureListWithStatistic extends GetView {
                       child: InkWell(
                           onTap: () {
                             menuController.rxSelectedDay.value = DateTime.now();
-                            profilesProcedureViewModel
-                                .onSelectDay(DateTime.now());
+                            String strdateFrom = formatDateToString(dateNow);
+                            String strdateTo = formatDateToString(dateNow);
+                            profilesProcedureViewModel.postProfileProcByWeek(
+                                strdateFrom, strdateTo);
                             profilesProcedureViewModel.swtichBottomButton(0);
                           },
                           child: bottomDateButton(
@@ -432,9 +434,9 @@ class ProfilesProcedureListWithStatistic extends GetView {
                       child: InkWell(
                         onTap: () {
                           DateTime dateTo =
-                              dateNow.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateTo);
+                              dateNow.subtract(const Duration(days: 7));
+                          String strdateFrom = formatDateToString(dateTo);
+                          String strdateTo = formatDateToString(dateNow);
                           profilesProcedureViewModel.postProfileProcByWeek(
                               strdateFrom, strdateTo);
                           profilesProcedureViewModel.swtichBottomButton(1);
@@ -449,7 +451,12 @@ class ProfilesProcedureListWithStatistic extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          profilesProcedureViewModel.postProfileProcByMonth();
+                          DateTime dateTo =
+                          dateNow.subtract(const Duration(days: 30));
+                          String  strdateFrom = formatDateToString(dateTo);
+                          String strdateTo = formatDateToString(dateNow);
+                          profilesProcedureViewModel.postProfileProcByWeek(
+                              strdateFrom, strdateTo);
                           profilesProcedureViewModel.swtichBottomButton(2);
                         },
                         child: bottomDateButton(

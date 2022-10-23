@@ -25,7 +25,7 @@ class ReportList extends GetView {
           child: Column(
         children: [
           //header
-          headerWidgetSeatch(
+          headerWidgetSearch(
               header!,
               ReportSearch(
                 header: header,
