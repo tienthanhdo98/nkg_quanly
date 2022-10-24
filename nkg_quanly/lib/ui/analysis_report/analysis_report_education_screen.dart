@@ -7,7 +7,7 @@ import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/widget.dart';
 import '../theme/theme_data.dart';
-import 'analysis_pie_chart.dart';
+import 'analysis_pie_chart2.dart';
 import 'analysis_report_filter_screen.dart';
 import 'analysis_report_stacked_chart.dart';
 import 'analysis_report_viewmodel.dart';

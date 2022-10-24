@@ -6,16 +6,20 @@ import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
 import '../../theme/theme_data.dart';
+import '../analysis_collum_chart2.dart';
 import '../analysis_pie_chart.dart';
+import '../analysis_pie_chart2.dart';
+import '../analysis_report_type_screen.dart';
 import '../analysis_report_viewmodel.dart';
 
 class ReportGiaoDucKhuyetTatScreen extends GetView {
   ReportGiaoDucKhuyetTatScreen({Key? key}) : super(key: key);
 
   final analysisReportViewModel = Get.put(AnalysisReportViewModel());
-
+  String? filterType = "";
   @override
   Widget build(BuildContext context) {
+    filterType = listReportGDKT[0];
     analysisReportViewModel.getDataPreSchoolScreen();
     return Scaffold(
       body: SafeArea(
@@ -32,47 +36,58 @@ class ReportGiaoDucKhuyetTatScreen extends GetView {
                 style: CustomTextStyle.grayColorTextStyle,
               ),
               const Padding(padding: EdgeInsets.all(5)),
-              Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                        color: kDarkGray, style: BorderStyle.solid, width: 1),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(
+                          color: kDarkGray, style: BorderStyle.solid, width: 1),
+                    ),
+                    child: StatefulBuilder(
+                      builder: (context, setState) => Row(
+                        children: [
+                          DropdownButton(
+                            icon: Image.asset(
+                              'assets/icons/ic_arrow_down.png',
+                              width: 14,
+                              height: 14,
+                            ),
+                            value: (filterType?.isNotEmpty == true)
+                                ? filterType
+                                : null,
+                            underline: const SizedBox.shrink(),
+                            items: listReportGDKT
+                                .map((value) => DropdownMenuItem(
+                              child: SizedBox(
+                                  width: MediaQuery.of(context).size.width *
+                                      0.85,
+                                  child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 5, 10, 5),
+                                      child: Text(value.trim()))),
+                              value: value.trim(),
+                            ))
+                                .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                filterType = value.toString();
+                                listReportGDKT.asMap().forEach((index, itemValue) {
+                                  if (itemValue == value) {
+                                    analysisReportViewModel
+                                        .changeValuefilterType(filterType!);
+                                    analysisReportViewModel.rxTypeScreen.value =
+                                        index;
+                                  }
+                                });
+                              });
+                            },
+                            style: Theme.of(context).textTheme.headline4,
+                            isExpanded: false,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  child: Obx(() => DropdownButton(
-                        icon: Image.asset(
-                          'assets/icons/ic_arrow_down.png',
-                          width: 14,
-                          height: 14,
-                        ),
-                        value: listReportGDKT[
-                            analysisReportViewModel.rxTypeScreen.value],
-                        underline: const SizedBox.shrink(),
-                        items: listReportGDKT
-                            .map((value) => DropdownMenuItem(
-                                  child: SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.85,
-                                      child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              10, 5, 10, 5),
-                                          child: Text(value.trim()))),
-                                  value: value.trim(),
-                                ))
-                            .toList(),
-                        onChanged: (value) {
-                          listReportGDKT.asMap().forEach((index, itemValue) {
-                            if (itemValue == value) {
-                              print(itemValue);
-                              print(value);
-                              analysisReportViewModel.rxTypeScreen.value =
-                                  index;
-                            }
-                          });
-                        },
-                        style: Theme.of(context).textTheme.headline4,
-                        isExpanded: false,
-                      ))),
               const Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0)),
               Container(
                 width: double.infinity,
@@ -178,76 +193,56 @@ class ReportGiaoDucKhuyetTatScreen extends GetView {
                     children: [
                       Obx(() => countReport(
                           analysisReportViewModel,context)),
-                      Obx(() => (analysisReportViewModel
-                                  .rxIsLoadingData.value ==
-                              false)
-                          ? ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: analysisReportViewModel
-                                  .rxListPreSchoolChartModel.length,
-                              itemBuilder: (context, index) {
-                                var listChart = analysisReportViewModel
-                                    .rxListPreSchoolChartModel
-                                    .elementAt(index)
-                                    .items;
-                                var title = analysisReportViewModel
-                                    .rxListPreSchoolChartModel
-                                    .elementAt(index)
-                                    .chartName;
-                                if (title != null &&
-                                    listChart!.isNotEmpty == true) {
-                                  return Padding(
+                      Obx(() => ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: checkListChart(
+                              analysisReportViewModel.rxfilterType.value)
+                              .length,
+                          itemBuilder: (context, index) {
+                            var item = checkListChart(
+                                analysisReportViewModel.rxfilterType.value)[index];
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+                              child: borderItem(
+                                  Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(0, 0, 0, 15),
-                                    child: borderItem(
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 15, 15, 15),
-                                          child: Column(children: [
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    checkingStringNull(
-                                                        convertNameToPreSchoolChartAnalysicReportViName(
-                                                            title)),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline1,
-                                                  ),
-                                                ),
-                                                const Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            20, 0, 0, 0)),
-                                                InkWell(
-                                                  onTap: () {
-                                                    analysisReportViewModel
-                                                        .getChartPreSchool("2",
-                                                            "", "1", "", "");
-                                                  },
-                                                  child: Image.asset(
-                                                      "assets/icons/ic_refresh.png",
-                                                      width: 16,
-                                                      height: 16),
-                                                )
-                                              ],
+                                    const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                                    child: Column(children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              item.name!,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline1,
                                             ),
-                                            AnalysisChartWidget(
-                                              key: UniqueKey(),
-                                              listPreSchoolChartItems:
-                                                  listChart,
-                                            )
-                                          ]),
-                                        ),
-                                        context),
-                                  );
-                                } else {
-                                  return const SizedBox.shrink();
-                                }
-                              })
-                          : loadingIcon()),
+                                          ),
+                                          const Padding(
+                                              padding:
+                                              EdgeInsets.fromLTRB(20, 0, 0, 0)),
+                                          InkWell(
+                                            onTap: () {},
+                                            child: Image.asset(
+                                                "assets/icons/ic_refresh.png",
+                                                width: 16,
+                                                height: 16),
+                                          )
+                                        ],
+                                      ),
+                                      (item.type == "1")
+                                          ? AnalysisChart2Widget(
+                                        key: UniqueKey(),
+                                      )
+                                          : AnalysisChartCollum2Widget(
+                                        key: UniqueKey(),
+                                      )
+                                    ]),
+                                  ),
+                                  context),
+                            );
+                          }))
                     ],
                   ),
                 ),
@@ -258,6 +253,19 @@ class ReportGiaoDucKhuyetTatScreen extends GetView {
       )),
     );
   }
+  List<chart> checkListChart(String? filterName) {
+    List<chart> listScreen = [];
+    // man non
+    if (filterType == listReportGDKT[0]) {
+      listScreen = trungtamgdkt;
+    } else if (filterType == listReportGDKT[1]) {
+      listScreen = hskt;
+    } else {
+      listScreen = nvgddkt;
+    }
+    return listScreen;
+  }
+
 }
 
 Widget countReport(
@@ -273,7 +281,7 @@ Widget countReport(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 20,
+                  height: 30,
                   child: Text('HS khuyết tật chuyên biệt',
                       style: Theme.of(context).textTheme.headline5),
                 ),
@@ -290,7 +298,7 @@ Widget countReport(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 20,
+                  height: 30,
                   child: Text('HS được can thiệp sớm',
                       style: Theme.of(context).textTheme.headline5),
                 ),
@@ -349,12 +357,35 @@ Widget countReport(
   else {
     return const SizedBox.shrink();
   }
-}
 
+}
 
 
 var listReportGDKT= [
   "Báo cáo thống kê số trung tâm GDKT",
   "Báo cáo thống kê học sinh khuyết tật",
   "Báo cáo thống kê cán bộ quản lý, giáo viên và nhân viên hỗ trợ giáo dục trẻ em khuyết tật",
+];
+var trungtamgdkt = [
+  chart("Cơ cấu cơ sở giáo dục khuyết tật theo trung tâm","1"),
+  chart("Cơ cấu cơ sở giáo dục khuyết theo đơn vị thành lâp","1"),
+  chart("Thống kê cơ sở giáo dục khuyết tật","2"),
+  ];
+var hskt = [
+  chart("Cơ cấu HS theo dạng khuyết tật", "1"),
+  chart("Cơ cấu HS theo mức độ khuyết tật", "1"),
+  chart("Cơ cấu HS được can thiệp sớm theo dạng khuyết tật", "1"),
+  chart("Thống kê HS khuyết tật theo tỉnh/ thành phố", "2"),
+  chart("Thống kê HS khuyết tật theo vùng", "2"),
+  chart("Thống kê HS khuyết tật theo năm học", "2"),
+];
+var  nvgddkt = [
+  chart("Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số", "1"),
+  chart("Cơ cấu giáo viên theo trình độ đào tạo", "1"),
+  chart("Cơ cấu giáo viên theo độ tuổi", "1"),
+  chart("Cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp", "1"),
+  chart("Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên", "2"),
+  chart("Thống kê cán bộ quản lý, giáo viên, nhân viên theo tỉnh/ TP", "2"),
+  chart("Thống kê cán bộ quản lý, giáo viên, nhân viên theo vùng", "2"),
+  chart("Thống kê cán bộ quản lý, giáo viên, nhân viên theo năm", "2"),
 ];

@@ -48,6 +48,13 @@ class AnalysisReportViewModel extends GetxController {
   Rx<bool> rxIsLoadingData = true.obs;
   Rx<int> rxTypeScreen = 0.obs;
 
+  Rx<String> rxfilterType = "".obs;
+
+  void changeValuefilterType(String value)
+  {
+    rxfilterType.value = value;
+  }
+
   void changeValueDataId(String value,Rx<String> rxString)
   {
     rxString.value = value;
@@ -84,6 +91,9 @@ class AnalysisReportViewModel extends GetxController {
   void getListProvinceByRegion()
   {
     rxListProvinceByRegion.clear();
+    mapAllFilter.clear();
+    rxSelectedProvince.value = "";
+    mapProvinceFilter.clear();
     print("getListProvinceByRegion ${rxSelectedRegionID.value}");
     for (var element in rxListAllProvince) {
       if(element.areaId == rxSelectedRegionID.value)
@@ -136,7 +146,7 @@ class AnalysisReportViewModel extends GetxController {
     if (keySearch != "") {
       var list = rxListAllProvince
           .toList()
-          .where((element) => element.name!.contains(keySearch))
+          .where((element) => element.name!.toLowerCase().contains(keySearch.toLowerCase()))
           .toList();
       rxListProvinceByRegion.value = list;
     } else {
@@ -149,7 +159,7 @@ class AnalysisReportViewModel extends GetxController {
       await getListFilter(getAnalysisReportRegion, rxListRegion);
       var list = rxListRegion
           .toList()
-          .where((element) => element.name!.contains(keySearch))
+          .where((element) => element.name!.toLowerCase().contains(keySearch.toLowerCase()))
           .toList();
       rxListRegion.value = list;
     } else {
@@ -162,7 +172,7 @@ class AnalysisReportViewModel extends GetxController {
       await getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
       var list = rxListSchoolYear
           .toList()
-          .where((element) => element.name!.contains(keySearch))
+          .where((element) => element.name!.toLowerCase().contains(keySearch.toLowerCase()))
           .toList();
       rxListSchoolYear.value = list;
     } else {
@@ -174,7 +184,7 @@ class AnalysisReportViewModel extends GetxController {
       await getListFilter(getAnalysisReportSchoolLevel, rxListSchoolLevel);
       var list = rxListSchoolLevel
           .toList()
-          .where((element) => element.name!.contains(keySearch))
+          .where((element) => element.name!.toLowerCase().contains(keySearch.toLowerCase()))
           .toList();
       rxListSchoolLevel.value = list;
     } else {

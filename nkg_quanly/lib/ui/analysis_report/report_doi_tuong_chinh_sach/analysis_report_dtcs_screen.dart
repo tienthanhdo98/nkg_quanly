@@ -7,7 +7,7 @@ import '../../../const/style.dart';
 import '../../../const/widget.dart';
 import '../../analysis_collum_chart.dart';
 import '../../theme/theme_data.dart';
-import '../analysis_pie_chart.dart';
+import '../analysis_pie_chart2.dart';
 import '../analysis_report_filter_screen.dart';
 import '../analysis_report_viewmodel.dart';
 
@@ -188,7 +188,7 @@ class AnalysisReportDTCSMenu extends GetView {
                                     children: [
                                       SizedBox(
                                         height: 32,
-                                        child: Text('Con em thương binh,người có công',
+                                        child: Text('Con em thương bệnh binh, người có công',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline5),
@@ -213,7 +213,7 @@ class AnalysisReportDTCSMenu extends GetView {
                                       SizedBox(
                                         height: 32,
                                         child: Text(
-                                            'Con em hộ nghèo hoặc có hoàn cảnh khó khăn',
+                                            'Con em hộ nghèo hoặc có điều kiện khó khăn',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline5),
@@ -234,7 +234,7 @@ class AnalysisReportDTCSMenu extends GetView {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Trẻ em khuyết tật',
+                                Text('Trẻ em, học sinh khuyết tật',
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline5),
@@ -258,7 +258,7 @@ class AnalysisReportDTCSMenu extends GetView {
                                   Expanded(
                                     child: Text(
                                       checkingStringNull(
-                                              "So sánh học sinh theo dạng đối tượng"),
+                                              "Thống kê số lượng học sinh theo dạng đối tượng"),
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline1,
