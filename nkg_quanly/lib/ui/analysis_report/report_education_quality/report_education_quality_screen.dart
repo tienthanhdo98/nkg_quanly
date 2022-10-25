@@ -398,7 +398,7 @@ var listSubject = ["Toán","Lý","Hóa","Anh","Sử","Địa","Văn","Sinh","Gi�
 var listPriSchool = ["Lớp 1","Lớp 2","Lớp 3","Lớp 4","Lớp 5",];
 var listMidSchool = ["Lớp 6","Lớp 7","Lớp 8","Lớp 9",];
 var listHighSchool = ["Lớp 10","Lớp 11","Lớp 12"];
-// var listAllClass = ["Lớp 1","Lớp 2","Lớp 3","Lớp 4","Lớp 5","Lớp 6","Lớp 7","Lớp 8","Lớp 9","Lớp 10","Lớp 11","Lớp 12"];
+var listAllClass = ["Lớp 1","Lớp 2","Lớp 3","Lớp 4","Lớp 5","Lớp 6","Lớp 7","Lớp 8","Lớp 9","Lớp 10","Lớp 11","Lớp 12"];
 
 var monhoc = [
   chart("Xếp hạng năng lực  theo tỉnh/TP", "2"),
