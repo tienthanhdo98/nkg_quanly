@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -69,11 +68,11 @@ class LoginState extends State<LoginScreen2> {
       body: Column(
         children: [
           Container(
-            height: 300,
+            height: 500,
             child: InAppWebView(
               initialUrlRequest: URLRequest(
                 url: Uri.parse(
-                    'https://dangnhap.moet.gov.vn/authenticationendpoint/login.do?client_id=DNoW4q482RZfMLfzbDfKwN_Nm1sa&commonAuthCallerPath=%2Foauth2%2Fauthorize&forceAuth=false&passiveAuth=false&redirect_uri=http%3A%2F%2F123.31.31.237%3A8000%2F&response_type=code&scope=openid&tenantDomain=carbon.super&sessionDataKey=159d5449-6f11-402f-b0d0-0f17dfd74d02&relyingParty=DNoW4q482RZfMLfzbDfKwN_Nm1sa&type=oidc&sp=Test-SSO&isSaaSApp=false&authenticators=BasicAuthenticator%3ALOCAL'),
+                    'https://dangnhap.moet.gov.vn/oauth2/authorize?response_type=code&client_id=DNoW4q482RZfMLfzbDfKwN_Nm1sa&redirect_uri=http://localhost:8080&scope=openid'),
               ),
               initialOptions: InAppWebViewGroupOptions(
                 ios: IOSInAppWebViewOptions(),
@@ -120,3 +119,26 @@ class LoginState extends State<LoginScreen2> {
     );
   }
 }
+// class LoginState extends State<LoginScreen2> {
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Column(
+//         children: [
+//           ElevatedButton(
+//               onPressed: () {
+//                 Clipboard.setData(
+//                     const ClipboardData(text: "lcloi@moet.gov.vn"));
+//               },
+//               child: Text("username")),
+//           ElevatedButton(
+//               onPressed: () {
+//                 Clipboard.setData(const ClipboardData(text: "sdtech@123#"));
+//               },
+//               child: Text("pass")),
+//         ],
+//       ),
+//     );
+//   }
+// }

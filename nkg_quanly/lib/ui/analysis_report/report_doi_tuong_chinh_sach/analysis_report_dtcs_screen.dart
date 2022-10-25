@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
@@ -7,7 +7,7 @@ import '../../../const/style.dart';
 import '../../../const/widget.dart';
 import '../../analysis_collum_chart.dart';
 import '../../theme/theme_data.dart';
-import '../analysis_pie_chart2.dart';
+
 import '../analysis_report_filter_screen.dart';
 import '../analysis_report_viewmodel.dart';
 
@@ -230,7 +230,7 @@ class AnalysisReportDTCSMenu extends GetView {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

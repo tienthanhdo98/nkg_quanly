@@ -94,35 +94,36 @@ void toAnalysisReportScreen(int type, String? header, String? icon) {
     case 1:
       Get.to(() => AnalysisReportEducationScreen());
       break;
+
     case 2:
-      Get.to(() => AnalysisReportDTCSMenu());
-      break;
-    case 3:
       Get.to(() => AnalysisReportTypeMenu("Giáo dục mầm non", typePreSchool));
       break;
-    case 4:
+    case 3:
       Get.to(
           () => AnalysisReportTypeMenu("Giáo dục Tiểu học", typePrimarySchool));
       break;
-    case 5:
+    case 4:
       Get.to(() => AnalysisReportTypeMenu(
           "Giáo dục cấp trung học cơ sở", typeMiddleSchool));
       break;
-    case 6:
+    case 5:
       Get.to(() => AnalysisReportTypeMenu(
           "Giáo dục cấp trung học phổ thông", typeHighSchool));
       break;
-    case 7:
+    case 6:
       Get.to(
           () => ReportGiaoDucKhuyetTatScreen());
       break;
-    case 8:
+    case 7:
       Get.to(() =>
           ReportGiaoDucThuongXuyenScreen());
       break;
-    case 9:
+    case 8:
       Get.to(() =>
           ReportEducationQualityScreen());
+      break;
+    case 9:
+      Get.to(() => AnalysisReportDTCSMenu());
       break;
     case 10:
       Get.to(() =>

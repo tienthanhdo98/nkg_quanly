@@ -889,6 +889,8 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                               padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
                               child: ElevatedButton(
                                 onPressed: () {
+                                  var point = analysisReportViewModel!.rxSelectedPointId;
+                                  print("point : $point");
                                   Get.back();
                                 },
                                 child: buttonShowListScreen("Tìm kiếm"),
@@ -1922,10 +1924,10 @@ class FilterPointBottomSheet extends StatelessWidget {
             height: MediaQuery.of(context).size.height*0.32,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: listPoint.length,
+                itemCount: analysisReportViewModel!.rxListPoint.length,
                 itemBuilder: (context, index) {
-                  var item = listPoint[index];
-                  return FilterItem(item, item, index,
+                  var item = analysisReportViewModel!.rxListPoint[index];
+                  return FilterItem(item.name!, item.id!, index,
                       analysisReportViewModel!.mapPointFilter);
                 }),
           ),
@@ -1957,18 +1959,21 @@ class FilterPointBottomSheet extends StatelessWidget {
                                 analysisReportViewModel!
                                     .rxSelectedPoint,
                                 "Tất cả điểm");
+
                           } else {
                             var agencies = "";
                             var agenciesName = "";
+                            var agenciesId= "";
                             analysisReportViewModel!.mapPointFilter
                                 .forEach((key, value) {
                               agencies += value;
                             });
                             var listId = agencies.split(";");
                             for (var id in listId) {
-                              for (var item in listPoint ){
-                                if (item == id) {
-                                  agenciesName += "${item};";
+                              for (var item in analysisReportViewModel!.rxListPoint){
+                                if (item.id == id) {
+                                  agenciesName += "${item.name};";
+                                  agenciesId += "${item.id};";
                                 }
                               }
                             }
@@ -1979,11 +1984,19 @@ class FilterPointBottomSheet extends StatelessWidget {
                                       .rxSelectedPoint,
                                   agenciesName.substring(
                                       0, agenciesName.length - 1));
+                              analysisReportViewModel!.changeValueSelectedFilter(
+                                  analysisReportViewModel!
+                                      .rxSelectedPointId,
+                                  agenciesId);
                             } else {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                   analysisReportViewModel!
                                       .rxSelectedPoint,
+                                  "");
+                              analysisReportViewModel!.changeValueSelectedFilter(
+                                  analysisReportViewModel!
+                                      .rxSelectedPointId,
                                   "");
                             }
                           }

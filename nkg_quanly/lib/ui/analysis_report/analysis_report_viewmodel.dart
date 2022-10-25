@@ -24,6 +24,10 @@ class AnalysisReportViewModel extends GetxController {
       <AnalysisReportFilterModel>[].obs;
   RxList<AnalysisReportFilterModel> rxListSchoolLevel =
       <AnalysisReportFilterModel>[].obs;
+  RxList<AnalysisReportFilterModel> rxListPoint =
+      <AnalysisReportFilterModel>[].obs;
+  RxList<AnalysisReportFilterModel> rxListClass =
+      <AnalysisReportFilterModel>[].obs;
   final RxMap<int, String> mapSemesterFilter = <int, String>{}.obs;
   final RxMap<int, String> mapProvinceFilter = <int, String>{}.obs;
   final RxMap<int, String> mapSchoolYearFilter = <int, String>{}.obs;
@@ -42,9 +46,11 @@ class AnalysisReportViewModel extends GetxController {
   Rx<String> rxSelectedSchoolYearID = "".obs;
   Rx<String> rxSelectedSchoolLevelID = "".obs;
   Rx<String> rxSelectedPoint = "".obs;
+  Rx<String> rxSelectedPointId = "".obs;
   Rx<String> rxSelectedSubject = "".obs;
   Rx<String> rxSelectedClasstifi= "".obs;
   Rx<String> rxSelectedClass = "".obs;
+  Rx<String> rxSelectedClassId = "".obs;
   Rx<bool> rxIsLoadingData = true.obs;
   Rx<int> rxTypeScreen = 0.obs;
 
@@ -88,6 +94,7 @@ class AnalysisReportViewModel extends GetxController {
     getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
     getListFilter(getAnalysisReportSchoolLevel, rxListSchoolLevel);
   }
+
   void getListProvinceByRegion()
   {
     rxListProvinceByRegion.clear();
@@ -134,6 +141,16 @@ class AnalysisReportViewModel extends GetxController {
   Future<void> getListFilter(
       String urlApi, RxList<AnalysisReportFilterModel> rxlist) async {
     final url = Uri.parse(urlApi);
+    http.Response response = await http.get(url);
+    print(response.body);
+    var listRes = <AnalysisReportFilterModel>[];
+    List a = json.decode(response.body) as List;
+    listRes = a.map((e) => AnalysisReportFilterModel.fromJson(e)).toList();
+    rxlist.value = listRes;
+  }
+
+  Future<void> getListFilterWithParam(String id,String urlApi, RxList<AnalysisReportFilterModel> rxlist) async {
+    final url = Uri.parse("$urlApi?typeSchool=$id");
     http.Response response = await http.get(url);
     print(response.body);
     var listRes = <AnalysisReportFilterModel>[];
@@ -198,8 +215,11 @@ class AnalysisReportViewModel extends GetxController {
     rxSelectedRegion.value = rxListRegion.first.name!;
     rxSelectedRegionID.value = rxListRegion.first.id!;
     getListProvinceByRegion();
+
     getListFilter(getAnalysisReportSemester, rxListSemester);
     getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
+    getListFilter(getPoint, rxListPoint);
+    // getListFilterWithParam
   }
 
   //chart
