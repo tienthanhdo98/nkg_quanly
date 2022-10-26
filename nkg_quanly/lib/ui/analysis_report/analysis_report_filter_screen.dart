@@ -1849,6 +1849,9 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                                   "",
                                   analysisReportViewModel!
                                       .rxSelectedSchoolLevelID);
+                              schoolLevelId = "1;2;3;4;";
+                              analysisReportViewModel!.getListFilterWithParam(schoolLevelId,getClass,analysisReportViewModel!.rxListClass);
+                              analysisReportViewModel!.getListFilterWithParam(schoolLevelId,getSubject,analysisReportViewModel!.rxListSubject);
                             } else {
                               analysisReportViewModel!.mapSchoolLevelFilter
                                   .forEach((key, value) {
@@ -1874,6 +1877,8 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                                         .rxSelectedSchoolLevel,
                                     schoolLevelName.substring(
                                         0, schoolLevelName.length - 1));
+                                analysisReportViewModel!.getListFilterWithParam(schoolLevelId,getClass,analysisReportViewModel!.rxListClass);
+                                analysisReportViewModel!.getListFilterWithParam(schoolLevelId,getSubject,analysisReportViewModel!.rxListSubject);
                               } else {
                                 changeValueSelectedFilter(
                                     analysisReportViewModel!
@@ -2041,10 +2046,10 @@ class FilterSubjectBottomSheet extends StatelessWidget {
             height: MediaQuery.of(context).size.height*0.32,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: listSubject.length,
+                itemCount: analysisReportViewModel!.rxListSubject.length,
                 itemBuilder: (context, index) {
-                  var item = listSubject[index];
-                  return FilterItem(item, item, index,
+                  var item = analysisReportViewModel!.rxListSubject[index];
+                  return FilterItem(item.name!, item.id!, index,
                       analysisReportViewModel!.mapSubjectFilter);
                 }),
           ),
@@ -2085,9 +2090,9 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                             });
                             var listId = agencies.split(";");
                             for (var id in listId) {
-                              for (var item in listSubject) {
-                                if (item== id) {
-                                  agenciesName += "${item!};";
+                              for (var item in analysisReportViewModel!.rxListSubject) {
+                                if (item.id == id) {
+                                  agenciesName += "${item.name};";
                                 }
                               }
                             }
@@ -2147,10 +2152,10 @@ class FilterClassBottomSheet extends StatelessWidget {
             height: MediaQuery.of(context).size.height*0.32,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: listAllClass.length,
+                itemCount: analysisReportViewModel!.rxListClass.length,
                 itemBuilder: (context, index) {
-                  var item = listAllClass[index];
-                  return FilterItem(item, item, index,
+                  var item = analysisReportViewModel!.rxListClass[index];
+                  return FilterItem(item.name!, item.id!, index,
                       analysisReportViewModel!.mapClassFilter);
                 }),
           ),
@@ -2191,9 +2196,9 @@ class FilterClassBottomSheet extends StatelessWidget {
                             });
                             var listId = agencies.split(";");
                             for (var id in listId) {
-                              for (var item in listAllClass) {
-                                if (item == id) {
-                                  agenciesName += "${item};";
+                              for (var item in analysisReportViewModel!.rxListClass) {
+                                if (item.id == id) {
+                                  agenciesName += "${item.name};";
                                 }
                               }
                             }

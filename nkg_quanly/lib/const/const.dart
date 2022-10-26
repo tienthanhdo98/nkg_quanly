@@ -64,7 +64,7 @@ const kVioletBg = Color(0xFFEDECFF);
 const kGrayButton = Color(0xFFD9D9D9);
 const kDarkBlueChart = Color(0xFF3701AA);
 const kDarkGreenChart = Color(0xFF005837);
-const kGreenChart= Color(0xFF28a745);
+const kGreenChart = Color(0xFF28a745);
 
 Map<String, String> headers = {"Content-type": "application/json"};
 //string
@@ -198,41 +198,41 @@ Widget headerWidgetSearch(
     color: Theme.of(context).cardColor,
     child: Padding(
       padding: const EdgeInsets.all(15),
-      child: Row(
-        children: [
-          InkWell(
-            onTap: () {
-              menuController.clearAllDateData();
-              Get.back();
-            },
-            child: const Icon(Icons.arrow_back_ios_outlined),
-          ),
-          const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-          Expanded(
-            child: Text(
-              header,
-              style: Theme.of(context).textTheme.headline1,
+      child: InkWell(
+        onTap: () {
+          menuController.clearAllDateData();
+          Get.back();
+        },
+        child: Row(
+          children: [
+            const Icon(Icons.arrow_back_ios_outlined),
+            const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+            Expanded(
+              child: Text(
+                header,
+                style: Theme.of(context).textTheme.headline1,
+              ),
             ),
-          ),
-          InkWell(
-            onTap: () {
-              Get.to(() => searchScreen);
-            },
-            child: Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                    padding: const EdgeInsets.all(7),
-                    decoration: BoxDecoration(
-                      color: kgray,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: Image.asset(
-                      'assets/icons/ic_search.png',
-                      width: 20,
-                      height: 20,
-                    ))),
-          )
-        ],
+            InkWell(
+              onTap: () {
+                Get.to(() => searchScreen);
+              },
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                      padding: const EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                        color: kgray,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Image.asset(
+                        'assets/icons/ic_search.png',
+                        width: 20,
+                        height: 20,
+                      ))),
+            )
+          ],
+        ),
       ),
     ),
   );
@@ -476,22 +476,16 @@ class DayPickerBottomSheet extends StatelessWidget {
                         Get.back();
                       } else if (dataType == END_DATE) {
                         var strMonth = "";
-                        var strDay= "";
+                        var strDay = "";
 
-                        if(month < 10)
-                          {
-                            strMonth = "0$month";
-                          }
-                        else
-                          {
-                            strMonth = "$month";
-                          }
-                        if(day < 10)
-                        {
-                          strDay = "0$day";
+                        if (month < 10) {
+                          strMonth = "0$month";
+                        } else {
+                          strMonth = "$month";
                         }
-                        else
-                        {
+                        if (day < 10) {
+                          strDay = "0$day";
+                        } else {
                           strDay = "$day";
                         }
 
@@ -685,8 +679,8 @@ class RangeDayPickerBottomSheet extends StatelessWidget {
                             builder: (BuildContext context) {
                               return SizedBox(
                                   height: 300,
-                                  child:
-                                      DayPickerBottomSheet(viewModel, FROM_DATE));
+                                  child: DayPickerBottomSheet(
+                                      viewModel, FROM_DATE));
                             },
                           );
                         },
@@ -735,7 +729,8 @@ class RangeDayPickerBottomSheet extends StatelessWidget {
                                             top: Radius.circular(20),
                                           ),
                                         ),
-                                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
                                         context: context,
                                         builder: (BuildContext context) {
                                           return SizedBox(
@@ -789,45 +784,47 @@ class RangeDayPickerBottomSheet extends StatelessWidget {
                                 menuController.rxToDateWithWeekDay.value,
                               ),
                             )),
-                            Obx(() => (menuController.rxToDateWithWeekDay.value !=
-                                    "")
-                                ? IconButton(
-                                    padding: EdgeInsets.zero,
-                                    icon: Image.asset(
-                                      "assets/icons/ic_close_2.png",
-                                      width: 15,
-                                      height: 15,
-                                    ),
-                                    onPressed: () {
-                                      menuController.clearDataDateTo();
-                                    },
-                                  )
-                                : IconButton(
-                                    padding: EdgeInsets.zero,
-                                    icon: Image.asset(
-                                      "assets/icons/ic_date.png",
-                                      width: 20,
-                                      height: 20,
-                                    ),
-                                    onPressed: () {
-                                      showModalBottomSheet<void>(
-                                        isScrollControlled: true,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(20),
-                                          ),
+                            Obx(() =>
+                                (menuController.rxToDateWithWeekDay.value != "")
+                                    ? IconButton(
+                                        padding: EdgeInsets.zero,
+                                        icon: Image.asset(
+                                          "assets/icons/ic_close_2.png",
+                                          width: 15,
+                                          height: 15,
                                         ),
-                                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return SizedBox(
-                                              height: 300,
-                                              child: DayPickerBottomSheet(
-                                                  viewModel, TO_DATE));
+                                        onPressed: () {
+                                          menuController.clearDataDateTo();
                                         },
-                                      );
-                                    },
-                                  ))
+                                      )
+                                    : IconButton(
+                                        padding: EdgeInsets.zero,
+                                        icon: Image.asset(
+                                          "assets/icons/ic_date.png",
+                                          width: 20,
+                                          height: 20,
+                                        ),
+                                        onPressed: () {
+                                          showModalBottomSheet<void>(
+                                            isScrollControlled: true,
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.vertical(
+                                                top: Radius.circular(20),
+                                              ),
+                                            ),
+                                            clipBehavior:
+                                                Clip.antiAliasWithSaveLayer,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return SizedBox(
+                                                  height: 300,
+                                                  child: DayPickerBottomSheet(
+                                                      viewModel, TO_DATE));
+                                            },
+                                          );
+                                        },
+                                      ))
                           ]),
                         ),
                       )
@@ -985,27 +982,27 @@ Widget headerWidget(String header, BuildContext context) {
         ))),
     child: Padding(
       padding: const EdgeInsets.all(15),
-      child: Row(
-        children: [
-          InkWell(
-            onTap: () {
-              menuController.clearAllDateData();
-              Get.back();
-            },
-            child: Image.asset(
+      child: InkWell(
+        onTap: () {
+          menuController.clearAllDateData();
+          Get.back();
+        },
+        child: Row(
+          children: [
+            Image.asset(
               'assets/icons/ic_arrow_back.png',
               width: 18,
               height: 18,
             ),
-          ),
-          const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-          Flexible(
-            child: Text(
-              header,
-              style: Theme.of(context).textTheme.headline1,
+            const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+            Flexible(
+              child: Text(
+                header,
+                style: Theme.of(context).textTheme.headline1,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
@@ -1053,7 +1050,9 @@ void loadDataByDay(GetxController viewModel) {
     Get.back();
   }
   if (viewModel is ProfilesProcedureViewModel) {
-    viewModel.    postProfileProcByWeek(formatDateToString(menuController.rxSelectedDay.value),formatDateToString(menuController.rxSelectedDay.value));
+    viewModel.postProfileProcByWeek(
+        formatDateToString(menuController.rxSelectedDay.value),
+        formatDateToString(menuController.rxSelectedDay.value));
     Get.back();
   }
   if (viewModel is ProfileWorkViewModel) {
@@ -1065,7 +1064,9 @@ void loadDataByDay(GetxController viewModel) {
     Get.back();
   }
   if (viewModel is HelpdeskViewModel) {
-    viewModel.posHelpdeskListByWeek(formatDateToString(menuController.rxSelectedDay.value),formatDateToString(menuController.rxSelectedDay.value));
+    viewModel.posHelpdeskListByWeek(
+        formatDateToString(menuController.rxSelectedDay.value),
+        formatDateToString(menuController.rxSelectedDay.value));
     Get.back();
   }
 }
@@ -1102,7 +1103,9 @@ void loadDataByDayNoBack(GetxController viewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
   }
   if (viewModel is ProfilesProcedureViewModel) {
-    viewModel.    postProfileProcByWeek(formatDateToString(menuController.rxSelectedDay.value),formatDateToString(menuController.rxSelectedDay.value));
+    viewModel.postProfileProcByWeek(
+        formatDateToString(menuController.rxSelectedDay.value),
+        formatDateToString(menuController.rxSelectedDay.value));
   }
   if (viewModel is ProfileWorkViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
@@ -1112,7 +1115,8 @@ void loadDataByDayNoBack(GetxController viewModel) {
 
   }
   if (viewModel is HelpdeskViewModel) {
-    viewModel.posHelpdeskListByWeek(formatDateToString(menuController.rxSelectedDay.value),formatDateToString(menuController.rxSelectedDay.value));
-
+    viewModel.posHelpdeskListByWeek(
+        formatDateToString(menuController.rxSelectedDay.value),
+        formatDateToString(menuController.rxSelectedDay.value));
   }
 }

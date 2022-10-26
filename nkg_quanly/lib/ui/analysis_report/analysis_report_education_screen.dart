@@ -19,7 +19,6 @@ class AnalysisReportEducationScreen extends GetView {
   @override
   Widget build(BuildContext context) {
     analysisReportViewModel.getDataEducationScreen();
-
     return Scaffold(
       body: SafeArea(
           child: Column(

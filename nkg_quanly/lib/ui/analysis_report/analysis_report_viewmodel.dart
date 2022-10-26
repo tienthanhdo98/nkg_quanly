@@ -28,6 +28,8 @@ class AnalysisReportViewModel extends GetxController {
       <AnalysisReportFilterModel>[].obs;
   RxList<AnalysisReportFilterModel> rxListClass =
       <AnalysisReportFilterModel>[].obs;
+  RxList<AnalysisReportFilterModel> rxListSubject =
+      <AnalysisReportFilterModel>[].obs;
   final RxMap<int, String> mapSemesterFilter = <int, String>{}.obs;
   final RxMap<int, String> mapProvinceFilter = <int, String>{}.obs;
   final RxMap<int, String> mapSchoolYearFilter = <int, String>{}.obs;
@@ -74,6 +76,7 @@ class AnalysisReportViewModel extends GetxController {
     rxSelectedRegionID.value = rxListRegion.first.id!;
     changeValueDataId(rxListRegion.first.id!,rxSelectedRegionID);
     getEducationChart(rxListRegion.first.id!, "");
+
   }
   void getDataPreSchoolScreen() async
   {
@@ -219,6 +222,8 @@ class AnalysisReportViewModel extends GetxController {
     getListFilter(getAnalysisReportSemester, rxListSemester);
     getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
     getListFilter(getPoint, rxListPoint);
+    getListFilterWithParam("1;2;3;4",getClass,rxListClass);
+    getListFilterWithParam("1;2;3;4",getSubject,rxListSubject);
     // getListFilterWithParam
   }
 
