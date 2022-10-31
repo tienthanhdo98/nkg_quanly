@@ -65,7 +65,7 @@ class ReportInMenuHomeList extends GetView {
                                 Obx(() => Text(
                                     checkingNullNumberAndConvertToString(
                                         reportViewModel
-                                            .rxReportStatistic.value.tong),
+                                            .rxReportStatisticTotal.value.tong),
                                     style: textBlueCountTotalStyle)),
                                 const Padding(
                                     padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -116,7 +116,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatistic
+                                            reportViewModel.rxReportStatisticTotal
                                                 .value.daTiepNhan),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -132,7 +132,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatistic
+                                            reportViewModel.rxReportStatisticTotal
                                                 .value.dungHan),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -148,7 +148,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatistic
+                                            reportViewModel.rxReportStatisticTotal
                                                 .value.chuaDenHan),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -164,7 +164,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatistic
+                                            reportViewModel.rxReportStatisticTotal
                                                 .value.daGiao),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -180,7 +180,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatistic
+                                            reportViewModel.rxReportStatisticTotal
                                                 .value.somHan),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -196,7 +196,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatistic
+                                            reportViewModel.rxReportStatisticTotal
                                                 .value.quaHan),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -258,45 +258,47 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                   )),
                               Obx(() => (menuController
-                                  .rxFromDateWithoutWeekDay.value !=
-                                  "")
+                                          .rxFromDateWithoutWeekDay.value !=
+                                      "")
                                   ? IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: Image.asset(
-                                  "assets/icons/ic_close_2.png",
-                                  width: 15,
-                                  height: 15,
-                                ),
-                                onPressed: () {
-                                  menuController.clearDataDateFrom();
-                                },
-                              )
-                                  : IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: Image.asset(
-                                  "assets/icons/ic_date.png",
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                onPressed: () {
-                                  showModalBottomSheet<void>(
-                                    isScrollControlled: true,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20),
+                                      padding: EdgeInsets.zero,
+                                      icon: Image.asset(
+                                        "assets/icons/ic_close_2.png",
+                                        width: 15,
+                                        height: 15,
                                       ),
-                                    ),
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return SizedBox(
-                                          height: 300,
-                                          child: DayPickerBottomSheet(
-                                              reportViewModel, FROM_DATE));
-                                    },
-                                  );
-                                },
-                              ))
+                                      onPressed: () {
+                                        menuController.clearDataDateFrom();
+                                      },
+                                    )
+                                  : IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon: Image.asset(
+                                        "assets/icons/ic_date.png",
+                                        width: 20,
+                                        height: 20,
+                                      ),
+                                      onPressed: () {
+                                        showModalBottomSheet<void>(
+                                          isScrollControlled: true,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20),
+                                            ),
+                                          ),
+                                          clipBehavior:
+                                              Clip.antiAliasWithSaveLayer,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return SizedBox(
+                                                height: 300,
+                                                child: DayPickerBottomSheet(
+                                                    reportViewModel,
+                                                    FROM_DATE));
+                                          },
+                                        );
+                                      },
+                                    ))
                             ]),
                           ),
                         ),
@@ -352,45 +354,46 @@ class ReportInMenuHomeList extends GetView {
                                 ),
                               ),
                               Obx(() => (menuController
-                                  .rxToDateWithoutWeekDay.value !=
-                                  "")
+                                          .rxToDateWithoutWeekDay.value !=
+                                      "")
                                   ? IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: Image.asset(
-                                  "assets/icons/ic_close_2.png",
-                                  width: 15,
-                                  height: 15,
-                                ),
-                                onPressed: () {
-                                  menuController.clearDataDateTo();
-                                },
-                              )
-                                  : IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: Image.asset(
-                                  "assets/icons/ic_date.png",
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                onPressed: () {
-                                  showModalBottomSheet<void>(
-                                    isScrollControlled: true,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20),
+                                      padding: EdgeInsets.zero,
+                                      icon: Image.asset(
+                                        "assets/icons/ic_close_2.png",
+                                        width: 15,
+                                        height: 15,
                                       ),
-                                    ),
-                                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return SizedBox(
-                                          height: 300,
-                                          child: DayPickerBottomSheet(
-                                              reportViewModel, TO_DATE));
-                                    },
-                                  );
-                                },
-                              ))
+                                      onPressed: () {
+                                        menuController.clearDataDateTo();
+                                      },
+                                    )
+                                  : IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon: Image.asset(
+                                        "assets/icons/ic_date.png",
+                                        width: 20,
+                                        height: 20,
+                                      ),
+                                      onPressed: () {
+                                        showModalBottomSheet<void>(
+                                          isScrollControlled: true,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20),
+                                            ),
+                                          ),
+                                          clipBehavior:
+                                              Clip.antiAliasWithSaveLayer,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return SizedBox(
+                                                height: 300,
+                                                child: DayPickerBottomSheet(
+                                                    reportViewModel, TO_DATE));
+                                          },
+                                        );
+                                      },
+                                    ))
                             ]),
                           ),
                         ),
@@ -428,14 +431,12 @@ class ReportInMenuHomeList extends GetView {
             Expanded(
                 child: Obx(() => (reportViewModel.rxReportListItems.isNotEmpty)
                     ? ListView.builder(
+                        controller: reportViewModel.controller,
                         itemCount: reportViewModel.rxReportListItems.length,
                         itemBuilder: (context, index) {
                           var item = reportViewModel.rxReportListItems[index];
                           return InkWell(
                               onTap: () async {
-                                // Get.to(() => ReportDetail(
-                                //     id: reportViewModel
-                                //         .rxReportListItems[index].id!));
                                 await launchUrl(Uri.parse(
                                     "http://123.31.31.237:6002/api/reportapiclient/download-report?id=1"));
                               },

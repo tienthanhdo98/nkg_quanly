@@ -77,6 +77,7 @@ class ReportGiaoDucKhuyetTatScreen extends GetView {
                                         .changeValuefilterType(filterType!);
                                     analysisReportViewModel.rxTypeScreen.value =
                                         index;
+                                    analysisReportViewModel.scrollToTop();
                                   }
                                 });
                               });
@@ -187,6 +188,7 @@ class ReportGiaoDucKhuyetTatScreen extends GetView {
             child: Container(
               color: kDarkGray,
               child: SingleChildScrollView(
+                controller: analysisReportViewModel.controller,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                   child: Column(

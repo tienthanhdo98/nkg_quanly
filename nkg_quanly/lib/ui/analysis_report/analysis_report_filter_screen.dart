@@ -39,34 +39,34 @@ class AnalysisReportFilterScreen extends GetView {
                     ))),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Image.asset(
+                  child: InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
                           'assets/icons/ic_arrow_back.png',
                           width: 18,
                           height: 18,
                         ),
-                      ),
-                      const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                      Text(
-                        "Bộ lọc",
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          analysisReportViewModel!.clearSelectedFilter();
-                        },
-                        child: const Text(
-                          "Xóa bộ lọc",
-                          style: TextStyle(color: kBlueButton),
+                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        Text(
+                          "Bộ lọc",
+                          style: Theme.of(context).textTheme.headline1,
                         ),
-                      )
-                    ],
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            analysisReportViewModel!.clearSelectedFilter();
+                          },
+                          child: const Text(
+                            "Xóa bộ lọc",
+                            style: TextStyle(color: kBlueButton),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -231,6 +231,8 @@ class AnalysisReportFilterScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                             child: ElevatedButton(
                               onPressed: () {
+
+                                analysisReportViewModel!.clearSelectedFilter();
                                 Get.back();
 
                               },
@@ -278,34 +280,34 @@ class AnalysisReportCSVCFilterScreen extends GetView {
                     ))),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Image.asset(
+                  child: InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
                           'assets/icons/ic_arrow_back.png',
                           width: 18,
                           height: 18,
                         ),
-                      ),
-                      const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                      Text(
-                        "Bộ lọc",
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          analysisReportViewModel!.clearSelectedFilter();
-                        },
-                        child: const Text(
-                          "Xóa bộ lọc",
-                          style: TextStyle(color: kBlueButton),
+                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        Text(
+                          "Bộ lọc",
+                          style: Theme.of(context).textTheme.headline1,
                         ),
-                      )
-                    ],
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            analysisReportViewModel!.clearSelectedFilter();
+                          },
+                          child: const Text(
+                            "Xóa bộ lọc",
+                            style: TextStyle(color: kBlueButton),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -470,6 +472,7 @@ class AnalysisReportCSVCFilterScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                             child: ElevatedButton(
                               onPressed: () {
+                                analysisReportViewModel!.clearSelectedFilter();
                                 Get.back();
                               },
                               child: buttonShowListScreen("Tìm kiếm"),
@@ -516,34 +519,34 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                         ))),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Image.asset(
+                  child: InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
                           'assets/icons/ic_arrow_back.png',
                           width: 18,
                           height: 18,
                         ),
-                      ),
-                      const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                      Text(
-                        "Bộ lọc",
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          analysisReportViewModel!.clearSelectedFilter();
-                        },
-                        child: const Text(
-                          "Xóa bộ lọc",
-                          style: TextStyle(color: kBlueButton),
+                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        Text(
+                          "Bộ lọc",
+                          style: Theme.of(context).textTheme.headline1,
                         ),
-                      )
-                    ],
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            analysisReportViewModel!.clearSelectedFilter();
+                          },
+                          child: const Text(
+                            "Xóa bộ lọc",
+                            style: TextStyle(color: kBlueButton),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -891,6 +894,249 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                 onPressed: () {
                                   var point = analysisReportViewModel!.rxSelectedPointId;
                                   print("point : $point");
+                                  analysisReportViewModel!.clearSelectedFilter();
+                                  Get.back();
+                                },
+                                child: buttonShowListScreen("Tìm kiếm"),
+                                style: bottomButtonStyle,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
+  }
+}
+
+//vao cao chi tiet chat luong giao duc
+class ReportDetailEduQualityFilterScreen extends GetView {
+  ReportDetailEduQualityFilterScreen(this.analysisReportViewModel, {Key? key})
+      : super(key: key);
+  final AnalysisReportViewModel? analysisReportViewModel;
+
+  String? semester;
+  String? province;
+  String? region;
+  String? schoolYear;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Column(
+            children: [
+              //header
+              Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Theme.of(context).dividerColor,
+                        ))),
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/icons/ic_arrow_back.png',
+                          width: 18,
+                          height: 18,
+                        ),
+                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        Text(
+                          "Bộ lọc",
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            analysisReportViewModel!.clearSelectedFilter();
+                          },
+                          child: const Text(
+                            "Xóa bộ lọc",
+                            style: TextStyle(color: kBlueButton),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              //
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //cap hoc
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Text(
+                            "Cấp trường:",
+                            style: CustomTextStyle.grayColorTextStyle,
+                          ),
+                        ),
+                        InkWell(
+                            onTap: () {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: MediaQuery.of(context).size.height * 0.6,
+                                      child: FilterSchoolLevelBottomSheet(
+                                          analysisReportViewModel));
+                                },
+                              );
+                            },
+                            child: Obx(() => borderTextFilterEOffice(
+                                (analysisReportViewModel!
+                                    .rxSelectedSchoolLevel.value !=
+                                    "")
+                                    ? analysisReportViewModel!
+                                    .rxSelectedSchoolLevel.value
+                                    : "Chọn cấp trường",
+                                context))),
+                        //loai khu vuc
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Text(
+                            "Khu vực:",
+                            style: CustomTextStyle.grayColorTextStyle,
+                          ),
+                        ),
+                        InkWell(
+                            onTap: () {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: MediaQuery.of(context).size.height *
+                                          0.65,
+                                      child: FilterRegionBottomSheet(
+                                          analysisReportViewModel, ""));
+                                },
+                              );
+                            },
+                            child: Obx(() => borderTextFilterEOffice(
+                                (analysisReportViewModel!
+                                    .rxSelectedRegion.value !=
+                                    "")
+                                    ? analysisReportViewModel!
+                                    .rxSelectedRegion.value
+                                    : "Chọn khu vực",
+                                context))),
+                        //thanh pho
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Text(
+                            "Tỉnh, thành phố:",
+                            style: CustomTextStyle.grayColorTextStyle,
+                          ),
+                        ),
+                        InkWell(
+                            onTap: () {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: MediaQuery.of(context).size.height *
+                                          0.85,
+                                      child: FilterProvinceBottomSheet(
+                                          analysisReportViewModel));
+                                },
+                              );
+                            },
+                            child: Obx(() => borderTextFilterEOffice(
+                                (analysisReportViewModel!
+                                    .rxSelectedProvince.value !=
+                                    "")
+                                    ? analysisReportViewModel!
+                                    .rxSelectedProvince.value
+                                    : "Chọn tỉnh, thành phố",
+                                context))),
+                        //nam hoc
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: Text(
+                            "Năm học:",
+                            style: CustomTextStyle.grayColorTextStyle,
+                          ),
+                        ),
+                        InkWell(
+                            onTap: () {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: MediaQuery.of(context).size.height *
+                                          0.75,
+                                      child: FilterSchoolYearBottomSheet(
+                                          analysisReportViewModel, ""));
+                                },
+                              );
+                            },
+                            child: Obx(() => borderTextFilterEOffice(
+                                (analysisReportViewModel!
+                                    .rxSelectedSchoolYear.value !=
+                                    "")
+                                    ? analysisReportViewModel!
+                                    .rxSelectedSchoolYear.value
+                                    : "Chọn năm học",
+                                context))),
+
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  var point = analysisReportViewModel!.rxSelectedPointId;
+                                  print("point : $point");
+                                  analysisReportViewModel!.clearSelectedFilter();
                                   Get.back();
                                 },
                                 child: buttonShowListScreen("Tìm kiếm"),
@@ -938,34 +1184,34 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                         ))),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Image.asset(
+                  child: InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
                           'assets/icons/ic_arrow_back.png',
                           width: 18,
                           height: 18,
                         ),
-                      ),
-                      const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                      Text(
-                        "Bộ lọc",
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          analysisReportViewModel!.clearSelectedFilter();
-                        },
-                        child: const Text(
-                          "Xóa bộ lọc",
-                          style: TextStyle(color: kBlueButton),
+                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        Text(
+                          "Bộ lọc",
+                          style: Theme.of(context).textTheme.headline1,
                         ),
-                      )
-                    ],
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            analysisReportViewModel!.clearSelectedFilter();
+                          },
+                          child: const Text(
+                            "Xóa bộ lọc",
+                            style: TextStyle(color: kBlueButton),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -1128,6 +1374,7 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
                             child: ElevatedButton(
                               onPressed: () {
+                                analysisReportViewModel!.clearSelectedFilter();
                                 Get.back();
                               },
                               child: buttonShowListScreen("Tìm kiếm"),
@@ -1146,7 +1393,277 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
   }
 }
 
+class KhenThuongFilterScreen extends GetView {
+  KhenThuongFilterScreen(this.analysisReportViewModel, {Key? key})
+      : super(key: key);
+  final AnalysisReportViewModel? analysisReportViewModel;
 
+  String? semester;
+  String? province;
+  String? region;
+  String? schoolYear;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Column(
+            children: [
+              //header
+              Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Theme.of(context).dividerColor,
+                        ))),
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/icons/ic_arrow_back.png',
+                          width: 18,
+                          height: 18,
+                        ),
+                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        Text(
+                          "Bộ lọc",
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            analysisReportViewModel!.clearSelectedFilter();
+                          },
+                          child: const Text(
+                            "Xóa bộ lọc",
+                            style: TextStyle(color: kBlueButton),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              //
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //hoc ki
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        child: Text(
+                          "Học kỳ:",
+                          style: CustomTextStyle.grayColorTextStyle,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.4,
+                                    child: FilterSemesterBottomSheet(
+                                        analysisReportViewModel));
+                              },
+                            );
+                          },
+                          child: Obx(() => borderTextFilterEOffice(
+                              (analysisReportViewModel!
+                                  .rxSelectedSemester.value !=
+                                  "")
+                                  ? analysisReportViewModel!
+                                  .rxSelectedSemester.value
+                                  : "Chọn học kỳ",
+                              context))),
+                      //cap hoc
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        child: Text(
+                          "Cấp trường:",
+                          style: CustomTextStyle.grayColorTextStyle,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.6,
+                                    child: FilterSchoolLevelBottomSheet(
+                                        analysisReportViewModel));
+                              },
+                            );
+                          },
+                          child: Obx(() => borderTextFilterEOffice(
+                              (analysisReportViewModel!
+                                  .rxSelectedSchoolLevel.value !=
+                                  "")
+                                  ? analysisReportViewModel!
+                                  .rxSelectedSchoolLevel.value
+                                  : "Chọn cấp trường",
+                              context))),
+                      //loai khu vuc
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        child: Text(
+                          "Khu vực:",
+                          style: CustomTextStyle.grayColorTextStyle,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.65,
+                                    child: FilterRegionBottomSheet(
+                                        analysisReportViewModel, ""));
+                              },
+                            );
+                          },
+                          child: Obx(() => borderTextFilterEOffice(
+                              (analysisReportViewModel!
+                                  .rxSelectedRegion.value !=
+                                  "")
+                                  ? analysisReportViewModel!
+                                  .rxSelectedRegion.value
+                                  : "Chọn khu vực",
+                              context))),
+                      //thanh pho
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        child: Text(
+                          "Tỉnh, thành phố:",
+                          style: CustomTextStyle.grayColorTextStyle,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.85,
+                                    child: FilterProvinceBottomSheet(
+                                        analysisReportViewModel));
+                              },
+                            );
+                          },
+                          child: Obx(() => borderTextFilterEOffice(
+                              (analysisReportViewModel!
+                                  .rxSelectedProvince.value !=
+                                  "")
+                                  ? analysisReportViewModel!
+                                  .rxSelectedProvince.value
+                                  : "Chọn tỉnh, thành phố",
+                              context))),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        child: Text(
+                          "Năm học:",
+                          style: CustomTextStyle.grayColorTextStyle,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.75,
+                                    child: FilterSchoolYearBottomSheet(
+                                        analysisReportViewModel, ""));
+                              },
+                            );
+                          },
+                          child: Obx(() => borderTextFilterEOffice(
+                              (analysisReportViewModel!
+                                  .rxSelectedSchoolYear.value !=
+                                  "")
+                                  ? analysisReportViewModel!
+                                  .rxSelectedSchoolYear.value
+                                  : "Chọn năm học",
+                              context))),
+                      Spacer(),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                analysisReportViewModel!.clearSelectedFilter();
+                                Get.back();
+                              },
+                              child: buttonShowListScreen("Tìm kiếm"),
+                              style: bottomButtonStyle,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
+  }
+}
 
 //hoc luc
 
@@ -1547,6 +2064,7 @@ class FilterRegionBottomSheet extends StatelessWidget {
                               analysisReportViewModel!.rxSelectedRegionID.value,
                               analysisReportViewModel!
                                   .rxSelectedSchoolYearID.value);
+                          analysisReportViewModel!.scrollToTop();
                           Get.back();
                         } else {
                           Get.back();

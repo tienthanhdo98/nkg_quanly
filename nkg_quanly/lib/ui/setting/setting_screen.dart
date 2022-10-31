@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:nkg_quanly/const/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../const/const.dart';
 import '../../const/style.dart';
+import '../login/login_screen2.dart';
 import '../theme/theme_data.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -39,7 +41,7 @@ class SettingScreen extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                          child: Icon(Icons.verified_user),
+                          child: const Icon(Icons.verified_user),
                           width: 70,
                           height: 70,
                           decoration: BoxDecoration(
@@ -51,11 +53,11 @@ class SettingScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "dev",
+                            loginViewModel.rxUserInfoModel.value.name!,
                             style: Theme.of(context).textTheme.headline1,
                           ),
-                          const Text(
-                            "dev@edu.gov.com.cv",
+                          Text(
+                            loginViewModel.rxUserInfoModel.value.email!,
                             style: CustomTextStyle.secondTextStyle,
                           )
                         ],
@@ -113,7 +115,17 @@ class SettingScreen extends StatelessWidget {
                               );
                             } else {
                               return InkWell(
-                                onTap: () {},
+                                onTap: () async {
+                                  print("rxAccessToken ${loginViewModel.rxAccessToken.value}");
+                                  print("rxAccessTokenIoc ${loginViewModel.rxAccessTokenIoc.value}");
+                                 await loginViewModel.revokeAccessToken(loginViewModel.rxAccessToken.value);
+                                  await loginViewModel.revokeAccessTokenIoc(loginViewModel.rxAccessTokenIoc.value);
+                                  print("clear");
+                                  print("rxAccessToken ${loginViewModel.rxAccessToken.value}");
+                                  print("rxAccessTokenIoc ${loginViewModel.rxAccessTokenIoc.value}");
+                                  loginViewModel.changeValueLoading(true);
+                                  Get.off(() => const LoginScreen2(isLogout: true,));
+                                },
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(10, 10, 10, 10),

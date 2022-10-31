@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
@@ -10,7 +11,6 @@ import '../../model/analysis_report/analysis_report_filter_model.dart';
 import '../../model/analysis_report/preschool_chart_model.dart';
 
 class AnalysisReportViewModel extends GetxController {
-
   Rx<int> rxIndexItemRegion = 0.obs;
   RxList<AnalysisReportFilterModel> rxListAllProvince =
       <AnalysisReportFilterModel>[].obs;
@@ -44,51 +44,61 @@ class AnalysisReportViewModel extends GetxController {
   Rx<String> rxSelectedRegion = "".obs;
   Rx<String> rxSelectedRegionID = "".obs;
   Rx<String> rxSelectedSchoolYear = "".obs;
-  Rx<String> rxSelectedSchoolLevel= "".obs;
+  Rx<String> rxSelectedSchoolLevel = "".obs;
   Rx<String> rxSelectedSchoolYearID = "".obs;
   Rx<String> rxSelectedSchoolLevelID = "".obs;
   Rx<String> rxSelectedPoint = "".obs;
   Rx<String> rxSelectedPointId = "".obs;
   Rx<String> rxSelectedSubject = "".obs;
-  Rx<String> rxSelectedClasstifi= "".obs;
+  Rx<String> rxSelectedClasstifi = "".obs;
   Rx<String> rxSelectedClass = "".obs;
   Rx<String> rxSelectedClassId = "".obs;
   Rx<bool> rxIsLoadingData = true.obs;
   Rx<int> rxTypeScreen = 0.obs;
 
   Rx<String> rxfilterType = "".obs;
+  ScrollController? controller;
+  @override
+  void onInit() {
+    controller = ScrollController();
+    super.onInit();
+  }
 
-  void changeValuefilterType(String value)
+  void scrollToTop()
   {
+    if(controller!.hasClients) {
+      controller!.jumpTo(
+       0
+      );
+      print("scroll");
+    }
+  }
+  void changeValuefilterType(String value) {
     rxfilterType.value = value;
   }
 
-  void changeValueDataId(String value,Rx<String> rxString)
-  {
+  void changeValueDataId(String value, Rx<String> rxString) {
     rxString.value = value;
   }
 
-  void getDataEducationScreen() async
-  {
+  void getDataEducationScreen() async {
     await getListFilter(getAnalysisReportRegion, rxListRegion);
     await getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
     rxSelectedRegion.value = rxListRegion.first.name!;
     rxSelectedRegionID.value = rxListRegion.first.id!;
-    changeValueDataId(rxListRegion.first.id!,rxSelectedRegionID);
+    changeValueDataId(rxListRegion.first.id!, rxSelectedRegionID);
     getEducationChart(rxListRegion.first.id!, "");
-
   }
-  void getDataPreSchoolScreen() async
-  {
+
+  void getDataPreSchoolScreen() async {
     getDataFilter();
     getChartPreSchool("1", "", "1", "", "");
     // rxSelectedRegion.value = rxListRegion.first.name!;
     // changeValueDataId(rxListRegion.first.id!,rxSelectedRegionID);
     // getEducationChart(rxListRegion.first.id!, "");
   }
-  void getDataCoSoVatChat() async
-  {
 
+  void getDataCoSoVatChat() async {
     await getListFilter(getAnalysisReportRegion, rxListRegion);
     rxSelectedRegion.value = rxListRegion.first.name!;
     rxSelectedRegionID.value = rxListRegion.first.id!;
@@ -98,35 +108,43 @@ class AnalysisReportViewModel extends GetxController {
     getListFilter(getAnalysisReportSchoolLevel, rxListSchoolLevel);
   }
 
-  void getListProvinceByRegion()
-  {
+  void getListProvinceByRegion() {
     rxListProvinceByRegion.clear();
     mapAllFilter.clear();
     rxSelectedProvince.value = "";
     mapProvinceFilter.clear();
     print("getListProvinceByRegion ${rxSelectedRegionID.value}");
     for (var element in rxListAllProvince) {
-      if(element.areaId == rxSelectedRegionID.value)
-      {
+      if (element.areaId == rxSelectedRegionID.value) {
         rxListProvinceByRegion.add(element);
       }
     }
   }
 
-
   void clearSelectedFilter() {
-    mapSemesterFilter.clear();
-    mapSchoolYearFilter.clear();
-    mapSchoolLevelFilter.clear();
-    mapProvinceFilter.clear();
-    mapSchoolYearFilter.clear();
-    mapSchoolLevelFilter.clear();
-    rxSelectedSemester.value = "";
-    rxSelectedProvince.value = "";
-    rxSelectedSchoolYear.value = "";
-    rxSelectedSchoolLevel.value = "";
-    rxSelectedSchoolLevelID.value = "";
-    rxSelectedSchoolYearID.value = "";
+    // mapSemesterFilter.clear();
+    // mapProvinceFilter.clear();
+    // mapSchoolYearFilter.clear();
+    // mapSchoolLevelFilter.clear();
+    // mapPointFilter.clear();
+    // mapClassFilter.clear();
+    // mapSubjectFilter.clear();
+    // mapClasstifiFilter.clear();
+    // mapAllFilter.clear();
+    // rxSelectedSemester.value = "";
+    // rxSelectedProvince.value = "";
+    // rxSelectedRegion.value = "";
+    // rxSelectedRegionID.value = "";
+    // rxSelectedSchoolYear.value = "";
+    // rxSelectedSchoolLevel.value = "";
+    // rxSelectedSchoolYearID.value = "";
+    // rxSelectedSchoolLevelID.value = "";
+    // rxSelectedPoint.value = "";
+    // rxSelectedPointId.value = "";
+    // rxSelectedSubject.value = "";
+    // rxSelectedClasstifi.value = "";
+    // rxSelectedClass.value = "";
+    // rxSelectedClassId.value = "";
   }
 
   void changeLoadingState(bool value) {
@@ -152,7 +170,8 @@ class AnalysisReportViewModel extends GetxController {
     rxlist.value = listRes;
   }
 
-  Future<void> getListFilterWithParam(String id,String urlApi, RxList<AnalysisReportFilterModel> rxlist) async {
+  Future<void> getListFilterWithParam(String id, String urlApi,
+      RxList<AnalysisReportFilterModel> rxlist) async {
     final url = Uri.parse("$urlApi?typeSchool=$id");
     http.Response response = await http.get(url);
     print(response.body);
@@ -166,11 +185,12 @@ class AnalysisReportViewModel extends GetxController {
     if (keySearch != "") {
       var list = rxListAllProvince
           .toList()
-          .where((element) => element.name!.toLowerCase().contains(keySearch.toLowerCase()))
+          .where((element) =>
+              element.name!.toLowerCase().contains(keySearch.toLowerCase()))
           .toList();
       rxListProvinceByRegion.value = list;
     } else {
-        getListProvinceByRegion();
+      getListProvinceByRegion();
     }
   }
 
@@ -179,7 +199,8 @@ class AnalysisReportViewModel extends GetxController {
       await getListFilter(getAnalysisReportRegion, rxListRegion);
       var list = rxListRegion
           .toList()
-          .where((element) => element.name!.toLowerCase().contains(keySearch.toLowerCase()))
+          .where((element) =>
+              element.name!.toLowerCase().contains(keySearch.toLowerCase()))
           .toList();
       rxListRegion.value = list;
     } else {
@@ -192,19 +213,22 @@ class AnalysisReportViewModel extends GetxController {
       await getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
       var list = rxListSchoolYear
           .toList()
-          .where((element) => element.name!.toLowerCase().contains(keySearch.toLowerCase()))
+          .where((element) =>
+              element.name!.toLowerCase().contains(keySearch.toLowerCase()))
           .toList();
       rxListSchoolYear.value = list;
     } else {
       await getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
     }
   }
+
   void searchSchoolLevelInFilterList(String keySearch) async {
     if (keySearch != "") {
       await getListFilter(getAnalysisReportSchoolLevel, rxListSchoolLevel);
       var list = rxListSchoolLevel
           .toList()
-          .where((element) => element.name!.toLowerCase().contains(keySearch.toLowerCase()))
+          .where((element) =>
+              element.name!.toLowerCase().contains(keySearch.toLowerCase()))
           .toList();
       rxListSchoolLevel.value = list;
     } else {
@@ -222,8 +246,8 @@ class AnalysisReportViewModel extends GetxController {
     getListFilter(getAnalysisReportSemester, rxListSemester);
     getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
     getListFilter(getPoint, rxListPoint);
-    getListFilterWithParam("1;2;3;4",getClass,rxListClass);
-    getListFilterWithParam("1;2;3;4",getSubject,rxListSubject);
+    getListFilterWithParam("1;2;3;4", getClass, rxListClass);
+    getListFilterWithParam("1;2;3;4", getSubject, rxListSubject);
     // getListFilterWithParam
   }
 

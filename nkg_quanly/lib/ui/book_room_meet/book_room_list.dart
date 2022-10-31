@@ -206,7 +206,9 @@ class MeetingRoomItem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(formatDateToStringHour(itemMeeting.fromTime!,itemMeeting.toTime!), style: Theme.of(context).textTheme.headline5),
-                              Text(itemMeeting.name!)
+                              Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                  child: Text(itemMeeting.name!))
                             ],
                           ),
                         );

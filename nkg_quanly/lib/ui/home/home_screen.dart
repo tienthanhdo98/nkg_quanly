@@ -60,15 +60,15 @@ class HomeScreen extends GetView {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             "Xin chào",
                             style: TextStyle(color: kWhite),
                           ),
-                          Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
+                          const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
                           Text(
-                            "dev_dev",
-                            style: TextStyle(color: kWhite, fontSize: 24),
+                            loginViewModel.rxUserInfoModel.value.name!,
+                            style: const TextStyle(color: kWhite, fontSize: 24),
                           )
                         ],
                       ),

@@ -24,9 +24,7 @@ class ReportViewModel extends GetxController {
   @override
   void onInit() {
     getFilterForChart(apiGetReportChart0);
-
     getReportStatisticTotal();
-    postReportByDay(formatDateToString(dateNow));
     getReportDeparmentFilter();
     super.onInit();
   }
@@ -65,6 +63,24 @@ class ReportViewModel extends GetxController {
     print(response.body);
     reportMode = ReportModel.fromJson(jsonDecode(response.body));
     rxReportStatisticTotal.value = reportMode.statistic!;
+    rxReportListItems.value = reportMode.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore day");
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10}';
+        response = await http.post(url, headers: headers, body: json);
+        print(response.body);
+        reportMode =
+            ReportModel.fromJson(jsonDecode(response.body));
+        rxReportListItems.addAll(reportMode.items!);
+        print("loadmore day at $page");
+      }
+    });
   }
 
   Future<void> postReportByDay(String day) async {

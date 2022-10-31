@@ -77,6 +77,7 @@ class ReportGiaoDucThuongXuyenScreen extends GetView {
                                         .changeValuefilterType(filterType!);
                                     analysisReportViewModel.rxTypeScreen.value =
                                         index;
+                                    analysisReportViewModel.scrollToTop();
                                   }
                                 });
                               });
@@ -187,6 +188,7 @@ class ReportGiaoDucThuongXuyenScreen extends GetView {
             child: Container(
               color: kDarkGray,
               child: SingleChildScrollView(
+                controller: analysisReportViewModel.controller,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                   child: Column(
@@ -365,7 +367,7 @@ Widget countReport(
               children: [
                 SizedBox(
                   height: 30,
-                  child: Text('Tổng số học viên',
+                  child: Text('Số giáo viên nghỉ hưu',
                       style: Theme.of(context).textTheme.headline5),
                 ),
                 const Padding(
@@ -382,7 +384,7 @@ Widget countReport(
               children: [
                 SizedBox(
                   height: 30,
-                  child: Text('Số học viên bổ túc văn hoá',
+                  child: Text('Số giáo viên tuyển mới',
                       style: Theme.of(context).textTheme.headline5),
                 ),
                 const Padding(
@@ -423,6 +425,7 @@ var nvgdtx = [
   chart("Cơ cấu giáo viên theo trình độ đào tạo", "1"),
   chart("Cơ cấu giáo viên theo độ tuổi", "1"),
   chart("Cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp", "1"),
+  chart("Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên", "2"),
   chart("Thống kê cán bộ quản lý, giáo viên, nhân viên theo tỉnh/ TP", "2"),
   chart("Thống kê cán bộ quản lý, giáo viên, nhân viên theo vùng", "2"),
   chart("Thống kê cán bộ quản lý, giáo viên, nhân viên theo năm ", "2"),

@@ -51,6 +51,7 @@ class PieChartReportState extends State<PieChartReport> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               legendChart(listQuantity![1].name.toString(), kBlueChart),
+              Padding(  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),),
               legendChart(listQuantity![0].name.toString(), kOrange),
             ],
           )

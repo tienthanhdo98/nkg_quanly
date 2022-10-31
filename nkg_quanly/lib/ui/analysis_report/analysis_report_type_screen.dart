@@ -17,7 +17,6 @@ class AnalysisReportTypeMenu extends GetView {
   final String title;
   String? filterType = "";
   final String screenType;
-  final ScrollController _controller = ScrollController();
   final analysisReportViewModel = Get.put(AnalysisReportViewModel());
 
   @override
@@ -30,238 +29,280 @@ class AnalysisReportTypeMenu extends GetView {
     return Scaffold(
       body: SafeArea(
           child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          headerWidget(title, context),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child:
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              headerWidget(title, context),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text(
-                "Chọn loại báo cáo:",
-                style: CustomTextStyle.grayColorTextStyle,
-              ),
-              const Padding(padding: EdgeInsets.all(5)),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                      color: kDarkGray, style: BorderStyle.solid, width: 1),
-                ),
-                child: StatefulBuilder(
-                  builder: (context, setState) => Row(
-                    children: [
-                      DropdownButton(
-                        icon: Image.asset(
-                          'assets/icons/ic_arrow_down.png',
-                          width: 14,
-                          height: 14,
-                        ),
-                        value: (filterType?.isNotEmpty == true)
-                            ? filterType
-                            : null,
-                        underline: const SizedBox.shrink(),
-                        items: listScreen
-                            .map((value) => DropdownMenuItem(
-                                  child: SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.85,
-                                      child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              10, 5, 10, 5),
-                                          child: Text(value.trim()))),
-                                  value: value.trim(),
-                                ))
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            filterType = value.toString();
-                            listScreen.asMap().forEach((index, itemValue) {
-                              if (itemValue == value) {
-                                analysisReportViewModel
-                                    .changeValuefilterType(filterType!);
-                              }
-                            });
-                          });
-                        },
-                        style: Theme.of(context).textTheme.headline4,
-                        isExpanded: false,
-                      ),
-                    ],
+                  const Text(
+                    "Chọn loại báo cáo:",
+                    style: CustomTextStyle.grayColorTextStyle,
                   ),
-                ),
-              ),
-              const Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0)),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                      color: kDarkGray, style: BorderStyle.solid, width: 1),
-                ),
-                child: Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                    child: Row(
-                      children: [
-                        Obx(() => Expanded(
-                                child: Text(
-                              "Thống kê ${analysisReportViewModel.rxSelectedSemester}",
-                              style: Theme.of(context).textTheme.headline2,
-                            ))),
-                        Align(
-                            alignment: Alignment.centerRight,
-                            child: ElevatedButton(
-                              style: elevetedButtonWhite,
-                              onPressed: () {
-                                Get.to(() => AnalysisReportFilterScreen(
-                                    analysisReportViewModel));
-                              },
-                              child: const Text(
-                                'Bộ lọc',
-                                style: TextStyle(color: kVioletButton),
+                  const Padding(padding: EdgeInsets.all(5)),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(
+                          color: kDarkGray, style: BorderStyle.solid, width: 1),
+                    ),
+                    child: StatefulBuilder(
+                      builder: (context, setState) =>
+                          Row(
+                            children: [
+                              DropdownButton(
+                                icon: Image.asset(
+                                  'assets/icons/ic_arrow_down.png',
+                                  width: 14,
+                                  height: 14,
+                                ),
+                                value: (filterType?.isNotEmpty == true)
+                                    ? filterType
+                                    : null,
+                                underline: const SizedBox.shrink(),
+                                items: listScreen
+                                    .map((value) =>
+                                    DropdownMenuItem(
+                                      child: SizedBox(
+                                          width: MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width *
+                                              0.85,
+                                          child: Padding(
+                                              padding: const EdgeInsets
+                                                  .fromLTRB(
+                                                  10, 5, 10, 5),
+                                              child: Text(value.trim()))),
+                                      value: value.trim(),
+                                    ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    filterType = value.toString();
+                                    listScreen.asMap().forEach((index,
+                                        itemValue) {
+                                      if (itemValue == value) {
+                                        analysisReportViewModel
+                                            .changeValuefilterType(filterType!);
+                                        analysisReportViewModel.rxTypeScreen
+                                            .value =
+                                            index;
+                                        analysisReportViewModel.scrollToTop();
+                                      }
+                                    });
+                                  });
+                                },
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .headline4,
+                                isExpanded: false,
                               ),
-                            ))
-                      ],
+                            ],
+                          ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                    child: SizedBox(
-                      height: 60,
-                      child: GridView.count(
-                        physics: const NeverScrollableScrollPhysics(),
-                        primary: false,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 0,
-                        crossAxisCount: 3,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Khu vực',
-                                  style: CustomTextStyle.grayColorTextStyle),
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                  child: Obx(() => Text(
-                                      analysisReportViewModel
-                                          .rxSelectedRegion.value,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
+                  const Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0)),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                          color: kDarkGray, style: BorderStyle.solid, width: 1),
+                    ),
+                    child: Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                        child: Row(
+                          children: [
+                            Obx(() =>
+                                Expanded(
+                                    child: Text(
+                                      "Thống kê ${analysisReportViewModel
+                                          .rxSelectedSemester}",
+                                      style: Theme
+                                          .of(context)
                                           .textTheme
-                                          .headline5)))
+                                          .headline2,
+                                    ))),
+                            Align(
+                                alignment: Alignment.centerRight,
+                                child: ElevatedButton(
+                                  style: elevetedButtonWhite,
+                                  onPressed: () {
+                                    Get.to(() =>
+                                        AnalysisReportFilterScreen(
+                                            analysisReportViewModel));
+                                  },
+                                  child: const Text(
+                                    'Bộ lọc',
+                                    style: TextStyle(color: kVioletButton),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                        child: SizedBox(
+                          height: 60,
+                          child: GridView.count(
+                            physics: const NeverScrollableScrollPhysics(),
+                            primary: false,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 0,
+                            crossAxisCount: 3,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Khu vực',
+                                      style: CustomTextStyle
+                                          .grayColorTextStyle),
+                                  Padding(
+                                      padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                      child: Obx(() =>
+                                          Text(
+                                              analysisReportViewModel
+                                                  .rxSelectedRegion.value,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .headline5)))
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Tỉnh, TP',
+                                      style: CustomTextStyle
+                                          .grayColorTextStyle),
+                                  Padding(
+                                      padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                      child: Obx(() =>
+                                          Text(
+                                              analysisReportViewModel
+                                                  .rxSelectedProvince.value,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .headline5)))
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Năm học',
+                                      style: CustomTextStyle
+                                          .grayColorTextStyle),
+                                  Padding(
+                                      padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                      child: Obx(() =>
+                                          Text(
+                                              analysisReportViewModel
+                                                  .rxSelectedSchoolYear.value,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .headline5)))
+                                ],
+                              ),
                             ],
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Tỉnh, TP',
-                                  style: CustomTextStyle.grayColorTextStyle),
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                  child: Obx(() => Text(
-                                      analysisReportViewModel
-                                          .rxSelectedProvince.value,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline5)))
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Năm học',
-                                  style: CustomTextStyle.grayColorTextStyle),
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                  child: Obx(() => Text(
-                                      analysisReportViewModel
-                                          .rxSelectedSchoolYear.value,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline5)))
-                            ],
-                          ),
+                        ),
+                      ),
+                    ]),
+                  ),
+                ]),
+              ),
+              Expanded(
+                child: Container(
+                  color: kDarkGray,
+                  child: SingleChildScrollView(
+                    controller: analysisReportViewModel.controller,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                      child: Column(
+                        children: [
+                          Obx(() =>
+                              countReportTypeScreen(
+                                  analysisReportViewModel, context)),
+                          Obx(() =>
+                              ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: checkListChart(
+                                      analysisReportViewModel.rxfilterType
+                                          .value)
+                                      .length,
+                                  itemBuilder: (context, index) {
+                                    var item = checkListChart(
+                                        analysisReportViewModel
+                                            .rxfilterType.value)[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 0, 0, 15),
+                                      child: borderItem(
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                15, 15, 15, 15),
+                                            child: Column(children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      item.name!,
+                                                      style: Theme
+                                                          .of(context)
+                                                          .textTheme
+                                                          .headline1,
+                                                    ),
+                                                  ),
+                                                  const Padding(
+                                                      padding: EdgeInsets
+                                                          .fromLTRB(
+                                                          20, 0, 0, 0)),
+                                                  InkWell(
+                                                    onTap: () {},
+                                                    child: Image.asset(
+                                                        "assets/icons/ic_refresh.png",
+                                                        width: 16,
+                                                        height: 16),
+                                                  )
+                                                ],
+                                              ),
+                                              (item.type == "1")
+                                                  ? AnalysisChart2Widget(
+                                                key: UniqueKey(),
+                                              )
+                                                  : AnalysisChartCollum2Widget(
+                                                key: UniqueKey(),
+                                              )
+                                            ]),
+                                          ),
+                                          context),
+                                    );
+                                  })),
                         ],
                       ),
                     ),
                   ),
-                ]),
-              ),
-            ]),
-          ),
-          Expanded(
-            child: Container(
-              color: kDarkGray,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  child: Obx(() => ListView.builder(
-                      controller: _controller,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: checkListChart(
-                              analysisReportViewModel.rxfilterType.value)
-                          .length,
-                      itemBuilder: (context, index) {
-                        var item = checkListChart(
-                            analysisReportViewModel.rxfilterType.value)[index];
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-                          child: borderItem(
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                                child: Column(children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          item.name!,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline1,
-                                        ),
-                                      ),
-                                      const Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                                      InkWell(
-                                        onTap: () {},
-                                        child: Image.asset(
-                                            "assets/icons/ic_refresh.png",
-                                            width: 16,
-                                            height: 16),
-                                      )
-                                    ],
-                                  ),
-                                  (item.type == "1")
-                                      ? AnalysisChart2Widget(
-                                          key: UniqueKey(),
-                                        )
-                                      : AnalysisChartCollum2Widget(
-                                          key: UniqueKey(),
-                                        )
-                                ]),
-                              ),
-                              context),
-                        );
-                      })),
                 ),
-              ),
-            ),
-          )
-        ],
-      )),
+              )
+            ],
+          )),
     );
   }
 
@@ -320,6 +361,172 @@ class AnalysisReportTypeMenu extends GetView {
     }
 
     return listScreen;
+  }
+}
+
+Widget countReportTypeScreen(AnalysisReportViewModel analysisReportViewModel,
+    BuildContext context) {
+  if (analysisReportViewModel.rxTypeScreen.value == 1) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 30,
+                    child: Text('Tổng số học sinh',
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline5),
+                  ),
+                  const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      child: Text("1290", style: textBlueCountTotalStyle))
+                ],
+              ),
+            ),
+            const Padding(padding: EdgeInsets.fromLTRB(15, 0, 0, 0)),
+            SizedBox(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 30,
+                    child: Text('Số HS mới tuyển đầu cấp',
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline5),
+                  ),
+                  const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      child: Text("780", style: textBlueCountTotalStyle))
+                ],
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+          child: Row(
+            children: [
+              SizedBox(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 30,
+                      child: Text('Tổng số học sinh lưu ban',
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headline5),
+                    ),
+                    const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text("90", style: textBlueCountTotalStyle))
+                  ],
+                ),
+              ),
+              const Padding(padding: EdgeInsets.fromLTRB(15, 0, 0, 0)),
+              SizedBox(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 30,
+                      child: Text('Tỷ lệ học sinh nữ là dân tộc thiểu số',
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headline5),
+                    ),
+                    const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text("180", style: textBlueCountTotalStyle))
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  } else if (analysisReportViewModel.rxTypeScreen.value == 2) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+      child: Row(
+        children: [
+          SizedBox(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 20,
+                  child: Text('Số giáo viên nghỉ hưu',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headline5),
+                ),
+                const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                    child: Text("1290", style: textBlueCountTotalStyle))
+              ],
+            ),
+          ),
+          const Padding(padding: EdgeInsets.fromLTRB(15, 0, 0, 0)),
+          SizedBox(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 20,
+                  child: Text('Số giáo viên tuyển mới',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headline5),
+                ),
+                const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+                    child: Text("780", style: textBlueCountTotalStyle))
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  } else {
+    return const SizedBox.shrink();
   }
 }
 
@@ -394,8 +601,7 @@ var listnhanvienmamnon = [
       "1"),
   chart("Cơ cấu giáo viên theo trình độ đào tạo", "1"),
   chart("Cơ cấu giáo viên theo độ tuổi", "1"),
-  chart("Cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp",
-      "1"),
+  chart("Cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp", "1"),
   chart("Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên", "2"),
   chart("Thống kê tỷ lệ giáo viên đạt chuẩn", "2"),
   chart("Thống kê bình quân giáo viên/ nhóm", "2"),
@@ -440,15 +646,13 @@ var listQuyMoTieuhoc = [
   chart("Thống kê tỷ lệ học sinh hoàn thành chương trình học", "2"),
 ];
 var nvtieuhoc = [
-  chart("Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số",
-      "2"),
   chart(
-      "Cơ cấu giáo viên theo trình độ đào tạo",
+      "Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số",
       "1"),
+  chart("Cơ cấu giáo viên theo trình độ đào tạo", "1"),
   chart("Cơ cấu giáo viên theo độ tuổi", "1"),
   chart("Cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp", "1"),
-  chart("Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên",
-      "1"),
+  chart("Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên", "2"),
   chart("Thống kê tỷ lệ giáo viên đạt chuẩn", "2"),
   chart("Thống kê bình quân số học sinh/ giáo viên", "2"),
   chart("Thống kê bình quân số giáo viên/ lớp", "2"),
@@ -459,8 +663,8 @@ var listTHCS = [
   chart("Cơ cấu trường THCS theo đơn vị thành lập", "1"),
   chart("Cơ cấu trường THCS theo mức độ trường đạt chuẩn quốc gia", "1"),
   chart("Thống kê số lượng trường THCS", "2"),
+  chart("Thống kê tỷ lệ trường THCS đạt chuẩn quốc gia", "2"),
   chart("Thống kê số lượng trường THCS đạt chuẩn quốc gia", "2"),
-  chart("Tỷ lệ trường THCS đạt chuẩn quốc gia", "2"),
   chart("Cơ cấu theo loại phòng học", "1"),
   chart("Thống kê số lượng phòng học", "2"),
   chart("Thống kê số lượng phòng học nhờ, mượn", "2"),
@@ -480,8 +684,7 @@ var quymothcs = [
   chart("Cơ cấu học sinh theo độ tuổi", "1"),
   chart("Thống kê bình quân học sinh/ lớp học", "2"),
   chart("Thống kê biến động học sinh", "2"),
-  chart(
-      "Thống kê quy mô học sinh", "2"),
+  chart("Thống kê quy mô học sinh", "2"),
   chart("Thống kê số học sinh lưu ban theo khối lớp", "2"),
   chart("Thống kê tỷ lệ học sinh đi học đúng tuổi", "2"),
   chart("Thống kê tỷ lệ học sinh lên lớp", "2"),
@@ -492,14 +695,12 @@ var quymothcs = [
 ];
 var nvthcs = [
   chart(
-      "Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số", "2"),
-  chart(
-      "Cơ cấu giáo viên theo trình độ đào tạo",
+      "Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số",
       "1"),
-  chart("Cơ cấu giáo viên theo độ tuổi", "12"),
+  chart("Cơ cấu giáo viên theo trình độ đào tạo", "1"),
+  chart("Cơ cấu giáo viên theo độ tuổi", "1"),
   chart("Cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp", "1"),
-  chart(
-      "Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên", "12"),
+  chart("Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên", "2"),
   chart("Thống kê tỷ lệ giáo viên đạt chuẩn", "2"),
   chart("Thống kê bình quân số học sinh/ giáo viên", "2"),
   chart("Thống kê bình quân số giáo viên/ lớp", "2"),
@@ -540,14 +741,12 @@ var quymothpt = [
 ];
 var nvthpt = [
   chart(
-      "Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số", "2"),
-  chart(
-      "Cơ cấu giáo viên theo trình độ đào tạo",
+      "Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số",
       "1"),
+  chart("Cơ cấu giáo viên theo trình độ đào tạo", "1"),
   chart("Cơ cấu giáo viên theo độ tuổi", "1"),
   chart("Cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp", "1"),
-  chart(
-      "Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên", "1"),
+  chart("Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên", "2"),
   chart("Thống kê tỷ lệ giáo viên đạt chuẩn", "2"),
   chart("Thống kê bình quân số học sinh/ giáo viên", "2"),
   chart("Thống kê bình quân số giáo viên/ lớp", "2"),

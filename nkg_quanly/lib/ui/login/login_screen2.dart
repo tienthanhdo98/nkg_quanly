@@ -1,144 +1,93 @@
+
 import 'dart:io' show Platform;
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'dart:io';
+
+import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../const/const.dart';
+import '../../const/utils.dart';
+import '../../main.dart';
+
 
 class LoginScreen2 extends StatefulWidget {
-  const LoginScreen2({Key? key}) : super(key: key);
-
+  const LoginScreen2({this.isLogout = false,Key? key}) : super(key: key);
+  final bool isLogout ;
   @override
   State<StatefulWidget> createState() => LoginState();
 }
 
 class LoginState extends State<LoginScreen2> {
-  InAppWebViewController? webViewController;
-  late ContextMenu contextMenu;
-
-  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-      crossPlatform: InAppWebViewOptions(
-          useShouldOverrideUrlLoading: true,
-          mediaPlaybackRequiresUserGesture: false),
-      android: AndroidInAppWebViewOptions(
-        useHybridComposition: true,
-      ),
-      ios: IOSInAppWebViewOptions(
-        allowsInlineMediaPlayback: true,
-      ));
-
+  WebViewController? wvController;
   @override
   void initState() {
-    contextMenu = ContextMenu(
-        menuItems: [
-          ContextMenuItem(
-              androidId: 1,
-              iosId: "1",
-              title: "Special",
-              action: () async {
-                print("Menu item Special clicked!");
-                print(await webViewController?.getSelectedText());
-                await webViewController?.clearFocus();
-              })
-        ],
-        options: ContextMenuOptions(hideDefaultSystemContextMenuItems: false),
-        onCreateContextMenu: (hitTestResult) async {
-          print("onCreateContextMenu");
-          print(hitTestResult.extra);
-          print(await webViewController?.getSelectedText());
-        },
-        onHideContextMenu: () {
-          print("onHideContextMenu");
-        },
-        onContextMenuActionItemClicked: (contextMenuItemClicked) async {
-          var id = (Platform.isAndroid)
-              ? contextMenuItemClicked.androidId
-              : contextMenuItemClicked.iosId;
-          print("onContextMenuActionItemClicked: " +
-              id.toString() +
-              " " +
-              contextMenuItemClicked.title);
-        });
-
     super.initState();
+
+    if (Platform.isAndroid) WebView.platform = AndroidWebView();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            height: 500,
-            child: InAppWebView(
-              initialUrlRequest: URLRequest(
-                url: Uri.parse(
-                    'https://dangnhap.moet.gov.vn/oauth2/authorize?response_type=code&client_id=DNoW4q482RZfMLfzbDfKwN_Nm1sa&redirect_uri=http://localhost:8080&scope=openid'),
-              ),
-              initialOptions: InAppWebViewGroupOptions(
-                ios: IOSInAppWebViewOptions(),
-                android: AndroidInAppWebViewOptions(
-                  domStorageEnabled: true,
-                  databaseEnabled: true,
-                ),
-              ),
-              onWebViewCreated: (InAppWebViewController controller) {
-                webViewController = controller;
-              },
-              onLoadStart: (controller, uri) {
-                controller.android.clearHistory();
-                controller.clearCache();
-                print('uriStart $uri');
-                var str = uri.toString();
-                var part = str.split('ticket=');
-                var suffixStr = part.sublist(1).join('').trim();
-                print('suffixStr $suffixStr');
-                if (suffixStr.isNotEmpty) {
-                  // webViewController?.isLoginSSO.value = false;
-                  // webViewController?.showLoadingLogin.value = true;
-                  // webViewController?.loginTicket(suffixStr);
-                }
-              },
-              onLoadStop: (controller, uri) async {
-                print('onStop $uri');
-              },
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () {
-                Clipboard.setData(
-                    const ClipboardData(text: "lcloi@moet.gov.vn"));
-              },
-              child: Text("username")),
-          ElevatedButton(
-              onPressed: () {
-                Clipboard.setData(const ClipboardData(text: "sdtech@123#"));
-              },
-              child: Text("pass")),
-        ],
+      body: SafeArea(
+        child: Stack(
+         children: [
+           WebView(
+             onWebViewCreated: (WebViewController controller) async {
+               wvController = controller;
+               //wvController!.clearCache();
+               await loginViewModel.getInfoLoginConfig();
+               if(widget.isLogout == false) {
+                 wvController!.loadUrl(loginViewModel.urlLogin);
+               }
+               else
+                 {
+                   wvController!.loadUrl("https://dangnhap.moet.gov.vn/oidc/logout?id_token_hint=${loginViewModel.rxIdAccessToken}&post_logout_redirect_uri=${loginViewModel.rxInfoLoginConfig.value.redirectUri}");
+                 }
+
+             },
+             gestureRecognizers: {}..add(Factory<LongPressGestureRecognizer>(
+                     () => LongPressGestureRecognizer())),
+             javascriptMode: JavascriptMode.unrestricted,
+             navigationDelegate: (NavigationRequest request) {
+               if (request.url.contains('?code=')) {
+                 print('blocking navigation to $request}');
+                 return NavigationDecision.prevent;
+               }
+               if (request.url.contains(loginViewModel.rxInfoLoginConfig.value.redirectUri!)) {
+                 print('blocking navigation to $request}');
+                 return NavigationDecision.prevent;
+               }
+               return NavigationDecision.navigate;
+             },
+             onPageFinished: (String url) async {
+               if(url.contains("code")) {
+                 var re = RegExp(r'(?<=code=)(.*)(?=&)');
+                 var authCode = re.firstMatch(url);
+                 if (authCode != null) {
+                   print("code ${authCode.group(0)}");
+                   await loginViewModel.geAccessToken(authCode.group(0)!);
+                   await loginViewModel.getUserInfo(loginViewModel.rxAccessToken.value);
+                   await loginViewModel.getAccessTokenIoc(loginViewModel.rxUserInfoModel.value.name!,loginViewModel.rxUserInfoModel.value.email!);
+                   loginViewModel.changeValueLoading(false);
+                   Get.off(() => const MainScreen());
+                 }
+               }
+               if(url.contains(loginViewModel.rxInfoLoginConfig.value.redirectUri!)) {
+                 wvController!.loadUrl(loginViewModel.urlLogin);
+                 loginViewModel.changeValueLoading(false);
+               }
+             },
+           ),
+          Obx(() =>  (loginViewModel.isLoginLoading.value == true) ? const Center(child: CircularProgressIndicator()) : const SizedBox.shrink()),
+         ],
+        ),
       ),
     );
   }
-}
-// class LoginState extends State<LoginScreen2> {
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Column(
-//         children: [
-//           ElevatedButton(
-//               onPressed: () {
-//                 Clipboard.setData(
-//                     const ClipboardData(text: "lcloi@moet.gov.vn"));
-//               },
-//               child: Text("username")),
-//           ElevatedButton(
-//               onPressed: () {
-//                 Clipboard.setData(const ClipboardData(text: "sdtech@123#"));
-//               },
-//               child: Text("pass")),
-//         ],
-//       ),
-//     );
-//   }
-// }
+
+  }
+

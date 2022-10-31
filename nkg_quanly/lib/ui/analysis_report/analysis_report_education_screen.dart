@@ -124,6 +124,7 @@ class AnalysisReportEducationScreen extends GetView {
             child: Container(
               color: kDarkGray,
               child: SingleChildScrollView(
+                controller: analysisReportViewModel.controller,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                   child: Obx(() => (analysisReportViewModel.rxIsLoadingData.value == false) ?

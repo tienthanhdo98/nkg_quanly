@@ -16,6 +16,7 @@ import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
 import '../ui/helpdesk/helpdesk_viewmodel.dart';
 import '../ui/mission/mission_viewmodel.dart';
+import '../viewmodel/login_viewmodel.dart';
 import 'style.dart';
 import 'utils.dart';
 import 'widget.dart';
@@ -127,6 +128,7 @@ String jsonGetByMonth =
 
 //
 final DatePickerController menuController = Get.put(DatePickerController());
+final loginViewModel = Get.put(LoginViewModel());
 
 void loadDataByRangeDay(
     GetxController viewModel, String fromDate, String toDate) {
@@ -195,7 +197,13 @@ const END_DATE = "EndDate";
 Widget headerWidgetSearch(
     String header, GetView searchScreen, BuildContext context) {
   return Container(
-    color: Theme.of(context).cardColor,
+      decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          border: Border(
+              bottom: BorderSide(
+                width: 1,
+                color: Theme.of(context).dividerColor,
+              ))),
     child: Padding(
       padding: const EdgeInsets.all(15),
       child: InkWell(
