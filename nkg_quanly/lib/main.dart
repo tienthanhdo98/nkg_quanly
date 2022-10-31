@@ -49,6 +49,7 @@ class MainScreenStage extends State<MainScreen> {
     HomeScreen(),
     const ChartScreen(),
     HomePage(),
+
     SettingScreen()
   ];
 
