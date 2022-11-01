@@ -9,6 +9,13 @@ class ChartSampleData {
   int y;
   Color color;
 }
+class ChartCollumData {
+  ChartCollumData({this.x = "", this.y = 0, this.color = Colors.white});
+
+  String x;
+  double y;
+  Color color;
+}
 
 class PieCharData {
   PieCharData({this.title = "", this.value = 0, this.color = Colors.white});

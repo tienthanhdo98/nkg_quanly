@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_education_quality/report_education_quality_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_gd_khuyet_tat/report_giaoduckhuyettat_screen.dart';
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
@@ -12,14 +13,9 @@ import 'analysis_report_viewmodel.dart';
 const TYPE_SCREEN_EDUCATION = "education";
 
 class AnalysisReportFilterScreen extends GetView {
-  AnalysisReportFilterScreen(this.analysisReportViewModel, {Key? key})
+  const AnalysisReportFilterScreen(this.analysisReportViewModel, {Key? key})
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
-
-  String? semester;
-  String? province;
-  String? region;
-  String? schoolYear;
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +227,19 @@ class AnalysisReportFilterScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                             child: ElevatedButton(
                               onPressed: () {
-
+                                var index =   analysisReportViewModel!.rxTypeScreen.value;
+                                print("selected semaster ${analysisReportViewModel!.rxSelectedSemesterId.value}");
+                                print("selected region ${analysisReportViewModel!.rxSelectedRegionID.value}");
+                                print("selected province ${analysisReportViewModel!.rxSelectedProvinceId.value}");
+                                print("selected School year ${analysisReportViewModel!.rxSelectedSchoolYearID.value}");
+                                analysisReportViewModel!.getDisabilityEducation(
+                                    "${index + 1}",
+                                    analysisReportViewModel!.rxSelectedSemesterId.value,
+                                    analysisReportViewModel!.rxSelectedRegionID.value,
+                                    analysisReportViewModel!.rxSelectedProvinceId.value,
+                                    analysisReportViewModel!.rxSelectedSchoolYearID.value,
+                                    listReportGDKT[index]);
+                                analysisReportViewModel!.changeStateLoadingData(true);
                                 analysisReportViewModel!.clearSelectedFilter();
                                 Get.back();
 
@@ -252,15 +260,10 @@ class AnalysisReportFilterScreen extends GetView {
   }
 }
 
-class AnalysisReportCSVCFilterScreen extends GetView {
-  AnalysisReportCSVCFilterScreen(this.analysisReportViewModel, {Key? key})
+class AnalysisReportInfrastructureFilterScreen extends GetView {
+  AnalysisReportInfrastructureFilterScreen(this.analysisReportViewModel, {Key? key})
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
-
-  String? semester;
-  String? province;
-  String? region;
-  String? schoolYear;
 
   @override
   Widget build(BuildContext context) {
@@ -472,6 +475,7 @@ class AnalysisReportCSVCFilterScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                             child: ElevatedButton(
                               onPressed: () {
+                                analysisReportViewModel!.getListChartInfrastructure(analysisReportViewModel!.rxSelectedSchoolLevelID.value,analysisReportViewModel!.rxSelectedRegionID.value,analysisReportViewModel!.rxSelectedProvinceId.value,analysisReportViewModel!.rxSelectedSchoolYearID.value);
                                 analysisReportViewModel!.clearSelectedFilter();
                                 Get.back();
                               },
@@ -1665,9 +1669,7 @@ class KhenThuongFilterScreen extends GetView {
   }
 }
 
-//hoc luc
-
-
+//hoc ki
 class FilterSemesterBottomSheet extends StatelessWidget {
   const FilterSemesterBottomSheet(this.analysisReportViewModel, {Key? key})
       : super(key: key);
@@ -1732,28 +1734,33 @@ class FilterSemesterBottomSheet extends StatelessWidget {
                                           .rxSelectedSemester,
                                       "Tất cả học kỳ");
                             } else {
-                              var agencies = "";
-                              var agenciesName = "";
+                              var semester = "";
+                              var semesterName = "";
+                              var semesterID = "";
                               analysisReportViewModel!.mapSemesterFilter
                                   .forEach((key, value) {
-                                agencies += value;
+                                semester += value;
                               });
-                              var listId = agencies.split(";");
+                              var listId = semester.split(";");
                               for (var id in listId) {
                                 for (var item in analysisReportViewModel!
                                     .rxListSemester) {
                                   if (item.id == id) {
-                                    agenciesName += "${item.name!};";
+                                    semesterName += "${item.name!};";
+                                    semesterID += "${item.id!};";
                                   }
                                 }
                               }
-                              if (agenciesName != "") {
+                              if (semesterName != "") {
                                 analysisReportViewModel!
                                     .changeValueSelectedFilter(
                                         analysisReportViewModel!
                                             .rxSelectedSemester,
-                                        agenciesName.substring(
-                                            0, agenciesName.length - 1));
+                                    semesterName.substring(
+                                            0, semesterName.length - 1));
+                                analysisReportViewModel!.changeValueDataId(semesterID.substring(
+                                    0, semesterID.length - 1),
+                                    analysisReportViewModel!.rxSelectedSemesterId);
                               } else {
                                 analysisReportViewModel!
                                     .changeValueSelectedFilter(
@@ -1880,27 +1887,34 @@ class FilterProvinceBottomSheet extends StatelessWidget {
                                     analysisReportViewModel!.rxSelectedProvince,
                                     "Tất cả lĩnh vực");
                               } else {
-                                var branch = "";
-                                var branchName = "";
+                                var province = "";
+                                var provinceName = "";
+                                var provinceId = "";
                                 analysisReportViewModel!.mapProvinceFilter
                                     .forEach((key, value) {
-                                  branch += value;
+                                  province += value;
                                 });
-                                var listId = branch.split(";");
+                                var listId = province.split(";");
                                 for (var id in listId) {
                                   for (var item in analysisReportViewModel!
                                       .rxListProvinceByRegion) {
                                     if (item.id == id) {
-                                      branchName += "${item.name!};";
+                                      provinceName += "${item.name!};";
+                                      provinceId += "${item.id!};";
                                     }
                                   }
                                 }
-                                if (branchName != "") {
+                                if (provinceName != "") {
                                   changeValueSelectedFilter(
                                       analysisReportViewModel!
                                           .rxSelectedProvince,
-                                      branchName.substring(
-                                          0, branchName.length - 1));
+                                      provinceName.substring(
+                                          0, provinceName.length - 1));
+                                  analysisReportViewModel!.changeValueDataId(provinceId.substring(
+                                      0, provinceId.length - 1),
+                                      analysisReportViewModel!
+                                          .rxSelectedProvinceId,
+                                     );
                                 } else {
                                   changeValueSelectedFilter(
                                       analysisReportViewModel!
@@ -2210,7 +2224,8 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                                     schoolYearName += "${item.name!};";
                                     schoolYearId += "${item.id!};";
                                     analysisReportViewModel!.changeValueDataId(
-                                        schoolYearId,
+                                        schoolYearId.substring(
+                                            0, schoolYearId.length - 1),
                                         analysisReportViewModel!
                                             .rxSelectedSchoolYearID);
                                   }
@@ -2383,7 +2398,8 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                                     schoolLevelName += "${item.name!};";
                                     schoolLevelId += "${item.id!};";
                                     analysisReportViewModel!.changeValueDataId(
-                                        schoolLevelId,
+                                        schoolLevelId.substring(
+                                            0, schoolLevelId.length - 1),
                                         analysisReportViewModel!
                                             .rxSelectedSchoolLevelID);
                                   }
@@ -2822,7 +2838,7 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                             for (var id in listId) {
                               for (var item in listClassification) {
                                 if (item == id) {
-                                  agenciesName += "${item!};";
+                                  agenciesName += "${item};";
                                 }
                               }
                             }

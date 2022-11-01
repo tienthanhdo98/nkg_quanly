@@ -1,15 +1,15 @@
-class PreSchoolChartModel {
+class AnalysisChartModel {
   String? chartName;
-  List<PreSchoolChartItems>? items;
+  List<ChartChildItems>? items;
 
-  PreSchoolChartModel({this.chartName, this.items});
+  AnalysisChartModel({this.chartName, this.items});
 
-  PreSchoolChartModel.fromJson(Map<String, dynamic> json) {
+  AnalysisChartModel.fromJson(Map<String, dynamic> json) {
     chartName = json['chartName'];
     if (json['items'] != null) {
-      items = <PreSchoolChartItems>[];
+      items = <ChartChildItems>[];
       json['items'].forEach((v) {
-        items!.add(PreSchoolChartItems.fromJson(v));
+        items!.add(ChartChildItems.fromJson(v));
       });
     }
   }
@@ -24,20 +24,20 @@ class PreSchoolChartModel {
   }
 }
 
-class PreSchoolChartItems {
+class ChartChildItems {
   String? name;
   String? value;
-  List<PreSchoolChartItems>? items;
+  List<ChartChildItems>? items;
 
-  PreSchoolChartItems({this.name, this.value, this.items});
+  ChartChildItems({this.name, this.value, this.items});
 
-  PreSchoolChartItems.fromJson(Map<String, dynamic> json) {
+  ChartChildItems.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     value = json['value'];
     if (json['items'] != null) {
-      items = <PreSchoolChartItems>[];
+      items = <ChartChildItems>[];
       json['items'].forEach((v) {
-        items!.add(PreSchoolChartItems.fromJson(v));
+        items!.add(ChartChildItems.fromJson(v));
       });
     }
   }

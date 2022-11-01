@@ -127,25 +127,25 @@ class AnalysisReportEducationScreen extends GetView {
                 controller: analysisReportViewModel.controller,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  child: Obx(() => (analysisReportViewModel.rxIsLoadingData.value == false) ?
+                  child: Obx(() => (analysisReportViewModel.isLoadingData.value == false) ?
                   ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: analysisReportViewModel
-                          .rxListEducationChart.length,
+                          .rxListChartAnalysis.length,
                       itemBuilder: (context, index) {
                         var listChart = analysisReportViewModel
-                            .rxListEducationChart
+                            .rxListChartAnalysis
                             .elementAt(index)
                             .items;
                         var title = analysisReportViewModel
-                            .rxListEducationChart
+                            .rxListChartAnalysis
                             .elementAt(index)
                             .chartName;
                         if(title != null &&
                             listChart!.isNotEmpty == true){
                           var item = analysisReportViewModel
-                             .rxListEducationChart[index].items;
+                             .rxListChartAnalysis[index].items;
                           return Padding(
                             padding:
                             const EdgeInsets.fromLTRB(0, 0, 0, 15),

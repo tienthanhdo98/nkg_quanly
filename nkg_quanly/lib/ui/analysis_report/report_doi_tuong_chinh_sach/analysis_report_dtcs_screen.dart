@@ -18,7 +18,7 @@ class AnalysisReportDTCSMenu extends GetView {
   @override
   Widget build(BuildContext context) {
     analysisReportViewModel.getDataPreSchoolScreen();
-    analysisReportViewModel.getDataCoSoVatChat();
+    //analysisReportViewModel.getDataCoSoVatChat();
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -281,9 +281,9 @@ class AnalysisReportDTCSMenu extends GetView {
                                   )
                                 ],
                               ),
-                              AnalysisCollumChartWidget(
-                                key: UniqueKey(),
-                              )
+                              // AnalysisCollumChartWidget(
+                              //   key: UniqueKey(),
+                              // )
                             ]),
                           ),
                           context)

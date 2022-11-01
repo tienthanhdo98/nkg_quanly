@@ -1,45 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/model/document_unprocess/document_filter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../const/const.dart';
-import '../../const/utils.dart';
-import '../../const/widget.dart';
-import '../../model/ChartModel.dart';
-import '../../model/analysis_report/preschool_chart_model.dart';
-import '../../model/helpdesk_model/helpdesk_model.dart';
-import '../../model/pmis_model/pmis_chart_model.dart';
+import '../../../const/const.dart';
+import '../../../model/ChartModel.dart';
+import '../../../model/analysis_report/preschool_chart_model.dart';
 
-class AnalysisCollumChartWidget2 extends StatefulWidget {
-  AnalysisCollumChartWidget2({UniqueKey? key})
+
+class AnalysisCollumChartWidget extends StatefulWidget {
+
+  AnalysisCollumChartWidget({UniqueKey? key, this.listChart})
       : super(key: key);
 
+  final List<ChartChildItems>? listChart;
 
 
   @override
   State<StatefulWidget> createState() => AnalysisCollumChartState();
 }
 
-class AnalysisCollumChartState extends State<AnalysisCollumChartWidget2> {
-  List<PieCharData> listPieChartData = [];
-  List<ChartChildItems> listPreSchoolChartItems = [];
-  List<ChartSampleData> listCollumCharData = [];
-  List<PmisChartModel>? listCollumChartModel;
-  bool isPieChart = false;
+class AnalysisCollumChartState extends State<AnalysisCollumChartWidget> {
+  List<ChartChildItems> listChart = [];
+  List<ChartCollumData> listCollumCharData = [];
   TooltipBehavior? _tooltipBehavior;
 
   @override
   void initState() {
-    var listName = ["Con em DT thiểu số","Con em quân nhân","Con em thương bình,người có công","Con em hộ nghèo,hoàn cảnh khó khăn","Trẻ em khuyết tật"];
+    listChart = widget.listChart!;
     _tooltipBehavior =
         TooltipBehavior(enable: true, header: '', canShowMarker: false);
 
-      isPieChart = false;
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < listChart.length; i++) {
         listCollumCharData.add(
-          ChartSampleData(
-              x: listName[i],
-              y: (i+1)*(20 + i),
+          ChartCollumData(
+              x: listChart[i].name!,
+              y: double.parse(listChart[i].value!),
               color: listColorChart[0]),
         );
       }
@@ -83,17 +77,17 @@ class AnalysisCollumChartState extends State<AnalysisCollumChartWidget2> {
     );
   }
 
-  List<ColumnSeries<ChartSampleData, String>> _getDefaultColumnSeries() {
-    return <ColumnSeries<ChartSampleData, String>>[
-      ColumnSeries<ChartSampleData, String>(
+  List<ColumnSeries<ChartCollumData, String>> _getDefaultColumnSeries() {
+    return <ColumnSeries<ChartCollumData, String>>[
+      ColumnSeries<ChartCollumData, String>(
         dataSource: listCollumCharData,
         width: 0.5,
-        xValueMapper: (ChartSampleData sales, _) => sales.x,
-        yValueMapper: (ChartSampleData sales, _) => sales.y,
-        pointColorMapper: ((ChartSampleData sales, _) => sales.color),
-        dataLabelMapper: (ChartSampleData sales, _) => sales.y.toString(),
-        dataLabelSettings: DataLabelSettings(
-            isVisible: (listCollumCharData.length < 12) ? false : false,
+        xValueMapper: (ChartCollumData sales, _) => sales.x,
+        yValueMapper: (ChartCollumData sales, _) => sales.y,
+        pointColorMapper: ((ChartCollumData sales, _) => sales.color),
+        dataLabelMapper: (ChartCollumData sales, _) => sales.y.toString(),
+        dataLabelSettings: const DataLabelSettings(
+            isVisible: false ,
             textStyle: TextStyle(fontSize: 8)),
       )
     ];

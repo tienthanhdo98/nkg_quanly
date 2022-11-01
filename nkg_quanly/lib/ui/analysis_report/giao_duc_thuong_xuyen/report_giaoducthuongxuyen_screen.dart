@@ -8,7 +8,7 @@ import '../../../const/style.dart';
 import '../../../const/widget.dart';
 import '../../theme/theme_data.dart';
 import '../analysis_collum_chart2.dart';
-import '../analysis_pie_chart.dart';
+import '../chart/analysis_pie_chart.dart';
 import '../analysis_pie_chart2.dart';
 import '../analysis_report_viewmodel.dart';
 

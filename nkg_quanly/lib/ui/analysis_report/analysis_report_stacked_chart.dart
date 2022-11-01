@@ -12,14 +12,14 @@ import '../../model/pmis_model/pmis_chart_model.dart';
 class AnalysisReportStackedChartWidget extends StatefulWidget {
   AnalysisReportStackedChartWidget(this.listEducationChart,{UniqueKey? key}) : super(key: key);
 
-  final List<PreSchoolChartItems>? listEducationChart;
+  final List<ChartChildItems>? listEducationChart;
 
   @override
   State<StatefulWidget> createState() => AnalysisReportStackedChartState();
 }
 
 class AnalysisReportStackedChartState extends State<AnalysisReportStackedChartWidget> {
-  List<PreSchoolChartItems>? listEducationChart;
+  List<ChartChildItems>? listEducationChart;
   List<StackedChartModel> chartData = [];
 
   TooltipBehavior? _tooltipBehavior;

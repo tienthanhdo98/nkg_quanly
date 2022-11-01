@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
+import 'package:nkg_quanly/ui/analysis_report/analysis_report_type_screen.dart';
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
+import '../../../model/analysis_report/preschool_chart_model.dart';
 import '../../theme/theme_data.dart';
 import '../analysis_collum_chart2.dart';
 import '../analysis_report_filter_screen.dart';
 import '../analysis_report_viewmodel.dart';
+import '../chart/analysis_collum_chart.dart';
 
 class AnalysisReportCoSoVatChatMenu extends GetView {
   AnalysisReportCoSoVatChatMenu({Key? key}) : super(key: key);
@@ -16,8 +19,8 @@ class AnalysisReportCoSoVatChatMenu extends GetView {
 
   @override
   Widget build(BuildContext context) {
-    analysisReportViewModel.getDataPreSchoolScreen();
-    analysisReportViewModel.getDataCoSoVatChat();
+
+    analysisReportViewModel.getDataInfrastructure();
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -43,7 +46,7 @@ class AnalysisReportCoSoVatChatMenu extends GetView {
                       children: [
                         Obx(() => Expanded(
                                 child: Text(
-                              "Thống kê ${analysisReportViewModel.rxSelectedSemester}",
+                              "Thống kê ${analysisReportViewModel.rxSelectedSchoolLevel}",
                               style: Theme.of(context).textTheme.headline2,
                             ))),
                         Align(
@@ -51,7 +54,7 @@ class AnalysisReportCoSoVatChatMenu extends GetView {
                             child: ElevatedButton(
                               style: elevetedButtonWhite,
                               onPressed: () {
-                                Get.to(() => AnalysisReportCSVCFilterScreen(
+                                Get.to(() => AnalysisReportInfrastructureFilterScreen(
                                     analysisReportViewModel));
                               },
                               child: const Text(
@@ -139,72 +142,74 @@ class AnalysisReportCoSoVatChatMenu extends GetView {
             child: Container(
               color: kDarkGray,
               child: SingleChildScrollView(
+                controller: analysisReportViewModel.controller,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  child: Column(children: [
-                    borderItem(
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                          child: Column(children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "Thống kê số lượng trường học đạt tiêu chí về cơ sở vật chất",
-                                    style:
-                                        Theme.of(context).textTheme.headline1,
-                                  ),
+                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                    child: Obx(() => (analysisReportViewModel
+                        .isLoadingData.value ==
+                        false)
+                        ? ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: analysisReportViewModel
+                            .rxListChartAnalysis.length,
+                        itemBuilder: (context, index) {
+                          var item = analysisReportViewModel
+                              .rxListChartAnalysis[index];
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                0, 0, 0, 15),
+                            child: borderItem(
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      15, 15, 15, 15),
+                                  child: Column(children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            chartNameToFullNameInfrastructureChart(
+                                                item.chartName!),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline1,
+                                          ),
+                                        ),
+                                        const Padding(
+                                            padding:
+                                            EdgeInsets.fromLTRB(
+                                                20, 0, 0, 0)),
+                                        InkWell(
+                                          onTap: () {
+                                            var  curIndex = analysisReportViewModel!.rxTypeScreen.value;
+                                            // analysisReportViewModel.getDisabilityEducation(
+                                            //     "${curIndex + 1}",
+                                            //     analysisReportViewModel.rxSelectedSemesterId.value,
+                                            //     analysisReportViewModel.rxSelectedRegionID.value,
+                                            //     analysisReportViewModel.rxSelectedProvinceId.value,
+                                            //     analysisReportViewModel.rxSelectedSchoolYearID.value,
+                                            //     listReportGDKT[curIndex]);
+                                          },
+                                          child: Image.asset(
+                                              "assets/icons/ic_refresh.png",
+                                              width: 16,
+                                              height: 16),
+                                        ),
+                                      ],
+                                    ),
+                                    checkNameToShowInfrastructureChart(
+                                        item.chartName!, item.items)
+                                  ]),
                                 ),
-                                const Padding(
-                                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Image.asset(
-                                      "assets/icons/ic_refresh.png",
-                                      width: 16,
-                                      height: 16),
-                                )
-                              ],
-                            ),
-                            AnalysisChartCollum2Widget(
-                              key: UniqueKey(),
-                            )
-                          ]),
-                        ),
-                        context),
-                    Padding(padding: const EdgeInsets.fromLTRB(0, 15, 0, 0)),
-                    borderItem(
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                          child: Column(children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "Thống kê tỷ lệ trường học đạt tiêu chí về CSVC",
-                                    style:
-                                        Theme.of(context).textTheme.headline1,
-                                  ),
-                                ),
-                                const Padding(
-                                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Image.asset(
-                                      "assets/icons/ic_refresh.png",
-                                      width: 16,
-                                      height: 16),
-                                )
-                              ],
-                            ),
-                            AnalysisChartCollum2Widget(
-                              key: UniqueKey(),
-                            )
-                          ]),
-                        ),
-                        context)
-                  ]),
-                ),
+                                context),
+                          );
+                        })
+                        : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        child: Center(child: CircularProgressIndicator()),
+                      )],))),
               ),
             ),
           )
@@ -212,4 +217,44 @@ class AnalysisReportCoSoVatChatMenu extends GetView {
       )),
     );
   }
+}
+String chartNameToFullNameInfrastructureChart(String chartName){
+  var fullName = "";
+    if(chartName == "BieuDoSoSanhSoLuongTruongHocDatTieuChiVeCSVC")
+      {
+        fullName=  "Thống kê số lượng trường học đạt tiêu chí về cơ sở vật chất";
+      }
+    else if(chartName ==  "BieuDoSoSanhTyLeTruongHocDatTieuChiVeCSVC")
+      {
+        fullName=  "Thống kê tỷ lệ trường học đạt tiêu chí về CSVC";
+      }
+    return fullName;
+
+}
+Widget checkNameToShowInfrastructureChart(
+    String chartName, List<ChartChildItems>? items) {
+  Widget? chart = SizedBox();
+  switch (chartName) {
+    case "BieuDoSoSanhSoLuongTruongHocDatTieuChiVeCSVC":
+      {
+        chart = AnalysisCollumChartWidget(
+          key: UniqueKey(),
+          listChart: items,
+        );
+      }
+      break;
+    case "BieuDoSoSanhTyLeTruongHocDatTieuChiVeCSVC":
+      {
+        chart = AnalysisCollumChartWidget(
+          key: UniqueKey(),
+          listChart: items,
+        );
+      }
+      break;
+    default:
+      {
+        chart = const SizedBox.shrink();
+      }
+  }
+  return chart;
 }
