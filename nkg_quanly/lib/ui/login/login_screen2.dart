@@ -64,7 +64,7 @@ class LoginState extends State<LoginScreen2> {
                return NavigationDecision.navigate;
              },
              onPageFinished: (String url) async {
-               if(url.contains("code")) {
+               if(url.contains("?code=")) {
                  var re = RegExp(r'(?<=code=)(.*)(?=&)');
                  var authCode = re.firstMatch(url);
                  if (authCode != null) {

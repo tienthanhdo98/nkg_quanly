@@ -67,7 +67,7 @@ class HomeScreen extends GetView {
                           ),
                           const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
                           Text(
-                            loginViewModel.rxUserInfoModel.value.name!,
+                            checkingStringNull(loginViewModel.rxUserInfoModel.value.name),
                             style: const TextStyle(color: kWhite, fontSize: 24),
                           )
                         ],
