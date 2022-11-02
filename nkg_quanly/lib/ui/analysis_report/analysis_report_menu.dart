@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/ui/analysis_report/report_cosovatchat/analysis_report_cosovatchat_screen.dart';
-import 'package:nkg_quanly/ui/analysis_report/report_doi_tuong_chinh_sach/analysis_report_dtcs_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_Infrastructure/report_infrastructure_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_beneficiary/report_beneficiary_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_continuingEducation/report_continuing_ducation_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_disability_education/report_disability_education_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_education_quality/report_education_quality_screen.dart';
-import 'package:nkg_quanly/ui/analysis_report/report_gd_khuyet_tat/report_giaoduckhuyettat_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_preschool/report_primary_school_screen.dart';
 import 'package:nkg_quanly/ui/home/home_screen.dart';
 
 import '../../const/const.dart';
 import '../../const/utils.dart';
 import 'analysis_report_education_screen.dart';
 import 'analysis_report_type_screen.dart';
-import 'giao_duc_thuong_xuyen/report_giaoducthuongxuyen_screen.dart';
 
 const typePreSchool = "preSchool";
 const typePrimarySchool = "primarySchool";
@@ -83,8 +84,8 @@ List<MenuListItem> listMenuAnalysisReport = [
       'Giáo dục thường xuyên', 'assets/icons/ic_analy_report_8.png', "", 7),
   MenuListItem(
       'Quản lý chất lượng GD', 'assets/icons/ic_analy_report_9.png', "", 8),
-  MenuListItem(
-      'Hỗ trợ đối tượng chính sách', 'assets/icons/ic_analy_report_2.png', "", 9),
+  MenuListItem('Hỗ trợ đối tượng chính sách',
+      'assets/icons/ic_analy_report_2.png', "", 9),
   MenuListItem(
       'Báo cáo cơ sở vật chất', 'assets/icons/ic_analy_report_10.png', "", 10),
 ];
@@ -100,7 +101,7 @@ void toAnalysisReportScreen(int type, String? header, String? icon) {
       break;
     case 3:
       Get.to(
-          () => AnalysisReportTypeMenu("Giáo dục Tiểu học", typePrimarySchool));
+          () => ReportPrimarySchoolScreen());
       break;
     case 4:
       Get.to(() => AnalysisReportTypeMenu(
@@ -111,23 +112,19 @@ void toAnalysisReportScreen(int type, String? header, String? icon) {
           "Giáo dục cấp trung học phổ thông", typeHighSchool));
       break;
     case 6:
-      Get.to(
-          () => ReportGiaoDucKhuyetTatScreen());
+      Get.to(() => ReportDisabilityEducationScreen());
       break;
     case 7:
-      Get.to(() =>
-          ReportGiaoDucThuongXuyenScreen());
+      Get.to(() => ReportContinuingEducationScreen());
       break;
     case 8:
-      Get.to(() =>
-          ReportEducationQualityScreen());
+      Get.to(() => ReportEducationQualityScreen());
       break;
     case 9:
-      Get.to(() => AnalysisReportDTCSMenu());
+      Get.to(() => ReportBeneficiaryScreen());
       break;
     case 10:
-      Get.to(() =>
-          AnalysisReportCoSoVatChatMenu());
+      Get.to(() => ReportInfrastructureChatScreen());
       break;
   }
 }

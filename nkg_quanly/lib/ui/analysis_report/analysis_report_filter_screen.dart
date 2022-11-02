@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_education_quality/report_education_quality_screen.dart';
-import 'package:nkg_quanly/ui/analysis_report/report_gd_khuyet_tat/report_giaoduckhuyettat_screen.dart';
+
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
@@ -13,10 +13,10 @@ import 'analysis_report_viewmodel.dart';
 const TYPE_SCREEN_EDUCATION = "education";
 
 class AnalysisReportFilterScreen extends GetView {
-  const AnalysisReportFilterScreen(this.analysisReportViewModel, {Key? key})
+  const AnalysisReportFilterScreen({required this.analysisReportViewModel,required this.onClick, Key? key})
       : super(key: key);
-  final AnalysisReportViewModel? analysisReportViewModel;
-
+  final AnalysisReportViewModel analysisReportViewModel;
+  final VoidCallback onClick;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -227,22 +227,8 @@ class AnalysisReportFilterScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                             child: ElevatedButton(
                               onPressed: () {
-                                var index =   analysisReportViewModel!.rxTypeScreen.value;
-                                print("selected semaster ${analysisReportViewModel!.rxSelectedSemesterId.value}");
-                                print("selected region ${analysisReportViewModel!.rxSelectedRegionID.value}");
-                                print("selected province ${analysisReportViewModel!.rxSelectedProvinceId.value}");
-                                print("selected School year ${analysisReportViewModel!.rxSelectedSchoolYearID.value}");
-                                analysisReportViewModel!.getDisabilityEducation(
-                                    "${index + 1}",
-                                    analysisReportViewModel!.rxSelectedSemesterId.value,
-                                    analysisReportViewModel!.rxSelectedRegionID.value,
-                                    analysisReportViewModel!.rxSelectedProvinceId.value,
-                                    analysisReportViewModel!.rxSelectedSchoolYearID.value,
-                                    listReportGDKT[index]);
-                                analysisReportViewModel!.changeStateLoadingData(true);
-                                analysisReportViewModel!.clearSelectedFilter();
+                                onClick();
                                 Get.back();
-
                               },
                               child: buttonShowListScreen("Tìm kiếm"),
                               style: bottomButtonStyle,
@@ -259,6 +245,8 @@ class AnalysisReportFilterScreen extends GetView {
         ));
   }
 }
+
+
 
 class AnalysisReportInfrastructureFilterScreen extends GetView {
   AnalysisReportInfrastructureFilterScreen(this.analysisReportViewModel, {Key? key})
@@ -880,10 +868,10 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedClasstifi.value !=
+                                    .rxSelectedClassification.value !=
                                     "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedClasstifi.value
+                                    .rxSelectedClassification.value
                                     : "Chọn học lực",
                                 context))),
 
@@ -2796,7 +2784,7 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var item = listClassification[index];
                   return FilterItem(item, item, index,
-                      analysisReportViewModel!.mapClasstifiFilter);
+                      analysisReportViewModel!.mapClassificationFilter);
                 }),
           ),
           //bottom button
@@ -2825,12 +2813,12 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                             analysisReportViewModel!
                                 .changeValueSelectedFilter(
                                 analysisReportViewModel!
-                                    .rxSelectedClasstifi,
+                                    .rxSelectedClassification,
                                 "Tất cả học lực");
                           } else {
                             var agencies = "";
                             var agenciesName = "";
-                            analysisReportViewModel!.mapClasstifiFilter
+                            analysisReportViewModel!.mapClassificationFilter
                                 .forEach((key, value) {
                               agencies += value;
                             });
@@ -2846,14 +2834,14 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                   analysisReportViewModel!
-                                      .rxSelectedClasstifi,
+                                      .rxSelectedClassification,
                                   agenciesName.substring(
                                       0, agenciesName.length - 1));
                             } else {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                   analysisReportViewModel!
-                                      .rxSelectedClasstifi,
+                                      .rxSelectedClassification,
                                   "");
                             }
                           }

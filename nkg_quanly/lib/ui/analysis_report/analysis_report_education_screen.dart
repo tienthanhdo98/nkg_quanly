@@ -2,15 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
-import '../../const/api.dart';
 import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/widget.dart';
-import '../theme/theme_data.dart';
-import 'analysis_pie_chart2.dart';
 import 'analysis_report_filter_screen.dart';
-import 'analysis_report_stacked_chart.dart';
 import 'analysis_report_viewmodel.dart';
+import 'chart/analysis_report_stacked_chart.dart';
 
 class AnalysisReportEducationScreen extends GetView {
   AnalysisReportEducationScreen({Key? key}) : super(key: key);

@@ -1,20 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
-import 'package:nkg_quanly/ui/analysis_report/analysis_report_type_screen.dart';
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
 import '../../../model/analysis_report/preschool_chart_model.dart';
 import '../../theme/theme_data.dart';
-import '../analysis_collum_chart2.dart';
 import '../analysis_report_filter_screen.dart';
 import '../analysis_report_viewmodel.dart';
 import '../chart/analysis_collum_chart.dart';
 
-class AnalysisReportCoSoVatChatMenu extends GetView {
-  AnalysisReportCoSoVatChatMenu({Key? key}) : super(key: key);
+class ReportInfrastructureChatScreen extends GetView {
+  ReportInfrastructureChatScreen({Key? key}) : super(key: key);
   final analysisReportViewModel = Get.put(AnalysisReportViewModel());
 
   @override
@@ -181,7 +179,7 @@ class AnalysisReportCoSoVatChatMenu extends GetView {
                                                 20, 0, 0, 0)),
                                         InkWell(
                                           onTap: () {
-                                            var  curIndex = analysisReportViewModel!.rxTypeScreen.value;
+                                            var  curIndex = analysisReportViewModel.rxTypeScreen.value;
                                             // analysisReportViewModel.getDisabilityEducation(
                                             //     "${curIndex + 1}",
                                             //     analysisReportViewModel.rxSelectedSemesterId.value,

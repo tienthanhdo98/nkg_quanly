@@ -11,8 +11,8 @@ import '../analysis_report_viewmodel.dart';
 import '../chart/analysis_collum_chart.dart';
 import '../chart/analysis_pie_chart.dart';
 
-class ReportGiaoDucKhuyetTatScreen extends GetView {
-  ReportGiaoDucKhuyetTatScreen({Key? key}) : super(key: key);
+class ReportDisabilityEducationScreen extends GetView {
+  ReportDisabilityEducationScreen({Key? key}) : super(key: key);
 
   final analysisReportViewModel = Get.put(AnalysisReportViewModel());
   String? filterType = "";
@@ -122,7 +122,19 @@ class ReportGiaoDucKhuyetTatScreen extends GetView {
                               style: elevetedButtonWhite,
                               onPressed: () {
                                 Get.to(() => AnalysisReportFilterScreen(
-                                    analysisReportViewModel));
+                                   analysisReportViewModel: analysisReportViewModel,
+                                onClick: (){
+                                  var index =   analysisReportViewModel.rxTypeScreen.value;
+                                  analysisReportViewModel.getDisabilityEducation(
+                                      "${index + 1}",
+                                      analysisReportViewModel.rxSelectedSemesterId.value,
+                                      analysisReportViewModel.rxSelectedRegionID.value,
+                                      analysisReportViewModel.rxSelectedProvinceId.value,
+                                      analysisReportViewModel.rxSelectedSchoolYearID.value,
+                                      listReportGDKT[index]);
+                                  analysisReportViewModel.changeStateLoadingData(true);
+                                  analysisReportViewModel.clearSelectedFilter();
+                                },));
                               },
                               child: const Text(
                                 'Bộ lọc',
