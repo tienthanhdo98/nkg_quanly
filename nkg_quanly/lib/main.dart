@@ -5,6 +5,7 @@ import 'package:nkg_quanly/ui/chart/chart_screen.dart';
 import 'package:nkg_quanly/ui/home/home_page.dart';
 import 'package:nkg_quanly/ui/home/home_screen.dart';
 import 'package:nkg_quanly/ui/login/login_screen2.dart';
+import 'package:nkg_quanly/ui/notification/notification_screen.dart';
 import 'package:nkg_quanly/ui/setting/setting_screen.dart';
 import 'package:nkg_quanly/ui/theme/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeClass.lightTheme,
-            home: const LoginScreen2(),
+            home: const MainScreen(),
           );
         },
       ),
@@ -46,10 +47,9 @@ class MainScreenStage extends State<MainScreen> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
     const ChartScreen(),
-    HomePage(),
-
+    HomeScreen(),
+    NotificationScreen(),
     SettingScreen()
   ];
 
@@ -71,12 +71,12 @@ class MainScreenStage extends State<MainScreen> {
         onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Trang chủ',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
             label: 'Biểu đồ',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Chức năng',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),

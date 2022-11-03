@@ -150,13 +150,16 @@ const  getClass = "http://123.31.31.237:6002/api/analysisreport/get-class";
 const  getSubject = "http://123.31.31.237:6002/api/analysisreport/get-subject";
 const  getClassification = "http://123.31.31.237:6002/api/analysisreport/get-classification";
 const  getPoint = "http://123.31.31.237:6002/api/analysisreport/get-point";
-const  postPreSchoolChart = "http://123.31.31.237:6002/api/statisticpreschool/get-statistic-chart";
+
 const  postEducationChart = "http://123.31.31.237:6002/api/statisticuniversaleducation/get-statistic-chart";
 const postChartDsabilityEducation = "http://123.31.31.237:6002/api/analysisreportdisabilityeducation";
 const postChartInfrastructure = "http://123.31.31.237:6002/api/analysisreportinfrastructure";
 const postChartBeneficiary = "http://123.31.31.237:6002/api/analysisticbeneficiary/get-statistic-chart";
 const postContinuingEducation = "http://123.31.31.237:6002/api/statisticcontinuingeducation/get-statistic-chart";
+const postPreSchool = "http://123.31.31.237:6002/api/statisticpreschool/get-statistic-chart";
 const postPrimarySchool = "http://123.31.31.237:6002/api/analysisreportprimaryschool";
+const postSecondarySchool = "http://123.31.31.237:6002/api/statisticsecondaryschool/get-statistic-chart";
+const postHighSchool = "http://123.31.31.237:6002/api/analysisreporthighschool";
 
 //login
 const apiGetAccessToken = "https://dangnhap.moet.gov.vn/oauth2/token";

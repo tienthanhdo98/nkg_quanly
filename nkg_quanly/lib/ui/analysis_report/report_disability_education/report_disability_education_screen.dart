@@ -77,6 +77,7 @@ class ReportDisabilityEducationScreen extends GetView {
                                     .changeValuefilterType(filterType!);
                                 analysisReportViewModel.rxTypeScreen.value =
                                     index;
+                                analysisReportViewModel.clearSelectedFilter();
                                 analysisReportViewModel.getDisabilityEducation(
                                     "${index + 1}",
                                     analysisReportViewModel.rxSelectedSemesterId.value,
@@ -133,7 +134,7 @@ class ReportDisabilityEducationScreen extends GetView {
                                       analysisReportViewModel.rxSelectedSchoolYearID.value,
                                       listReportGDKT[index]);
                                   analysisReportViewModel.changeStateLoadingData(true);
-                                  analysisReportViewModel.clearSelectedFilter();
+
                                 },));
                               },
                               child: const Text(

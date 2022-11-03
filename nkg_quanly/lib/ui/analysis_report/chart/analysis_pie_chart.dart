@@ -38,7 +38,7 @@ class AnalysisPieChartState extends State<AnalysisPieChartWidget> {
 
           total += int.parse(listPreSchoolChartItems[i].value!);
       }
-      for (int i = 0; i < listPreSchoolChartItems!.length; i++) {
+      for (int i = 0; i < listPreSchoolChartItems.length; i++) {
           listPieChartData.add(PieCharData(
               title: calcuPercen(
                   int.parse(listPreSchoolChartItems[i].value!), total),

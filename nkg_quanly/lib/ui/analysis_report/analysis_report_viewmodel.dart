@@ -8,8 +8,13 @@ import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_continuingEducation/report_continuing_ducation_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_disability_education/report_disability_education_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_highschool/report_high_school_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_preschool/report_pre_school_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_primaryschool/report_primary_school_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_secondaryschool/report_secondary_school_screen.dart';
 import '../../model/analysis_report/analysis_report_filter_model.dart';
 import '../../model/analysis_report/preschool_chart_model.dart';
+
 
 class AnalysisReportViewModel extends GetxController {
   Rx<int> rxIndexItemRegion = 0.obs;
@@ -78,6 +83,7 @@ class AnalysisReportViewModel extends GetxController {
       print("scroll");
     }
   }
+
   void clearSelectedFilter() {
     mapSemesterFilter.clear();
     mapProvinceFilter.clear();
@@ -121,11 +127,6 @@ class AnalysisReportViewModel extends GetxController {
     getEducationChart(rxListRegion.first.id!, "");
   }
 
-  void getDataPreSchoolScreen() async {
-    getDataFilter();
-    getChartPreSchool("1", "", "1", "", "");
-  }
-
   void getListProvinceByRegion() {
     rxListProvinceByRegion.clear();
     mapAllFilter.clear();
@@ -139,8 +140,6 @@ class AnalysisReportViewModel extends GetxController {
       }
     }
   }
-
-
 
   void changeValueSelectedFilter(Rx<String> rxSelected, String value) {
     rxSelected.value = value;
@@ -245,29 +244,6 @@ class AnalysisReportViewModel extends GetxController {
   //chart
   RxList<AnalysisChartModel> rxListChartAnalysis = <AnalysisChartModel>[].obs;
 
-  Future<void> getChartPreSchool(String type, String semester, String areaId,
-      String provinceId, String schoolYearId) async {
-    final url = Uri.parse(postPreSchoolChart);
-    print("type : $type");
-    var jsonBody = """
-       {
-      "type": "$type",
-      "semester" : "",
-      "areaId": "1",
-      "provinceId": "",
-      "schoolYearId": ""
-     }
-        """;
-    http.Response response =
-        await http.post(url, headers: headers, body: jsonBody);
-    print(response.body);
-    var listRes = <AnalysisChartModel>[];
-    List a = json.decode(response.body) as List;
-    listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
-    listRes.removeAt(listRes.length - 1);
-    rxListChartAnalysis.value = listRes;
-    changeStateLoadingData(false);
-  }
 
   //giáo dục khyết tật
   Rx<bool> isLoadingData = true.obs;
@@ -346,7 +322,7 @@ class AnalysisReportViewModel extends GetxController {
     rxSelectedRegionID.value = rxListRegion.first.id!;
     await getListFilter(getAnalysisReportProvince, rxListAllProvince);
     getListProvinceByRegion();
-    getListChartInfrastructure("",rxSelectedRegionID.value,"","");
+    getListChartInfrastructure("", rxSelectedRegionID.value, "", "");
   }
 
   Future<void> getListChartInfrastructure(
@@ -378,6 +354,7 @@ class AnalysisReportViewModel extends GetxController {
     rxListChartAnalysis.value = listRes;
     changeStateLoadingData(false);
   }
+
   //
   void getDataBeneficiary() async {
     changeStateLoadingData(true);
@@ -388,15 +365,15 @@ class AnalysisReportViewModel extends GetxController {
     rxSelectedRegionID.value = rxListRegion.first.id!;
     await getListFilter(getAnalysisReportProvince, rxListAllProvince);
     getListProvinceByRegion();
-    getListChartBeneficiary("",rxSelectedRegionID.value,"","");
+    getListChartBeneficiary("", rxSelectedRegionID.value, "", "");
   }
 
   Future<void> getListChartBeneficiary(
-      String semesterId,
-      String areaId,
-      String provinceId,
-      String schoolYearId,
-      ) async {
+    String semesterId,
+    String areaId,
+    String provinceId,
+    String schoolYearId,
+  ) async {
     final url = Uri.parse(postChartBeneficiary);
     print("semester : $semesterId");
     print("areaId : $areaId");
@@ -411,7 +388,7 @@ class AnalysisReportViewModel extends GetxController {
      }
        """;
     http.Response response =
-    await http.post(url, headers: headers, body: jsonBody);
+        await http.post(url, headers: headers, body: jsonBody);
     print(response.body);
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
@@ -419,6 +396,7 @@ class AnalysisReportViewModel extends GetxController {
     rxListChartAnalysis.value = listRes;
     changeStateLoadingData(false);
   }
+
   //
   void getDataQualityEducation() async {
     getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
@@ -429,17 +407,17 @@ class AnalysisReportViewModel extends GetxController {
     rxSelectedRegionID.value = rxListRegion.first.id!;
     await getListFilter(getAnalysisReportProvince, rxListAllProvince);
     getListProvinceByRegion();
-    getListChartBeneficiary("",rxSelectedRegionID.value,"","");
+    getListChartBeneficiary("", rxSelectedRegionID.value, "", "");
     // getListFilter(getClass, rxListClass);
     // getListFilter(getSubject, rxListSubject);
   }
 
   Future<void> getListQualityEducation(
-      String semesterId,
-      String areaId,
-      String provinceId,
-      String schoolYearId,
-      ) async {
+    String semesterId,
+    String areaId,
+    String provinceId,
+    String schoolYearId,
+  ) async {
     final url = Uri.parse(postChartBeneficiary);
     print("semester : $semesterId");
     print("areaId : $areaId");
@@ -460,7 +438,7 @@ class AnalysisReportViewModel extends GetxController {
      }
        """;
     http.Response response =
-    await http.post(url, headers: headers, body: jsonBody);
+        await http.post(url, headers: headers, body: jsonBody);
     print(response.body);
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
@@ -468,7 +446,8 @@ class AnalysisReportViewModel extends GetxController {
     rxListChartAnalysis.value = listRes;
     changeStateLoadingData(false);
   }
-  //
+
+  //giao duc thong xuyen
   void getDataContinuingEducation() async {
     getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
     getListFilter(getAnalysisReportSchoolLevel, rxListSchoolLevel);
@@ -478,7 +457,8 @@ class AnalysisReportViewModel extends GetxController {
     rxSelectedRegionID.value = rxListRegion.first.id!;
     await getListFilter(getAnalysisReportProvince, rxListAllProvince);
     getListProvinceByRegion();
-    getListContinuingEducation("1","",rxSelectedRegionID.value,"","",listReportGDTX[0]);
+    getListContinuingEducation(
+        "1", "", rxSelectedRegionID.value, "", "", listReportGDTX[0]);
   }
 
   Future<void> getListContinuingEducation(
@@ -487,8 +467,7 @@ class AnalysisReportViewModel extends GetxController {
       String areaId,
       String provinceId,
       String schoolYearId,
-      String typeScreen
-      ) async {
+      String typeScreen) async {
     final url = Uri.parse(postContinuingEducation);
     print("type : $type");
     print("semester : $semesterId");
@@ -506,36 +485,42 @@ class AnalysisReportViewModel extends GetxController {
      }
        """;
     http.Response response =
-    await http.post(url, headers: headers, body: jsonBody);
+        await http.post(url, headers: headers, body: jsonBody);
     print(response.body);
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
-    if(typeScreen == listReportGDTX[0])
-      {
-        rxListChartAnalysis.value = listRes.where((element) => element.chartName == "CoCauCoSoGDTXTheoLoaiTruong" || element.chartName == "CoCauCoSoGDTXTheoDonViThanhLap" || element.chartName == "BieuDoSoSanhCoSoGiaoDucThuongXuyen" ).toList();;
-        changeStateLoadingData(false);
-      }
-    else if(typeScreen == listReportGDTX[1])
-      {
-        listRes.removeWhere((element) => element.chartName == "CoCauCoSoGDTXTheoLoaiTruong" || element.chartName == "CoCauCoSoGDTXTheoDonViThanhLap" || element.chartName == "BieuDoSoSanhCoSoGiaoDucThuongXuyen");
-        rxInfoReport.value = listRes.last;
-        listRes.removeLast();
-        rxListChartAnalysis.value = listRes;
-        changeStateLoadingData(false);
-      }
-    else if(typeScreen == listReportGDTX[2])
-      {
-        var a =listRes.where((element) => element.chartName == "SoGiaoVienNghiHuuTuyenMoi").toList();
-        rxInfoReport.value = a.first;
-        listRes.removeWhere((element) => element.chartName == "SoGiaoVienNghiHuuTuyenMoi");
-        rxListChartAnalysis.value = listRes;
-        changeStateLoadingData(false);
-      }
-  
+    if (typeScreen == listReportGDTX[0]) {
+      rxListChartAnalysis.value = listRes
+          .where((element) =>
+              element.chartName == "CoCauCoSoGDTXTheoLoaiTruong" ||
+              element.chartName == "CoCauCoSoGDTXTheoDonViThanhLap" ||
+              element.chartName == "BieuDoSoSanhCoSoGiaoDucThuongXuyen")
+          .toList();
+      ;
+      changeStateLoadingData(false);
+    } else if (typeScreen == listReportGDTX[1]) {
+      listRes.removeWhere((element) =>
+          element.chartName == "CoCauCoSoGDTXTheoLoaiTruong" ||
+          element.chartName == "CoCauCoSoGDTXTheoDonViThanhLap" ||
+          element.chartName == "BieuDoSoSanhCoSoGiaoDucThuongXuyen");
+      rxInfoReport.value = listRes.last;
+      listRes.removeLast();
+      rxListChartAnalysis.value = listRes;
+      changeStateLoadingData(false);
+    } else if (typeScreen == listReportGDTX[2]) {
+      var a = listRes
+          .where((element) => element.chartName == "SoGiaoVienNghiHuuTuyenMoi")
+          .toList();
+      rxInfoReport.value = a.first;
+      listRes.removeWhere(
+          (element) => element.chartName == "SoGiaoVienNghiHuuTuyenMoi");
+      rxListChartAnalysis.value = listRes;
+      changeStateLoadingData(false);
+    }
   }
-  //tieu hoc
-  void getDataPrimarySchool() async {
+  //mam non
+  void getDataPreSchool() async {
     changeStateLoadingData(true);
     getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
     getListFilter(getAnalysisReportSemester, rxListSemester);
@@ -544,22 +529,24 @@ class AnalysisReportViewModel extends GetxController {
     rxSelectedRegionID.value = rxListRegion.first.id!;
     await getListFilter(getAnalysisReportProvince, rxListAllProvince);
     getListProvinceByRegion();
-    getListChartPrimarySchool("1","",rxSelectedRegionID.value,"","");
+    getListChartPreSchool(
+        "1", "", rxSelectedRegionID.value, "", "", listReportPreSchoolType[0]);
   }
 
-  Future<void> getListChartPrimarySchool(
+  Future<void> getListChartPreSchool(
       String type,
       String semesterId,
       String areaId,
       String provinceId,
       String schoolYearId,
-      ) async {
-    final url = Uri.parse(postPrimarySchool);
+      String typeScreen) async {
+    final url = Uri.parse(postPreSchool);
     print("type : $type");
     print("semester : $semesterId");
     print("areaId : $areaId");
     print("provinceId : $provinceId");
     print("schoolYearId : $schoolYearId");
+    print("typeScreen : $typeScreen");
     var jsonBody = """
        {
        "type": "$type",
@@ -575,10 +562,204 @@ class AnalysisReportViewModel extends GetxController {
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
-    rxListChartAnalysis.value = listRes;
+    if (typeScreen == listReportPreSchoolType[0]) {
+      rxListChartAnalysis.value = listRes;
+    } else if (typeScreen == listReportPreSchoolType[1]) {
+      rxInfoReport.value = listRes
+          .where((element) =>
+      element.chartName == "HocSinhMoiTuyenLuuBanDanTocThieuSo")
+          .first;
+      rxListChartAnalysis.value = listRes;
+    } else if (typeScreen == listReportPreSchoolType[2]) {
+      rxInfoReport.value = listRes
+          .where((element) => element.chartName == "SoGiaoVienNghiHuuTuyenMoi")
+          .first;
+      rxListChartAnalysis.value = listRes;
+    }
     changeStateLoadingData(false);
   }
 
+  //tieu hoc
+  void getDataPrimarySchool() async {
+    changeStateLoadingData(true);
+    getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
+    getListFilter(getAnalysisReportSemester, rxListSemester);
+    await getListFilter(getAnalysisReportRegion, rxListRegion);
+    rxSelectedRegion.value = rxListRegion.first.name!;
+    rxSelectedRegionID.value = rxListRegion.first.id!;
+    await getListFilter(getAnalysisReportProvince, rxListAllProvince);
+    getListProvinceByRegion();
+    getListChartPrimarySchool(
+        "1", "", rxSelectedRegionID.value, "", "", listReportPriSchoolType[0]);
+  }
+
+  Future<void> getListChartPrimarySchool(
+      String type,
+      String semesterId,
+      String areaId,
+      String provinceId,
+      String schoolYearId,
+      String typeScreen) async {
+    final url = Uri.parse(postPrimarySchool);
+    print("type : $type");
+    print("semester : $semesterId");
+    print("areaId : $areaId");
+    print("provinceId : $provinceId");
+    print("schoolYearId : $schoolYearId");
+    print("typeScreen : $typeScreen");
+    var jsonBody = """
+       {
+       "type": "$type",
+      "semester": "$semesterId",
+      "areaId": "$areaId",
+      "provinceId": "$provinceId",
+      "schoolYearId": "$schoolYearId"
+     }
+       """;
+    http.Response response =
+        await http.post(url, headers: headers, body: jsonBody);
+    print(response.body);
+    var listRes = <AnalysisChartModel>[];
+    List a = json.decode(response.body) as List;
+    listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
+    if (typeScreen == listReportPriSchoolType[0]) {
+      rxListChartAnalysis.value = listRes;
+    } else if (typeScreen == listReportPriSchoolType[1]) {
+      rxInfoReport.value = listRes
+          .where((element) =>
+              element.chartName == "HocSinhMoiTuyenLuuBanDanTocThieuSo")
+          .first;
+      rxListChartAnalysis.value = listRes;
+    } else if (typeScreen == listReportPriSchoolType[2]) {
+      rxInfoReport.value = listRes
+          .where((element) => element.chartName == "SoGiaoVienNghiHuuTuyenMoi")
+          .first;
+      rxListChartAnalysis.value = listRes;
+    }
+    changeStateLoadingData(false);
+  }
+
+  // trung hoc co so
+  void getDataSecondarySchool() async {
+    changeStateLoadingData(true);
+    getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
+    getListFilter(getAnalysisReportSemester, rxListSemester);
+    await getListFilter(getAnalysisReportRegion, rxListRegion);
+    rxSelectedRegion.value = rxListRegion.first.name!;
+    rxSelectedRegionID.value = rxListRegion.first.id!;
+    await getListFilter(getAnalysisReportProvince, rxListAllProvince);
+    getListProvinceByRegion();
+    getListChartSecondarySchool("1", "", rxSelectedRegionID.value, "", "",
+        listReportSecondSchoolType[0]);
+  }
+
+  Future<void> getListChartSecondarySchool(
+      String type,
+      String semesterId,
+      String areaId,
+      String provinceId,
+      String schoolYearId,
+      String typeScreen) async {
+    final url = Uri.parse(postSecondarySchool);
+    print("type : $type");
+    print("semester : $semesterId");
+    print("areaId : $areaId");
+    print("provinceId : $provinceId");
+    print("schoolYearId : $schoolYearId");
+    print("typeScreen : $typeScreen");
+    var jsonBody = """
+       {
+       "type": "$type",
+      "semester": "$semesterId",
+      "areaId": "$areaId",
+      "provinceId": "$provinceId",
+      "schoolYearId": "$schoolYearId"
+     }
+       """;
+    http.Response response =
+        await http.post(url, headers: headers, body: jsonBody);
+    print(response.body);
+    var listRes = <AnalysisChartModel>[];
+    List a = json.decode(response.body) as List;
+    listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
+    if (typeScreen == listReportSecondSchoolType[0]) {
+      rxListChartAnalysis.value = listRes;
+    } else if (typeScreen == listReportSecondSchoolType[1]) {
+      rxInfoReport.value = listRes
+          .where((element) =>
+              element.chartName == "HocSinhMoiTuyenLuuBanDanTocThieuSo")
+          .first;
+      rxListChartAnalysis.value = listRes;
+    } else if (typeScreen == listReportSecondSchoolType[2]) {
+      rxInfoReport.value = listRes
+          .where((element) => element.chartName == "SoGiaoVienNghiHuuTuyenMoi")
+          .first;
+      rxListChartAnalysis.value = listRes;
+    }
+    changeStateLoadingData(false);
+  }
+
+  // trung hoc pho thong
+  void getDataHighSchool() async {
+    changeStateLoadingData(true);
+    getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
+    getListFilter(getAnalysisReportSemester, rxListSemester);
+    await getListFilter(getAnalysisReportRegion, rxListRegion);
+    rxSelectedRegion.value = rxListRegion.first.name!;
+    rxSelectedRegionID.value = rxListRegion.first.id!;
+    await getListFilter(getAnalysisReportProvince, rxListAllProvince);
+    getListProvinceByRegion();
+    getListChartHighSchool(
+        "1", "", rxSelectedRegionID.value, "", "", listReportHighSchoolType[0]);
+  }
+
+  Future<void> getListChartHighSchool(
+      String type,
+      String semesterId,
+      String areaId,
+      String provinceId,
+      String schoolYearId,
+      String typeScreen) async {
+    final url = Uri.parse(postHighSchool);
+    print("type : $type");
+    print("semester : $semesterId");
+    print("areaId : $areaId");
+    print("provinceId : $provinceId");
+    print("schoolYearId : $schoolYearId");
+    print("typeScreen : $typeScreen");
+    var jsonBody = """
+       {
+       "type": "$type",
+      "semester": "$semesterId",
+      "areaId": "$areaId",
+      "provinceId": "$provinceId",
+      "schoolYearId": "$schoolYearId"
+     }
+       """;
+    http.Response response =
+        await http.post(url, headers: headers, body: jsonBody);
+    print(response.body);
+    var listRes = <AnalysisChartModel>[];
+    List a = json.decode(response.body) as List;
+    listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
+    if (typeScreen == listReportHighSchoolType[0]) {
+      rxListChartAnalysis.value = listRes;
+    } else if (typeScreen == listReportHighSchoolType[1]) {
+      rxInfoReport.value = listRes
+          .where((element) =>
+              element.chartName == "HocSinhMoiTuyenLuuBanDanTocThieuSo")
+          .first;
+      rxListChartAnalysis.value = listRes;
+    } else if (typeScreen == listReportHighSchoolType[2]) {
+      rxInfoReport.value = listRes
+          .where((element) => element.chartName == "SoGiaoVienNghiHuuTuyenMoi")
+          .first;
+      rxListChartAnalysis.value = listRes;
+    }
+    changeStateLoadingData(false);
+  }
+
+  //pho cao giao duc
   Future<void> getEducationChart(String areaId, String schoolYearId) async {
     final url = Uri.parse(postEducationChart);
     print(areaId);

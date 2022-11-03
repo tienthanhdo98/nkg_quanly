@@ -4,13 +4,16 @@ import 'package:nkg_quanly/ui/analysis_report/report_beneficiary/report_benefici
 import 'package:nkg_quanly/ui/analysis_report/report_continuingEducation/report_continuing_ducation_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_disability_education/report_disability_education_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_education_quality/report_education_quality_screen.dart';
-import 'package:nkg_quanly/ui/analysis_report/report_preschool/report_primary_school_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_highschool/report_high_school_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_preschool/report_pre_school_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_primaryschool/report_primary_school_screen.dart';
+import 'package:nkg_quanly/ui/analysis_report/report_secondaryschool/report_secondary_school_screen.dart';
 import 'package:nkg_quanly/ui/home/home_screen.dart';
 
 import '../../const/const.dart';
 import '../../const/utils.dart';
 import 'analysis_report_education_screen.dart';
-import 'analysis_report_type_screen.dart';
+
 
 const typePreSchool = "preSchool";
 const typePrimarySchool = "primarySchool";
@@ -97,19 +100,17 @@ void toAnalysisReportScreen(int type, String? header, String? icon) {
       break;
 
     case 2:
-      Get.to(() => AnalysisReportTypeMenu("Giáo dục mầm non", typePreSchool));
+      Get.to(() => ReportPreSchoolScreen());
       break;
     case 3:
       Get.to(
           () => ReportPrimarySchoolScreen());
       break;
     case 4:
-      Get.to(() => AnalysisReportTypeMenu(
-          "Giáo dục cấp trung học cơ sở", typeMiddleSchool));
+      Get.to(() => ReportSecondarySchoolScreen());
       break;
     case 5:
-      Get.to(() => AnalysisReportTypeMenu(
-          "Giáo dục cấp trung học phổ thông", typeHighSchool));
+      Get.to(() => ReportHighSchoolScreen());
       break;
     case 6:
       Get.to(() => ReportDisabilityEducationScreen());

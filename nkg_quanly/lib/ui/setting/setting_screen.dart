@@ -53,11 +53,11 @@ class SettingScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            loginViewModel.rxUserInfoModel.value.name!,
+                            checkingStringNull(loginViewModel.rxUserInfoModel.value.name),
                             style: Theme.of(context).textTheme.headline1,
                           ),
                           Text(
-                            loginViewModel.rxUserInfoModel.value.email!,
+                           checkingStringNull(loginViewModel.rxUserInfoModel.value.email),
                             style: CustomTextStyle.secondTextStyle,
                           )
                         ],

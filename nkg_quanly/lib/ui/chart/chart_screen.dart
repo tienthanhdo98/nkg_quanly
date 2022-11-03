@@ -16,9 +16,15 @@ class ChartScreen extends StatelessWidget {
           child: Column(
             children: [
               Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Theme.of(context).dividerColor,
+                        ))),
                 width: double.infinity,
                 height: 80,
-                color: Theme.of(context).cardColor,
                 child: Padding(
                   padding: const EdgeInsets.all(15),
                   child: Align(

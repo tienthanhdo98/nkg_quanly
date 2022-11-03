@@ -200,11 +200,5 @@ class AnalysisReportEducationScreen extends GetView {
 
 
 
-var listReportType = [
-  "Thống kê trường học, phòng học, lớp học",
-  "Quy mô trẻ em",
-  "Tình trạng dinh dưỡng trẻ em",
-  "Cán bộ quản lý, giáo viên và nhân viên cấp mầm non"
-];
 
 

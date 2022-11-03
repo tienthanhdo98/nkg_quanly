@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/ui/analysis_report/analysis_report_filter_screen.dart';
-import 'package:nkg_quanly/ui/analysis_report/analysis_report_type_screen.dart';
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
@@ -18,7 +17,7 @@ class ReportEducationQualityScreen extends GetView {
   @override
   Widget build(BuildContext context) {
     filterType = listReportEduQualityType[0];
-    analysisReportViewModel.getDataPreSchoolScreen();
+    analysisReportViewModel.getDataPreSchool();
     return Scaffold(
       body: SafeArea(
           child: Column(

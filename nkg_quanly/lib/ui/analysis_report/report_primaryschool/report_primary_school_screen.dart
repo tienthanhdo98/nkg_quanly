@@ -78,6 +78,21 @@ class ReportPrimarySchoolScreen extends GetView {
                                     .changeValuefilterType(filterType!);
                                 analysisReportViewModel.rxTypeScreen.value =
                                     index;
+                                analysisReportViewModel.clearSelectedFilter();
+                                analysisReportViewModel
+                                    .getListChartPrimarySchool(
+                                        "${index + 1}",
+                                        analysisReportViewModel
+                                            .rxSelectedSemesterId.value,
+                                        analysisReportViewModel
+                                            .rxSelectedRegionID.value,
+                                        analysisReportViewModel
+                                            .rxSelectedProvinceId.value,
+                                        analysisReportViewModel
+                                            .rxSelectedSchoolYearID.value,
+                                        listReportPriSchoolType[index]);
+                                analysisReportViewModel
+                                    .changeStateLoadingData(true);
                                 analysisReportViewModel.scrollToTop();
                               }
                             });
@@ -116,7 +131,25 @@ class ReportPrimarySchoolScreen extends GetView {
                                 Get.to(() => AnalysisReportFilterScreen(
                                       analysisReportViewModel:
                                           analysisReportViewModel,
-                                      onClick: () {},
+                                      onClick: () {
+                                        var curIndex = analysisReportViewModel.rxTypeScreen.value;
+                                     //   analysisReportViewModel.clearSelectedFilter();
+                                        analysisReportViewModel
+                                            .getListChartPrimarySchool(
+                                            "${curIndex + 1}",
+                                            analysisReportViewModel
+                                                .rxSelectedSemesterId.value,
+                                            analysisReportViewModel
+                                                .rxSelectedRegionID.value,
+                                            analysisReportViewModel
+                                                .rxSelectedProvinceId.value,
+                                            analysisReportViewModel
+                                                .rxSelectedSchoolYearID.value,
+                                            listReportPriSchoolType[curIndex]);
+                                        analysisReportViewModel
+                                            .changeStateLoadingData(true);
+                                        analysisReportViewModel.scrollToTop();
+                                      },
                                     ));
                               },
                               child: const Text(
@@ -206,23 +239,27 @@ class ReportPrimarySchoolScreen extends GetView {
               child: SingleChildScrollView(
                 controller: analysisReportViewModel.controller,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  child: Obx(() => (analysisReportViewModel
-                      .isLoadingData.value ==
-                      false) ?Column(
-                    children: [
-                      Obx(() => countReportTypeScreen(
-                          analysisReportViewModel, context)),
-                      Obx(() =>
-                          listChartScreen(analysisReportViewModel, context))
-                    ],
-                  ) : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [Padding(
-                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Center(child: CircularProgressIndicator()),
-                    )],) )
-                ),
+                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                    child: Obx(() =>
+                        (analysisReportViewModel.isLoadingData.value == false)
+                            ? Column(
+                                children: [
+                                  Obx(() => countReportTypeScreen(
+                                      analysisReportViewModel, context)),
+                                  Obx(() => listChartScreen(
+                                      analysisReportViewModel, context))
+                                ],
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
+                                  )
+                                ],
+                              ))),
               ),
             ),
           )
@@ -268,6 +305,50 @@ Widget listChartScreen(
             listChart[14].chartName!, listChart[14].items!, context, "2"),
         chartWidget(
             listChart[15].chartName!, listChart[15].items!, context, "2"),
+      ],
+    );
+  } else if (analysisReportViewModel.rxTypeScreen.value == 1) {
+    resWidget = ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        chartWidget(listChart[0].chartName!, listChart[0].items!, context, "1"),
+        chartWidget(listChart[1].chartName!, listChart[1].items!, context, "1"),
+        chartWidget(listChart[2].chartName!, listChart[2].items!, context, "1"),
+        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "2"),
+        chartWidget(listChart[4].chartName!, listChart[4].items!, context, "2"),
+        chartWidget(listChart[5].chartName!, listChart[5].items!, context, "2"),
+        chartWidget(listChart[6].chartName!, listChart[6].items!, context, "2"),
+        chartWidget(listChart[7].chartName!, listChart[7].items!, context, "2"),
+        chartWidget(
+            listChart[15].chartName!, listChart[15].items!, context, "2"),
+        chartWidget(
+            listChart[16].chartName!, listChart[16].items!, context, "2"),
+        chartWidget(
+            listChart[17].chartName!, listChart[17].items!, context, "2"),
+        chartWidget(
+            listChart[18].chartName!, listChart[18].items!, context, "2"),
+        chartWidget(
+            listChart[19].chartName!, listChart[19].items!, context, "2"),
+      ],
+    );
+  }
+  else if (analysisReportViewModel.rxTypeScreen.value == 2) {
+    resWidget = ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        chartWidget(listChart[0].chartName!, listChart[0].items!, context, "1"),
+        chartWidget(listChart[2].chartName!, listChart[2].items!, context, "1"),
+        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "1"),
+        chartWidget(listChart[4].chartName!, listChart[4].items!, context, "1"),
+        chartWidget(listChart[1].chartName!, listChart[1].items!, context, "2"),
+        chartWidget(listChart[18].chartName!, listChart[18].items!, context, "2"),
+        chartWidget(listChart[6].chartName!, listChart[6].items!, context, "2"),
+        chartWidget(listChart[7].chartName!, listChart[7].items!, context, "2"),
+        chartWidget(
+            listChart[11].chartName!, listChart[11].items!, context, "2"),
+
       ],
     );
   }
@@ -316,6 +397,7 @@ Widget chartWidget(String chartName, List<ChartChildItems> items,
 
 Widget countReportTypeScreen(
     AnalysisReportViewModel analysisReportViewModel, BuildContext context) {
+  var item = analysisReportViewModel.rxInfoReport.value.items;
   if (analysisReportViewModel.rxTypeScreen.value == 1) {
     return Column(
       children: [
@@ -328,12 +410,12 @@ Widget countReportTypeScreen(
                 children: [
                   SizedBox(
                     height: 30,
-                    child: Text('Tổng số học sinh',
+                    child: Text(checkingStringNull(item?[0].name),
                         style: Theme.of(context).textTheme.headline5),
                   ),
-                  const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Text("1290", style: textBlueCountTotalStyle))
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      child: Text(checkingStringNull(item?[0].value), style: textBlueCountTotalStyle))
                 ],
               ),
             ),
@@ -345,12 +427,12 @@ Widget countReportTypeScreen(
                 children: [
                   SizedBox(
                     height: 30,
-                    child: Text('Số HS mới tuyển đầu cấp',
+                    child: Text(checkingStringNull(item?[1].name),
                         style: Theme.of(context).textTheme.headline5),
                   ),
-                  const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Text("780", style: textBlueCountTotalStyle))
+                   Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                      child: Text(checkingStringNull(item?[1].value), style: textBlueCountTotalStyle))
                 ],
               ),
             ),
@@ -367,12 +449,12 @@ Widget countReportTypeScreen(
                   children: [
                     SizedBox(
                       height: 30,
-                      child: Text('Tổng số học sinh lưu ban',
+                      child: Text(checkingStringNull(item?[2].name),
                           style: Theme.of(context).textTheme.headline5),
                     ),
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text("90", style: textBlueCountTotalStyle))
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(checkingStringNull(item?[2].value), style: textBlueCountTotalStyle))
                   ],
                 ),
               ),
@@ -384,12 +466,12 @@ Widget countReportTypeScreen(
                   children: [
                     SizedBox(
                       height: 30,
-                      child: Text('Tỷ lệ học sinh nữ là dân tộc thiểu số',
+                      child: Text(checkingStringNull(item?[3].name),
                           style: Theme.of(context).textTheme.headline5),
                     ),
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text("180", style: textBlueCountTotalStyle))
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Text(checkingStringNull(item?[3].value), style: textBlueCountTotalStyle))
                   ],
                 ),
               ),
@@ -410,12 +492,12 @@ Widget countReportTypeScreen(
               children: [
                 SizedBox(
                   height: 20,
-                  child: Text('Số giáo viên nghỉ hưu',
+                  child: Text(checkingStringNull(item?[0].name),
                       style: Theme.of(context).textTheme.headline5),
                 ),
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                    child: Text("1290", style: textBlueCountTotalStyle))
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                    child: Text(checkingStringNull(item?[0].value), style: textBlueCountTotalStyle))
               ],
             ),
           ),
@@ -427,12 +509,12 @@ Widget countReportTypeScreen(
               children: [
                 SizedBox(
                   height: 20,
-                  child: Text('Số giáo viên tuyển mới',
+                  child: Text(checkingStringNull(item?[1].name),
                       style: Theme.of(context).textTheme.headline5),
                 ),
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                    child: Text("780", style: textBlueCountTotalStyle))
+                 Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                    child: Text(checkingStringNull(item?[0].value), style: textBlueCountTotalStyle))
               ],
             ),
           ),
@@ -543,7 +625,125 @@ String chartNameToNamePrimaSchool(String chartName) {
         name = "Thống kê tỷ lệ trường tiểu học đạt chuẩn quốc gia";
       }
       break;
-  }
+    // 2
+    case "BieuDoCoCauTreEmTheoKhoiHoc":
+      {
+        name = "Cơ cấu học sinh theo khối học";
+      }
+      break;
+    case "BieuDoCoCauTreEmTheoHinhThucHoc":
+      {
+        name = "Cơ cấu học sinh theo hình thức học";
+      }
+      break;
+    case "BieuDoCoCauTreEmTheoDoTuoi":
+      {
+        name = "Cơ cấu học sinh theo độ tuổi";
+      }
+      break;
+    case "BieuDoSoSanhBinhQuanHSLopHoc":
+      {
+        name = "Thống kê bình quân học sinh/ lớp học";
+      }
+      break;
+    case "BieuDoBienDongHocSinh":
+      {
+        name = "Thống kê biến động học sinh";
+      }
+      break;
+    case "BieuDoSoSanhQuyMoHocSinh":
+      {
+        name = "Thống kê quy mô học sinh";
+      }
+      break;
+    case "BieuDoSoHocSinhLuuBanTheoKhoi":
+      {
+        name = "Thống kê số học sinh lưu ban theo khối lớp";
+      }
+      break;
+    case "BieuDoSoHocSinhHoanThanhChuongTrinhTheoTuoi":
+      {
+        name = "Thống kê số học sinh hoàn thành chương trình theo tuổi";
+      }
+      break;
+    case "BieuDoSoSanhTyLeHocSinhDiHocDungTuoi":
+      {
+        name = "Thống kê tỷ lệ học sinh đi học đúng tuổi";
+      }
+      break;
+    case "BieuDoSoSanhTyLeHocSinhLenLop":
+      {
+        name = "Thống kê tỷ lệ học sinh lên lớp";
+      }
+      break;
+    case "BieuDoSoSanhTyLeHocSinhLuuBan":
+      {
+        name = "Thống kê tỷ lệ học sinh lưu ban";
+      }
+      break;
+    case "BieuDoSoSanhTyLeHocSinhBoHoc":
+      {
+        name = "Thống kê tỷ lệ học sinh bỏ học";
+      }
+      break;
+    case "BieuDoSoSanhTyLeHocSinhHoanThanhChuongTrinh":
+      {
+        name = "Thống kê tỷ lệ học sinh hoàn thành chương trình học";
+      }
+      break;
+    case "BieuDoThongKeHocSinhDiHocDungTuoi":
+      {
+        name = "Thống kê số học sinh hoàn thành chương trình theo tuổi";
+      }
+      break;
+    // 3
+    case "BieuDoCoCauCanBoGiaoVienNhanVienLaNuTheoDanTocThieuSo":
+      {
+        name = "Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số";
+      }
+      break;
+    case "BieuDoCoCauGiaoVienTheoTrinhDoDaoTao":
+      {
+        name = "Cơ cấu giáo viên theo trình độ đào tạo";
+      }
+      break;
+    case "BieuDoCoCauGiaoVienTheoTuoi":
+      {
+        name = "Cơ cấu giáo viên theo độ tuổi";
+      }
+      break;
+    case "BieuDoCoCauGiaoVienTheoDanhGiaChuanNgheNghiep":
+      {
+        name = "Cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp";
+      }
+      break;
+    case "BieuDoSoSanhSoLuongCanBoGiaoVienVaNhanVien":
+      {
+        name = "Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên";
+      }
+      break;
+    case "BieuDoSoSanhSoTyLeGiaoVienDatChuan":
+      {
+        name = "Thống kê tỷ lệ giáo viên đạt chuẩn";
+      }
+      break;
+    case "BieuDoSoSanhSoBinhQuanSoHocSinhGiaoVien":
+      {
+        name = "Thống kê bình quân số học sinh/ giáo viên";
+      }
+      break;
+    case "BieuDoSoSanhBinhQuanSoGiaoVienLop":
+      {
+        name = "Thống kê bình quân số giáo viên/ lớp";
+      }
+      break;
+    case "BieuDoThongKeBinhQuanGiaoVienTheoTinhThanh":
+      {
+        name = "Thống kê bình quân giáo viên theo tỉnh/ thành";
+      }
+      break;
 
+
+  }
   return name;
 }
