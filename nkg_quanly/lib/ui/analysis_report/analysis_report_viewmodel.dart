@@ -15,7 +15,6 @@ import 'package:nkg_quanly/ui/analysis_report/report_secondaryschool/report_seco
 import '../../model/analysis_report/analysis_report_filter_model.dart';
 import '../../model/analysis_report/preschool_chart_model.dart';
 
-
 class AnalysisReportViewModel extends GetxController {
   Rx<int> rxIndexItemRegion = 0.obs;
   RxList<AnalysisReportFilterModel> rxListAllProvince =
@@ -80,7 +79,6 @@ class AnalysisReportViewModel extends GetxController {
   void scrollToTop() {
     if (controller!.hasClients) {
       controller!.jumpTo(0);
-      print("scroll");
     }
   }
 
@@ -95,10 +93,11 @@ class AnalysisReportViewModel extends GetxController {
     mapClassificationFilter.clear();
     mapAllFilter.clear();
     rxSelectedSemester.value = "";
+    rxSelectedSemesterId.value = "";
     rxSelectedProvince.value = "";
     rxSelectedSchoolYear.value = "";
-    rxSelectedSchoolLevel.value = "";
     rxSelectedSchoolYearID.value = "";
+    rxSelectedSchoolLevel.value = "";
     rxSelectedSchoolLevelID.value = "";
     rxSelectedPoint.value = "";
     rxSelectedPointId.value = "";
@@ -106,6 +105,7 @@ class AnalysisReportViewModel extends GetxController {
     rxSelectedClassification.value = "";
     rxSelectedClass.value = "";
     rxSelectedClassId.value = "";
+    rxSelectedProvinceId.value = "";
     rxSelectedRegion.value = rxListRegion.first.name!;
     rxSelectedRegionID.value = rxListRegion.first.id!;
   }
@@ -243,7 +243,6 @@ class AnalysisReportViewModel extends GetxController {
 
   //chart
   RxList<AnalysisChartModel> rxListChartAnalysis = <AnalysisChartModel>[].obs;
-
 
   //giáo dục khyết tật
   Rx<bool> isLoadingData = true.obs;
@@ -397,45 +396,157 @@ class AnalysisReportViewModel extends GetxController {
     changeStateLoadingData(false);
   }
 
-  //
+  //quan ly chat luong giao duc
   void getDataQualityEducation() async {
     getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
     getListFilter(getAnalysisReportSchoolLevel, rxListSchoolLevel);
     getListFilter(getAnalysisReportSemester, rxListSemester);
+    getListFilter(getClassification, rxListClassification);
+    getListFilter(getPoint, rxListPoint);
     await getListFilter(getAnalysisReportRegion, rxListRegion);
     rxSelectedRegion.value = rxListRegion.first.name!;
     rxSelectedRegionID.value = rxListRegion.first.id!;
     await getListFilter(getAnalysisReportProvince, rxListAllProvince);
     getListProvinceByRegion();
-    getListChartBeneficiary("", rxSelectedRegionID.value, "", "");
-    // getListFilter(getClass, rxListClass);
-    // getListFilter(getSubject, rxListSubject);
+    // getListQualityEducation("", rxSelectedRegionID.value, "", "");
+    List<AnalysisChartModel> list1 = await getListQualityEducation(
+        postChartQuality1,
+        "",
+        rxSelectedRegionID.value,
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "");
+    List<AnalysisChartModel> list2 = await getListQualityEducation(
+        postChartQuality2,
+        "",
+        rxSelectedRegionID.value,
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "");
+    list1.addAll(list2);
+    rxListChartAnalysis.value = list1;
+    changeStateLoadingData(false);
   }
 
-  Future<void> getListQualityEducation(
-    String semesterId,
+  Future<void> getListQualityEducationByType(String type) async {
+    if (type == "0") {
+      List<AnalysisChartModel> list1 = await getListQualityEducation(
+          postChartQuality1,
+          rxSelectedSchoolLevelID.value,
+          rxSelectedRegionID.value,
+          rxSelectedProvinceId.value,
+          rxSelectedSchoolYearID.value,
+          rxSelectedSemesterId.value,
+          rxSelectedClassId.value,
+          rxSelectedSubjectID.value,
+          rxSelectedPointId.value,
+          rxSelectedClassificationID.value);
+      List<AnalysisChartModel> list2 = await getListQualityEducation(
+          postChartQuality2,
+          rxSelectedSchoolLevelID.value,
+          rxSelectedRegionID.value,
+          rxSelectedProvinceId.value,
+          rxSelectedSchoolYearID.value,
+          rxSelectedSemesterId.value,
+          rxSelectedClassId.value,
+          rxSelectedSubjectID.value,
+          rxSelectedPointId.value,
+          rxSelectedClassificationID.value);
+      list1.addAll(list2);
+      rxListChartAnalysis.value = list1;
+    } else if (type == "1") {
+      List<AnalysisChartModel> listReward = await getListQualityEducation(
+          postChartQualityReward,
+          rxSelectedSchoolLevelID.value,
+          rxSelectedRegionID.value,
+          rxSelectedProvinceId.value,
+          rxSelectedSchoolYearID.value,
+          rxSelectedSemesterId.value,
+          rxSelectedClassId.value,
+          rxSelectedSubjectID.value,
+          rxSelectedPointId.value,
+          rxSelectedClassificationID.value);
+      var list = listReward
+          .where((element) =>
+              element.chartName ==
+                  "BieuDoThongKeTyLeHSHoanThanhChuongTrinhTheoTinhThanhPho" ||
+              element.chartName ==
+                  "XepHangVungTheoTyLeHSHoanThanhChuongTrinh" ||
+              element.chartName == "BieuDoTyLeHocSinhHoanThanhChuongTrinh")
+          .toList();
+      rxListChartAnalysis.value = list;
+    } else if (type == "2") {
+      List<AnalysisChartModel> listAbility = await getListQualityEducation(
+          postChartQualityAbility,
+          rxSelectedSchoolLevelID.value,
+          rxSelectedRegionID.value,
+          rxSelectedProvinceId.value,
+          rxSelectedSchoolYearID.value,
+          rxSelectedSemesterId.value,
+          rxSelectedClassId.value,
+          rxSelectedSubjectID.value,
+          rxSelectedPointId.value,
+          rxSelectedClassificationID.value);
+      rxListChartAnalysis.value = listAbility;
+    } else if (type == "3") {
+      List<AnalysisChartModel> listAbility = await getListQualityEducation(
+          postChartQualityReward,
+          rxSelectedSchoolLevelID.value,
+          rxSelectedRegionID.value,
+          rxSelectedProvinceId.value,
+          rxSelectedSchoolYearID.value,
+          rxSelectedSemesterId.value,
+          rxSelectedClassId.value,
+          rxSelectedSubjectID.value,
+          rxSelectedPointId.value,
+          rxSelectedClassificationID.value);
+      rxListChartAnalysis.value = listAbility;
+    }
+    changeStateLoadingData(false);
+  }
+
+  Future<List<AnalysisChartModel>> getListQualityEducation(
+    String apiUrl,
+    String schoolLevelId,
     String areaId,
     String provinceId,
     String schoolYearId,
+    String semesterId,
+    String classId,
+    String subjectId,
+    String pointId,
+    String classificationId,
   ) async {
-    final url = Uri.parse(postChartBeneficiary);
-    print("semester : $semesterId");
+    final url = Uri.parse(apiUrl);
+    print("schoolLevelId : $schoolLevelId");
     print("areaId : $areaId");
     print("provinceId : $provinceId");
     print("schoolYearId : $schoolYearId");
+    print("semester : $semesterId");
+    print("classId : $classId");
+    print("subjectId : $subjectId");
+    print("pointId : $subjectId");
+    print("classificationId : $classificationId");
     var jsonBody = """
-       {
-      "typeSchool": "$semesterId",
-      "type": "$areaId",
-      "semester": "$provinceId",
-      "areaId": "$schoolYearId",
-      "provinceId": "$schoolYearId",
-      "schoolYearId": "$schoolYearId",
-      "classId": "$schoolYearId",
-      "subjectId": "$schoolYearId",
-      "pointId": "$schoolYearId",
-      "classificationId": "$schoolYearId"
-     }
+      {
+        "semester": "$semesterId",
+        "areaId": "$areaId",
+        "provinceId": "$provinceId",
+        "schoolYearId": "$schoolYearId",
+        "schoolLevelId": "$schoolYearId",
+        "classId": "$classId",
+        "subjectId": "$subjectId",
+        "pointId": "$pointId",
+        "classificationId": "$classificationId"
+      }
        """;
     http.Response response =
         await http.post(url, headers: headers, body: jsonBody);
@@ -443,8 +554,9 @@ class AnalysisReportViewModel extends GetxController {
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
-    rxListChartAnalysis.value = listRes;
-    changeStateLoadingData(false);
+    // rxListChartAnalysis.value = listRes;
+    // changeStateLoadingData(false);
+    return listRes;
   }
 
   //giao duc thong xuyen
@@ -519,6 +631,7 @@ class AnalysisReportViewModel extends GetxController {
       changeStateLoadingData(false);
     }
   }
+
   //mam non
   void getDataPreSchool() async {
     changeStateLoadingData(true);
@@ -557,7 +670,7 @@ class AnalysisReportViewModel extends GetxController {
      }
        """;
     http.Response response =
-    await http.post(url, headers: headers, body: jsonBody);
+        await http.post(url, headers: headers, body: jsonBody);
     print(response.body);
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
@@ -565,12 +678,14 @@ class AnalysisReportViewModel extends GetxController {
     if (typeScreen == listReportPreSchoolType[0]) {
       rxListChartAnalysis.value = listRes;
     } else if (typeScreen == listReportPreSchoolType[1]) {
-      rxInfoReport.value = listRes
-          .where((element) =>
-      element.chartName == "HocSinhMoiTuyenLuuBanDanTocThieuSo")
-          .first;
       rxListChartAnalysis.value = listRes;
     } else if (typeScreen == listReportPreSchoolType[2]) {
+      rxInfoReport.value = listRes
+          .where(
+              (element) => element.chartName == "TongSoTreDuocKiemTraSucKhoe")
+          .first;
+      rxListChartAnalysis.value = listRes;
+    } else if (typeScreen == listReportPreSchoolType[3]) {
       rxInfoReport.value = listRes
           .where((element) => element.chartName == "SoGiaoVienNghiHuuTuyenMoi")
           .first;

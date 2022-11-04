@@ -488,10 +488,6 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
 
-  String? semester;
-  String? province;
-  String? region;
-  String? schoolYear;
 
   @override
   Widget build(BuildContext context) {
@@ -884,9 +880,11 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                               padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  var point = analysisReportViewModel!.rxSelectedPointId;
-                                  print("point : $point");
-                                  analysisReportViewModel!.clearSelectedFilter();
+                                  analysisReportViewModel
+                                      !.getListQualityEducationByType("0");
+                                  analysisReportViewModel!
+                                      .changeStateLoadingData(true);
+                                  analysisReportViewModel!.scrollToTop();
                                   Get.back();
                                 },
                                 child: buttonShowListScreen("Tìm kiếm"),
@@ -1126,9 +1124,11 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                               padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  var point = analysisReportViewModel!.rxSelectedPointId;
-                                  print("point : $point");
-                                  analysisReportViewModel!.clearSelectedFilter();
+                                  analysisReportViewModel!
+                                      .getListQualityEducationByType("1");
+                                  analysisReportViewModel!
+                                      .changeStateLoadingData(true);
+                                  analysisReportViewModel!.scrollToTop();
                                   Get.back();
                                 },
                                 child: buttonShowListScreen("Tìm kiếm"),
@@ -1366,7 +1366,11 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
                             child: ElevatedButton(
                               onPressed: () {
-                                analysisReportViewModel!.clearSelectedFilter();
+                                analysisReportViewModel
+                                    !.getListQualityEducationByType("2");
+                                analysisReportViewModel!
+                                    .changeStateLoadingData(true);
+                                analysisReportViewModel!.scrollToTop();
                                 Get.back();
                               },
                               child: buttonShowListScreen("Tìm kiếm"),
@@ -1638,7 +1642,11 @@ class KhenThuongFilterScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
                             child: ElevatedButton(
                               onPressed: () {
-                                analysisReportViewModel!.clearSelectedFilter();
+                                analysisReportViewModel!
+                                    .getListQualityEducationByType("3");
+                                analysisReportViewModel!
+                                    .changeStateLoadingData(true);
+                                analysisReportViewModel!.scrollToTop();
                                 Get.back();
                               },
                               child: buttonShowListScreen("Tìm kiếm"),
@@ -2211,11 +2219,7 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                                   if (item.id == id) {
                                     schoolYearName += "${item.name!};";
                                     schoolYearId += "${item.id!};";
-                                    analysisReportViewModel!.changeValueDataId(
-                                        schoolYearId.substring(
-                                            0, schoolYearId.length - 1),
-                                        analysisReportViewModel!
-                                            .rxSelectedSchoolYearID);
+
                                   }
                                 }
                               }
@@ -2225,10 +2229,19 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                                         .rxSelectedSchoolYear,
                                     schoolYearName.substring(
                                         0, schoolYearName.length - 1));
+                                analysisReportViewModel!.changeValueSelectedFilter(
+                                    analysisReportViewModel!
+                                        .rxSelectedSchoolYearID,
+                                    schoolYearId.substring(
+                                        0, schoolYearId.length - 1));
                               } else {
                                 changeValueSelectedFilter(
                                     analysisReportViewModel!
                                         .rxSelectedSchoolYear,
+                                    "");
+                                analysisReportViewModel!.changeValueSelectedFilter(
+                                    analysisReportViewModel!
+                                        .rxSelectedSchoolYearID,
                                     "");
                               }
                             }
@@ -2488,33 +2501,34 @@ class FilterPointBottomSheet extends StatelessWidget {
                                 "Tất cả điểm");
 
                           } else {
-                            var agencies = "";
-                            var agenciesName = "";
-                            var agenciesId= "";
+                            var point = "";
+                            var pointName = "";
+                            var pointId= "";
                             analysisReportViewModel!.mapPointFilter
                                 .forEach((key, value) {
-                              agencies += value;
+                              point += value;
                             });
-                            var listId = agencies.split(";");
+                            var listId = point.split(";");
                             for (var id in listId) {
                               for (var item in analysisReportViewModel!.rxListPoint){
                                 if (item.id == id) {
-                                  agenciesName += "${item.name};";
-                                  agenciesId += "${item.id};";
+                                  pointName += "${item.name};";
+                                  pointId += "${item.id};";
                                 }
                               }
                             }
-                            if (agenciesName != "") {
+                            if (pointName != "") {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                   analysisReportViewModel!
                                       .rxSelectedPoint,
-                                  agenciesName.substring(
-                                      0, agenciesName.length - 1));
+                                  pointName.substring(
+                                      0, pointName.length - 1));
                               analysisReportViewModel!.changeValueSelectedFilter(
                                   analysisReportViewModel!
                                       .rxSelectedPointId,
-                                  agenciesId);
+                                  pointId.substring(
+                                      0, pointId.length - 1));
                             } else {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
@@ -2606,6 +2620,7 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                           } else {
                             var agencies = "";
                             var agenciesName = "";
+                            var agenciesID = "";
                             analysisReportViewModel!.mapSubjectFilter
                                 .forEach((key, value) {
                               agencies += value;
@@ -2615,6 +2630,7 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                               for (var item in analysisReportViewModel!.rxListSubject) {
                                 if (item.id == id) {
                                   agenciesName += "${item.name};";
+                                  agenciesID+= "${item.id};";
                                 }
                               }
                             }
@@ -2625,11 +2641,20 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                                       .rxSelectedSubject,
                                   agenciesName.substring(
                                       0, agenciesName.length - 1));
+                              analysisReportViewModel!.changeValueSelectedFilter(
+                                  analysisReportViewModel!
+                                      .rxSelectedSubjectID,
+                                  agenciesID.substring(
+                                      0, agenciesID.length - 1));
                             } else {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                   analysisReportViewModel!
                                       .rxSelectedSubject,
+                                  "");
+                              analysisReportViewModel!.changeValueSelectedFilter(
+                                  analysisReportViewModel!
+                                      .rxSelectedSubjectID,
                                   "");
                             }
                           }
@@ -2711,7 +2736,8 @@ class FilterClassBottomSheet extends StatelessWidget {
                                 "Tất cả lớp");
                           } else {
                             var agencies = "";
-                            var agenciesName = "";
+                            var className = "";
+                            var classId = "";
                             analysisReportViewModel!.mapClassFilter
                                 .forEach((key, value) {
                               agencies += value;
@@ -2720,22 +2746,32 @@ class FilterClassBottomSheet extends StatelessWidget {
                             for (var id in listId) {
                               for (var item in analysisReportViewModel!.rxListClass) {
                                 if (item.id == id) {
-                                  agenciesName += "${item.name};";
+                                  className += "${item.name};";
+                                  classId += "${item.id};";
                                 }
                               }
                             }
-                            if (agenciesName != "") {
+                            if (className != "") {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                   analysisReportViewModel!
                                       .rxSelectedClass,
-                                  agenciesName.substring(
-                                      0, agenciesName.length - 1));
+                                  className.substring(
+                                      0, className.length - 1));
+                              analysisReportViewModel!.changeValueSelectedFilter(
+                                  analysisReportViewModel!
+                                      .rxSelectedClassId,
+                                  classId.substring(
+                                      0, classId.length - 1));
                             } else {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                   analysisReportViewModel!
                                       .rxSelectedClass,
+                                  "");
+                              analysisReportViewModel!.changeValueSelectedFilter(
+                                  analysisReportViewModel!
+                                      .rxSelectedClassId,
                                   "");
                             }
                           }
@@ -2780,10 +2816,10 @@ class FilterClassificationBottomSheet extends StatelessWidget {
             height: MediaQuery.of(context).size.height*0.32,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: listClassification.length,
+                itemCount: analysisReportViewModel!.rxListClassification.length,
                 itemBuilder: (context, index) {
-                  var item = listClassification[index];
-                  return FilterItem(item, item, index,
+                  var item = analysisReportViewModel!.rxListClassification[index];
+                  return FilterItem(item.name!, item.id!, index,
                       analysisReportViewModel!.mapClassificationFilter);
                 }),
           ),
@@ -2816,32 +2852,44 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                                     .rxSelectedClassification,
                                 "Tất cả học lực");
                           } else {
-                            var agencies = "";
-                            var agenciesName = "";
+                            var classification = "";
+                            var classificationName = "";
+                            var classificationId = "";
                             analysisReportViewModel!.mapClassificationFilter
                                 .forEach((key, value) {
-                              agencies += value;
+                              classification += value;
                             });
-                            var listId = agencies.split(";");
+                            var listId = classification.split(";");
                             for (var id in listId) {
-                              for (var item in listClassification) {
-                                if (item == id) {
-                                  agenciesName += "${item};";
+                              for (var item in analysisReportViewModel!.rxListClassification) {
+                                if (item.id == id) {
+                                  classificationName += "${item.name};";
+                                  classificationId += "${item.id};";
                                 }
                               }
                             }
-                            if (agenciesName != "") {
+                            if (classificationName != "") {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                   analysisReportViewModel!
                                       .rxSelectedClassification,
-                                  agenciesName.substring(
-                                      0, agenciesName.length - 1));
+                                  classificationName.substring(
+                                      0, classificationName.length - 1));
+
+                              analysisReportViewModel!.changeValueSelectedFilter(
+                                  analysisReportViewModel!
+                                      .rxSelectedClassificationID,
+                                  classificationId.substring(
+                                      0, classificationId.length - 1));
                             } else {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                   analysisReportViewModel!
                                       .rxSelectedClassification,
+                                  "");
+                              analysisReportViewModel!.changeValueSelectedFilter(
+                                  analysisReportViewModel!
+                                      .rxSelectedClassificationID,
                                   "");
                             }
                           }
