@@ -43,7 +43,7 @@ class HomeScreen extends GetView {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(children: [
-              Image.asset("assets/bgtophome.png"),
+              Image.asset("assets/bgtophome.png",height: 250,fit: BoxFit.cover,width: MediaQuery.of(context).size.width,),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
                 child: Row(
