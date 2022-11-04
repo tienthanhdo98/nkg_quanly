@@ -9,6 +9,7 @@ import '../../theme/theme_data.dart';
 import '../analysis_report_filter_screen.dart';
 import '../analysis_report_viewmodel.dart';
 import '../chart/analysis_collum_chart.dart';
+import '../chart/analysis_multi_value_collum_chart.dart';
 import '../chart/analysis_pie_chart.dart';
 
 class ReportPreSchoolScreen extends GetView {
@@ -75,7 +76,7 @@ class ReportPreSchoolScreen extends GetView {
                                 .forEach((index, itemValue) {
                               if (itemValue == value) {
                                 analysisReportViewModel
-                                    .changeValuefilterType(filterType!);
+                                    .changeValuefilterType(filterType);
                                 analysisReportViewModel.rxTypeScreen.value =
                                     index;
                                 analysisReportViewModel.clearSelectedFilter();
@@ -296,7 +297,7 @@ Widget listChartScreen(
         chartWidget(
             listChart[13].chartName!, listChart[13].items!, context, "2"),
         chartWidget(
-            listChart[17].chartName!, listChart[17].items!, context, "2"),
+            listChart[17].chartName!, listChart[17].items!, context, "3"),
       ],
     );
   } else if (analysisReportViewModel.rxTypeScreen.value == 1) {
@@ -307,22 +308,17 @@ Widget listChartScreen(
         chartWidget(listChart[0].chartName!, listChart[0].items!, context, "1"),
         chartWidget(listChart[1].chartName!, listChart[1].items!, context, "1"),
         chartWidget(listChart[2].chartName!, listChart[2].items!, context, "1"),
-        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "2"),
-        chartWidget(listChart[4].chartName!, listChart[5].items!, context, "2"),
-        chartWidget(listChart[5].chartName!, listChart[5].items!, context, "2"),
+        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "1"),
+        chartWidget(listChart[4].chartName!, listChart[5].items!, context, "1"),
+        chartWidget(listChart[5].chartName!, listChart[5].items!, context, "1"),
         chartWidget(listChart[6].chartName!, listChart[6].items!, context, "2"),
+        chartWidget(listChart[7].chartName!, listChart[7].items!, context, "2"),
+        chartWidget(listChart[8].chartName!, listChart[8].items!, context, "2"),
+        chartWidget(listChart[9].chartName!, listChart[9].items!, context, "2"),
         chartWidget(
-            listChart[17].chartName!, listChart[17].items!, context, "2"),
+            listChart[10].chartName!, listChart[10].items!, context, "2"),
         chartWidget(
-            listChart[18].chartName!, listChart[18].items!, context, "2"),
-        chartWidget(
-            listChart[19].chartName!, listChart[19].items!, context, "2"),
-        chartWidget(
-            listChart[20].chartName!, listChart[20].items!, context, "2"),
-        chartWidget(
-            listChart[21].chartName!, listChart[21].items!, context, "2"),
-        chartWidget(
-            listChart[22].chartName!, listChart[22].items!, context, "2"),
+            listChart[11].chartName!, listChart[11].items!, context, "2"),
       ],
     );
   } else if (analysisReportViewModel.rxTypeScreen.value == 2) {
@@ -331,14 +327,26 @@ Widget listChartScreen(
       shrinkWrap: true,
       children: [
         chartWidget(listChart[0].chartName!, listChart[0].items!, context, "1"),
-        chartWidget(listChart[2].chartName!, listChart[2].items!, context, "1"),
-        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "1"),
-        chartWidget(listChart[4].chartName!, listChart[4].items!, context, "1"),
+        chartWidget(listChart[1].chartName!, listChart[1].items!, context, "1"),
+      ],
+    );
+  } else if (analysisReportViewModel.rxTypeScreen.value == 3) {
+    resWidget = ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        chartWidget(listChart[0].chartName!, listChart[0].items!, context, "1"),
+        chartWidget(listChart[6].chartName!, listChart[6].items!, context, "1"),
+        chartWidget(
+            listChart[10].chartName!, listChart[10].items!, context, "1"),
+        chartWidget(listChart[7].chartName!, listChart[7].items!, context, "1"),
         chartWidget(listChart[1].chartName!, listChart[1].items!, context, "2"),
         chartWidget(
-            listChart[18].chartName!, listChart[18].items!, context, "2"),
-        chartWidget(listChart[6].chartName!, listChart[5].items!, context, "2"),
-        chartWidget(listChart[7].chartName!, listChart[6].items!, context, "2"),
+            listChart[14].chartName!, listChart[14].items!, context, "2"),
+        chartWidget(listChart[2].chartName!, listChart[2].items!, context, "2"),
+        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "2"),
+        chartWidget(listChart[4].chartName!, listChart[4].items!, context, "2"),
+        chartWidget(listChart[5].chartName!, listChart[5].items!, context, "2"),
       ],
     );
   }
@@ -370,19 +378,30 @@ Widget chartWidget(String chartName, List<ChartChildItems> items,
                 )
               ],
             ),
-            (type == "1")
-                ? AnalysisPieChartWidget(
-                    key: UniqueKey(),
-                    listChart: items,
-                  )
-                : AnalysisCollumChartWidget(
-                    key: UniqueKey(),
-                    listChart: items,
-                  )
+            getChartByType(items, type)
           ]),
         ),
         context),
   );
+}
+
+Widget getChartByType(List<ChartChildItems> items, String type) {
+  if (type == "1") {
+    return AnalysisPieChartWidget(
+      key: UniqueKey(),
+      listChart: items,
+    );
+  } else if (type == "2") {
+    return AnalysisCollumChartWidget(
+      key: UniqueKey(),
+      listChart: items,
+    );
+  } else {
+    return AnalysisMultiValueCollumChartWidget(
+      key: UniqueKey(),
+      listChart: items,
+    );
+  }
 }
 
 String chartNameToNameSecondSchool(String chartName) {
@@ -463,112 +482,127 @@ String chartNameToNameSecondSchool(String chartName) {
         name = "Thống kê số lượng trẻ theo nhóm của từng vùng";
       }
       break;
-    //2
-    case "BieuDoCoCauTreEmTheoKhoiHoc":
+    //1
+    case "BieuDoCoCauTreEmTheoCapHoc":
       {
-        name = "Cơ cấu học sinh theo khối học";
+        name = "Cơ cấu trẻ em mầm non theo cấp học";
+      }
+      break;
+    case "BieuDoCoCauTreEmTheoNhom":
+      {
+        name = "Cơ cấu trẻ em mầm non theo nhóm";
+      }
+      break;
+    case "BieuDoCoCauTreEmTheoDonVi":
+      {
+        name = "Cơ cấu trẻ em mầm non theo đơn vị";
+      }
+      break;
+    case "BieuDoCoCauTreEmTheoGioiTinh":
+      {
+        name = "Cơ cấu trẻ em mầm non theo giới tính";
+      }
+      break;
+    case "BieuDoCoCauTreEmTheoDanToc":
+      {
+        name = "Cơ cấu trẻ em mầm non theo dân tộc";
       }
       break;
     case "BieuDoCoCauTreEmTheoHinhThucHoc":
       {
-        name = "Cơ cấu học sinh theo hình thức học";
+        name = "Cơ cấu trẻ em mầm non theo hình thức học";
       }
       break;
-    case "BieuDoCoCauTreEmTheoDoTuoi":
+    case "BieuDoSoSanhSoLuongTreEm":
       {
-        name = "Cơ cấu học sinh theo độ tuổi";
+        name = "Thống kê số lượng trẻ";
       }
       break;
-    case "BieuDoSoSanhBinhQuanHSLopHoc":
+    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom12":
       {
-        name = "Thống kê bình quân học sinh/ lớp học";
+        name = "Thống kê số lượng bình quân trẻ từ 1-2 tuổi";
       }
       break;
-    case "BieuDoBienDongHocSinh":
+    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom23":
       {
-        name = "Thống kê biến động học sinh";
+        name = "Thống kê số lượng bình quân trẻ từ 2-3 tuổi";
       }
       break;
-    case "BieuDoSoSanhQuyMoHocSinh":
+    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom34":
       {
-        name = "Thống kê quy mô học sinh";
+        name = "Thống kê số lượng bình quân trẻ từ 3-4 tuổi";
       }
       break;
-    case "BieuDoSoHocSinhLuuBanTheoKhoi":
+    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom45":
       {
-        name = "Thống kê số học sinh lưu ban theo khối lớp";
+        name = "Thống kê số lượng bình quân trẻ từ 4-5 tuổi";
       }
       break;
-    case "BieuDoSoSanhTyLeHocSinhDiHocDungTuoi":
+    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom56":
       {
-        name = "Thống kê tỷ lệ học sinh đi học đúng tuổi";
+        name = "Thống kê số lượng bình quân trẻ từ 5-6 tuổi";
       }
       break;
-    case "BieuDoSoSanhTyLeHocSinhLenLop":
+    //2
+    case "BieuDoTyLeTreTheoDinhDuong":
       {
-        name = "Thống kê tỷ lệ học sinh lên lớp";
+        name = "Thống kê tỷ lệ trẻ theo dinh dưỡng";
       }
       break;
-    case "BieuDoSoSanhTyLeHocSinhLuuBan":
+    case "BieuDoSoSanhTyLeTreEmNuSuyDinhDuongTheoDanToc":
       {
-        name = "Thống kê tỷ lệ học sinh lưu ban";
+        name = "Thống kê tỷ lệ trẻ em nữ suy dinh dưỡng theo dân tộc";
       }
       break;
-    case "BieuDoSoSanhTyLeHocSinhBoHoc":
-      {
-        name = "Thống kê tỷ lệ học sinh bỏ học";
-      }
-      break;
-    case "BieuDoSoSanhTyLeHocSinhHoanThanhChuongTrinh":
-      {
-        name = "Thống kê tỷ lệ học sinh hoàn thành chương trình học";
-      }
-      break;
-    case "BieuDoSoSanhTyLeHocSinhTotNghiep":
-      {
-        name = "Thống kê tỷ lệ học sinh tốt nghiệp";
-      }
-      break;
-    //3
+    // 3
     case "BieuDoCoCauCanBoGiaoVienNhanVienLaNuTheoDanTocThieuSo":
       {
-        name =
-            "Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số";
+        name = "Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số";
       }
       break;
-    case "BieuDoCoCauGiaoVienTheoTrinhDoDaoTao":
+    case "BieuDoCoCauGiaoVienCapMamNonChiaTheoTrinhDoDaoTao":
       {
         name = "Cơ cấu giáo viên theo trình độ đào tạo";
       }
       break;
-    case "BieuDoCoCauGiaoVienTheoTuoi":
+    case "BieuDoCoCauGiaoVienCapMamNonChiaTheoDoTuoi":
       {
         name = "Cơ cấu giáo viên theo độ tuổi";
       }
       break;
-    case "BieuDoCoCauGiaoVienTheoDanhGiaChuanNgheNghiep":
+    case "BieuDoCoCauGiaoVienCapMamNonChiaTheoDanhGiaChuanChuyenNghiep":
       {
         name = "Cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp";
       }
       break;
-    case "BieuDoSoSanhSoLuongCanBoGiaoVienVaNhanVien":
+    case "BieuDoSoSanhSoLuongCanBoGiaoVienNhanVien":
       {
         name = "Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên";
       }
       break;
-    case "BieuDoSoSanhSoTyLeGiaoVienDatChuan":
+    case "BieuDoSoSanhTyLeGiaoVienDatChuan":
       {
         name = "Thống kê tỷ lệ giáo viên đạt chuẩn";
       }
       break;
-    case "BieuDoSoSanhSoBinhQuanSoHocSinhGiaoVien":
+    case "BieuDoSoSanhBinhQuanSoGiaoVienNhom":
       {
-        name = "Thống kê bình quân số học sinh/ giáo viên";
+        name = "Thống kê bình quân giáo viên/ nhóm";
       }
       break;
     case "BieuDoSoSanhBinhQuanSoGiaoVienLop":
       {
-        name = "Thống kê bình quân số giáo viên/ lớp";
+        name = "Thống kê bình quân giáo viên/ lớp";
+      }
+      break;
+    case "BieuDoSoSanhBinhQuanSoTreNhaTreGiaoVien":
+      {
+        name = "Thống kê bình quân số lượng trẻ của nhà trẻ/ giáo viên";
+      }
+      break;
+    case "BieuDoSoSanhBinhQuanSoTreMauGiaoGiaoVien":
+      {
+        name = "Thống kê bình quân số lượng trẻ của mẫu giáo/ giáo viên";
       }
       break;
   }
@@ -578,50 +612,11 @@ String chartNameToNameSecondSchool(String chartName) {
 Widget countReportTypeScreen(
     AnalysisReportViewModel analysisReportViewModel, BuildContext context) {
   var item = analysisReportViewModel.rxInfoReport.value.items;
-  if (analysisReportViewModel.rxTypeScreen.value == 1) {
+  if (analysisReportViewModel.rxTypeScreen.value == 2) {
     return Column(
       children: [
-        Row(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 30,
-                    child: Text(checkingStringNull(item?[0].name),
-                        style: Theme.of(context).textTheme.headline5),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Text(checkingStringNull(item?[0].value),
-                          style: textBlueCountTotalStyle))
-                ],
-              ),
-            ),
-            const Padding(padding: EdgeInsets.fromLTRB(15, 0, 0, 0)),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 30,
-                    child: Text(checkingStringNull(item?[1].name),
-                        style: Theme.of(context).textTheme.headline5),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Text(checkingStringNull(item?[1].value),
-                          style: textBlueCountTotalStyle))
-                ],
-              ),
-            ),
-          ],
-        ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
           child: Row(
             children: [
               SizedBox(
@@ -631,12 +626,12 @@ Widget countReportTypeScreen(
                   children: [
                     SizedBox(
                       height: 30,
-                      child: Text(checkingStringNull(item?[2].name),
+                      child: Text(checkingStringNull(item?[0].name),
                           style: Theme.of(context).textTheme.headline5),
                     ),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(checkingStringNull(item?[2].value),
+                        child: Text(checkingStringNull(item?[0].value),
                             style: textBlueCountTotalStyle))
                   ],
                 ),
@@ -649,12 +644,12 @@ Widget countReportTypeScreen(
                   children: [
                     SizedBox(
                       height: 30,
-                      child: Text(checkingStringNull(item?[3].name),
+                      child: Text(checkingStringNull(item?[1].name),
                           style: Theme.of(context).textTheme.headline5),
                     ),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(checkingStringNull(item?[3].value),
+                        child: Text(checkingStringNull(item?[1].value),
                             style: textBlueCountTotalStyle))
                   ],
                 ),
@@ -664,7 +659,7 @@ Widget countReportTypeScreen(
         ),
       ],
     );
-  } else if (analysisReportViewModel.rxTypeScreen.value == 2) {
+  } else if (analysisReportViewModel.rxTypeScreen.value == 3) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
       child: Row(

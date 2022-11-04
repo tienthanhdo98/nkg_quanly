@@ -40,6 +40,16 @@ class ChartCollumTwoValueModel {
   int value2;
   Color color;
 }
+class ChartCollumThreeValueModel {
+  ChartCollumThreeValueModel({this.title = "", this.value1 = 0, this.value2 = 0, this.value3 = 0,this.value4,this.value5});
+
+  String? title;
+  double? value1;
+  double? value2;
+  double? value3;
+  double? value4;
+  double? value5;
+}
 
 class StackedChartModel {
   StackedChartModel(this.title, this.value1, this.value2, this.value3);

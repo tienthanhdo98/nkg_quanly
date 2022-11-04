@@ -160,6 +160,10 @@ const postPreSchool = "http://123.31.31.237:6002/api/statisticpreschool/get-stat
 const postPrimarySchool = "http://123.31.31.237:6002/api/analysisreportprimaryschool";
 const postSecondarySchool = "http://123.31.31.237:6002/api/statisticsecondaryschool/get-statistic-chart";
 const postHighSchool = "http://123.31.31.237:6002/api/analysisreporthighschool";
+const postChartQuality1 = "http://123.31.31.237:6002/api/analysisreportqualityeducation";
+const postChartQuality2 = "http://123.31.31.237:6002/api/analysisreportqualityeducation/multi";
+const postChartQualityAbility = "http://123.31.31.237:6002/api/analysisreportqualityeducation/ability";
+const postChartQualityReward = "http://123.31.31.237:6002/api/analysisreportqualityeducation/detail-quality-reward";
 
 //login
 const apiGetAccessToken = "https://dangnhap.moet.gov.vn/oauth2/token";

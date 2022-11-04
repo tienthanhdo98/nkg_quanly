@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nkg_quanly/ui/chart/chart_screen.dart';
-import 'package:nkg_quanly/ui/home/home_page.dart';
 import 'package:nkg_quanly/ui/home/home_screen.dart';
 import 'package:nkg_quanly/ui/login/login_screen2.dart';
 import 'package:nkg_quanly/ui/notification/notification_screen.dart';
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeClass.lightTheme,
-            home: const MainScreen(),
+            home: const LoginScreen2(),
           );
         },
       ),

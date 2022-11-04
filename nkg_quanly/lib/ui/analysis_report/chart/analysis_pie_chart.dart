@@ -17,7 +17,18 @@ class AnalysisPieChartWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => AnalysisPieChartState();
 }
+String calcuPercen(double first, double total) {
+  var f = NumberFormat("####.#", "en_US");
+  var res = f.format((first / total) * 100).toString();
+  return "$res%";
+}
+class PieCharData {
+  PieCharData({this.title = "", this.value = 0, this.color = Colors.white});
 
+  String title;
+  double value;
+  Color color;
+}
 class AnalysisPieChartState extends State<AnalysisPieChartWidget> {
   List<PieCharData> listPieChartData = [];
   List<ChartChildItems> listPreSchoolChartItems = [];
@@ -29,20 +40,20 @@ class AnalysisPieChartState extends State<AnalysisPieChartWidget> {
   void initState() {
     _tooltipBehavior =
         TooltipBehavior(enable: true, header: '', canShowMarker: false);
-    var total = 0;
+    double total = 0;
     listPreSchoolChartItems =  widget.listChart!;
 
     listPreSchoolChartItems.removeWhere((element) => element.value?.isNum != true );
 
       for (int i = 0; i < listPreSchoolChartItems.length; i++) {
 
-          total += int.parse(listPreSchoolChartItems[i].value!);
+          total += double.parse(listPreSchoolChartItems[i].value!);
       }
       for (int i = 0; i < listPreSchoolChartItems.length; i++) {
           listPieChartData.add(PieCharData(
               title: calcuPercen(
-                  int.parse(listPreSchoolChartItems[i].value!), total),
-              value: int.parse(listPreSchoolChartItems[i].value!),
+                  double.parse(listPreSchoolChartItems[i].value!), total),
+              value: double.parse(listPreSchoolChartItems[i].value!),
               color: listColorChart[i]));
       }
 

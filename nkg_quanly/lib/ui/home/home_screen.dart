@@ -89,7 +89,7 @@ class HomeScreen extends GetView {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 140, 20, 0),
+                padding: const EdgeInsets.fromLTRB(20, 130, 20, 0),
                 child: border(
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

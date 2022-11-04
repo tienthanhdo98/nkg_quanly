@@ -5,8 +5,15 @@ import 'package:nkg_quanly/ui/analysis_report/analysis_report_filter_screen.dart
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
+import '../../../model/analysis_report/preschool_chart_model.dart';
 import '../../theme/theme_data.dart';
 import '../analysis_report_viewmodel.dart';
+import '../chart/analysis_collum_chart.dart';
+import '../chart/analysis_double_value_collum_chart.dart';
+import '../chart/analysis_penta_value_collum_chart.dart';
+import '../chart/analysis_pie_chart.dart';
+import '../chart/analysis_quadra_value_collum_chart.dart';
+import '../report_highschool/report_high_school_screen.dart';
 
 class ReportEducationQualityScreen extends GetView {
   ReportEducationQualityScreen({Key? key}) : super(key: key);
@@ -17,7 +24,7 @@ class ReportEducationQualityScreen extends GetView {
   @override
   Widget build(BuildContext context) {
     filterType = listReportEduQualityType[0];
-    analysisReportViewModel.getDataPreSchool();
+    analysisReportViewModel.getDataQualityEducation();
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -77,6 +84,22 @@ class ReportEducationQualityScreen extends GetView {
                                       .changeValuefilterType(filterType!);
                                   analysisReportViewModel.rxTypeScreen.value =
                                       index;
+                                  analysisReportViewModel.clearSelectedFilter();
+                                  if (index == 0) {
+                                    analysisReportViewModel
+                                        .getListQualityEducationByType("0");
+                                  } else if (index == 1) {
+                                    analysisReportViewModel
+                                        .getListQualityEducationByType("1");
+                                  } else if (index == 2) {
+                                    analysisReportViewModel
+                                        .getListQualityEducationByType("2");
+                                  } else if (index == 3) {
+                                    analysisReportViewModel
+                                        .getListQualityEducationByType("3");
+                                  }
+                                  analysisReportViewModel
+                                      .changeStateLoadingData(true);
                                   analysisReportViewModel.scrollToTop();
                                 }
                               });
@@ -153,73 +176,31 @@ class ReportEducationQualityScreen extends GetView {
               child: SingleChildScrollView(
                 controller: analysisReportViewModel.controller,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  child: Obx(() => ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: checkListChart(
-                              analysisReportViewModel.rxfilterType.value)
-                          .length,
-                      itemBuilder: (context, index) {
-                        var item = checkListChart(
-                            analysisReportViewModel.rxfilterType.value)[index];
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-                          child: borderItem(
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                                child: Column(children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          item.title!,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline1,
-                                        ),
-                                      ),
-                                      const Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                                      InkWell(
-                                        onTap: () {},
-                                        child: Image.asset(
-                                            "assets/icons/ic_refresh.png",
-                                            width: 16,
-                                            height: 16),
-                                      )
-                                    ],
-                                  ),
-
-                                ]),
-                              ),
-                              context),
-                        );
-                      })),
-                ),
+                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                    child: Obx(() =>
+                        (analysisReportViewModel.isLoadingData.value == false)
+                            ? Column(
+                                children: [
+                                  Obx(() => listChartQualityEduScreen(
+                                      analysisReportViewModel, context))
+                                ],
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
+                                  )
+                                ],
+                              ))),
               ),
             ),
           )
         ],
       )),
     );
-  }
-
-  List<chart> checkListChart(String? filterName) {
-    List<chart> listScreen = [];
-    // man non
-    if (filterType == listReportEduQualityType[0]) {
-      listScreen = monhoc;
-    } else if (filterType == listReportEduQualityType[1]) {
-      listScreen = chatluonggd;
-    } else if (filterType == listReportEduQualityType[2]) {
-      listScreen = phamchat;
-    } else if (filterType == listReportEduQualityType[3]) {
-      listScreen = khenthuong;
-    }
-    return listScreen;
   }
 }
 
@@ -539,46 +520,191 @@ var listReportEduQualityType = [
   "Báo cáo chi tiết xếp loại năng lực, phẩm chất",
   "Báo cáo chi tiết khen thưởng học sinh",
 ];
-var listClassification = ["Giỏi", "Khá", "Trung bình", "Yếu"];
 
-// var listSubject = ["Toán","Lý","Hóa","Anh","Sử","Địa","Văn","Sinh","Giáo dục công dân"];
-// var listPriSchool = ["Lớp 1","Lớp 2","Lớp 3","Lớp 4","Lớp 5",];
-// var listMidSchool = ["Lớp 6","Lớp 7","Lớp 8","Lớp 9",];
-// var listHighSchool = ["Lớp 10","Lớp 11","Lớp 12"];
-// var listAllClass = ["Lớp 1","Lớp 2","Lớp 3","Lớp 4","Lớp 5","Lớp 6","Lớp 7","Lớp 8","Lớp 9","Lớp 10","Lớp 11","Lớp 12"];
-
-class chart {
-  String? title;
-  String? type;
-  chart(this.title,this.type);
+Widget chartQualityEduWidget(String chartName, List<ChartChildItems>? items,
+    BuildContext context, String type) {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+    child: borderItem(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+          child: Column(children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    chartName,
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
+                InkWell(
+                  onTap: () {},
+                  child: Image.asset("assets/icons/ic_refresh.png",
+                      width: 16, height: 16),
+                )
+              ],
+            ),
+            getChartByType(items, type)
+          ]),
+        ),
+        context),
+  );
 }
 
-var monhoc = [
-  chart("Xếp hạng năng lực theo tỉnh/TP", "2"),
-  chart("Xếp hạng năng lực theo vùng", "2"),
-  chart("Xếp loại học sinh", "2"),
-  chart("Xếp loại học sinh theo năm học", "2"),
-  chart("Phổ điểm của học sinh", "2"),
-  chart("Phổ điểm của học sinh theo năm học", "2"),
-];
-var chatluonggd = [
-  chart("Cơ cấu học sinh hoàn thành chương trình học", "1"),
-  chart("Xếp hạng tỷ lệ học sinh hoàn thành chương trình theo vùng", "1"),
-  chart("Xếp hạng tỷ lệ học sinh hoàn thành chương trình theo tỉnh/TP", "2"),
-];
-var phamchat = [
-  chart("Xếp loại năng lực học sinh theo vùng", "2"),
-  chart("So sánh năng lực học sinh theo kỳ", "2"),
-  chart("Xếp loại năng lực học sinh theo tỉnh, thành phố", "2"),
-  chart("So sánh năng lực học sinh theo năm", "2"),
-  chart("Xếp loại phẩm chất học sinh theo vùng", "2"),
-  chart("So sánh phẩm chất học sinh theo kỳ", "2"),
-  chart("Xếp loại phẩm chất học sinh theo tỉnh, thành phố", "2"),
-  chart("So sánh phẩm chất học sinh theo năm", "2"),
-];
-var khenthuong = [
-  chart("Thống kê tỷ lệ HS được khen thưởng theo năm", "2"),
-  chart("Thống kê tỷ lệ HS được khen thưởng theo học kỳ", "2"),
-  chart("Xếp hạng tỉnh/TP theo tỷ lệ HS được khen thưởng, TP", "2"),
-  chart("Tỷ lệ học sinh theo khen thưởng", "1"),
-];
+Widget getChartByType(List<ChartChildItems>? items, String type) {
+  if (type == "1") {
+    return AnalysisPieChartWidget(
+      key: UniqueKey(),
+      listChart: items,
+    );
+  } else if (type == "2") {
+    return AnalysisCollumChartWidget(
+      key: UniqueKey(),
+      listChart: items,
+    );
+  } else if (type == "3") {
+    return AnalysisDoubleValueCollumChartWidget(
+      key: UniqueKey(),
+      listChart: items,
+    );
+  } else if (type == "4") {
+    return AnalysisQuadraValueCollumChartWidget(
+      key: UniqueKey(),
+      listChart: items,
+    );
+  } else {
+    return AnalysisPentaValueCollumChartWidget(
+      key: UniqueKey(),
+      listChart: items,
+    );
+  }
+}
+
+Widget listChartQualityEduScreen(
+    AnalysisReportViewModel analysisReportViewModel, BuildContext context) {
+  Widget? resWidget;
+  var listChart = analysisReportViewModel.rxListChartAnalysis;
+  if (analysisReportViewModel.rxTypeScreen.value == 0) {
+    resWidget = ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        chartQualityEduWidget("Xếp hạng năng lực theo tỉnh/TP",
+            listChart[1].items!, context, "2"),
+        chartQualityEduWidget(
+            "Xếp hạng năng lực theo vùng", listChart[0].items!, context, "2"),
+        chartQualityEduWidget(
+            "Xếp loại học sinh", listChart[2].items!, context, "2"),
+        chartQualityEduWidget(
+            "Phổ điểm của học sinh", listChart[3].items!, context, "2"),
+        chartQualityEduWidget("Xếp loại học sinh theo năm học",
+            listChart[4].items!, context, "3"),
+        chartQualityEduWidget("Phổ điểm của học sinh theo năm học",
+            listChart[5].items!, context, "4"),
+      ],
+    );
+  } else if (analysisReportViewModel.rxTypeScreen.value == 1) {
+    resWidget = ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        chartQualityEduWidget("Cơ cấu học sinh hoàn thành chương trình học",
+            listChart[2].items!, context, "1"),
+        chartQualityEduWidget(
+            "Xếp hạng tỷ lệ học sinh hoàn thành chương trình theo vùng",
+            listChart[1].items!,
+            context,
+            "1"),
+        chartQualityEduWidget(
+            "Xếp hạng tỷ lệ học sinh hoàn thành chương trình theo tỉnh/TP",
+            listChart[0].items!,
+            context,
+            "2"),
+      ],
+    );
+  } else if (analysisReportViewModel.rxTypeScreen.value == 2) {
+    resWidget = ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        chartQualityEduWidget("Xếp loại năng lực học sinh theo vùng",
+            listChart[0].items!, context, "2"),
+        chartQualityEduWidget("So sánh năng lực học sinh theo kỳ",
+            listChart[1].items!, context, "2"),
+        chartQualityEduWidget("Xếp loại năng lực học sinh theo tỉnh, thành phố",
+            listChart[4].items!, context, "4"),
+        chartQualityEduWidget("So sánh năng lực học sinh theo năm",
+            listChart[5].items!, context, "4"),
+        chartQualityEduWidget('Xếp loại phẩm chất học sinh theo vùng',
+            listChart[2].items!, context, "2"),
+        chartQualityEduWidget('So sánh phẩm chất học sinh theo kỳ',
+            listChart[1].items!, context, "2"),
+        chartQualityEduWidget(
+            'Xếp loại phẩm chất học sinh theo tỉnh, thành phố',
+            listChart[6].items,
+            context,
+            "5"),
+        chartQualityEduWidget("So sánh phẩm chất học sinh theo năm",
+            listChart[7].items!, context, "5"),
+      ],
+    );
+  } else if (analysisReportViewModel.rxTypeScreen.value == 3) {
+    resWidget = ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        chartQualityEduWidget("Thống kê tỷ lệ HS được khen thưởng theo năm",
+            listChart[6].items!, context, "2"),
+        chartQualityEduWidget('Xếp hạng tỉnh/TP theo tỷ lệ HS được khen thưởng',
+            listChart[2].items!, context, "2"),
+        chartQualityEduWidget("Xếp hạng vùng theo tỷ lệ HS khen thưởng",
+            listChart[1].items!, context, "2"),
+        chartQualityEduWidget('Thống kê tỷ lệ HS được khen thưởng theo học kỳ',
+            listChart[7].items!, context, "2"),
+        chartQualityEduWidget("Thống kê tỷ lệ học sinh theo khen thưởng",
+            listChart[2].items!, context, "1"),
+      ],
+    );
+  }
+
+  return resWidget!;
+}
+
+// String chartNameToNameQualityEdu (String chartName) {
+//   var name = "";
+//   switch (chartName) {
+//     case "XepHangThanhPho":
+//       {
+//         name = "Xếp hạng năng lực theo tỉnh/TP";
+//       }
+//       break;
+//     case "XepHangVung":
+//       {
+//         name = "Xếp hạng năng lực theo vùng";
+//       }
+//       break;
+//     case "BieuDoXepLoaiHocSinh":
+//       {
+//         name = "Xếp loại học sinh";
+//       }
+//       break;
+//     case "BieuDoPhoDiemCuaHocSinh":
+//       {
+//         name = "Phổ điểm của học sinh";
+//       }
+//       break;
+//     case "BieuDoXepLoaiHocSinh":
+//       {
+//         name = "Xếp loại học sinh theo năm học";
+//       }
+//       break;
+//     case "BieuDoPhoDiemCuaHocSinh":
+//       {
+//         name = "Phổ điểm của học sinh theo năm học";
+//       }
+//       break;
+//
+//   }
+//   return name;
+// }
