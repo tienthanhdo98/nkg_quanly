@@ -49,5 +49,17 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>com.test.nkgQuanly</key>
+			<string></string>
+			<key>http://localhost:8080</key>
+			<string></string>
+		</dict>
+	</dict>
 </dict>
 </plist>
