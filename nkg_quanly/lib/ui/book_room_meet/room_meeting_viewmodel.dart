@@ -20,7 +20,7 @@ class RoomMeetingViewModel extends GetxController {
   @override
   void onInit() {
 
-    getMeetingRoomByDay(formatDateToString(dateNow));
+    getMeetingRoomDefault();
     super.onInit();
   }
 
@@ -37,6 +37,23 @@ class RoomMeetingViewModel extends GetxController {
 
 
   //Meeting room
+   getMeetingRoomDefault() async {
+    final url = Uri.parse(apiPostAllMeetingroomSearch);
+
+    String json = '{"pageIndex":1,"pageSize":10}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+
+    MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
+
+    // rxMeetingRoomStatistic.value = res.statistic!;
+    rxMeetingRoomStatistic.update((val) {
+      val!.total = res.statistic!.total;
+      val.vacancy = res.statistic!.vacancy;
+      val.booked = res.statistic!.booked;
+    });
+    rxMeetingRoomStatistic.refresh();
+    rxMeetingRoomItems.value = res.items!;
+  }
 
   Future<void> getMeetingRoomByDay(String day) async {
     final url = Uri.parse(apiPostAllMeetingroomSearch);
@@ -132,8 +149,8 @@ class RoomMeetingViewModel extends GetxController {
     rxMeetingRoomItems.value = res.items!;
   }
 
-//end filet
+//end filter
 
-//eoffice
+
 
 }

@@ -49,6 +49,7 @@ class PieChartRoomMeetingState extends State<PieChartRoomMeetingWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               legendChart('Còn trống', kBlueChart),
+              const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
               legendChart('Đã đặt', kOrange),
             ],
           ),

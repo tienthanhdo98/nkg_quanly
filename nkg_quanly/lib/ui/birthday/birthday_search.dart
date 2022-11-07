@@ -57,7 +57,7 @@ class BirthDaySearch extends GetView {
                                   maxLines: 1,
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: 'Tìm kiếm...',
+                                    hintText: 'Nhập tên cán bộ, chức vụ',
                                   ),
                                   style: const TextStyle(color: Colors.black),
                                   onSubmitted: (value) {

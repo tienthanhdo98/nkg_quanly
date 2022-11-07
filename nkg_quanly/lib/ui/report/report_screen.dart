@@ -37,8 +37,8 @@ class ReportScreen extends GetView {
                 padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
                 child: border(
                     Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Obx(() =>Column(children: [
+                      padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                      child: Obx(() =>    Column(children: [
                         Row(
                           children: [
                             Column(
@@ -48,8 +48,8 @@ class ReportScreen extends GetView {
                                 const Text('Tổng báo cáo',
                                     style: CustomTextStyle
                                         .robotow400s12TextStyle),
-                                Text(
-                                  checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.tong),
+                                Text(checkingNullNumberAndConvertToString(reportViewModel
+                                    .rxReportStatisticTotal.value.tong),
                                   style: const TextStyle(
                                       color: kBlueButton, fontSize: 40),
                                 )
@@ -68,47 +68,113 @@ class ReportScreen extends GetView {
                           ],
                         ),
                         const Padding(
-                          padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Divider(
                             thickness: 1,
                           ),
                         ),
-                        Row(
-                          children: [
-                            Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                const Text('Đã tiếp nhận',
-                                    style: CustomTextStyle
-                                        .robotow400s12TextStyle),
-                                Text(  checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.daTiepNhan),
+                        SizedBox(
+                          child: GridView.count(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 3 / 2,
+                            mainAxisSpacing: 0,
+                            crossAxisCount: 3,
+                            children: [
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Đã tiếp nhận',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                  Text(checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.daTiepNhan),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20))
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Đã giao',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                  Text(
+                                    checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.daGiao
+                                    ),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 20))
-                              ],
-                            ),
-                            const Padding(
-                                padding:
-                                EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                            Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                const Text('Đã giao',
-                                    style: CustomTextStyle
-                                        .robotow400s12TextStyle),
-                                Text(
-                                  checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.daGiao),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                )
-                              ],
-                            )
-                          ],
+                                        fontSize: 20),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Đúng hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                  Text(
+                                    checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.dungHan),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Chưa đến hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                  Text(
+                                    checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.chuaDenHan),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Sớm hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                  Text(
+                                    checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.somHan),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Quá hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                  Text(
+                                    checkingNullNumberAndConvertToString(reportViewModel.rxReportStatisticTotal.value.quaHan),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         )
-                      ])),
+                      ])   ),
                     ),
                     context),
               )

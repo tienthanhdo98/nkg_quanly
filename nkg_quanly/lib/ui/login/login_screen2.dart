@@ -42,7 +42,7 @@ class LoginState extends State<LoginScreen2> {
                 //wvController!.clearCache();
                 await loginViewModel.getInfoLoginConfig();
                 if (widget.isLogout == false) {
-                  wvController!.loadUrl("http://localhost:8080");
+                  wvController!.loadUrl(loginViewModel.urlLogin);
                 }
                 else {
                   wvController!.loadUrl(

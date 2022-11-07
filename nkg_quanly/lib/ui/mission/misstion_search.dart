@@ -61,7 +61,7 @@ class MissionSearch extends GetView {
                                   maxLines: 1,
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: 'Tìm kiếm...',
+                                    hintText: 'Nhập mã nhiệm vụ, tên nhiệm vụ',
                                   ),
                                   style: const TextStyle(color: Colors.black),
                                   onSubmitted: (value) {

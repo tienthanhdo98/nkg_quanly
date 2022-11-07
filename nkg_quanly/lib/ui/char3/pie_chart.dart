@@ -49,6 +49,7 @@ class PieChartState extends State<PieChartWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               legendChart(listQuantity![1].name.toString(), listColorChart[1]),
+              const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
               legendChart(listQuantity![0].name.toString(), listColorChart[0]),
             ],
           )

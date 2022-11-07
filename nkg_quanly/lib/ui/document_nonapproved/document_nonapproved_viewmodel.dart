@@ -19,7 +19,6 @@ class DocumentNonApproveViewModel extends GetxController {
   }
 
   Rx<int> selectedBottomButton = 0.obs;
-  Rx<DateTime> rxSelectedDay = dateNow.obs;
 
   RxList<DocumentInListItems> rxItems = <DocumentInListItems>[].obs;
   Rx<DocumentInStatistic> rxDocumentInStatistic = DocumentInStatistic().obs;
@@ -31,7 +30,7 @@ class DocumentNonApproveViewModel extends GetxController {
   @override
   void onInit() {
     getFilterForChart("${apiGetDocumentApproveFilterChart}0");
-    getDocumentByDay(formatDateToString(dateNow));
+    getDocumentDefault();
     getDocumentStatisticTotal();
     super.onInit();
   }
@@ -77,7 +76,32 @@ class DocumentNonApproveViewModel extends GetxController {
     return DocumentInListItems.fromJson(jsonDecode(response.body));
   }
 
-
+  Future<void> getDocumentDefault() async {
+    final url = Uri.parse(apiGetDocument);
+    String json = '{"pageIndex":1,"pageSize":10}';
+    print('loading');
+    http.Response response = await http.post(url, headers: headers, body: json);
+    print(response.body);
+    documentInModel = DocumentInModel.fromJson(jsonDecode(response.body));
+    rxItems.value = documentInModel.items!;
+    rxDocumentInStatistic.value = documentInModel.statistic!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore m");
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        documentInModel =
+            DocumentInModel.fromJson(jsonDecode(response.body));
+        rxItems.addAll(documentInModel.items!);
+      }
+    });
+  }
 
   Future<void> getDocumentByDay(String day) async {
     final url = Uri.parse(apiGetDocument);

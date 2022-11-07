@@ -7,7 +7,7 @@ import 'package:nkg_quanly/ui/theme/theme_data.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../const/const.dart';
 import '../../../model/guildline_model/guildline_model.dart';
-import '../../document_nonapproved/document_nonapproved_search.dart';
+import 'guideline_search.dart';
 import 'guideline_viewmodel.dart';
 
 class GuidelineList extends GetView {
@@ -26,8 +26,8 @@ class GuidelineList extends GetView {
           //header
           headerWidgetSearch(
               "Hướng dẫn sử dụng",
-              DocumentnonapprovedSearch(
-              ),
+              GuidelineSearch(
+                  guildlineViewModel),
               context),
 
           const Padding(

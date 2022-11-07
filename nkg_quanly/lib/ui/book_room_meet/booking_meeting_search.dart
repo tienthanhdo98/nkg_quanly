@@ -75,7 +75,7 @@ class BookingMeetingSearch  extends GetView {
                                     maxLines: 1,
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'Tìm kiếm...',
+                                      hintText: 'Nhập tên phòng họp, tên lịch họp',
                                     ),
                                     style: const TextStyle(color: Colors.black),
                                     onSubmitted: (value) {

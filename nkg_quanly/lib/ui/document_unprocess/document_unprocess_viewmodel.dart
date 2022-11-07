@@ -31,7 +31,7 @@ class DocumentUnprocessViewModel extends GetxController {
 
     getFilterDepartment();
     getDocumentStatistic();
-    getDocumentByDay(formatDateToString(dateNow));
+    getDocumentDefault();
     super.onInit();
   }
 
@@ -75,6 +75,31 @@ class DocumentUnprocessViewModel extends GetxController {
     print(response.body);
     DocumentInModel res = DocumentInModel.fromJson(jsonDecode(response.body));
     rxDocumentInStatisticTotal.value = res.statistic!;
+  }
+  getDocumentDefault() async {
+    final url = Uri.parse(apiGetDocument);
+    String json = '{"pageIndex":1,"pageSize":10}';
+    print('loading');
+    http.Response response = await http.post(url, headers: headers, body: json);
+    print(response.body);
+    documentInModel = DocumentInModel.fromJson(jsonDecode(response.body));
+    rxItems.value = documentInModel.items!;
+    rxDocumentInStatistic.value = documentInModel.statistic!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        documentInModel =
+            DocumentInModel.fromJson(jsonDecode(response.body));
+        rxItems.addAll(documentInModel.items!);
+      }
+    });
   }
 
   Future<void> getDocumentByDay(String day) async {

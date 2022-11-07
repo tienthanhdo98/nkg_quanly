@@ -60,7 +60,7 @@ class DocumenOutSearch extends GetView {
                                   maxLines: 1,
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: 'Tìm kiếm...',
+                                    hintText: 'Nhập mã văn bản, tên văn bản',
                                   ),
                                   style: const TextStyle(color: Colors.black),
                                   onSubmitted: (value) {

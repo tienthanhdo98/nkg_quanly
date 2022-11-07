@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/const/widget.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
+import 'package:nkg_quanly/ui/workbook/workbook_list.dart';
+import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
-import '../../const/const.dart';
-import 'calendar_work_screen.dart';
-import 'e_office/calendar_work_e_office_screen.dart';
+import '../../../const/const.dart';
+import 'guideline_viewmodel.dart';
+import 'guildline_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class CalendarWorkSearch extends GetView {
+
+
+class GuidelineSearch  extends GetView {
+
   final searchController = Get.put(SearchController());
 
-  CalendarWorkSearch({Key? key}) : super(key: key);
-
+  GuidelineSearch(this.guildelineViewModel,{Key? key})
+      : super(key: key);
+    final GuildlineViewModel guildelineViewModel;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        searchController.listDataCalendarWork.clear();
+        searchController.rxListGuideline.clear();
         return true;
       },
       child: Scaffold(
@@ -37,6 +43,7 @@ class CalendarWorkSearch extends GetView {
                     children: [
                       InkWell(
                         onTap: () {
+                          searchController.rxWorkBookListItems.clear();
                           Get.back();
                         },
                         child: Image.asset(
@@ -55,28 +62,28 @@ class CalendarWorkSearch extends GetView {
                             width: double.infinity,
                             child: Row(
                               children: [
-                                const Padding(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                    child: Icon(Icons.search)),
+                                Padding(
+                                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child:  Image.asset(
+                                      'assets/icons/ic_search.png',
+                                      width: 20,
+                                      height: 20,
+                                    )),
                                 SizedBox(
                                   width: 200,
                                   child: TextField(
                                     maxLines: 1,
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'Nhập tên công việc',
+                                      hintText: 'Nhập tiêu đề tài liệu',
                                     ),
                                     style: const TextStyle(color: Colors.black),
                                     onSubmitted: (value) {
-                                      print(value);
-                                      searchController
-                                          .searchDataCalendarWork(value);
-                                      searchController.changeLoadingState(true);
+                                      searchController.searchGuideLine(value);
                                     },
-                                    onChanged: (value) {
-                                      //print(value);
-                                      // searchController.searchData(value);
-                                    },
+                                    // onChanged: (value) {
+                                    //    searchController.searchData(value);
+                                    // },
                                   ),
                                 )
                               ],
@@ -93,16 +100,32 @@ class CalendarWorkSearch extends GetView {
                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: SizedBox(
                       height: 200,
-                      child: Obx(() => (searchController.isLoading.value == false) ? ListView.builder(
-                        controller: searchController.controller,
-                          itemCount:
-                              searchController.listDataCalendarWork.length,
+                      child: Obx(() => ListView.builder(
+                          controller: searchController.controller,
+                          itemCount: searchController.rxListGuideline.length,
                           itemBuilder: (context, index) {
-                            return CalendarEOfficeWorkItem(
-                                index,
-                                searchController
-                                    .listDataCalendarWork[index]);;
-                          }) : loadingIcon()),
+                            var item =  searchController.rxListGuideline[index];
+                            return InkWell(
+                              onTap: ()async {
+                                var urlFile = "http://123.31.31.237:6002/api/guidelines/download-file/${item.id}";
+                                print(urlFile);
+                                if(await canLaunchUrl(Uri.parse(urlFile))) {
+                                  launchUrl(
+                                    Uri.parse(urlFile),
+                                    webViewConfiguration: const WebViewConfiguration(
+                                        enableJavaScript: true,
+                                        enableDomStorage: true
+                                    ),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                }
+                              },
+                              child: GuideItem(
+                                  index,
+                                  item,
+                                  guildelineViewModel),
+                            );
+                          })),
                     ),
                   ),
                 ),
@@ -114,3 +137,5 @@ class CalendarWorkSearch extends GetView {
     );
   }
 }
+
+

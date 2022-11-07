@@ -21,8 +21,8 @@ class CalendarWorkViewModel extends GetxController {
 
   @override
   void onInit() {
-    postCalendarWorkByDay(formatDateToString(dateNow));
-
+   // postCalendarWorkByDay(formatDateToString(dateNow));
+    postCalendarWorkAll();
     super.onInit();
   }
 
@@ -37,13 +37,30 @@ class CalendarWorkViewModel extends GetxController {
 
   //calendar work
 
-  Future<CalendarWorkModel> postCalendarWorkAll() async {
+  postCalendarWorkAll() async {
     final url = Uri.parse(apiPostCalendarWork);
-    print('loading');
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
-    return CalendarWorkModel.fromJson(jsonDecode(response.body));
+    calendarWorkModel = CalendarWorkModel.fromJson(jsonDecode(response.body));
+    rxCalendarWorkListItems.value = calendarWorkModel.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore all");
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        calendarWorkModel =
+            CalendarWorkModel.fromJson(jsonDecode(response.body));
+        rxCalendarWorkListItems.addAll(calendarWorkModel.items!);
+        print("loadmore day at $page");
+      }
+    });
+
   }
 
   Future<void> postCalendarWorkByDay(String day) async {

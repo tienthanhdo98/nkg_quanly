@@ -13,13 +13,12 @@ class DocumentOutViewModel extends GetxController {
 
 
   Rx<int> selectedBottomButton = 0.obs;
-  Rx<DateTime> rxSelectedDay = dateNow.obs;
 
   RxList<DocumentOutItems> rxDocumentOutItems = <DocumentOutItems>[].obs;
   ScrollController controller = ScrollController();
   @override
   void onInit() {
-    getDocumentOutByDay(formatDateToString(dateNow));
+    getDocumentOutDefault();
     super.onInit();
   }
 
@@ -31,7 +30,28 @@ class DocumentOutViewModel extends GetxController {
     var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
     getDocumentOutByDay(strSelectedDay);
   }
-
+ getDocumentOutDefault() async {
+    final url = Uri.parse(apiGetDocumentOut);
+    String json = '{"pageIndex":1,"pageSize":10}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+    print(response.body);
+    DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
+    rxDocumentOutItems.value = res.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = DocumentOutModel.fromJson(jsonDecode(response.body));
+        rxDocumentOutItems.addAll(res.items!);
+      }
+    });
+  }
   //document out
   Future<void> getDocumentOutByDay(String day) async {
     final url = Uri.parse(apiGetDocumentOut);

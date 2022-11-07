@@ -14,6 +14,7 @@ import '../../model/contact_model/contact_model.dart';
 import '../../model/document/document_model.dart';
 import '../../model/document_out_model/document_out_model.dart';
 import '../../model/group_workbook/group_workbook_model.dart';
+import '../../model/guildline_model/guildline_model.dart';
 import '../../model/helpdesk_model/helpdesk_model.dart';
 import '../../model/meeting_room/meeting_room_model.dart';
 import '../../model/misstion/mission_detail.dart';
@@ -408,6 +409,26 @@ class SearchController extends GetxController {
         profileModel =  ProfileModel.fromJson(jsonDecode(response.body));
         rxProfileItems.addAll(profileModel.items!);
         print("loadmore day at $page");
+      }
+    });
+  }
+  //guideline
+  RxList<GuidelineListItems> rxListGuideline = <GuidelineListItems>[].obs;
+  Future<void> searchGuideLine(String keyword) async {
+    var url = Uri.parse("http://123.31.31.237:6002/api/guidelines/search?Keyword=$keyword&PageIndex=1&PageSize=10");
+    http.Response response = await http.get(url);
+    GuidelineModel groupWorkBookModel = GuidelineModel.fromJson(jsonDecode(response.body));
+    rxListGuideline.value = groupWorkBookModel.items!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        url = Uri.parse("http://123.31.31.237:6002/api/guidelines/search?Keyword=$keyword&PageIndex=$page&PageSize=10");
+        http.Response response =
+        await http.get(url);
+        groupWorkBookModel =  GuidelineModel.fromJson(jsonDecode(response.body));
+        rxListGuideline.addAll(groupWorkBookModel.items!);
       }
     });
   }

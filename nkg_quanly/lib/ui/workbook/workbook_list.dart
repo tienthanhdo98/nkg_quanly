@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/workbook/update_work_screen.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_detail.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_search.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
-
 import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/workbook/workbook_model.dart';
-import '../document_nonapproved/document_nonapproved_search.dart';
 import '../theme/theme_data.dart';
 import 'add_new_work_screen.dart';
 
@@ -200,7 +197,7 @@ class WorkBookItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Mức độ',
+                    const Text('Quan trọng',
                         style: CustomTextStyle.grayColorTextStyle),
                     (docModel!.important == true)
                         ? Text("Có",

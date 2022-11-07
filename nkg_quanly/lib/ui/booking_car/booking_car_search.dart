@@ -74,7 +74,7 @@ class BookingCarSearch  extends GetView {
                                     maxLines: 1,
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: 'Tìm kiếm...',
+                                      hintText: 'Nhập số xe',
                                     ),
                                     style: const TextStyle(color: Colors.black),
                                     onSubmitted: (value) {

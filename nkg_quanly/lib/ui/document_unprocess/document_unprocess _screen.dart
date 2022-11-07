@@ -3,11 +3,12 @@ import 'package:get/get.dart';
 
 import '../../const/const.dart';
 import '../../const/api.dart';
+import '../../const/style.dart';
+import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../char3/collum_chart_doc_nonprocess.dart';
 import '../theme/theme_data.dart';
-import 'document_unprocess_list.dart';
 import 'document_unprocess_viewmodel.dart';
 import 'e_office/document_in_e_office_list.dart';
 
@@ -25,49 +26,113 @@ class DocumentUnProcessScreen extends GetView {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(children: [
-          headerWidget(header!, context),
-          Stack(alignment: Alignment.center, children: [
-            Image.asset("assets/bgtophome.png",
-                height: 150, width: double.infinity, fit: BoxFit.cover),
-            Obx(() => Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: border(
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Column(children: [
-                          Row(
+          Stack(
+            children: [
+              Image.asset("assets/bgtophome.png",
+                  height: 220, width: double.infinity, fit: BoxFit.cover),
+              headerWidget(header!, context),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
+                child: border(
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                      child: Obx(() =>  Column(children: [
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                const Text('Tổng văn bản',
+                                    style: CustomTextStyle
+                                        .robotow400s12TextStyle),
+                                Text(checkingNullNumberAndConvertToString(documentUnprocessViewModel
+                                    .rxDocumentInStatisticTotal.value.tong),
+                                  style: const TextStyle(
+                                      color: kBlueButton, fontSize: 40),
+                                )
+                              ],
+                            ),
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Image.asset(
+                                  icon!,
+                                  width: 50,
+                                  height: 50,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          child: Divider(
+                            thickness: 1,
+                          ),
+                        ),
+                        SizedBox(
+                          child: GridView.count(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 3 / 2,
+                            mainAxisSpacing: 0,
+                            crossAxisCount: 3,
                             children: [
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Tổng văn bản chưa xử lý'),
-                                  Text((documentUnprocessViewModel
-                                      .rxDocumentInStatisticTotal.value.tong != null) ?
-                                    documentUnprocessViewModel
-                                        .rxDocumentInStatisticTotal.value.tong
-                                        .toString() : "0",
+                                  const Text('VB chưa xử lý',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                  Text(checkingNullNumberAndConvertToString(documentUnprocessViewModel.rxDocumentInStatisticTotal.value.chuaXuLy),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20))
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  const Text('VB đang xử lý',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                  Text(
+                                    checkingNullNumberAndConvertToString(documentUnprocessViewModel.rxDocumentInStatisticTotal.value.dangXuLy
+                                    ),
                                     style: const TextStyle(
-                                        color: kBlueButton, fontSize: 40),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
                                   )
                                 ],
                               ),
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Image.asset(
-                                    icon!,
-                                    width: 50,
-                                    height: 50,
-                                  ),
-                                ),
-                              )
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  const Text('VB đã xử lý',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                  Text(
+                                    checkingNullNumberAndConvertToString(documentUnprocessViewModel.rxDocumentInStatisticTotal.value.dangXuLy),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  )
+                                ],
+                              ),
                             ],
                           ),
-                        ]),
-                      ),
-                      context),
-                ))
-          ]),
+                        )
+                      ])),
+                    ),
+                    context),
+              )
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
             child: SizedBox(

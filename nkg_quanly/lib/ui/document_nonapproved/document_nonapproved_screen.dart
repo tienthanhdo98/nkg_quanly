@@ -9,7 +9,6 @@ import '../char3/collum_chart_doc_nonprocess.dart';
 import '../char3/pie_chart.dart';
 import '../document_unprocess/e_office/document_in_e_office_list.dart';
 import '../theme/theme_data.dart';
-import 'document_nonapproved_list.dart';
 import 'document_nonapproved_viewmodel.dart';
 
 class DocumentNonApprovedScreen extends GetView {

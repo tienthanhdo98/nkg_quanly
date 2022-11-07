@@ -85,7 +85,7 @@ class DocumentNonapprovedList extends GetView {
           Expanded(
               child: Obx(() => (documentNonApproveViewModel.rxItems.isNotEmpty)
                   ? ListView.builder(
-                controller: documentNonApproveViewModel.controller,
+                      controller: documentNonApproveViewModel.controller,
                       itemCount: documentNonApproveViewModel.rxItems.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -241,8 +241,7 @@ class DocumentNonApproveListItem extends StatelessWidget {
 }
 
 class FilterDocNonprocessBottomSheet extends StatelessWidget {
-  const FilterDocNonprocessBottomSheet(this.reportViewModel,
-      {Key? key})
+  const FilterDocNonprocessBottomSheet(this.reportViewModel, {Key? key})
       : super(key: key);
   final DocumentNonApproveViewModel? reportViewModel;
 
@@ -350,8 +349,8 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                   Obx(() => (menuController.listPriorityStatus.containsKey(2))
                       ? InkWell(
                           onTap: () {
-                            menuController
-                                .checkboxPriorityState(false, 2, "Cao;");
+                            menuController.checkboxPriorityState(
+                                false, 2, "Cao;");
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_active.png',
@@ -360,8 +359,8 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            menuController
-                                .checkboxPriorityState(true, 2, "Cao;");
+                            menuController.checkboxPriorityState(
+                                true, 2, "Cao;");
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_unactive.png',
@@ -391,8 +390,8 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                   Obx(() => (menuController.listPriorityStatus.containsKey(3))
                       ? InkWell(
                           onTap: () {
-                            menuController
-                                .checkboxPriorityState(false, 3, "Trung bình;");
+                            menuController.checkboxPriorityState(
+                                false, 3, "Trung bình;");
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_active.png',
@@ -401,8 +400,8 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            menuController
-                                .checkboxPriorityState(true, 3, "Trung bình;");
+                            menuController.checkboxPriorityState(
+                                true, 3, "Trung bình;");
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_unactive.png',
@@ -432,8 +431,8 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                   Obx(() => (menuController.listPriorityStatus.containsKey(4))
                       ? InkWell(
                           onTap: () {
-                            menuController
-                                .checkboxPriorityState(false, 4, "Thấp;");
+                            menuController.checkboxPriorityState(
+                                false, 4, "Thấp;");
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_active.png',
