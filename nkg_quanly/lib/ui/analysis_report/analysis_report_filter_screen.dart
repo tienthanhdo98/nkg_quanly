@@ -54,7 +54,7 @@ class AnalysisReportFilterScreen extends GetView {
                         const Spacer(),
                         InkWell(
                           onTap: () {
-                            analysisReportViewModel!.clearSelectedFilter();
+                            analysisReportViewModel.clearSelectedFilter();
                           },
                           child: const Text(
                             "Xóa bộ lọc",
@@ -205,7 +205,7 @@ class AnalysisReportFilterScreen extends GetView {
                                     height: MediaQuery.of(context).size.height *
                                         0.75,
                                     child: FilterSchoolYearBottomSheet(
-                                        analysisReportViewModel, ""));
+                                        analysisReportViewModel, ));
                               },
                             );
                           },
@@ -246,7 +246,165 @@ class AnalysisReportFilterScreen extends GetView {
   }
 }
 
-
+class ReportUniversalEducationFilterScreen extends GetView {
+  const ReportUniversalEducationFilterScreen({required this.analysisReportViewModel,required this.onClick, Key? key})
+      : super(key: key);
+  final AnalysisReportViewModel analysisReportViewModel;
+  final VoidCallback onClick;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: Column(
+            children: [
+              //header
+              Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Theme.of(context).dividerColor,
+                        ))),
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/icons/ic_arrow_back.png',
+                          width: 18,
+                          height: 18,
+                        ),
+                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        Text(
+                          "Bộ lọc",
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            analysisReportViewModel.clearSelectedFilter();
+                          },
+                          child: const Text(
+                            "Xóa bộ lọc",
+                            style: TextStyle(color: kBlueButton),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              //
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //loai khu vuc
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        child: Text(
+                          "Khu vực:",
+                          style: CustomTextStyle.grayColorTextStyle,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.65,
+                                    child: FilterRegionBottomSheet(
+                                        analysisReportViewModel, ""));
+                              },
+                            );
+                          },
+                          child: Obx(() => borderTextFilterEOffice(
+                              (analysisReportViewModel!
+                                  .rxSelectedRegion.value !=
+                                  "")
+                                  ? analysisReportViewModel!
+                                  .rxSelectedRegion.value
+                                  : "Chọn khu vực",
+                              context))),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        child: Text(
+                          "Năm học:",
+                          style: CustomTextStyle.grayColorTextStyle,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.75,
+                                    child: FilterSchoolYearBottomSheet(
+                                      analysisReportViewModel, ));
+                              },
+                            );
+                          },
+                          child: Obx(() => borderTextFilterEOffice(
+                              (analysisReportViewModel
+                                  .rxSelectedSchoolYear.value !=
+                                  "")
+                                  ? analysisReportViewModel
+                                  .rxSelectedSchoolYear.value
+                                  : "Chọn năm học",
+                              context))),
+                      const Spacer(),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                onClick();
+                                Get.back();
+                              },
+                              child: buttonShowListScreen("Tìm kiếm"),
+                              style: bottomButtonStyle,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
+  }
+}
 
 class AnalysisReportInfrastructureFilterScreen extends GetView {
   AnalysisReportInfrastructureFilterScreen(this.analysisReportViewModel, {Key? key})
@@ -417,7 +575,6 @@ class AnalysisReportInfrastructureFilterScreen extends GetView {
                                   : "Chọn tỉnh, thành phố",
                               context))),
 
-                      //thu tuc
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
                         child: Text(
@@ -441,7 +598,7 @@ class AnalysisReportInfrastructureFilterScreen extends GetView {
                                     height: MediaQuery.of(context).size.height *
                                         0.75,
                                     child: FilterSchoolYearBottomSheet(
-                                        analysisReportViewModel, ""));
+                                        analysisReportViewModel));
                               },
                             );
                           },
@@ -677,7 +834,7 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                       height: MediaQuery.of(context).size.height *
                                           0.75,
                                       child: FilterSchoolYearBottomSheet(
-                                          analysisReportViewModel, ""));
+                                          analysisReportViewModel));
                                 },
                               );
                             },
@@ -1103,7 +1260,7 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                                       height: MediaQuery.of(context).size.height *
                                           0.75,
                                       child: FilterSchoolYearBottomSheet(
-                                          analysisReportViewModel, ""));
+                                          analysisReportViewModel));
                                 },
                               );
                             },
@@ -1621,7 +1778,7 @@ class KhenThuongFilterScreen extends GetView {
                                     height: MediaQuery.of(context).size.height *
                                         0.75,
                                     child: FilterSchoolYearBottomSheet(
-                                        analysisReportViewModel, ""));
+                                        analysisReportViewModel));
                               },
                             );
                           },
@@ -2070,7 +2227,7 @@ class FilterRegionBottomSheet extends StatelessWidget {
                         changeValueSelectedFilter(
                             analysisReportViewModel!.rxSelectedRegion, region);
                         if (typeScreen == TYPE_SCREEN_EDUCATION) {
-                          analysisReportViewModel!.getEducationChart(
+                          analysisReportViewModel!.getUniversalEducationChart(
                               analysisReportViewModel!.rxSelectedRegionID.value,
                               analysisReportViewModel!
                                   .rxSelectedSchoolYearID.value);
@@ -2094,11 +2251,10 @@ class FilterRegionBottomSheet extends StatelessWidget {
 
 class FilterSchoolYearBottomSheet extends StatelessWidget {
   const FilterSchoolYearBottomSheet(
-      this.analysisReportViewModel, this.typeScreen,
+      this.analysisReportViewModel,
       {Key? key})
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
-  final String typeScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -2244,15 +2400,6 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                                         .rxSelectedSchoolYearID,
                                     "");
                               }
-                            }
-                            if (typeScreen == TYPE_SCREEN_EDUCATION) {
-                              analysisReportViewModel!.getEducationChart(
-                                  analysisReportViewModel!
-                                      .rxSelectedRegionID.value,
-                                  analysisReportViewModel!
-                                      .rxSelectedSchoolYearID.value);
-                              Get.back();
-                            } else {
                               Get.back();
                             }
                           },

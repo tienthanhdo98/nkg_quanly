@@ -52,7 +52,7 @@ class ProfilesProcedureScreen extends GetView {
                                               style: CustomTextStyle
                                                   .robotow400s12TextStyle),
                                          Obx(() => Text(
-                                           checkingNullNumberAndConvertToString(profilesProcedureViewModel.rxProfileProcedureStatistic.value.tongSoHoSo),
+                                           checkingNullNumberAndConvertToString(profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.tongSoHoSo),
                                            style: const TextStyle(
                                                color: kBlueButton,
                                                fontSize: 40,
@@ -96,7 +96,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value
+                                                checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value
                                                     .hoSoTiepNhanTrucTuyen
                                             ),
                                                 style: const TextStyle(
@@ -117,7 +117,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatistic.value
+                                                checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value
                                                     .hoSoTiepNhanTrucTiep
                                             ),
                                                 style: const TextStyle(
@@ -137,7 +137,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.hoSoDungHan
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.hoSoDungHan
                                               ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -156,7 +156,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.hoSoSomHan
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.hoSoSomHan
                                               ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -176,7 +176,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.hoSoChuaDenHan
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.hoSoChuaDenHan
                                               ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -195,7 +195,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                              checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatistic.value.hoSoQuaHan
+                                              checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.hoSoQuaHan
                                               ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -215,7 +215,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.choTiepNhan
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.choTiepNhan
                                               ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -234,7 +234,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.choBoSung
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.choBoSung
                                               ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -254,7 +254,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                              checkingNullNumberAndConvertToString(profilesProcedureViewModel.rxProfileProcedureStatistic.value.choTraKetQua
+                                              checkingNullNumberAndConvertToString(profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.choTraKetQua
                                               ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -273,7 +273,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.daBoSung
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.daBoSung
                                               ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -292,7 +292,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatistic.value.dangXuLy
+                                                checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.dangXuLy
                                                   ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -311,7 +311,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatistic.value.daXuLy
+                                                checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.daXuLy
                                                     ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -331,7 +331,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.choGiaiQuyet
+                                                checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.choGiaiQuyet
                                                    ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -351,7 +351,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                                checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.dangTrinhKy
+                                                checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.dangTrinhKy
                                                    ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -371,7 +371,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatistic.value.dangPhanCong
+                                              checkingNullNumberAndConvertToString( profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.dangPhanCong
                                                    ),
                                                 style: const TextStyle(
                                                     fontWeight:
@@ -391,7 +391,7 @@ class ProfilesProcedureScreen extends GetView {
                                                       .robotow400s12TextStyle),
                                             ),
                                             Text(
-                                              checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatistic.value.choPhanCongThuLy),
+                                              checkingNullNumberAndConvertToString(  profilesProcedureViewModel.rxProfileProcedureStatisticTotal.value.choPhanCongThuLy),
                                                 style: const TextStyle(
                                                     fontWeight:
                                                     FontWeight.bold,

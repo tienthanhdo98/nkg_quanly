@@ -52,7 +52,7 @@ class ReportPreSchoolScreen extends GetView {
                           width: 14,
                           height: 14,
                         ),
-                        value: (filterType?.isNotEmpty == true)
+                        value: (filterType.isNotEmpty == true)
                             ? filterType
                             : null,
                         underline: const SizedBox.shrink(),

@@ -278,12 +278,12 @@ class MenuListItem {
 List<MenuListItem> listMenuHome = [
   MenuListItem('Không gian số', 'assets/icons/ic_kgs.png', "", 1),
   MenuListItem('Hệ thống E-Office', 'assets/icons/ic_eoffice.png', "", 2),
-  MenuListItem('Hệ thống PMIS', 'assets/icons/ic_pmis.png', "", 3),
-  MenuListItem('Helpdesk', 'assets/icons/ic_helpdesk.png', "", 4),
   MenuListItem('Dịch vụ công hành chính', 'assets/icons/ic_dichvucong.png', "", 5),
-  MenuListItem('Phân tích hiển thị số', 'assets/icons/ic_phantich.png', "", 6),
   MenuListItem('Báo cáo bộ', 'assets/icons/ic_report_bo.png', "", 7),
+  MenuListItem('Hệ thống PMIS', 'assets/icons/ic_pmis.png', "", 3),
+  MenuListItem('Phân tích hiển thị số', 'assets/icons/ic_phantich.png', "", 6),
   MenuListItem('Tiện ích', 'assets/icons/ic_tienich.png', "", 8),
+  MenuListItem('Helpdesk', 'assets/icons/ic_helpdesk.png', "", 4),
 ];
 
 List<MenuListItem> list = [

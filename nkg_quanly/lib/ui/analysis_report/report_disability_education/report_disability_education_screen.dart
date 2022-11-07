@@ -228,67 +228,15 @@ class ReportDisabilityEducationScreen extends GetView {
                     child: Obx(() => (analysisReportViewModel
                                 .isLoadingData.value ==
                             false)
-                        ? Column(
-                            children: [
-                              countReport(analysisReportViewModel, context),
-                              Obx(() => ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: analysisReportViewModel
-                                      .rxListChartAnalysis.length,
-                                  itemBuilder: (context, index) {
-                                    var item = analysisReportViewModel
-                                        .rxListChartAnalysis[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 0, 0, 15),
-                                      child: borderItem(
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                15, 15, 15, 15),
-                                            child: Column(children: [
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Text(
-                                                      chartNameToFullNameChart(
-                                                          item.chartName!),
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline1,
-                                                    ),
-                                                  ),
-                                                  const Padding(
-                                                      padding:
-                                                          EdgeInsets.fromLTRB(
-                                                              20, 0, 0, 0)),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      var  curIndex = analysisReportViewModel!.rxTypeScreen.value;
-                                                       analysisReportViewModel.getDisabilityEducation(
-                                                           "${curIndex + 1}",
-                                                           analysisReportViewModel.rxSelectedSemesterId.value,
-                                                           analysisReportViewModel.rxSelectedRegionID.value,
-                                                           analysisReportViewModel.rxSelectedProvinceId.value,
-                                                           analysisReportViewModel.rxSelectedSchoolYearID.value,
-                                                           listReportGDKT[curIndex]);
-                                                    },
-                                                    child: Image.asset(
-                                                        "assets/icons/ic_refresh.png",
-                                                        width: 16,
-                                                        height: 16),
-                                                  ),
-                                                ],
-                                              ),
-                                              checkNameToShowDisabilityEducationChart(
-                                                  item.chartName!, item.items)
-                                            ]),
-                                          ),
-                                          context),
-                                    );
-                                  }))
-                            ],
-                          )
+                        ?
+                    Column(
+                      children: [
+                        Obx(() => countReport(
+                            analysisReportViewModel, context)),
+                        Obx(() => listChartDisEduScreen(
+                            analysisReportViewModel, context))
+                      ],
+                    )
                         : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [Padding(
@@ -665,4 +613,190 @@ Widget checkNameToShowDisabilityEducationChart(
       }
   }
   return chart;
+}
+
+Widget listChartDisEduScreen(
+    AnalysisReportViewModel analysisReportViewModel, BuildContext context) {
+  Widget? resWidget;
+  var listChart = analysisReportViewModel.rxListChartAnalysis;
+  if (analysisReportViewModel.rxTypeScreen.value == 0) {
+    resWidget = ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        chartWidget(listChart[0].chartName!, listChart[0].items!, context, "1"),
+        chartWidget(listChart[1].chartName!, listChart[1].items!, context, "1"),
+        chartWidget(listChart[2].chartName!, listChart[2].items!, context, "2"),
+      ],
+    );
+  } else if (analysisReportViewModel.rxTypeScreen.value == 1) {
+    resWidget = ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        chartWidget(listChart[1].chartName!, listChart[1].items!, context, "1"),
+        chartWidget(listChart[2].chartName!, listChart[2].items!, context, "1"),
+        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "1"),
+        chartWidget(listChart[4].chartName!, listChart[4].items!, context, "2"),
+        chartWidget(listChart[0].chartName!, listChart[0].items!, context, "2"),
+        chartWidget(listChart[6].chartName!, listChart[6].items!, context, "2"),
+    ]);
+  } else if (analysisReportViewModel.rxTypeScreen.value == 2) {
+    resWidget = ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      children: [
+        chartWidget(listChart[4].chartName!, listChart[4].items!, context, "1"),
+        chartWidget(listChart[1].chartName!, listChart[1].items!, context, "1"),
+        chartWidget(listChart[2].chartName!, listChart[2].items!, context, "1"),
+        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "1"),
+        chartWidget(listChart[5].chartName!, listChart[5].items!, context, "2"),
+        chartWidget(listChart[6].chartName!, listChart[6].items!, context, "2"),
+        chartWidget(listChart[0].chartName!, listChart[0].items!, context, "2"),
+        chartWidget(listChart[8].chartName!, listChart[8].items!, context, "2"),
+      ],
+    );
+  }
+  return resWidget!;
+}
+
+Widget chartWidget(String chartName, List<ChartChildItems> items,
+    BuildContext context, String type) {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
+    child: borderItem(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+          child: Column(children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    checkingStringNull(chartNameToNameSecondSchool(chartName)),
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
+                InkWell(
+                  onTap: () {},
+                  child: Image.asset("assets/icons/ic_refresh.png",
+                      width: 16, height: 16),
+                )
+              ],
+            ),
+            getChartByType(items, type)
+          ]),
+        ),
+        context),
+  );
+}
+
+
+Widget getChartByType(List<ChartChildItems> items, String type) {
+  if (type == "1") {
+    return AnalysisPieChartWidget(
+      key: UniqueKey(),
+      listChart: items,
+    );
+  } else {
+    return AnalysisCollumChartWidget(
+      key: UniqueKey(),
+      listChart: items,
+    );
+  }
+}
+
+String chartNameToNameSecondSchool(String chartName) {
+  var name = "";
+  switch (chartName) {
+    case "CoCauCoSoGDKTTheoLoaiTruong":
+      {
+        name = "Cơ cấu cơ sở giáo dục khuyết tật theo trung tâm";
+      }
+      break;
+    case "CoCauCoSoGDKTTheoDonViThanhLap":
+      {
+        name = "Cơ cấu cơ sở giáo dục khuyết theo đơn vị thành lập";
+      }
+      break;
+    case "BieuDoSoSanhCoSoGiaoDucThuongXuyen":
+      {
+        name = "Thống kê cơ sở giáo dục khuyết tật";
+      }
+      break;
+  //1
+    case "BieuDoCoCauHocSinhTheoDangKhuyetTat":
+      {
+        name = "Cơ cấu HS theo dạng khuyết tật";
+      }
+      break;
+    case "BieuDoCoCauHocSinhTheoMucDoKhuyetTat":
+      {
+        name = "Cơ cấu HS theo mức độ khuyết tật";
+      }
+      break;
+    case "BieuDoCoCauTreEmDuocCanThiepSomTheoDangKhuyetTat":
+      {
+        name = "Cơ cấu HS được can thiệp sớm theo dạng khuyết tật";
+      }
+      break;
+    case "BieuDoSoSanhHocSinhKhuyetTatTheoTinhTP":
+      {
+        name = "Thống kê HS khuyết tật theo tỉnh/ thành phố";
+      }
+      break;
+    case "BieuDoSoSanhHocSinhKhuyetTatTheoVung":
+      {
+        name = "Thống kê HS khuyết tật theo vùng";
+      }
+      break;
+    case "BieuDoSoSanhHocSinhKhuyetTatTheoNamHoc":
+      {
+        name = "Thống kê HS khuyết tật theo năm học";
+      }
+      break;
+  //2
+    case "BieuDoCoCauCanBoGiaoVienNhanVienLaNuTheoDanTocThieuSo":
+      {
+        name = "Cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số";
+      }
+      break;
+    case "BieuDoCoCauGiaoVienTheoTrinhDoDaoTao":
+      {
+        name = "Cơ cấu giáo viên theo trình độ đào tạo";
+      }
+      break;
+    case "BieuDoCoCauGiaoVienTheoDoTuoi":
+      {
+        name = "Cơ cấu giáo viên theo độ tuổi";
+      }
+      break;
+    case "BieuDoCoCauGiaoVienTheoDanhGiaChuanNgheNghiep":
+      {
+        name = "Cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp";
+      }
+      break;
+    case "BieuDoSoSanhSoLuongCanBoGiaoVienVaNhanVien":
+      {
+        name = "Thống kê số lượng cán bộ quản lý, giáo viên, nhân viên";
+      }
+      break;
+    case "BieuDoSoSanhSoLuongCanBoGiaoVienTheoTinhTP":
+      {
+        name = "Thống kê cán bộ quản lý, giáo viên, nhân viên theo tỉnh/ TP";
+      }
+      break;
+    case "BieuDoSoSanhSoLuongCanBoGiaoVienNhanVienKhuyetTatTheoVung":
+      {
+        name = "Thống kê cán bộ quản lý, giáo viên, nhân viên theo vùng";
+      }
+      break;
+    case "BieuDoSoSanhSoLuongCanBoGiaoVienNhanVienTheoNamHoc":
+      {
+        name = "Thống kê cán bộ quản lý, giáo viên, nhân viên theo năm";
+      }
+      break;
+
+  }
+  return name;
 }

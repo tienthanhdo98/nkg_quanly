@@ -118,14 +118,7 @@ class AnalysisReportViewModel extends GetxController {
     rxString.value = value;
   }
 
-  void getDataEducationScreen() async {
-    await getListFilter(getAnalysisReportRegion, rxListRegion);
-    await getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
-    rxSelectedRegion.value = rxListRegion.first.name!;
-    rxSelectedRegionID.value = rxListRegion.first.id!;
-    changeValueDataId(rxListRegion.first.id!, rxSelectedRegionID);
-    getEducationChart(rxListRegion.first.id!, "");
-  }
+
 
   void getListProvinceByRegion() {
     rxListProvinceByRegion.clear();
@@ -253,7 +246,6 @@ class AnalysisReportViewModel extends GetxController {
   }
 
   void getDataDisabilityEducation() async {
-    getDisabilityEducation("1", "", "", "", "", listReportGDKT[0]);
     await getListFilter(getAnalysisReportRegion, rxListRegion);
     rxSelectedRegion.value = rxListRegion.first.name!;
     rxSelectedRegionID.value = rxListRegion.first.id!;
@@ -299,16 +291,12 @@ class AnalysisReportViewModel extends GetxController {
     } else if (typeScreen == listReportGDKT[1]) {
       listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
       rxListChartAnalysis.value = listRes;
-      rxInfoReport.value = listRes[listRes.length - 1];
-      listRes.removeAt(listRes.length - 1);
-      listRes.removeWhere((element) => element.chartName == "Revoke");
+      rxInfoReport.value = listRes.where((element) => element.chartName == "HocSinhKhuyetTat").toList().first;
       changeStateLoadingData(false);
     } else if (typeScreen == listReportGDKT[2]) {
       listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
       rxListChartAnalysis.value = listRes;
-      rxInfoReport.value = listRes[listRes.length - 1];
-      listRes.removeAt(listRes.length - 1);
-      listRes.removeWhere((element) => element.chartName == "Revoke");
+      rxInfoReport.value = listRes.where((element) => element.chartName == "SoGiaoVienNghiHuuTuyenMoi").toList().first;;
       changeStateLoadingData(false);
     }
   }
@@ -367,7 +355,7 @@ class AnalysisReportViewModel extends GetxController {
     getListChartBeneficiary("", rxSelectedRegionID.value, "", "");
   }
 
-  Future<void> getListChartBeneficiary(
+  getListChartBeneficiary(
     String semesterId,
     String areaId,
     String provinceId,
@@ -875,7 +863,16 @@ class AnalysisReportViewModel extends GetxController {
   }
 
   //pho cao giao duc
-  Future<void> getEducationChart(String areaId, String schoolYearId) async {
+  void getDataUniversalEducationScreen() async {
+
+    await getListFilter(getAnalysisReportSchoolYear, rxListSchoolYear);
+    await getListFilter(getAnalysisReportRegion, rxListRegion);
+    rxSelectedRegion.value = rxListRegion.first.name!;
+    rxSelectedRegionID.value = rxListRegion.first.id!;
+    getUniversalEducationChart(rxSelectedRegionID.value, "");
+  }
+
+  Future<void> getUniversalEducationChart(String areaId, String schoolYearId) async {
     final url = Uri.parse(postEducationChart);
     print(areaId);
     print(schoolYearId);

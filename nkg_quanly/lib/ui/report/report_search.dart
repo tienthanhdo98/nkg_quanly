@@ -58,7 +58,7 @@ class ReportSearch extends GetView {
                                   maxLines: 1,
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: 'Tìm kiếm...',
+                                    hintText: 'Tìm kiếm báo cáo...',
                                   ),
                                   style: const TextStyle(color: Colors.black),
                                   onSubmitted: (value) {

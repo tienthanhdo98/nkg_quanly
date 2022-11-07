@@ -14,20 +14,21 @@ class ProfilesProcedureViewModel extends GetxController {
   Rx<int> selectedChartButton = 0.obs;
   Rx<int> selectedBottomButton = 0.obs;
 
-  Rx<DateTime> rxSelectedDay = dateNow.obs;
-
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   RxList<ProfileProcedureListItems> rxProfileProcedureListItems =
       <ProfileProcedureListItems>[].obs;
   Rx<ProfileProcedureStatistic> rxProfileProcedureStatistic =
       ProfileProcedureStatistic().obs;
+  Rx<ProfileProcedureStatistic> rxProfileProcedureStatisticTotal =
+      ProfileProcedureStatistic().obs;
   ScrollController controller = ScrollController();
   ProfileProcedureModel profileProcedureModel = ProfileProcedureModel();
+
 
   @override
   void onInit() {
     getFilterForChart(apiGetProfileProcedureChart0);
-    postProfileProcByWeek(formatDateToString(dateNow),formatDateToString(dateNow));
+    postProfileDefault();
     getAgenciesList();
     getBranchList();
     getStatusList();
@@ -57,6 +58,33 @@ class ProfilesProcedureViewModel extends GetxController {
     });
   }
 
+  Future<void> postProfileDefault() async {
+    final url = Uri.parse(apiPostProfileProcedureModel);
+    String json = '{"currentPage":1,"pageSize":10}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+    profileProcedureModel =
+        ProfileProcedureModel.fromJson(jsonDecode(response.body));
+    rxProfileProcedureListItems.value = profileProcedureModel.items!;
+    rxProfileProcedureStatistic.value = profileProcedureModel.statistic!;
+    rxProfileProcedureStatisticTotal.value = profileProcedureModel.statistic!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        print("loadmore day");
+        page++;
+        String json = '{"currentPage":$page,"pageSize":10}';
+        response = await http.post(url, headers: headers, body: json);
+        profileProcedureModel =
+            ProfileProcedureModel.fromJson(jsonDecode(response.body));
+        rxProfileProcedureListItems.addAll(profileProcedureModel.items!);
+        print("loadmore w at $page");
+      }
+    });
+  }
+
   Future<void> postProfileProcByWeek(String datefrom, String dateTo) async {
     final url = Uri.parse(apiPostProfileProcedureModel);
     print(datefrom);
@@ -76,7 +104,7 @@ class ProfilesProcedureViewModel extends GetxController {
     controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+        print("loadmore week");
         page++;
         String json =
             '{"currentPage":$page,"pageSize":10,"tuNgay":"$datefrom","denNgay":"$dateTo"}';
@@ -105,9 +133,9 @@ class ProfilesProcedureViewModel extends GetxController {
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
   Rx<String> rxSelectedAgencies = "".obs;
   Rx<String> rxSelectedBranch = "".obs;
-  Rx<String> rxSelectedStatus= "".obs;
-  Rx<String> rxSelectedProcedure= "".obs;
-  Rx<String> rxSelectedGroupProcedure= "".obs;
+  Rx<String> rxSelectedStatus = "".obs;
+  Rx<String> rxSelectedProcedure = "".obs;
+  Rx<String> rxSelectedGroupProcedure = "".obs;
   RxList<FilterProfileProcModel> rxListAgenciesList =
       <FilterProfileProcModel>[].obs;
   RxList<FilterProfileProcModel> rxListBranch = <FilterProfileProcModel>[].obs;
@@ -119,8 +147,7 @@ class ProfilesProcedureViewModel extends GetxController {
   RxList<String> rxListLevelFilter = <String>[].obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
 
-  void changeValueSelectedFilter(Rx<String> rxSelected,String value)
-  {
+  void changeValueSelectedFilter(Rx<String> rxSelected, String value) {
     rxSelected.value = value;
   }
 

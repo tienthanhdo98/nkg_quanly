@@ -27,14 +27,14 @@ class MyApp extends StatelessWidget {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeClass.lightTheme,
-            home: const LoginScreen2(),
+            home: const MainScreen(),
           );
         },
       ),
     );
   }
 }
-
+//LoginScreen2
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -71,7 +71,7 @@ class MainScreenStage extends State<MainScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
-            label: 'Biểu đồ',
+            label: 'Trang chủ',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
