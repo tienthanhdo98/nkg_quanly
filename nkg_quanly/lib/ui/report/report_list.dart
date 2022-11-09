@@ -13,10 +13,9 @@ import '../../model/report_model/report_model.dart';
 import '../theme/theme_data.dart';
 
 class ReportList extends GetView {
-  final String? header;
   final reportController = Get.put(ReportViewModel());
 
-  ReportList({Key? key, this.header}) : super(key: key);
+  ReportList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +25,9 @@ class ReportList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Báo cáo",
               ReportSearch(
-                header: header,
+                header: "Báo cáo",
               ),
               context),
           //date table

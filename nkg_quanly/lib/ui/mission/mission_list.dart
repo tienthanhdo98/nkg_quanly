@@ -12,11 +12,11 @@ import 'mission_viewmodel.dart';
 import 'misstion_search.dart';
 
 class MissionList extends GetView {
-  final String? header;
+
 
   final missionViewModel = Get.put(MissionViewModel());
 
-  MissionList({Key? key, this.header}) : super(key: key);
+  MissionList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +26,9 @@ class MissionList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Nhiệm vụ",
               MissionSearch(
-                header: header,
+                header: "Nhiệm vụ",
               ),
               context),
           //date table

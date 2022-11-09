@@ -55,17 +55,17 @@ class LoginState extends State<LoginScreen2> {
                 ..add(Factory<LongPressGestureRecognizer>(
                         () => LongPressGestureRecognizer())),
               javascriptMode: JavascriptMode.unrestricted,
-              // navigationDelegate: (NavigationRequest request) {
-              //   if (request.url.contains('?code=')) {
-              //     print('blocking navigation to $request}');
-              //     return NavigationDecision.prevent;
-              //   }
-              //   if (request.url.contains(loginViewModel.rxInfoLoginConfig.value.redirectUri!)) {
-              //     print('blocking navigation to $request}');
-              //     return NavigationDecision.prevent;
-              //   }
-              //   return NavigationDecision.navigate;
-              // },
+              navigationDelegate: (NavigationRequest request) {
+                if (request.url.contains('?code=')) {
+                  print('blocking navigation to $request}');
+                  return NavigationDecision.prevent;
+                }
+                if (request.url.contains(loginViewModel.rxInfoLoginConfig.value.redirectUri!)) {
+                  print('blocking navigation to $request}');
+                  return NavigationDecision.prevent;
+                }
+                return NavigationDecision.navigate;
+              },
               onWebResourceError : (value)
               {
                 print("error : ${value.description}");

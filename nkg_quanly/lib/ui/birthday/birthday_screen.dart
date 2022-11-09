@@ -11,12 +11,11 @@ import 'birthday_search.dart';
 import 'birthday_viewmodel.dart';
 
 class BirthDayScreen extends GetView {
-  String? header;
-  String? icon;
+
 
   final birthDayViewModel = Get.put(BirthDayViewModel());
 
-  BirthDayScreen({Key? key, this.header, this.icon}) : super(key: key);
+  BirthDayScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class BirthDayScreen extends GetView {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //header
-            headerWidgetSearch(header!, BirthDaySearch(), context),
+            headerWidgetSearch('Sinh nhật', BirthDaySearch(), context),
             //date table
             headerTableDatePicker(context, birthDayViewModel),
             //

@@ -28,6 +28,7 @@ import '../profile_work/profile_work_screen.dart';
 import '../report/report_in_menuhome/report_in_menuhome_list.dart';
 import '../utility/utility_screen.dart';
 import '../workbook/workbook_list.dart';
+import 'home_search.dart';
 import 'list_all_item_e_office.dart';
 import 'list_all_item_kgs.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -73,17 +74,22 @@ class HomeScreen extends GetView {
                         ],
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: kPink,
-                        border: Border.all(
-                          color: Colors.black,
+                    InkWell(
+                      onTap: (){
+                          Get.to(() => HomeSearch());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: kPink,
+                          border: Border.all(
+                            color: Colors.black,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        borderRadius: BorderRadius.circular(15),
+                        child: Image.asset('assets/icons/ic_search_white.png',
+                            width: 20, height: 20),
                       ),
-                      child: Image.asset('assets/icons/ic_search_white.png',
-                          width: 20, height: 20),
                     )
                   ],
                 ),
@@ -333,7 +339,7 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 5:
-      Get.to(() => DocumentOutList(header: header));
+      Get.to(() => DocumentOutList());
       break;
     case 6:
       Get.to(() => ProfileScreen(
@@ -355,8 +361,6 @@ void toScreen(int type, String? header, String? icon) {
       break;
     case 9:
       Get.to(() => BirthDayScreen(
-            header: header,
-            icon: icon,
           ));
       break;
     case 16:
@@ -378,14 +382,9 @@ void toScreen(int type, String? header, String? icon) {
           ));
       break;
     case 11:
-      Get.to(() => WorkBookList(header: header));
+      Get.to(() => WorkBookList());
       break;
-    // case 16:
-    //   Get.to(() => ReportScreen(
-    //         header: header,
-    //         icon: icon,
-    //       ));
-    //   break;
+
   }
 }
 
@@ -433,7 +432,7 @@ void toScreenEoffice(int type, String? header, String? icon) {
       break;
     case 3:
       Get.to(() => ProfileEOfficeList(
-            header: header,
+
           ));
       break;
     case 4:

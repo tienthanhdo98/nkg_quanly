@@ -41,7 +41,7 @@ class MissionCommentsDetail extends GetView {
                   Expanded(
                       child: InkWell(
                     onTap: () {
-                      Get.offAll(() => MissionList(header: "Nhiện vụ"));
+                      Get.offAll(() => MissionList());
                     },
                     child: Align(
                         alignment: Alignment.centerRight,

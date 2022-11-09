@@ -12,11 +12,11 @@ import '../theme/theme_data.dart';
 import 'document_unprocess_viewmodel.dart';
 
 class DocumentUnprocessList extends GetView {
-  final String? header;
+
 
   final documentUnprocessViewModel = Get.put(DocumentUnprocessViewModel());
 
-  DocumentUnprocessList({this.header});
+  DocumentUnprocessList();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class DocumentUnprocessList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Văn bản đến chưa xử lý",
               DocumentnonapprovedSearch(
                 isApprove: true,
               ),

@@ -17,6 +17,7 @@ class CalendarWorkScreen extends GetView {
 
   @override
   Widget build(BuildContext context) {
+    calendarWorkController.postCalendarWorkAll();
     return Scaffold(
       body: SafeArea(
         child: Column(

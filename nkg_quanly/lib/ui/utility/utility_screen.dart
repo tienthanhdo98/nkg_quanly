@@ -78,7 +78,7 @@ void toUitilityScreen(int type, String? header, String? icon) {
       Get.to(() => IndividualContactsList(header: header));
       break;
       case 5:
-      Get.to(() => WorkBookList(header: header));
+      Get.to(() => WorkBookList());
       break;
       case 6:
       Get.to(() => GroupWorkBookList(header: header));

@@ -23,6 +23,7 @@ import '../../model/profile_work/profile_work_model.dart';
 import '../../model/proflie_model/profile_model.dart';
 import '../../model/report_model/report_model.dart';
 import '../../model/workbook/workbook_model.dart';
+import '../home/home_screen.dart';
 
 class SearchController extends GetxController {
   ScrollController controller = ScrollController();
@@ -38,7 +39,7 @@ class SearchController extends GetxController {
       <ProfileProcedureListItems>[].obs;
   RxList<DocumentInListItems> listData = <DocumentInListItems>[].obs;
   RxList<HelpDeskListItems> rxHelpdeskListItems = <HelpDeskListItems>[].obs;
-
+  RxList<MenuListItem> rxListSearchHome = <MenuListItem>[].obs;
   Rx<bool> isLoading = false.obs;
   void changeLoadingState(bool value)
   {

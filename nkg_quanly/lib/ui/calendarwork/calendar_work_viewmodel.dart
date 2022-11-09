@@ -22,7 +22,7 @@ class CalendarWorkViewModel extends GetxController {
   @override
   void onInit() {
    // postCalendarWorkByDay(formatDateToString(dateNow));
-    postCalendarWorkAll();
+
     super.onInit();
   }
 
@@ -65,7 +65,7 @@ class CalendarWorkViewModel extends GetxController {
 
   Future<void> postCalendarWorkByDay(String day) async {
     final url = Uri.parse(apiPostCalendarWork);
-    print('loading');
+    print('loading calen work by day');
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     calendarWorkModel = CalendarWorkModel.fromJson(jsonDecode(response.body));

@@ -12,10 +12,10 @@ import '../theme/theme_data.dart';
 import 'add_new_work_screen.dart';
 
 class WorkBookList extends GetView {
-  String? header;
+
   final workBookViewModel = Get.put(WorkBookViewModel());
 
-  WorkBookList({Key? key, this.header}) : super(key: key);
+  WorkBookList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class WorkBookList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Sổ tay công việc",
               WorkbookSearch(
                   workBookViewModel
               ),
@@ -539,7 +539,7 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
               color: kBlueButton,
             ),
             // Tất cả van de trinh
-            FilterAllItem( "Tất cả độ quan trọng", 1,workBookViewModel!.mapAllFilter),
+            FilterAllItem("Tất cả độ quan trọng", 1,workBookViewModel!.mapAllFilter),
             const Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Divider(

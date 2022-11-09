@@ -13,11 +13,11 @@ import '../../theme/theme_data.dart';
 import '../profile_search.dart';
 
 class ProfileEOfficeList extends GetView {
-  final String? header;
+
 
   final profileViewModel = Get.put(ProfileViewModel());
 
-  ProfileEOfficeList({this.header});
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class ProfileEOfficeList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+             "Hồ sơ trình",
               ProfileSearch(
                   profileViewModel
               ),

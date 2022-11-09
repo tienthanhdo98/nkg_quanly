@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeClass.lightTheme,
-            home: const LoginScreen2(),
+            home: const MainScreen(),
           );
         },
       ),

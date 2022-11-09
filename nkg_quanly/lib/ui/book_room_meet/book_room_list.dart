@@ -11,11 +11,11 @@ import '../../model/meeting_room/meeting_room_model.dart';
 import 'booking_meeting_search.dart';
 
 class BookRoomList extends GetView {
-  String? header;
+
 
   final roomMeetingViewModel = Get.put(RoomMeetingViewModel());
 
-  BookRoomList({this.header});
+  BookRoomList();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class BookRoomList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Lịch họp",
               BookingMeetingSearch(
                   roomMeetingViewModel
               ),
@@ -38,7 +38,7 @@ class BookRoomList extends GetView {
             child: Row(
               children: [
                 Text(
-                  'Tất cả phòng họp',
+                  "Lịch họp",
                   style: Theme.of(context).textTheme.headline5,
                 ),
               ],

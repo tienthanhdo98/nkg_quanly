@@ -18,7 +18,7 @@ class DocumentOutViewModel extends GetxController {
   ScrollController controller = ScrollController();
   @override
   void onInit() {
-    getDocumentOutDefault();
+
     super.onInit();
   }
 

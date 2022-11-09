@@ -13,13 +13,12 @@ import 'document_nonapproved_search.dart';
 import 'document_nonapproved_viewmodel.dart';
 
 class DocumentNonapprovedList extends GetView {
-  final String? header;
 
   final documentNonApproveViewModel = Get.put(DocumentNonApproveViewModel());
 
   final bool isNonapproved;
 
-  DocumentNonapprovedList({this.header, this.isNonapproved = true});
+  DocumentNonapprovedList({ this.isNonapproved = true});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class DocumentNonapprovedList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Văn bản đến chưa bút phê",
               DocumentnonapprovedSearch(
                 isApprove: isNonapproved,
               ),

@@ -14,23 +14,24 @@ import 'doc_out_viewmodel.dart';
 import 'document_out_search.dart';
 
 class DocumentOutList extends GetView {
-  final String? header;
+
 
   final documentOutViewModel = Get.put(DocumentOutViewModel());
 
-  DocumentOutList({this.header});
+  DocumentOutList();
 
   @override
   Widget build(BuildContext context) {
+    documentOutViewModel. getDocumentOutDefault();
     return Scaffold(
       body: SafeArea(
           child: Column(
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Văn bản đi chờ phát hành",
               DocumenOutSearch(
-                header: header,
+                header:   "Văn bản đi chờ phát hành",
               ),
               context),
           //date table
@@ -180,11 +181,13 @@ class DocOutListItem extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline3,
                 ),
               ),
+              Padding(padding: EdgeInsets.fromLTRB(15, 0, 0, 0)),
               Align(
                   alignment: Alignment.centerRight,
                   child: priorityWidget(docModel!)),
             ],
           ),
+          const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
           signWidget(docModel!),
           SizedBox(
             height: 80,

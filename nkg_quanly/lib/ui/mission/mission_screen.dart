@@ -184,7 +184,7 @@ class MissionScreen extends GetView {
               height: 50,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: listButtonChart.length,
+                  itemCount: listButtonMissionChart.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
@@ -200,7 +200,7 @@ class MissionScreen extends GetView {
                           missionViewModel
                               .selectedChartButton(index);
                         },
-                        child: Text(listButtonChart[index]),
+                        child: Text(listButtonMissionChart[index]),
                       )),
                     );
                   }),
@@ -257,4 +257,4 @@ Widget chartItemForMission(int index, MissionViewModel missionViewModel) {
   }
 }
 
-List listButtonChart = ["Đơn vị ban hành", "Mức độ", "Hạn xử lý", "Ngày đến"];
+List listButtonMissionChart = ["Đơn vị ban hành", "Mức độ", "Hạn xử lý", "Ngày đến"];

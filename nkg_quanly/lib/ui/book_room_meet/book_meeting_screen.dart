@@ -123,9 +123,7 @@ class BookMeetingScreen extends GetView {
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.to(() => BookRoomList(
-                            header: header,
-                          ));
+                      Get.to(() => BookRoomList());
                     },
                     child: buttonShowListScreen("Xem danh sách Phòng họp"),
                     style: bottomButtonStyle,

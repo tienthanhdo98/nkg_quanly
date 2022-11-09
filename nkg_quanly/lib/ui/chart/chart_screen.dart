@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/ui/chart/sline_chart2.dart';
+import 'package:nkg_quanly/const/const.dart';
+import 'package:nkg_quanly/ui/chart/calendar_work_widget.dart';
+import 'package:nkg_quanly/ui/chart/procedure_profile_widget.dart';
+import 'package:nkg_quanly/ui/chart/profile%20_widget.dart';
+import 'package:nkg_quanly/ui/chart/report_widget.dart';
+import 'package:nkg_quanly/ui/chart/workbook_widget.dart';
+import 'birthday_widget.dart';
+import 'booking_room_widget.dart';
+import 'document_nonapproved _widget.dart';
+import 'document_out_widget.dart';
+import 'document_unprocess _widget.dart';
+import 'mission _widget.dart';
 
-import '../chart/column_chart2.dart';
-import '../chart/doughnut_chart.dart';
-import '../chart/work_schedule.dart';
+
 
 class ChartScreen extends StatelessWidget {
   const ChartScreen({Key? key}) : super(key: key);
@@ -12,7 +21,8 @@ class ChartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Container(
+          color: kDarkGray,
           child: Column(
             children: [
               Container(
@@ -37,10 +47,25 @@ class ChartScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const WorkSchedule(),
-              SLineChart2(),
-              DoughnutChart(),
-              ColumnChart2()
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      CalendarWorkWidget(),
+                      DocumentUnProcessWidget(),
+                      DocumentNonapprovedWidget(),
+                      ProfileWidget(),
+                      DocumentOutWidget(),
+                      BookingRoomWidget(),
+                      MissionWidget(),
+                      ProcedureProfileWidget(),
+                      ReportWidget(),
+                      WorkBookWidget(),
+                      BirthdayWidget()
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

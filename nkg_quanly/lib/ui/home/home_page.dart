@@ -4,7 +4,7 @@ import '../chart/collum_red_chart.dart';
 import '../chart/column_chart.dart';
 import '../chart/pie_chart.dart';
 import '../chart/sline_chart.dart';
-import '../chart/work_schedule.dart';
+import '../chart/calendar_work_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,13 +40,13 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          const WorkSchedule(),
-          const ColumnRedChart(),
-          const PieChart(),
-          const ColumnChart(),
-          const SLineChart(),
-          const WorkSchedule(),
-          const PieChart(),
+          CalendarWorkWidget(),
+           ColumnRedChart(),
+           PieChart(),
+           ColumnChart(),
+           SLineChart(),
+          CalendarWorkWidget(),
+           PieChart(),
         ],
       ),
     );

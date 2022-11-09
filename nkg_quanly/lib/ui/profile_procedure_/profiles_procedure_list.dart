@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_proc_detail.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_proc_search.dart';
@@ -12,11 +11,9 @@ import '../../const/widget.dart';
 import '../../model/profile_procedure_model/profile_procedure_model.dart';
 
 class ProfilesProcedureList extends GetView {
-  final String? header;
 
   final profilesProcedureController = Get.put(ProfilesProcedureViewModel());
 
-  ProfilesProcedureList({this.header});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +23,7 @@ class ProfilesProcedureList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Hồ sơ thủ tục hành chính",
               ProfileProcSearch(
               ),
               context),

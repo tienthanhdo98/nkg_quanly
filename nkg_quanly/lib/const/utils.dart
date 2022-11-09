@@ -123,7 +123,6 @@ String convertDateToViDate() {
 
     var strDate =
         "${converWeekday(thu)}, ngày $ngay tháng $thang Năm ${caluAsianYear(nam)}";
-
     return strDate;
   } catch (_) {
     return "";
@@ -138,6 +137,20 @@ String convertDateToWeekDayFormat(DateTime value) {
     var nam = value.year;
 
     var strDate = "${converWeekday(thu)}, $ngay tháng $thang Năm $nam";
+
+    return strDate;
+  } catch (_) {
+    return "";
+  }
+}
+String convertDateToWidget(DateTime value) {
+  try {
+    var thu = value.weekday;
+    var ngay = value.day;
+    var thang = value.month;
+    var nam = value.year;
+
+    var strDate = "${converWeekday(thu)}, $ngay/$thang/$nam";
 
     return strDate;
   } catch (_) {

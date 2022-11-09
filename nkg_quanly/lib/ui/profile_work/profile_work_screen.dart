@@ -5,6 +5,8 @@ import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 import '../../const/const.dart';
 import '../../const/widget.dart';
 import '../../model/document/document_statistic_model.dart';
+
+
 import '../chart/column_chart2.dart';
 import '../document_nonapproved/document_nonapproved_list.dart';
 import '../theme/theme_data.dart';
@@ -144,54 +146,6 @@ class ProfileWorkScreen extends GetView {
                                   ],
                                 ),
                               ),
-                              // Row(
-                              //   children: [
-                              //     Column(
-                              //       crossAxisAlignment:
-                              //       CrossAxisAlignment.start,
-                              //       children: [
-                              //         const Text('Đã HT'),
-                              //         Text(
-                              //             '300',
-                              //             style: const TextStyle(
-                              //                 fontWeight: FontWeight.bold,
-                              //                 fontSize: 20))
-                              //       ],
-                              //     ),
-                              //     const Padding(
-                              //         padding:
-                              //         EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                              //     Column(
-                              //       crossAxisAlignment:
-                              //       CrossAxisAlignment.start,
-                              //       children: [
-                              //         const Text('Quá hạn xủ lý'),
-                              //         Text(
-                              //           '204',
-                              //           style: const TextStyle(
-                              //               fontWeight: FontWeight.bold,
-                              //               fontSize: 20),
-                              //         )
-                              //       ],
-                              //     ),
-                              //     const Padding(
-                              //         padding:
-                              //         EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                              //     Column(
-                              //       crossAxisAlignment:
-                              //       CrossAxisAlignment.start,
-                              //       children: [
-                              //         const Text('Trong hạn xử lý'),
-                              //         Text(
-                              //           '400',
-                              //           style: const TextStyle(
-                              //               fontWeight: FontWeight.bold,
-                              //               fontSize: 20),
-                              //         )
-                              //       ],
-                              //     ),
-                              //   ],
-                              // ),
                             ]),
                           ),
                           context),
@@ -211,7 +165,6 @@ class ProfileWorkScreen extends GetView {
                         child: ElevatedButton(
                           onPressed: () {
                             Get.to(() => DocumentNonapprovedList(
-                                  header: header,
                                 ));
                           },
                           child: Text('Xem danh sách $header'),

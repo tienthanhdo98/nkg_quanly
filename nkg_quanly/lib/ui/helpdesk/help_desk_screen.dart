@@ -179,7 +179,7 @@ class HelpDeskScreen extends GetView {
                             ),
                           )),
                       Obx(
-                        () => chartItemForProfile(
+                        () => chartItemForHelpDesk(
                           helpdeskViewModel.selectedChartButton.value,
                           helpdeskViewModel,
                         ),
@@ -211,7 +211,7 @@ class HelpDeskScreen extends GetView {
   }
 }
 
-Widget chartItemForProfile(int index, HelpdeskViewModel helpdeskViewModel) {
+Widget chartItemForHelpDesk(int index, HelpdeskViewModel helpdeskViewModel) {
   if (helpdeskViewModel.rxHelpdeskListStatistic.isNotEmpty) {
     if (index == 0) {
       return Obx(() => HelpHeskChartWidget(
