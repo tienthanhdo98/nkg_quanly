@@ -10,11 +10,12 @@ import '../../const/widget.dart';
 import '../theme/theme_data.dart';
 
 class PMisScreen extends GetView {
-  final String? header;
+
 
   final pmisViewModel = Get.put(PmisViewModel());
 
-  PMisScreen({Key? key, this.header}) : super(key: key);
+  PMisScreen({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class PMisScreen extends GetView {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              headerWidget(header!, context),
+              headerWidget("Tổng hợp thống kê hệ thống PMIS", context),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                 child: Row(
@@ -109,7 +110,7 @@ class PMisScreen extends GetView {
                               pmisViewModel);
                         },
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                           child: Image.asset(
                               "assets/icons/ic_refresh.png",
                               width: 18,

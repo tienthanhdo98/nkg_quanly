@@ -45,10 +45,11 @@ class ProfileViewModel extends GetxController {
 
   @override
   void onInit() {
+    getFilterForChart("${apiGetProfileFilter}0");
     getFilterUnitEditor();
     getFilterTypeSubmission();
     getFilterSubmissProblem();
-    getFilterForChart("${apiGetProfileFilter}0");
+
 
     postProfileStatistic();
 

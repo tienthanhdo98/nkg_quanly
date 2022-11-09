@@ -114,12 +114,6 @@ class AnalysisReportViewModel extends GetxController {
     rxfilterType.value = value;
   }
 
-  void changeValueDataId(String value, Rx<String> rxString) {
-    rxString.value = value;
-  }
-
-
-
   void getListProvinceByRegion() {
     rxListProvinceByRegion.clear();
     mapAllFilter.clear();

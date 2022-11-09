@@ -17,6 +17,8 @@ class ProfileEOfficeList extends GetView {
 
   final profileViewModel = Get.put(ProfileViewModel());
 
+  ProfileEOfficeList({Key? key}) : super(key: key);
+
 
 
   @override

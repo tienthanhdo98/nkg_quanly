@@ -15,6 +15,7 @@ class CalendarWorkEOfficeScreen extends GetView {
 
   @override
   Widget build(BuildContext context) {
+    calendarWorkController.postCalendarWorkAll();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -24,22 +25,6 @@ class CalendarWorkEOfficeScreen extends GetView {
             headerWidgetSearch("Lịch làm việc", CalendarWorkSearch(), context),
             //date table
             headerTableDatePicker(context, calendarWorkController),
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       Text(
-            //         "Tất cả lịch làm việc của tôi",
-            //         style: Theme.of(context).textTheme.headline5,
-            //       ),
-            //       const Text(
-            //         "1292",
-            //         style: textBlueCountTotalStyle,
-            //       )
-            //     ],
-            //   ),
-            // ),
             //list work
             Container(
               color: Theme.of(context).cardColor,

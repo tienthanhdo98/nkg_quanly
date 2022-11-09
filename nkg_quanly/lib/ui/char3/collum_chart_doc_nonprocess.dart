@@ -22,7 +22,6 @@ class CollumChartReportState extends State<CollumChartWidget> {
   void initState() {
     documentFilterModel = widget.documentFilterModel;
     List<FilterItems> listQuantity = documentFilterModel!.items!;
-    print(listQuantity.length);
     for (int i = 0; i < listQuantity.length; i++) {
       listCharData.add(
         ChartSampleData(
@@ -52,7 +51,7 @@ class CollumChartReportState extends State<CollumChartWidget> {
         plotAreaBorderWidth: 0,
         primaryXAxis: CategoryAxis(
           labelRotation: -60,
-          labelStyle: TextStyle(),
+          labelStyle: const TextStyle(),
           majorGridLines: const MajorGridLines(width: 1),
         ),
         primaryYAxis: NumericAxis(

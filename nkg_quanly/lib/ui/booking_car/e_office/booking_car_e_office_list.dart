@@ -12,11 +12,11 @@ import '../booking_car_search.dart';
 import '../booking_car_viewmodel.dart';
 
 class BookingEOfficeCarList extends GetView {
-  String? header;
+
 
   final bookCarViewModel = Get.put(BookingCarViewModel());
 
-  BookingEOfficeCarList({this.header});
+  BookingEOfficeCarList();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class BookingEOfficeCarList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Bố trí và điều động xe ô tô",
               BookingCarSearch(
                   bookCarViewModel
               ),

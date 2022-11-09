@@ -12,13 +12,13 @@ import 'birthday_viewmodel.dart';
 
 class BirthDayScreen extends GetView {
 
-
   final birthDayViewModel = Get.put(BirthDayViewModel());
 
   BirthDayScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    birthDayViewModel.postBirthDayDefault();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -60,6 +60,7 @@ class BirthDayScreen extends GetView {
                 )),
             Expanded(
                 child: Obx(() => ListView.builder(
+                  controller: birthDayViewModel.controller,
                     itemCount: birthDayViewModel.rxBirthDayListItems.length,
                     itemBuilder: (context, index) {
                       return InkWell(

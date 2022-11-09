@@ -4,13 +4,11 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/ui/report/pie_chart_report.dart';
 import 'package:nkg_quanly/ui/report/report_in_menuhome/report_in_menuhome_list.dart';
-import 'package:nkg_quanly/ui/report/report_list.dart';
 import 'package:nkg_quanly/ui/report/report_viewmodel.dart';
 
 import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/widget.dart';
-import '../../model/report_model/report_statistic_model.dart';
 import '../theme/theme_data.dart';
 import 'collum_chart_report.dart';
 

@@ -188,15 +188,21 @@ class DocumentNonApprovedScreen extends GetView {
 
 Widget chartItemForDocApprove(
     int index, DocumentNonApproveViewModel documentNonApproveViewModel) {
-  if (index == 0) {
-    return Obx(() => PieChartWidget(
-        key: UniqueKey(),
-        documentFilterModel:
-            documentNonApproveViewModel.rxDocumentFilterModel.value));
+  if (documentNonApproveViewModel.rxDocumentFilterModel.value.items?.isNotEmpty == true) {
+    if(index == 0) {
+      return Obx(() =>
+          PieChartWidget(
+              key: UniqueKey(),
+              documentFilterModel:
+              documentNonApproveViewModel.rxDocumentFilterModel.value));
+    }
+    else{
+      return Obx(() => CollumChartWidget(
+          key: UniqueKey(),
+          documentFilterModel:
+          documentNonApproveViewModel.rxDocumentFilterModel.value));
+    }
   } else {
-    return Obx(() => CollumChartWidget(
-        key: UniqueKey(),
-        documentFilterModel:
-            documentNonApproveViewModel.rxDocumentFilterModel.value));
+      return const SizedBox.shrink();
   }
 }

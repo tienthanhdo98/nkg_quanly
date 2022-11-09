@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
@@ -13,11 +14,13 @@ class BirthDayViewModel extends GetxController {
   Rx<DateTime> rxSelectedDay = dateNow.obs;
 
   RxList<BirthDayListItems> rxBirthDayListItems = <BirthDayListItems>[].obs;
+  RxList<BirthDayListItems> rxBirthDayListItemsInCurDay = <BirthDayListItems>[].obs;
   Rx<BirthDayModel> rxBirthDayModel = BirthDayModel().obs;
+  ScrollController controller = ScrollController();
 
   @override
   void onInit() {
-    postBirthDayByDay(formatDateToString(dateNow));
+    //postBirthDayDefault();
     super.onInit();
   }
 
@@ -31,6 +34,54 @@ class BirthDayViewModel extends GetxController {
   }
 
   //birthday
+  Future<void> getBirthDayInHomeScreen(String day) async {
+    final url = Uri.parse(apiPostBirthDay);
+    print('loading');
+    String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+    print(response.body);
+    BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
+    rxBirthDayListItemsInCurDay.value = res.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = BirthDayModel.fromJson(jsonDecode(response.body));
+        rxBirthDayListItemsInCurDay.addAll(res.items!);
+      }
+    });
+  }
+  Future<void> postBirthDayDefault() async {
+    final url = Uri.parse(apiPostBirthDay);
+    print('loadingBirthDayDefault ');
+    String json = '{"pageIndex":1,"pageSize":10}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+    print(response.body);
+    BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
+    rxBirthDayListItems.value = res.items!;
+    rxBirthDayModel.value = res;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10}';
+        http.Response response =
+            await http.post(url, headers: headers, body: json);
+        res = BirthDayModel.fromJson(jsonDecode(response.body));
+        rxBirthDayListItems.addAll(res.items!);
+      }
+    });
+  }
+
   Future<void> postBirthDayByDay(String day) async {
     final url = Uri.parse(apiPostBirthDay);
     print('loading');
@@ -40,6 +91,20 @@ class BirthDayViewModel extends GetxController {
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
     rxBirthDayListItems.value = res.items!;
     rxBirthDayModel.value = res;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = BirthDayModel.fromJson(jsonDecode(response.body));
+        rxBirthDayListItems.addAll(res.items!);
+      }
+    });
   }
 
   Future<void> postBirthDayByWeek(String datefrom, String dateTo) async {
@@ -52,6 +117,21 @@ class BirthDayViewModel extends GetxController {
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
     rxBirthDayListItems.value = res.items!;
     rxBirthDayModel.value = res;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = BirthDayModel.fromJson(jsonDecode(response.body));
+        rxBirthDayListItems.addAll(res.items!);
+      }
+    });
   }
 
   Future<void> postBirthDayByMonth() async {
@@ -63,5 +143,20 @@ class BirthDayViewModel extends GetxController {
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
     rxBirthDayListItems.value = res.items!;
     rxBirthDayModel.value = res;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String jsonGetByMonth =
+            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = BirthDayModel.fromJson(jsonDecode(response.body));
+        rxBirthDayListItems.addAll(res.items!);
+      }
+    });
   }
 }

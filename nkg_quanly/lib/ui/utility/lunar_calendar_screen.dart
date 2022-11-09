@@ -6,12 +6,12 @@ import '../../const/widget.dart';
 import '../profile/profile_viewmodel.dart';
 
 class LunarCalendarScreen extends GetView {
-  final String? header;
+
 
 
   final profileViewModel = Get.put(ProfileViewModel());
 
-  LunarCalendarScreen({Key? key, this.header}) : super(key: key);
+  LunarCalendarScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class LunarCalendarScreen extends GetView {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              headerWidget(header!, context),
+              headerWidget("Lịch âm", context),
               Expanded(
                 child: Container(
                   color: kgray,

@@ -16,10 +16,10 @@ import 'contact_individual_viewmodel.dart';
 import 'individual_contact_search.dart';
 
 class IndividualContactsList extends GetView {
-  String? header;
+
   final contactIndividualViewModel = Get.put(ContactIndividualViewModel());
 
-  IndividualContactsList({Key? key, this.header}) : super(key: key);
+  IndividualContactsList({Key? key}) : super(key: key);
 //Center(child: const CircularProgressIndicator())
   @override
   Widget build(BuildContext context) {

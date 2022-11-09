@@ -12,10 +12,9 @@ import 'contact_organization_viewmodel.dart';
 import 'organ_contact_search.dart';
 
 class GroupContactsList extends GetView {
-  final String? header;
   final contactOrganizationViewModel = Get.put(ContactOrganizationViewModel());
 
-  GroupContactsList({Key? key, this.header}) : super(key: key);
+  GroupContactsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

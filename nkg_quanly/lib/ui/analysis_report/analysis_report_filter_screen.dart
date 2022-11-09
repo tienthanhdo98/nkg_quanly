@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/ui/analysis_report/report_education_quality/report_education_quality_screen.dart';
-
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
@@ -13,10 +11,12 @@ import 'analysis_report_viewmodel.dart';
 const TYPE_SCREEN_EDUCATION = "education";
 
 class AnalysisReportFilterScreen extends GetView {
-  const AnalysisReportFilterScreen({required this.analysisReportViewModel,required this.onClick, Key? key})
+  const AnalysisReportFilterScreen(
+      {required this.analysisReportViewModel, required this.onClick, Key? key})
       : super(key: key);
   final AnalysisReportViewModel analysisReportViewModel;
   final VoidCallback onClick;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +46,8 @@ class AnalysisReportFilterScreen extends GetView {
                           width: 18,
                           height: 18,
                         ),
-                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                         Text(
                           "Bộ lọc",
                           style: Theme.of(context).textTheme.headline1,
@@ -101,10 +102,10 @@ class AnalysisReportFilterScreen extends GetView {
                             );
                           },
                           child: Obx(() => borderTextFilterEOffice(
-                              (analysisReportViewModel!
+                              (analysisReportViewModel
                                           .rxSelectedSemester.value !=
                                       "")
-                                  ? analysisReportViewModel!
+                                  ? analysisReportViewModel
                                       .rxSelectedSemester.value
                                   : "Chọn học kì",
                               context))),
@@ -137,10 +138,9 @@ class AnalysisReportFilterScreen extends GetView {
                             );
                           },
                           child: Obx(() => borderTextFilterEOffice(
-                              (analysisReportViewModel!
-                                          .rxSelectedRegion.value !=
+                              (analysisReportViewModel.rxSelectedRegion.value !=
                                       "")
-                                  ? analysisReportViewModel!
+                                  ? analysisReportViewModel
                                       .rxSelectedRegion.value
                                   : "Chọn khu vực",
                               context))),
@@ -173,10 +173,10 @@ class AnalysisReportFilterScreen extends GetView {
                             );
                           },
                           child: Obx(() => borderTextFilterEOffice(
-                              (analysisReportViewModel!
+                              (analysisReportViewModel
                                           .rxSelectedProvince.value !=
                                       "")
-                                  ? analysisReportViewModel!
+                                  ? analysisReportViewModel
                                       .rxSelectedProvince.value
                                   : "Chọn tỉnh, thành phố",
                               context))),
@@ -205,15 +205,16 @@ class AnalysisReportFilterScreen extends GetView {
                                     height: MediaQuery.of(context).size.height *
                                         0.75,
                                     child: FilterSchoolYearBottomSheet(
-                                        analysisReportViewModel, ));
+                                      analysisReportViewModel,
+                                    ));
                               },
                             );
                           },
                           child: Obx(() => borderTextFilterEOffice(
-                              (analysisReportViewModel!
+                              (analysisReportViewModel
                                           .rxSelectedSchoolYear.value !=
                                       "")
-                                  ? analysisReportViewModel!
+                                  ? analysisReportViewModel
                                       .rxSelectedSchoolYear.value
                                   : "Chọn năm học",
                               context))),
@@ -247,10 +248,12 @@ class AnalysisReportFilterScreen extends GetView {
 }
 
 class ReportUniversalEducationFilterScreen extends GetView {
-  const ReportUniversalEducationFilterScreen({required this.analysisReportViewModel,required this.onClick, Key? key})
+  const ReportUniversalEducationFilterScreen(
+      {required this.analysisReportViewModel, required this.onClick, Key? key})
       : super(key: key);
   final AnalysisReportViewModel analysisReportViewModel;
   final VoidCallback onClick;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -264,9 +267,9 @@ class ReportUniversalEducationFilterScreen extends GetView {
                     color: Theme.of(context).cardColor,
                     border: Border(
                         bottom: BorderSide(
-                          width: 1,
-                          color: Theme.of(context).dividerColor,
-                        ))),
+                      width: 1,
+                      color: Theme.of(context).dividerColor,
+                    ))),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
                   child: InkWell(
@@ -280,7 +283,8 @@ class ReportUniversalEducationFilterScreen extends GetView {
                           width: 18,
                           height: 18,
                         ),
-                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                         Text(
                           "Bộ lọc",
                           style: Theme.of(context).textTheme.headline1,
@@ -336,11 +340,10 @@ class ReportUniversalEducationFilterScreen extends GetView {
                             );
                           },
                           child: Obx(() => borderTextFilterEOffice(
-                              (analysisReportViewModel!
-                                  .rxSelectedRegion.value !=
-                                  "")
-                                  ? analysisReportViewModel!
-                                  .rxSelectedRegion.value
+                              (analysisReportViewModel.rxSelectedRegion.value !=
+                                      "")
+                                  ? analysisReportViewModel
+                                      .rxSelectedRegion.value
                                   : "Chọn khu vực",
                               context))),
                       const Padding(
@@ -366,16 +369,17 @@ class ReportUniversalEducationFilterScreen extends GetView {
                                     height: MediaQuery.of(context).size.height *
                                         0.75,
                                     child: FilterSchoolYearBottomSheet(
-                                      analysisReportViewModel, ));
+                                      analysisReportViewModel,
+                                    ));
                               },
                             );
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (analysisReportViewModel
-                                  .rxSelectedSchoolYear.value !=
-                                  "")
+                                          .rxSelectedSchoolYear.value !=
+                                      "")
                                   ? analysisReportViewModel
-                                  .rxSelectedSchoolYear.value
+                                      .rxSelectedSchoolYear.value
                                   : "Chọn năm học",
                               context))),
                       const Spacer(),
@@ -407,7 +411,8 @@ class ReportUniversalEducationFilterScreen extends GetView {
 }
 
 class AnalysisReportInfrastructureFilterScreen extends GetView {
-  AnalysisReportInfrastructureFilterScreen(this.analysisReportViewModel, {Key? key})
+  const AnalysisReportInfrastructureFilterScreen(this.analysisReportViewModel,
+      {Key? key})
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
 
@@ -440,7 +445,8 @@ class AnalysisReportInfrastructureFilterScreen extends GetView {
                           width: 18,
                           height: 18,
                         ),
-                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                         Text(
                           "Bộ lọc",
                           style: Theme.of(context).textTheme.headline1,
@@ -488,7 +494,8 @@ class AnalysisReportInfrastructureFilterScreen extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.6,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.6,
                                     child: FilterSchoolLevelBottomSheet(
                                         analysisReportViewModel));
                               },
@@ -620,8 +627,16 @@ class AnalysisReportInfrastructureFilterScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
                             child: ElevatedButton(
                               onPressed: () {
-                                analysisReportViewModel!.getListChartInfrastructure(analysisReportViewModel!.rxSelectedSchoolLevelID.value,analysisReportViewModel!.rxSelectedRegionID.value,analysisReportViewModel!.rxSelectedProvinceId.value,analysisReportViewModel!.rxSelectedSchoolYearID.value);
-                                analysisReportViewModel!.clearSelectedFilter();
+                                analysisReportViewModel!
+                                    .getListChartInfrastructure(
+                                        analysisReportViewModel!
+                                            .rxSelectedSchoolLevelID.value,
+                                        analysisReportViewModel!
+                                            .rxSelectedRegionID.value,
+                                        analysisReportViewModel!
+                                            .rxSelectedProvinceId.value,
+                                        analysisReportViewModel!
+                                            .rxSelectedSchoolYearID.value);
                                 Get.back();
                               },
                               child: buttonShowListScreen("Tìm kiếm"),
@@ -641,10 +656,10 @@ class AnalysisReportInfrastructureFilterScreen extends GetView {
 }
 
 class AnalysisReportEducationQualityFilterScreen extends GetView {
-  AnalysisReportEducationQualityFilterScreen(this.analysisReportViewModel, {Key? key})
+  const AnalysisReportEducationQualityFilterScreen(this.analysisReportViewModel,
+      {Key? key})
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
-
 
   @override
   Widget build(BuildContext context) {
@@ -659,9 +674,9 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                     color: Theme.of(context).cardColor,
                     border: Border(
                         bottom: BorderSide(
-                          width: 1,
-                          color: Theme.of(context).dividerColor,
-                        ))),
+                      width: 1,
+                      color: Theme.of(context).dividerColor,
+                    ))),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
                   child: InkWell(
@@ -675,7 +690,8 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                           width: 18,
                           height: 18,
                         ),
-                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                         Text(
                           "Bộ lọc",
                           style: Theme.of(context).textTheme.headline1,
@@ -724,7 +740,9 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height * 0.6,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.6,
                                       child: FilterSchoolLevelBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -732,10 +750,10 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedSchoolLevel.value !=
-                                    "")
+                                            .rxSelectedSchoolLevel.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedSchoolLevel.value
+                                        .rxSelectedSchoolLevel.value
                                     : "Chọn cấp trường",
                                 context))),
                         //loai khu vuc
@@ -759,8 +777,9 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.65,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.65,
                                       child: FilterRegionBottomSheet(
                                           analysisReportViewModel, ""));
                                 },
@@ -768,10 +787,10 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedRegion.value !=
-                                    "")
+                                            .rxSelectedRegion.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedRegion.value
+                                        .rxSelectedRegion.value
                                     : "Chọn khu vực",
                                 context))),
                         //thanh pho
@@ -795,8 +814,9 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.85,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.85,
                                       child: FilterProvinceBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -804,10 +824,10 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedProvince.value !=
-                                    "")
+                                            .rxSelectedProvince.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedProvince.value
+                                        .rxSelectedProvince.value
                                     : "Chọn tỉnh, thành phố",
                                 context))),
                         //nam hoc
@@ -831,8 +851,9 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.75,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.75,
                                       child: FilterSchoolYearBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -840,10 +861,10 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedSchoolYear.value !=
-                                    "")
+                                            .rxSelectedSchoolYear.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedSchoolYear.value
+                                        .rxSelectedSchoolYear.value
                                     : "Chọn năm học",
                                 context))),
                         //hoc ki
@@ -867,8 +888,9 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.4,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.4,
                                       child: FilterSemesterBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -876,10 +898,10 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedSemester.value !=
-                                    "")
+                                            .rxSelectedSemester.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedSemester.value
+                                        .rxSelectedSemester.value
                                     : "Chọn học kỳ",
                                 context))),
 
@@ -904,8 +926,9 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.55,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.55,
                                       child: FilterClassBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -913,10 +936,10 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedClass.value !=
-                                    "")
+                                            .rxSelectedClass.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedClass.value
+                                        .rxSelectedClass.value
                                     : "Chọn lớp",
                                 context))),
                         //mon hoc
@@ -940,8 +963,9 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.55,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.55,
                                       child: FilterSubjectBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -949,10 +973,10 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedSubject.value !=
-                                    "")
+                                            .rxSelectedSubject.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedSubject.value
+                                        .rxSelectedSubject.value
                                     : "Chọn môn học",
                                 context))),
                         //chon diem
@@ -976,8 +1000,9 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.55,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.55,
                                       child: FilterPointBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -985,10 +1010,10 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedPoint.value !=
-                                    "")
+                                            .rxSelectedPoint.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedPoint.value
+                                        .rxSelectedPoint.value
                                     : "Chọn điểm",
                                 context))),
                         //hoc luc
@@ -1012,8 +1037,9 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.55,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.55,
                                       child: FilterClassificationBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -1021,24 +1047,24 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedClassification.value !=
-                                    "")
+                                            .rxSelectedClassification.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedClassification.value
+                                        .rxSelectedClassification.value
                                     : "Chọn học lực",
                                 context))),
-
 
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: SizedBox(
                             width: double.infinity,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
+                              padding:
+                                  const EdgeInsets.fromLTRB(15, 15, 15, 20),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  analysisReportViewModel
-                                      !.getListQualityEducationByType("0");
+                                  analysisReportViewModel!
+                                      .getListQualityEducationByType("0");
                                   analysisReportViewModel!
                                       .changeStateLoadingData(true);
                                   analysisReportViewModel!.scrollToTop();
@@ -1063,14 +1089,10 @@ class AnalysisReportEducationQualityFilterScreen extends GetView {
 
 //vao cao chi tiet chat luong giao duc
 class ReportDetailEduQualityFilterScreen extends GetView {
-  ReportDetailEduQualityFilterScreen(this.analysisReportViewModel, {Key? key})
+  const ReportDetailEduQualityFilterScreen(this.analysisReportViewModel,
+      {Key? key})
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
-
-  String? semester;
-  String? province;
-  String? region;
-  String? schoolYear;
 
   @override
   Widget build(BuildContext context) {
@@ -1085,9 +1107,9 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                     color: Theme.of(context).cardColor,
                     border: Border(
                         bottom: BorderSide(
-                          width: 1,
-                          color: Theme.of(context).dividerColor,
-                        ))),
+                      width: 1,
+                      color: Theme.of(context).dividerColor,
+                    ))),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
                   child: InkWell(
@@ -1101,7 +1123,8 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                           width: 18,
                           height: 18,
                         ),
-                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                         Text(
                           "Bộ lọc",
                           style: Theme.of(context).textTheme.headline1,
@@ -1150,7 +1173,9 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height * 0.6,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.6,
                                       child: FilterSchoolLevelBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -1158,10 +1183,10 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedSchoolLevel.value !=
-                                    "")
+                                            .rxSelectedSchoolLevel.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedSchoolLevel.value
+                                        .rxSelectedSchoolLevel.value
                                     : "Chọn cấp trường",
                                 context))),
                         //loai khu vuc
@@ -1185,8 +1210,9 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.65,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.65,
                                       child: FilterRegionBottomSheet(
                                           analysisReportViewModel, ""));
                                 },
@@ -1194,10 +1220,10 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedRegion.value !=
-                                    "")
+                                            .rxSelectedRegion.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedRegion.value
+                                        .rxSelectedRegion.value
                                     : "Chọn khu vực",
                                 context))),
                         //thanh pho
@@ -1221,8 +1247,9 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.85,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.85,
                                       child: FilterProvinceBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -1230,10 +1257,10 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedProvince.value !=
-                                    "")
+                                            .rxSelectedProvince.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedProvince.value
+                                        .rxSelectedProvince.value
                                     : "Chọn tỉnh, thành phố",
                                 context))),
                         //nam hoc
@@ -1257,8 +1284,9 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.75,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.75,
                                       child: FilterSchoolYearBottomSheet(
                                           analysisReportViewModel));
                                 },
@@ -1266,10 +1294,10 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                             },
                             child: Obx(() => borderTextFilterEOffice(
                                 (analysisReportViewModel!
-                                    .rxSelectedSchoolYear.value !=
-                                    "")
+                                            .rxSelectedSchoolYear.value !=
+                                        "")
                                     ? analysisReportViewModel!
-                                    .rxSelectedSchoolYear.value
+                                        .rxSelectedSchoolYear.value
                                     : "Chọn năm học",
                                 context))),
 
@@ -1278,7 +1306,8 @@ class ReportDetailEduQualityFilterScreen extends GetView {
                           child: SizedBox(
                             width: double.infinity,
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
+                              padding:
+                                  const EdgeInsets.fromLTRB(15, 15, 15, 20),
                               child: ElevatedButton(
                                 onPressed: () {
                                   analysisReportViewModel!
@@ -1306,14 +1335,10 @@ class ReportDetailEduQualityFilterScreen extends GetView {
 }
 
 class XepLoaiNangLucPhamChatFilterScreen extends GetView {
-  XepLoaiNangLucPhamChatFilterScreen(this.analysisReportViewModel, {Key? key})
+  const XepLoaiNangLucPhamChatFilterScreen(this.analysisReportViewModel,
+      {Key? key})
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
-
-  String? semester;
-  String? province;
-  String? region;
-  String? schoolYear;
 
   @override
   Widget build(BuildContext context) {
@@ -1328,9 +1353,9 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                     color: Theme.of(context).cardColor,
                     border: Border(
                         bottom: BorderSide(
-                          width: 1,
-                          color: Theme.of(context).dividerColor,
-                        ))),
+                      width: 1,
+                      color: Theme.of(context).dividerColor,
+                    ))),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
                   child: InkWell(
@@ -1344,7 +1369,8 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                           width: 18,
                           height: 18,
                         ),
-                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                         Text(
                           "Bộ lọc",
                           style: Theme.of(context).textTheme.headline1,
@@ -1401,10 +1427,10 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (analysisReportViewModel!
-                                  .rxSelectedSemester.value !=
-                                  "")
+                                          .rxSelectedSemester.value !=
+                                      "")
                                   ? analysisReportViewModel!
-                                  .rxSelectedSemester.value
+                                      .rxSelectedSemester.value
                                   : "Chọn học kỳ",
                               context))),
                       //cap hoc
@@ -1428,7 +1454,8 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.6,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.6,
                                     child: FilterSchoolLevelBottomSheet(
                                         analysisReportViewModel));
                               },
@@ -1436,10 +1463,10 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (analysisReportViewModel!
-                                  .rxSelectedSchoolLevel.value !=
-                                  "")
+                                          .rxSelectedSchoolLevel.value !=
+                                      "")
                                   ? analysisReportViewModel!
-                                  .rxSelectedSchoolLevel.value
+                                      .rxSelectedSchoolLevel.value
                                   : "Chọn cấp trường",
                               context))),
                       //loai khu vuc
@@ -1472,10 +1499,10 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (analysisReportViewModel!
-                                  .rxSelectedRegion.value !=
-                                  "")
+                                          .rxSelectedRegion.value !=
+                                      "")
                                   ? analysisReportViewModel!
-                                  .rxSelectedRegion.value
+                                      .rxSelectedRegion.value
                                   : "Chọn khu vực",
                               context))),
                       //thanh pho
@@ -1508,13 +1535,13 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (analysisReportViewModel!
-                                  .rxSelectedProvince.value !=
-                                  "")
+                                          .rxSelectedProvince.value !=
+                                      "")
                                   ? analysisReportViewModel!
-                                  .rxSelectedProvince.value
+                                      .rxSelectedProvince.value
                                   : "Chọn tỉnh, thành phố",
                               context))),
-                      Spacer(),
+                      const Spacer(),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: SizedBox(
@@ -1523,8 +1550,8 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
                             child: ElevatedButton(
                               onPressed: () {
-                                analysisReportViewModel
-                                    !.getListQualityEducationByType("2");
+                                analysisReportViewModel!
+                                    .getListQualityEducationByType("2");
                                 analysisReportViewModel!
                                     .changeStateLoadingData(true);
                                 analysisReportViewModel!.scrollToTop();
@@ -1547,14 +1574,9 @@ class XepLoaiNangLucPhamChatFilterScreen extends GetView {
 }
 
 class KhenThuongFilterScreen extends GetView {
-  KhenThuongFilterScreen(this.analysisReportViewModel, {Key? key})
+  const KhenThuongFilterScreen(this.analysisReportViewModel, {Key? key})
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
-
-  String? semester;
-  String? province;
-  String? region;
-  String? schoolYear;
 
   @override
   Widget build(BuildContext context) {
@@ -1569,9 +1591,9 @@ class KhenThuongFilterScreen extends GetView {
                     color: Theme.of(context).cardColor,
                     border: Border(
                         bottom: BorderSide(
-                          width: 1,
-                          color: Theme.of(context).dividerColor,
-                        ))),
+                      width: 1,
+                      color: Theme.of(context).dividerColor,
+                    ))),
                 child: Padding(
                   padding: const EdgeInsets.all(15),
                   child: InkWell(
@@ -1585,7 +1607,8 @@ class KhenThuongFilterScreen extends GetView {
                           width: 18,
                           height: 18,
                         ),
-                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                         Text(
                           "Bộ lọc",
                           style: Theme.of(context).textTheme.headline1,
@@ -1642,10 +1665,10 @@ class KhenThuongFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (analysisReportViewModel!
-                                  .rxSelectedSemester.value !=
-                                  "")
+                                          .rxSelectedSemester.value !=
+                                      "")
                                   ? analysisReportViewModel!
-                                  .rxSelectedSemester.value
+                                      .rxSelectedSemester.value
                                   : "Chọn học kỳ",
                               context))),
                       //cap hoc
@@ -1669,7 +1692,8 @@ class KhenThuongFilterScreen extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.6,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.6,
                                     child: FilterSchoolLevelBottomSheet(
                                         analysisReportViewModel));
                               },
@@ -1677,10 +1701,10 @@ class KhenThuongFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (analysisReportViewModel!
-                                  .rxSelectedSchoolLevel.value !=
-                                  "")
+                                          .rxSelectedSchoolLevel.value !=
+                                      "")
                                   ? analysisReportViewModel!
-                                  .rxSelectedSchoolLevel.value
+                                      .rxSelectedSchoolLevel.value
                                   : "Chọn cấp trường",
                               context))),
                       //loai khu vuc
@@ -1713,10 +1737,10 @@ class KhenThuongFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (analysisReportViewModel!
-                                  .rxSelectedRegion.value !=
-                                  "")
+                                          .rxSelectedRegion.value !=
+                                      "")
                                   ? analysisReportViewModel!
-                                  .rxSelectedRegion.value
+                                      .rxSelectedRegion.value
                                   : "Chọn khu vực",
                               context))),
                       //thanh pho
@@ -1749,10 +1773,10 @@ class KhenThuongFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (analysisReportViewModel!
-                                  .rxSelectedProvince.value !=
-                                  "")
+                                          .rxSelectedProvince.value !=
+                                      "")
                                   ? analysisReportViewModel!
-                                  .rxSelectedProvince.value
+                                      .rxSelectedProvince.value
                                   : "Chọn tỉnh, thành phố",
                               context))),
                       const Padding(
@@ -1784,13 +1808,13 @@ class KhenThuongFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (analysisReportViewModel!
-                                  .rxSelectedSchoolYear.value !=
-                                  "")
+                                          .rxSelectedSchoolYear.value !=
+                                      "")
                                   ? analysisReportViewModel!
-                                  .rxSelectedSchoolYear.value
+                                      .rxSelectedSchoolYear.value
                                   : "Chọn năm học",
                               context))),
-                      Spacer(),
+                      const Spacer(),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: SizedBox(
@@ -1886,6 +1910,11 @@ class FilterSemesterBottomSheet extends StatelessWidget {
                                       analysisReportViewModel!
                                           .rxSelectedSemester,
                                       "Tất cả học kỳ");
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedSemesterId,
+                                      "");
                             } else {
                               var semester = "";
                               var semesterName = "";
@@ -1909,16 +1938,24 @@ class FilterSemesterBottomSheet extends StatelessWidget {
                                     .changeValueSelectedFilter(
                                         analysisReportViewModel!
                                             .rxSelectedSemester,
-                                    semesterName.substring(
+                                        semesterName.substring(
                                             0, semesterName.length - 1));
-                                analysisReportViewModel!.changeValueDataId(semesterID.substring(
-                                    0, semesterID.length - 1),
-                                    analysisReportViewModel!.rxSelectedSemesterId);
+                                analysisReportViewModel!
+                                    .changeValueSelectedFilter(
+                                        analysisReportViewModel!
+                                            .rxSelectedSemesterId,
+                                        semesterID.substring(
+                                            0, semesterID.length - 1));
                               } else {
                                 analysisReportViewModel!
                                     .changeValueSelectedFilter(
                                         analysisReportViewModel!
                                             .rxSelectedSemester,
+                                        "");
+                                analysisReportViewModel!
+                                    .changeValueSelectedFilter(
+                                        analysisReportViewModel!
+                                            .rxSelectedSemesterId,
                                         "");
                               }
                             }
@@ -1947,7 +1984,6 @@ class FilterProvinceBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        print("back");
         return true;
       },
       child: Scaffold(
@@ -2005,9 +2041,11 @@ class FilterProvinceBottomSheet extends StatelessWidget {
                 child: Obx(() => ListView.builder(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
-                    itemCount: analysisReportViewModel!.rxListProvinceByRegion.length,
+                    itemCount:
+                        analysisReportViewModel!.rxListProvinceByRegion.length,
                     itemBuilder: (context, index) {
-                      var item = analysisReportViewModel!.rxListProvinceByRegion[index];
+                      var item = analysisReportViewModel!
+                          .rxListProvinceByRegion[index];
                       return FilterItem(item.name!, item.id!, index,
                           analysisReportViewModel!.mapProvinceFilter);
                     })),
@@ -2039,6 +2077,11 @@ class FilterProvinceBottomSheet extends StatelessWidget {
                                 changeValueSelectedFilter(
                                     analysisReportViewModel!.rxSelectedProvince,
                                     "Tất cả lĩnh vực");
+                                analysisReportViewModel!
+                                    .changeValueSelectedFilter(
+                                        analysisReportViewModel!
+                                            .rxSelectedProvinceId,
+                                        "");
                               } else {
                                 var province = "";
                                 var provinceName = "";
@@ -2063,16 +2106,22 @@ class FilterProvinceBottomSheet extends StatelessWidget {
                                           .rxSelectedProvince,
                                       provinceName.substring(
                                           0, provinceName.length - 1));
-                                  analysisReportViewModel!.changeValueDataId(provinceId.substring(
-                                      0, provinceId.length - 1),
-                                      analysisReportViewModel!
-                                          .rxSelectedProvinceId,
-                                     );
+                                  analysisReportViewModel!
+                                      .changeValueSelectedFilter(
+                                          analysisReportViewModel!
+                                              .rxSelectedProvinceId,
+                                          provinceId.substring(
+                                              0, provinceId.length - 1));
                                 } else {
                                   changeValueSelectedFilter(
                                       analysisReportViewModel!
                                           .rxSelectedProvince,
                                       "");
+                                  analysisReportViewModel!
+                                      .changeValueSelectedFilter(
+                                          analysisReportViewModel!
+                                              .rxSelectedProvinceId,
+                                          "");
                                 }
                               }
                               Get.back();
@@ -2219,8 +2268,9 @@ class FilterRegionBottomSheet extends StatelessWidget {
                                   .rxIndexItemRegion.value) {
                             region = value.name!;
                             regionID = value.id!;
-                            analysisReportViewModel!.changeValueDataId(regionID,
-                                analysisReportViewModel!.rxSelectedRegionID);
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedRegionID,
+                                regionID);
                             analysisReportViewModel!.getListProvinceByRegion();
                           }
                         });
@@ -2250,9 +2300,7 @@ class FilterRegionBottomSheet extends StatelessWidget {
 }
 
 class FilterSchoolYearBottomSheet extends StatelessWidget {
-  const FilterSchoolYearBottomSheet(
-      this.analysisReportViewModel,
-      {Key? key})
+  const FilterSchoolYearBottomSheet(this.analysisReportViewModel, {Key? key})
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
 
@@ -2359,10 +2407,11 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                               changeValueSelectedFilter(
                                   analysisReportViewModel!.rxSelectedSchoolYear,
                                   "Tất cả năm học");
-                              analysisReportViewModel!.changeValueDataId(
-                                  "",
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
                                   analysisReportViewModel!
-                                      .rxSelectedSchoolYearID);
+                                      .rxSelectedSchoolYearID,
+                                  "");
                             } else {
                               analysisReportViewModel!.mapSchoolYearFilter
                                   .forEach((key, value) {
@@ -2375,7 +2424,6 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                                   if (item.id == id) {
                                     schoolYearName += "${item.name!};";
                                     schoolYearId += "${item.id!};";
-
                                   }
                                 }
                               }
@@ -2385,23 +2433,26 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                                         .rxSelectedSchoolYear,
                                     schoolYearName.substring(
                                         0, schoolYearName.length - 1));
-                                analysisReportViewModel!.changeValueSelectedFilter(
-                                    analysisReportViewModel!
-                                        .rxSelectedSchoolYearID,
-                                    schoolYearId.substring(
-                                        0, schoolYearId.length - 1));
+                                analysisReportViewModel!
+                                    .changeValueSelectedFilter(
+                                        analysisReportViewModel!
+                                            .rxSelectedSchoolYearID,
+                                        schoolYearId.substring(
+                                            0, schoolYearId.length - 1));
                               } else {
                                 changeValueSelectedFilter(
                                     analysisReportViewModel!
                                         .rxSelectedSchoolYear,
                                     "");
-                                analysisReportViewModel!.changeValueSelectedFilter(
-                                    analysisReportViewModel!
-                                        .rxSelectedSchoolYearID,
-                                    "");
+                                analysisReportViewModel!
+                                    .changeValueSelectedFilter(
+                                        analysisReportViewModel!
+                                            .rxSelectedSchoolYearID,
+                                        "");
                               }
-                              Get.back();
+
                             }
+                            Get.back();
                           },
                           style: buttonFilterBlue,
                           child: const Text('Áp dụng')),
@@ -2526,13 +2577,20 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                                   analysisReportViewModel!
                                       .rxSelectedSchoolLevel,
                                   "Tất cả cấp học");
-                              analysisReportViewModel!.changeValueDataId(
-                                  "",
-                                  analysisReportViewModel!
-                                      .rxSelectedSchoolLevelID);
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedSchoolLevelID,
+                                      "");
                               schoolLevelId = "1;2;3;4;";
-                              analysisReportViewModel!.getListFilterWithParam(schoolLevelId,getClass,analysisReportViewModel!.rxListClass);
-                              analysisReportViewModel!.getListFilterWithParam(schoolLevelId,getSubject,analysisReportViewModel!.rxListSubject);
+                              analysisReportViewModel!.getListFilterWithParam(
+                                  schoolLevelId,
+                                  getClass,
+                                  analysisReportViewModel!.rxListClass);
+                              analysisReportViewModel!.getListFilterWithParam(
+                                  schoolLevelId,
+                                  getSubject,
+                                  analysisReportViewModel!.rxListSubject);
                             } else {
                               analysisReportViewModel!.mapSchoolLevelFilter
                                   .forEach((key, value) {
@@ -2545,11 +2603,12 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                                   if (item.id == id) {
                                     schoolLevelName += "${item.name!};";
                                     schoolLevelId += "${item.id!};";
-                                    analysisReportViewModel!.changeValueDataId(
-                                        schoolLevelId.substring(
-                                            0, schoolLevelId.length - 1),
-                                        analysisReportViewModel!
-                                            .rxSelectedSchoolLevelID);
+                                    analysisReportViewModel!
+                                        .changeValueSelectedFilter(
+                                            analysisReportViewModel!
+                                                .rxSelectedSchoolLevelID,
+                                            schoolLevelId.substring(
+                                                0, schoolLevelId.length - 1));
                                   }
                                 }
                               }
@@ -2559,13 +2618,33 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                                         .rxSelectedSchoolLevel,
                                     schoolLevelName.substring(
                                         0, schoolLevelName.length - 1));
-                                analysisReportViewModel!.getListFilterWithParam(schoolLevelId,getClass,analysisReportViewModel!.rxListClass);
-                                analysisReportViewModel!.getListFilterWithParam(schoolLevelId,getSubject,analysisReportViewModel!.rxListSubject);
+                                analysisReportViewModel!.getListFilterWithParam(
+                                    schoolLevelId,
+                                    getClass,
+                                    analysisReportViewModel!.rxListClass);
+                                analysisReportViewModel!.getListFilterWithParam(
+                                    schoolLevelId,
+                                    getSubject,
+                                    analysisReportViewModel!.rxListSubject);
                               } else {
                                 changeValueSelectedFilter(
                                     analysisReportViewModel!
                                         .rxSelectedSchoolLevel,
                                     "");
+                                analysisReportViewModel!
+                                    .changeValueSelectedFilter(
+                                        analysisReportViewModel!
+                                            .rxSelectedSchoolLevelID,
+                                        "");
+                                schoolLevelId = "1;2;3;4;";
+                                analysisReportViewModel!.getListFilterWithParam(
+                                    schoolLevelId,
+                                    getClass,
+                                    analysisReportViewModel!.rxListClass);
+                                analysisReportViewModel!.getListFilterWithParam(
+                                    schoolLevelId,
+                                    getSubject,
+                                    analysisReportViewModel!.rxListSubject);
                               }
                             }
 
@@ -2608,7 +2687,7 @@ class FilterPointBottomSheet extends StatelessWidget {
                 color: kgray,
               )),
           SizedBox(
-            height: MediaQuery.of(context).size.height*0.32,
+            height: MediaQuery.of(context).size.height * 0.32,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: analysisReportViewModel!.rxListPoint.length,
@@ -2641,23 +2720,26 @@ class FilterPointBottomSheet extends StatelessWidget {
                         onPressed: () {
                           if (analysisReportViewModel!.mapAllFilter
                               .containsKey(6)) {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedPoint,
+                                "Tất cả điểm");
                             analysisReportViewModel!
                                 .changeValueSelectedFilter(
                                 analysisReportViewModel!
-                                    .rxSelectedPoint,
-                                "Tất cả điểm");
-
+                                    .rxSelectedPointId,
+                                "");
                           } else {
                             var point = "";
                             var pointName = "";
-                            var pointId= "";
+                            var pointId = "";
                             analysisReportViewModel!.mapPointFilter
                                 .forEach((key, value) {
                               point += value;
                             });
                             var listId = point.split(";");
                             for (var id in listId) {
-                              for (var item in analysisReportViewModel!.rxListPoint){
+                              for (var item
+                                  in analysisReportViewModel!.rxListPoint) {
                                 if (item.id == id) {
                                   pointName += "${item.name};";
                                   pointId += "${item.id};";
@@ -2667,25 +2749,24 @@ class FilterPointBottomSheet extends StatelessWidget {
                             if (pointName != "") {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedPoint,
-                                  pointName.substring(
-                                      0, pointName.length - 1));
-                              analysisReportViewModel!.changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedPointId,
-                                  pointId.substring(
-                                      0, pointId.length - 1));
+                                      analysisReportViewModel!.rxSelectedPoint,
+                                      pointName.substring(
+                                          0, pointName.length - 1));
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedPointId,
+                                      pointId.substring(0, pointId.length - 1));
                             } else {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedPoint,
-                                  "");
-                              analysisReportViewModel!.changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedPointId,
-                                  "");
+                                      analysisReportViewModel!.rxSelectedPoint,
+                                      "");
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedPointId,
+                                      "");
                             }
                           }
                           Get.back();
@@ -2726,7 +2807,7 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                 color: kgray,
               )),
           SizedBox(
-            height: MediaQuery.of(context).size.height*0.32,
+            height: MediaQuery.of(context).size.height * 0.32,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: analysisReportViewModel!.rxListSubject.length,
@@ -2759,11 +2840,14 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                         onPressed: () {
                           if (analysisReportViewModel!.mapAllFilter
                               .containsKey(7)) {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedSubject,
+                                "Tất cả môn học");
                             analysisReportViewModel!
                                 .changeValueSelectedFilter(
                                 analysisReportViewModel!
-                                    .rxSelectedSubject,
-                                "Tất cả môn học");
+                                    .rxSelectedSubjectID,
+                                "");
                           } else {
                             var agencies = "";
                             var agenciesName = "";
@@ -2774,35 +2858,38 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                             });
                             var listId = agencies.split(";");
                             for (var id in listId) {
-                              for (var item in analysisReportViewModel!.rxListSubject) {
+                              for (var item
+                                  in analysisReportViewModel!.rxListSubject) {
                                 if (item.id == id) {
                                   agenciesName += "${item.name};";
-                                  agenciesID+= "${item.id};";
+                                  agenciesID += "${item.id};";
                                 }
                               }
                             }
                             if (agenciesName != "") {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedSubject,
-                                  agenciesName.substring(
-                                      0, agenciesName.length - 1));
-                              analysisReportViewModel!.changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedSubjectID,
-                                  agenciesID.substring(
-                                      0, agenciesID.length - 1));
+                                      analysisReportViewModel!
+                                          .rxSelectedSubject,
+                                      agenciesName.substring(
+                                          0, agenciesName.length - 1));
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedSubjectID,
+                                      agenciesID.substring(
+                                          0, agenciesID.length - 1));
                             } else {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedSubject,
-                                  "");
-                              analysisReportViewModel!.changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedSubjectID,
-                                  "");
+                                      analysisReportViewModel!
+                                          .rxSelectedSubject,
+                                      "");
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedSubjectID,
+                                      "");
                             }
                           }
                           Get.back();
@@ -2834,8 +2921,7 @@ class FilterClassBottomSheet extends StatelessWidget {
         child: Column(children: [
           //search
           //tat ca don vi
-          FilterAllItem(
-              "Tất cả lớp", 8, analysisReportViewModel!.mapAllFilter),
+          FilterAllItem("Tất cả lớp", 8, analysisReportViewModel!.mapAllFilter),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -2843,7 +2929,7 @@ class FilterClassBottomSheet extends StatelessWidget {
                 color: kgray,
               )),
           SizedBox(
-            height: MediaQuery.of(context).size.height*0.32,
+            height: MediaQuery.of(context).size.height * 0.32,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: analysisReportViewModel!.rxListClass.length,
@@ -2876,11 +2962,14 @@ class FilterClassBottomSheet extends StatelessWidget {
                         onPressed: () {
                           if (analysisReportViewModel!.mapAllFilter
                               .containsKey(8)) {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedClass,
+                                "Tất cả lớp");
                             analysisReportViewModel!
                                 .changeValueSelectedFilter(
                                 analysisReportViewModel!
-                                    .rxSelectedClass,
-                                "Tất cả lớp");
+                                    .rxSelectedClassId,
+                                "");
                           } else {
                             var agencies = "";
                             var className = "";
@@ -2891,7 +2980,8 @@ class FilterClassBottomSheet extends StatelessWidget {
                             });
                             var listId = agencies.split(";");
                             for (var id in listId) {
-                              for (var item in analysisReportViewModel!.rxListClass) {
+                              for (var item
+                                  in analysisReportViewModel!.rxListClass) {
                                 if (item.id == id) {
                                   className += "${item.name};";
                                   classId += "${item.id};";
@@ -2901,25 +2991,24 @@ class FilterClassBottomSheet extends StatelessWidget {
                             if (className != "") {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedClass,
-                                  className.substring(
-                                      0, className.length - 1));
-                              analysisReportViewModel!.changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedClassId,
-                                  classId.substring(
-                                      0, classId.length - 1));
+                                      analysisReportViewModel!.rxSelectedClass,
+                                      className.substring(
+                                          0, className.length - 1));
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedClassId,
+                                      classId.substring(0, classId.length - 1));
                             } else {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedClass,
-                                  "");
-                              analysisReportViewModel!.changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedClassId,
-                                  "");
+                                      analysisReportViewModel!.rxSelectedClass,
+                                      "");
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedClassId,
+                                      "");
                             }
                           }
                           Get.back();
@@ -2938,7 +3027,8 @@ class FilterClassBottomSheet extends StatelessWidget {
 }
 
 class FilterClassificationBottomSheet extends StatelessWidget {
-  const FilterClassificationBottomSheet(this.analysisReportViewModel, {Key? key})
+  const FilterClassificationBottomSheet(this.analysisReportViewModel,
+      {Key? key})
       : super(key: key);
   final AnalysisReportViewModel? analysisReportViewModel;
 
@@ -2960,12 +3050,13 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                 color: kgray,
               )),
           SizedBox(
-            height: MediaQuery.of(context).size.height*0.32,
+            height: MediaQuery.of(context).size.height * 0.32,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: analysisReportViewModel!.rxListClassification.length,
                 itemBuilder: (context, index) {
-                  var item = analysisReportViewModel!.rxListClassification[index];
+                  var item =
+                      analysisReportViewModel!.rxListClassification[index];
                   return FilterItem(item.name!, item.id!, index,
                       analysisReportViewModel!.mapClassificationFilter);
                 }),
@@ -2993,11 +3084,15 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                         onPressed: () {
                           if (analysisReportViewModel!.mapAllFilter
                               .containsKey(9)) {
-                            analysisReportViewModel!
-                                .changeValueSelectedFilter(
+                            analysisReportViewModel!.changeValueSelectedFilter(
                                 analysisReportViewModel!
                                     .rxSelectedClassification,
                                 "Tất cả học lực");
+                            analysisReportViewModel!
+                                .changeValueSelectedFilter(
+                                analysisReportViewModel!
+                                    .rxSelectedClassificationID,
+                                "");
                           } else {
                             var classification = "";
                             var classificationName = "";
@@ -3008,7 +3103,8 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                             });
                             var listId = classification.split(";");
                             for (var id in listId) {
-                              for (var item in analysisReportViewModel!.rxListClassification) {
+                              for (var item in analysisReportViewModel!
+                                  .rxListClassification) {
                                 if (item.id == id) {
                                   classificationName += "${item.name};";
                                   classificationId += "${item.id};";
@@ -3018,26 +3114,28 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                             if (classificationName != "") {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedClassification,
-                                  classificationName.substring(
-                                      0, classificationName.length - 1));
+                                      analysisReportViewModel!
+                                          .rxSelectedClassification,
+                                      classificationName.substring(
+                                          0, classificationName.length - 1));
 
-                              analysisReportViewModel!.changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedClassificationID,
-                                  classificationId.substring(
-                                      0, classificationId.length - 1));
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedClassificationID,
+                                      classificationId.substring(
+                                          0, classificationId.length - 1));
                             } else {
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedClassification,
-                                  "");
-                              analysisReportViewModel!.changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedClassificationID,
-                                  "");
+                                      analysisReportViewModel!
+                                          .rxSelectedClassification,
+                                      "");
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedClassificationID,
+                                      "");
                             }
                           }
                           Get.back();

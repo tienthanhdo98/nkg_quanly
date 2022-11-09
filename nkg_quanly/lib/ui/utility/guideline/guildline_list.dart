@@ -11,11 +11,11 @@ import 'guideline_search.dart';
 import 'guideline_viewmodel.dart';
 
 class GuidelineList extends GetView {
-  String? header;
+
   
   final guildlineViewModel = Get.put(GuildlineViewModel());
 
-  GuidelineList({Key? key, this.header}) : super(key: key);
+  GuidelineList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

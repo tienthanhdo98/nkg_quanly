@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
-import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
 
-import '../../const/const.dart';
-import '../../const/style.dart';
 import '../../const/widget.dart';
 import '../birthday/birthday_screen.dart';
 import '../birthday/birthday_viewmodel.dart';
-import '../calendarwork/calendar_work_viewmodel.dart';
-import '../document_out/search_controller.dart';
 
 class BirthdayWidget extends StatelessWidget {
   BirthdayWidget({
@@ -17,7 +12,7 @@ class BirthdayWidget extends StatelessWidget {
   final birthDayViewModel = Get.put(BirthDayViewModel());
   @override
   Widget build(BuildContext context) {
-    birthDayViewModel.onSelectDay(dateNow);
+    birthDayViewModel.getBirthDayInHomeScreen(DateFormat('yyyy-MM-dd').format(dateNow));
     return Padding(
       padding: const EdgeInsets.all(15),
       child: borderItem(
@@ -103,9 +98,9 @@ class BirthdayWidget extends StatelessWidget {
               SizedBox(
                 height: 300,
                 child: Obx(() => (birthDayViewModel
-                    .rxBirthDayListItems.isNotEmpty)
+                    .rxBirthDayListItemsInCurDay.isNotEmpty)
                     ? ListView.builder(
-                    itemCount: birthDayViewModel.rxBirthDayListItems.length,
+                    itemCount: birthDayViewModel.rxBirthDayListItemsInCurDay.length,
                     itemBuilder: (context, index) {
                       return InkWell(
                           onTap: () {
@@ -113,7 +108,7 @@ class BirthdayWidget extends StatelessWidget {
                             //     id: snapshot.data!.items![index].id!));
                           },
                           child: BirthDayItem(index,
-                              birthDayViewModel.rxBirthDayListItems[index]));
+                              birthDayViewModel.rxBirthDayListItemsInCurDay[index]));
                     })
                     : noData()),
               ),

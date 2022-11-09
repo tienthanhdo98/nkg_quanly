@@ -24,7 +24,6 @@ import '../profile/e_office/profile_e_office_list.dart';
 import '../profile_procedure_/profile_procedure_home/profile_procedure_menu_screen.dart';
 import '../profile_procedure_/profiles_procedure_screen.dart';
 import '../profile_work/e_office/profile_work_e_office_list.dart';
-import '../profile_work/profile_work_screen.dart';
 import '../report/report_in_menuhome/report_in_menuhome_list.dart';
 import '../utility/utility_screen.dart';
 import '../workbook/workbook_list.dart';
@@ -76,7 +75,8 @@ class HomeScreen extends GetView {
                     ),
                     InkWell(
                       onTap: (){
-                          Get.to(() => HomeSearch());
+                        Get.to(() => HomeSearch());
+
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),
@@ -369,12 +369,7 @@ void toScreen(int type, String? header, String? icon) {
             icon: icon,
           ));
       break;
-    case 13:
-      Get.to(() => ProfileWorkScreen(
-            header: header,
-            icon: icon,
-          ));
-      break;
+
     case 10:
       Get.to(() => ProfilesProcedureScreen(
             header: header,
@@ -397,7 +392,7 @@ void menuToScreen(int type, String? header, String? icon) {
       Get.to(() => const ListAllItemEOffice());
       break;
       case 3:
-      Get.to(() => PMisScreen(header: header));
+      Get.to(() => PMisScreen());
       break;
       case 4:
       Get.to(() => HelpDeskScreen(header: header,icon : icon));
@@ -421,7 +416,6 @@ void toScreenEoffice(int type, String? header, String? icon) {
   switch (type) {
     case 6:
       Get.to(() => BookingEOfficeCarList(
-            header: header,
           ));
       break;
     case 1:
@@ -447,7 +441,6 @@ void toScreenEoffice(int type, String? header, String? icon) {
       break;
     case 7:
       Get.to(() => MissionEOfficeList(
-            header: header,
           ));
       break;
   }

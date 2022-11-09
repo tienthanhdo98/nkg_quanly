@@ -219,7 +219,6 @@ class MissionScreen extends GetView {
                   child: ElevatedButton(
                     onPressed: () {
                       Get.to(() => MissionEOfficeList(
-                        header: header,
                       ));
                     },
                     child: buttonShowListScreen("Xem danh sách nhiệm vụ"),

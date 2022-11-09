@@ -284,13 +284,11 @@ class ProfileScreen extends GetView {
 }
 
 Widget chartItemForProfile(int index, ProfileViewModel profileViewModel) {
-  if (index == 0) {
+  if (profileViewModel.rxDocumentFilterModel.value.items?.isNotEmpty == true) {
     return Obx(() => CollumChartWidget(
         key: UniqueKey(),
         documentFilterModel: profileViewModel.rxDocumentFilterModel.value));
-  } else {
-    return Obx(() => CollumChartWidget(
-        key: UniqueKey(),
-        documentFilterModel: profileViewModel.rxDocumentFilterModel.value));
+  }else{
+    return const SizedBox.shrink();
   }
 }

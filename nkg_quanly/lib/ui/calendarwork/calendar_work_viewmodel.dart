@@ -18,6 +18,8 @@ class CalendarWorkViewModel extends GetxController {
 
   RxList<CalendarWorkListItems> rxCalendarWorkListItems =
       <CalendarWorkListItems>[].obs;
+  RxList<CalendarWorkListItems> rxCalendarWorkListItemsInHome =
+      <CalendarWorkListItems>[].obs;
 
   @override
   void onInit() {
@@ -36,6 +38,28 @@ class CalendarWorkViewModel extends GetxController {
   }
 
   //calendar work
+  Future<void> getDataCalendarWorkByDayInHomeScreen(String day) async {
+    final url = Uri.parse(apiPostCalendarWork);
+    String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+    calendarWorkModel = CalendarWorkModel.fromJson(jsonDecode(response.body));
+    rxCalendarWorkListItemsInHome.value = calendarWorkModel.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        calendarWorkModel =
+            CalendarWorkModel.fromJson(jsonDecode(response.body));
+        rxCalendarWorkListItemsInHome.addAll(calendarWorkModel.items!);
+      }
+    });
+  }
 
   postCalendarWorkAll() async {
     final url = Uri.parse(apiPostCalendarWork);

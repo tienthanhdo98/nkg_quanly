@@ -191,7 +191,7 @@ class HelpDeskScreen extends GetView {
                           child: ElevatedButton(
                             onPressed: () {
                               Get.to(() => HelpDeskList(
-                                    header: header,
+
                                   ));
                             },
                             child:

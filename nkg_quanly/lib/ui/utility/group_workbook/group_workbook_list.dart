@@ -16,10 +16,10 @@ import 'group_workbook_search.dart';
 import 'group_workbook_viewmodel.dart';
 
 class GroupWorkBookList extends GetView {
-  String? header;
+
   final groupWorkBookViewModel = Get.put(GroupWorkBookViewModel());
 
-  GroupWorkBookList({Key? key, this.header}) : super(key: key);
+  GroupWorkBookList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

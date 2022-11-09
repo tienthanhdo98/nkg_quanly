@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
 
-import '../../const/const.dart';
-import '../../const/style.dart';
 import '../../const/widget.dart';
 import '../calendarwork/calendar_work_viewmodel.dart';
 
@@ -14,7 +12,7 @@ class CalendarWorkWidget extends StatelessWidget {
   final calendarWorkController = Get.put(CalendarWorkViewModel());
   @override
   Widget build(BuildContext context) {
-    calendarWorkController.onSelectDay(dateNow);
+    calendarWorkController.getDataCalendarWorkByDayInHomeScreen(DateFormat('yyyy-MM-dd').format(dateNow));
     return Padding(
       padding: const EdgeInsets.all(15),
       child: borderItem(
@@ -100,17 +98,17 @@ class CalendarWorkWidget extends StatelessWidget {
               SizedBox(
                 height: 300,
                 child: Obx(() => (calendarWorkController
-                    .rxCalendarWorkListItems.isNotEmpty)
+                    .rxCalendarWorkListItemsInHome.isNotEmpty)
                     ? ListView.builder(
                     controller: calendarWorkController.controller,
                     itemCount:
-                    calendarWorkController.rxCalendarWorkListItems.length,
+                    calendarWorkController.rxCalendarWorkListItemsInHome.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return CalendarWorkItem(
                           index,
                           calendarWorkController
-                              .rxCalendarWorkListItems[index]);
+                              .rxCalendarWorkListItemsInHome[index]);
                     })
                     : noData()),
               ),

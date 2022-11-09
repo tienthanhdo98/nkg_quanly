@@ -11,11 +11,10 @@ import 'helpdesk_search.dart';
 import 'helpdesk_viewmodel.dart';
 
 class HelpDeskList extends GetView {
-  final String? header;
 
   final helpdeskViewModel = Get.put(HelpdeskViewModel());
 
-  HelpDeskList({Key? key, this.header}) : super(key: key);
+  HelpDeskList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class HelpDeskList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Helpdesk",
               HelpdeskSearch(
                   helpdeskViewModel
               ),

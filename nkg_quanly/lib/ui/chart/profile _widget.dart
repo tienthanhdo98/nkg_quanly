@@ -14,7 +14,7 @@ import '../theme/theme_data.dart';
 class ProfileWidget extends GetView {
   final profileViewModel = Get.put(ProfileViewModel());
 
-  ProfileWidget();
+   ProfileWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

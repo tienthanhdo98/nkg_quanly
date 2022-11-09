@@ -12,11 +12,11 @@ import '../misstion_search.dart';
 import 'filter_mission_screen.dart';
 
 class MissionEOfficeList extends GetView {
-  final String? header;
+
 
   final missionViewModel = Get.put(MissionViewModel());
 
-  MissionEOfficeList({Key? key, this.header}) : super(key: key);
+  MissionEOfficeList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +26,9 @@ class MissionEOfficeList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
+              "Nhiệm vụ",
               MissionSearch(
-                header: header,
+                header: "Nhiệm vụ",
               ),
               context),
           //date table
