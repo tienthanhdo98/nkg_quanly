@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '../../const/const.dart';
 import '../../const/utils.dart';
@@ -35,7 +36,8 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark, child :  SafeArea(
         child: Column(
           children: [
             progress < 1.0
@@ -130,6 +132,6 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
 
           ],
         ),
-      ),);
+      ),));
   }
 }
