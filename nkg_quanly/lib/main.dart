@@ -23,6 +23,7 @@ import 'package:nkg_quanly/ui/document_unprocess/e_office/document_in_e_office_l
 import 'package:nkg_quanly/ui/helpdesk/help_desk_list.dart';
 import 'package:nkg_quanly/ui/helpdesk/help_desk_screen.dart';
 import 'package:nkg_quanly/ui/home/home_screen.dart';
+import 'package:nkg_quanly/ui/login/in_app_webiew_example.screen.dart';
 import 'package:nkg_quanly/ui/login/login_screen2.dart';
 import 'package:nkg_quanly/ui/mission/e_office/mission__e_office_list.dart';
 import 'package:nkg_quanly/ui/notification/notification_screen.dart';
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeClass.lightTheme,
-            home: const LoginScreen2(),
+            home: InAppWebViewExampleScreen(),
             initialRoute: '/',
             routes: {
               '/PMisScreen': (context) => PMisScreen(),
