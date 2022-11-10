@@ -51,6 +51,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                 initialOptions: InAppWebViewGroupOptions(
                   crossPlatform: InAppWebViewOptions(
                     javaScriptEnabled: true,
+                    useShouldOverrideUrlLoading: true,
                     javaScriptCanOpenWindowsAutomatically: true,
                   ),
                 ),
@@ -90,13 +91,41 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                         Get.off(() => const MainScreen());
                       }
                     }
-                    if (url.toString().contains(
-                        loginViewModel.rxInfoLoginConfig.value.redirectUri!)) {
+                    else if (url.toString().contains("http://localhost:9090")) {
                       webViewController!.loadUrl(urlRequest: URLRequest(
                           url: Uri.parse(loginViewModel.urlLogin)));
                       loginViewModel.changeValueLoading(false);
                     }
                 },
+                  shouldOverrideUrlLoading: (controller, navigationAction) async {
+                    final url = navigationAction.request.url!.toString();
+                    print('blocking navigation to $url}');
+                    if (url.toString().contains('?code=')) {
+                      if (url.toString().contains("?code=")) {
+                        var re = RegExp(r'(?<=code=)(.*)(?=&)');
+                        var authCode = re.firstMatch(url.toString());
+                        if (authCode != null) {
+                          print("code ${authCode.group(0)}");
+                          await loginViewModel.geAccessToken(authCode.group(0)!);
+                          await loginViewModel.getUserInfo(
+                              loginViewModel.rxAccessToken.value);
+                          await loginViewModel.getAccessTokenIoc(
+                              loginViewModel.rxUserInfoModel.value.name!,
+                              loginViewModel.rxUserInfoModel.value.email!);
+                          loginViewModel.changeValueLoading(false);
+                          Get.off(() => const MainScreen());
+                        }
+                      }
+                      return NavigationActionPolicy.CANCEL;
+                    }
+                    else if (url.contains("http://localhost:9090")) {
+                      webViewController!.loadUrl(urlRequest: URLRequest(
+                          url: Uri.parse(loginViewModel.urlLogin)));
+                      loginViewModel.changeValueLoading(false);
+                      return NavigationActionPolicy.CANCEL;
+                    }
+                    return NavigationActionPolicy.ALLOW;
+                  }
               )),
 
           ],
