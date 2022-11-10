@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nkg_quanly/const/const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,9 +45,11 @@ class ThemeClass {
       fontFamily: 'Roboto',
       colorScheme: const ColorScheme.light(),
       cardColor: kWhite,
-      primaryColor: kWhite,
+      primaryColor: kBackGround,
+
       splashColor: kWhite,
       dividerColor: kBackGround,
+
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: kBlueButton,
         unselectedItemColor: Colors.black,

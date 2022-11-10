@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nkg_quanly/ui/PMis/PMis_screen.dart';
@@ -129,7 +130,11 @@ class MainScreenStage extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       //body
-      body: SafeArea(child: _widgetOptions.elementAt(_selectedIndex)),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: SafeArea(
+            child: _widgetOptions.elementAt(_selectedIndex)),
+      ),
       //bottom
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,

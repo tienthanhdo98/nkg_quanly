@@ -38,233 +38,149 @@ class HomeScreen extends GetView {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(children: [
-              Image.asset("assets/bgtophome.png",height: 250,fit: BoxFit.cover,width: MediaQuery.of(context).size.width,),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
-                child: Row(
-                  children: [
-                    Container(
-                        child: const Icon(Icons.person),
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: kViolet,
-                          borderRadius: BorderRadius.circular(25),
-                        )),
-                    const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Xin chào",
-                            style: TextStyle(color: kWhite),
-                          ),
-                          const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
-                          Text(
-                            checkingStringNull(loginViewModel.rxUserInfoModel.value.name),
-                            style: const TextStyle(color: kWhite, fontSize: 24),
-                          )
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: (){
-                        Get.to(() => HomeSearch());
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                border: Border(
+                    bottom: BorderSide(
+                      width: 1,
+                      color: Theme.of(context).dividerColor,
+                    ))),
+            width: double.infinity,
+            height: 80,
 
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: kPink,
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Image.asset('assets/icons/ic_search_white.png',
-                            width: 20, height: 20),
-                      ),
-                    )
-                  ],
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  "assets/logo.png",
+                  width: 200,
+                  height: 150,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 130, 20, 0),
-                child: border(
-                    Column(
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text('Menu chức năng',
+                style: Theme.of(context).textTheme.headline2),
+          ),
+          SizedBox(
+            child: GridView.count(
+              physics: const BouncingScrollPhysics(),
+              // Create a grid with 2 columns. If you change the scrollDirection to
+              // horizontal, this produces 2 rows.
+              crossAxisCount: 4,
+              shrinkWrap: true,
+              mainAxisSpacing: 15,
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              // Generate 100 widgets that display their index in the List.
+              children: List.generate(listMenuHome.length, (index) {
+                var item = listMenuHome[index];
+                return InkWell(
+                  onTap: () {
+                    menuToScreen(item.type!, item.title, item.img);
+                  },
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        item.img!,
+                        width: 50,
+                        height: 50,
+                      ),
+                      Flexible(
+                        child: Text(
+                          item.title!,
+                          style: const TextStyle(fontSize: 12),
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
+            ),
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 15, 20, 20),
+            child: Container(
+              height: 160,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                image: const DecorationImage(
+                  image: AssetImage("assets/bg_weather.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Row(children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(15, 15, 5, 15),
-                                child: Text(
-                                  'Thông báo khẩn',
-                                  style: Theme.of(context).textTheme.headline3,
-                                )),
-                            Image.asset(
-                              'assets/icons/ic_speaker.png',
-                              width: 24,
-                              height: 24,
-                            )
-                          ],
+                        Text(
+                          convertDateToViDate(),
+                          style: const TextStyle(
+                              color: kWhite,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 40),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/anhdemo.png',
-                                width: 150,
-                                height: 100,
-                              ),
-                              Flexible(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text(
-                                    'Nam Định, Bình Dương nằm top 3 cao nhất điểm môn Toán tốt nghiệp THPT',
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    context),
-              )
-            ]),
-            //
-
-            //
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text('Menu chức năng',
-                  style: Theme.of(context).textTheme.headline2),
-            ),
-            SizedBox(
-              child: GridView.count(
-                physics: const BouncingScrollPhysics(),
-                // Create a grid with 2 columns. If you change the scrollDirection to
-                // horizontal, this produces 2 rows.
-                crossAxisCount: 4,
-                shrinkWrap: true,
-                mainAxisSpacing: 15,
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                // Generate 100 widgets that display their index in the List.
-                children: List.generate(listMenuHome.length, (index) {
-                  var item = listMenuHome[index];
-                  return InkWell(
-                    onTap: () {
-                      menuToScreen(item.type!, item.title, item.img);
-                    },
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          item.img!,
-                          width: 50,
-                          height: 50,
-                        ),
-                        Flexible(
-                          child: Text(
-                            item.title!,
-                            style: const TextStyle(fontSize: 12),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                }),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 15, 20, 20),
-              child: Container(
-                height: 160,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: const DecorationImage(
-                    image: AssetImage("assets/bg_weather.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Row(children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            convertDateToViDate(),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                        Text(formatDateToStringtype2(dateNow),
                             style: const TextStyle(
                                 color: kWhite,
                                 fontSize: 18,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          const Padding(
-                              padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                          Text(formatDateToStringtype2(dateNow),
-                              style: const TextStyle(
-                                  color: kWhite,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600))
-                        ],
-                      ),
+                                fontWeight: FontWeight.w600))
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 35, 15, 0),
-                    child: Obx(() => Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                                'Hôm nay\n${homeController.rxWeatherModel.value.temperature?.toStringAsFixed(1)}°',
-                                style: const TextStyle(
-                                    color: kWhite,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500)),
-                            SizedBox(
-                              height:80,
-                              width: 80,
-                              child:Obx(() => (homeController.rxWeatherModel.value.linkIcon != null) ? CachedNetworkImage(
-                                  imageUrl:  homeController.rxWeatherModel.value.linkIcon!,
-                                  imageBuilder: (context, imageProvider) => Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.fill
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 35, 15, 0),
+                  child: Obx(() => Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                              'Hôm nay\n${homeController.rxWeatherModel.value.temperature?.toStringAsFixed(1)}°',
+                              style: const TextStyle(
+                                  color: kWhite,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500)),
+                          SizedBox(
+                            height:80,
+                            width: 80,
+                            child:Obx(() => (homeController.rxWeatherModel.value.linkIcon != null) ? CachedNetworkImage(
+                                imageUrl:  homeController.rxWeatherModel.value.linkIcon!,
+                                imageBuilder: (context, imageProvider) => Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.fill
 
-                                      ),
                                     ),
                                   ),
-                              ) : SizedBox.shrink()),
-                            ),
+                                ),
+                            ) : SizedBox.shrink()),
+                          ),
 
 
-                          ],
-                        )),
-                  ),
+                        ],
+                      )),
+                ),
 
-                ]) /* add child content here */,
-              ),
-            )
-          ],
-        ),
+              ]) /* add child content here */,
+            ),
+          )
+        ],
       ),
     );
   }
@@ -436,7 +352,6 @@ void toScreenEoffice(int type, String? header, String? icon) {
       break;
     case 5:
       Get.to(() => BookRoomEOfficeList(
-            header: header,
           ));
       break;
     case 7:
