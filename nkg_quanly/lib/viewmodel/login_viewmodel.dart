@@ -17,7 +17,7 @@ class LoginViewModel extends GetxController {
   Rx<UserInfoModel> rxUserInfoModel = UserInfoModel().obs;
   Rx<SignUpModel> rxSignUpModel = SignUpModel().obs;
   Rx<InfoLoginConfig> rxInfoLoginConfig = InfoLoginConfig().obs;
-  Rx<String>  urlLogin = "".obs;
+  String  urlLogin = "";
   Map<String, String> headers = {
     "Content-type": "application/x-www-form-urlencoded"
   };
@@ -118,7 +118,7 @@ class LoginViewModel extends GetxController {
     InfoLoginConfig.fromJson(jsonDecode(response.body));
     print(response.body);
     rxInfoLoginConfig.value = infoLoginConfig;
-    urlLogin.value = "${infoLoginConfig.baseUrl}/oauth2/authorize?response_type=${infoLoginConfig.responseType}&client_id=${infoLoginConfig.clientID}&redirect_uri=${infoLoginConfig.redirectUri}&scope=${infoLoginConfig.scope}";
+    urlLogin= "${infoLoginConfig.baseUrl}/oauth2/authorize?response_type=${infoLoginConfig.responseType}&client_id=${infoLoginConfig.clientID}&redirect_uri=${infoLoginConfig.redirectUri}&scope=${infoLoginConfig.scope}";
   }
 
 

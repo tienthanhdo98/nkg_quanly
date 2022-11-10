@@ -46,8 +46,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
           )
               : Center(), // this perform the loading on every page load
           Expanded(
-            child: Obx(() => InAppWebView(
-              initialUrlRequest: URLRequest(url: Uri.parse(loginViewModel.urlLogin.value)), // your website url
+            child:  InAppWebView(
               initialOptions: InAppWebViewGroupOptions(
                 crossPlatform: InAppWebViewOptions(
                   javaScriptEnabled: true,
@@ -62,6 +61,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
               onWebViewCreated: (controller) async {
                 webViewController = controller;
                 await loginViewModel.getInfoLoginConfig();
+                webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(loginViewModel.urlLogin)));
               },
               onUpdateVisitedHistory: (controller, url, isReload) async {
                   print("updadte $url");
@@ -82,7 +82,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                   }
               },
             )),
-          )
+
         ],
       ),);
   }
