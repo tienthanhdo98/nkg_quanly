@@ -1,18 +1,18 @@
-import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../const/const.dart';
 import '../../const/utils.dart';
 import '../../main.dart';
 
 
 class InAppWebViewExampleScreen extends StatefulWidget {
+  const InAppWebViewExampleScreen({this.isLogout = false, Key? key}) : super(key: key);
+  final bool isLogout ;
+
   @override
   _InAppWebViewExampleScreenState createState() =>
-      new _InAppWebViewExampleScreenState();
+      _InAppWebViewExampleScreenState();
 }
 
 class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
@@ -61,7 +61,16 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
               onWebViewCreated: (controller) async {
                 webViewController = controller;
                 await loginViewModel.getInfoLoginConfig();
-                webViewController!.loadUrl(urlRequest: URLRequest(url: Uri.parse(loginViewModel.urlLogin)));
+                if(widget.isLogout == false) {
+                  webViewController!.loadUrl(urlRequest: URLRequest(
+                      url: Uri.parse(loginViewModel.urlLogin)));
+                }else
+                  {
+                    webViewController!.loadUrl(urlRequest: URLRequest(
+                        url: Uri.parse("https://dangnhap.moet.gov.vn/oidc/logout?id_token_hint=${loginViewModel
+                        .rxIdAccessToken}&post_logout_redirect_uri=${loginViewModel
+                        .rxInfoLoginConfig.value.redirectUri}")));
+                  }
               },
               onUpdateVisitedHistory: (controller, url, isReload) async {
                   print("updadte $url");
@@ -79,6 +88,12 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                       loginViewModel.changeValueLoading(false);
                       Get.off(() => const MainScreen());
                     }
+                  }
+                  if (url.toString().contains(
+                      loginViewModel.rxInfoLoginConfig.value.redirectUri!)) {
+                    webViewController!.loadUrl(urlRequest: URLRequest(
+                        url: Uri.parse(loginViewModel.urlLogin)));
+                    loginViewModel.changeValueLoading(false);
                   }
               },
             )),
