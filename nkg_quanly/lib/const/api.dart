@@ -167,10 +167,17 @@ const postChartQualityReward = "http://123.31.31.237:6002/api/analysisreportqual
 
 //login
 const apiGetAccessToken = "https://dangnhap.moet.gov.vn/oauth2/token";
+
 const apiRevokeAccessToken = "https://dangnhap.moet.gov.vn/oauth2/revoke";
 const apiRevokeAccessTokenIoc = "http://123.31.31.237:6002/api/authentications/access-tokens/revoke";
 const apiGetUserInfo = "https://dangnhap.moet.gov.vn/oauth2/userinfo";
 const apiGetSignup = "http://123.31.31.237:6002/api/authentications/sign-up";
+const apiRefreshIocToken= "http://123.31.31.237:6002/api/authentications/refresh-access-tokens";
 const apiLoginConfig= "http://123.31.31.237:6002/api/configssos/8e3a49cd-5015-41fb-aace-d243cc591465";
 const apiLogoutSSO = "https://dangnhap.moet.gov.vn/oidc/logout";
 
+//event
+const apiGetLatestEvent = "http://123.31.31.237:6002/api/events/event-latest";
+
+//notification
+const apiPostNotificationList = 'http://123.31.31.237:6002/api/notifications/search';

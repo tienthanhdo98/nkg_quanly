@@ -115,7 +115,7 @@ class MainScreenStage extends State<MainScreen> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    const ChartScreen(),
+    ChartScreen(),
     HomeScreen(),
     NotificationScreen(),
     SettingScreen()
