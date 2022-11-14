@@ -36,7 +36,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    prefToken = loginViewModel.loadFromShareFrefs();
+    prefToken =  loginViewModel.loadFromShareFrefs();
     print("pref token: ${prefToken}");
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -69,7 +69,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                   webViewController = controller;
                   await loginViewModel.getInfoLoginConfig();
                   if(widget.isLogout == false) {
-                    if(prefToken != loginViewModel.rxAccessTokenSSO.value || prefToken == "") {
+                    if(prefToken == "") {
                       webViewController!.loadUrl(urlRequest: URLRequest(
                           url: Uri.parse(loginViewModel.urlLogin)));
                     }
@@ -77,11 +77,20 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                       {
                           await loginViewModel.getUserInfo(
                               prefToken!);
-                          await loginViewModel.getAccessTokenIoc(
-                              loginViewModel.rxUserInfoModel.value.name!,
-                              loginViewModel.rxUserInfoModel.value.email!);
-                          loginViewModel.changeValueLoading(false);
-                          Get.off(() => const MainScreen());
+                          if(loginViewModel.rxUserInfoModel.value.name !=null) {
+                            await loginViewModel.getAccessTokenIoc(
+                                loginViewModel.rxUserInfoModel.value.name!,
+                                loginViewModel.rxUserInfoModel.value.email!);
+                            loginViewModel.changeValueLoading(false);
+                            //webViewController!.stopLoading();
+                            Get.off(() => const MainScreen());
+                          }
+                          else
+                            {
+                              webViewController!.loadUrl(urlRequest: URLRequest(
+                                  url: Uri.parse(loginViewModel.urlLogin)));
+                            }
+
 
                       }
                   }else
@@ -92,33 +101,10 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                           .rxInfoLoginConfig.value.redirectUri}")));
                     }
                 },
-                onUpdateVisitedHistory: (controller, url, isReload) async {
-                    print("onUpdateVisitedHistory $url");
-                    if (url.toString().contains("?code=")) {
-                      var re = RegExp(r'(?<=code=)(.*)(?=&)');
-                      var authCode = re.firstMatch(url.toString());
-                      if (authCode != null) {
-                        print("code ${authCode.group(0)}");
-                        await loginViewModel.geAccessTokenSSO(authCode.group(0)!);
-                        await loginViewModel.getUserInfo(
-                            loginViewModel.rxAccessTokenSSO.value);
-                        await loginViewModel.getAccessTokenIoc(
-                            loginViewModel.rxUserInfoModel.value.name!,
-                            loginViewModel.rxUserInfoModel.value.email!);
-                        loginViewModel.changeValueLoading(false);
-                        Get.off(() => const MainScreen());
-                      }
-                    }
-                    else if (url.toString().contains("http://localhost:9090/?sp=Test-SSO&tenantDomain=carbon.super")) {
-                      webViewController!.loadUrl(urlRequest: URLRequest(
-                          url: Uri.parse(loginViewModel.urlLogin)));
-                      loginViewModel.changeValueLoading(false);
-                    }
-                },
                   shouldOverrideUrlLoading: (controller, navigationAction) async {
                     final url = navigationAction.request.url!.toString();
-                    print('blocking navigation to $url}');
                     if (url.toString().contains('?code=')) {
+                      print('blocking navigation to $url}');
                       if (url.toString().contains("?code=")) {
                         var re = RegExp(r'(?<=code=)(.*)(?=&)');
                         var authCode = re.firstMatch(url.toString());
@@ -131,12 +117,14 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                               loginViewModel.rxUserInfoModel.value.name!,
                               loginViewModel.rxUserInfoModel.value.email!);
                           loginViewModel.changeValueLoading(false);
+                          //webViewController!.stopLoading();
                           Get.off(() => const MainScreen());
                         }
                       }
                       return NavigationActionPolicy.CANCEL;
                     }
                     else if (url.contains("http://localhost:9090/?sp=Test-SSO&tenantDomain=carbon.super")) {
+                      print('blocking navigation to $url}');
                       webViewController!.loadUrl(urlRequest: URLRequest(
                           url: Uri.parse(loginViewModel.urlLogin)));
                       loginViewModel.changeValueLoading(false);

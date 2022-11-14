@@ -47,7 +47,10 @@ class NotificationItems {
   String? workbookId;
   String? workName;
   bool? status;
+  String? action;
   bool? isDeleted;
+  String? createdDate;
+  String? lastModifiedDate;
   String? createdBy;
   String? lastModifiedBy;
 
@@ -56,7 +59,10 @@ class NotificationItems {
         this.workbookId,
         this.workName,
         this.status,
+        this.action,
         this.isDeleted,
+        this.createdDate,
+        this.lastModifiedDate,
         this.createdBy,
         this.lastModifiedBy});
 
@@ -65,7 +71,10 @@ class NotificationItems {
     workbookId = json['workbookId'];
     workName = json['workName'];
     status = json['status'];
+    action = json['action'];
     isDeleted = json['isDeleted'];
+    createdDate = json['createdDate'];
+    lastModifiedDate = json['lastModifiedDate'];
     createdBy = json['createdBy'];
     lastModifiedBy = json['lastModifiedBy'];
   }
@@ -76,7 +85,10 @@ class NotificationItems {
     data['workbookId'] = this.workbookId;
     data['workName'] = this.workName;
     data['status'] = this.status;
+    data['action'] = this.action;
     data['isDeleted'] = this.isDeleted;
+    data['createdDate'] = this.createdDate;
+    data['lastModifiedDate'] = this.lastModifiedDate;
     data['createdBy'] = this.createdBy;
     data['lastModifiedBy'] = this.lastModifiedBy;
     return data;

@@ -60,7 +60,7 @@ class SearchController extends GetxController {
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
     MissionModel res = MissionModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+  
     listDataMission.value = res.items!;
     changeLoadingState(false);
     //loadmore
@@ -138,7 +138,7 @@ class SearchController extends GetxController {
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+  
     ReportModel reportModel = ReportModel.fromJson(jsonDecode(response.body));
     listDataReport.value = reportModel.items!;
   }
@@ -207,7 +207,7 @@ class SearchController extends GetxController {
     print('loading');
     String json = '{"currentPage":1,"pageSize":10,"subject" : "$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+  
     HelpdeskModel res = HelpdeskModel.fromJson(jsonDecode(response.body));
     rxHelpdeskListItems.value = res.items!;
     changeLoadingState(false);
@@ -234,7 +234,7 @@ class SearchController extends GetxController {
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+  
     rxBookingCarItems.value = res.items!;
     changeLoadingState(false);
     //loadmore
@@ -260,7 +260,7 @@ class SearchController extends GetxController {
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
     MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+  
     rxMeetingRoomItems.value = res.items!;
     changeLoadingState(false);
     //loadmore
@@ -316,7 +316,7 @@ class SearchController extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+  
     ContactModel contactModel =
         ContactModel.fromJson(jsonDecode(response.body));
     rxIndividualContactListItems.value = contactModel.items!;
@@ -394,7 +394,7 @@ class SearchController extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10, "keyword":"$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+  
     ProfileModel profileModel = ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileItems.value = profileModel.items!;
     changeLoadingState(false);

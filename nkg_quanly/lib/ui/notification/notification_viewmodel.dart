@@ -31,7 +31,7 @@ class NotificationViewModel extends GetxController {
     String json =
         '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+  
     NotificationModel notificationModel = NotificationModel.fromJson(jsonDecode(response.body));
     rxListNotificationItems.value = notificationModel.items!;
     //loadmore

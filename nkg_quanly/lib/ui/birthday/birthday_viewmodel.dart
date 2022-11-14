@@ -39,7 +39,7 @@ class BirthDayViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
     rxBirthDayListItemsInCurDay.value = res.items!;
     //loadmore
@@ -62,7 +62,7 @@ class BirthDayViewModel extends GetxController {
     print('loadingBirthDayDefault ');
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
     rxBirthDayListItems.value = res.items!;
     rxBirthDayModel.value = res;
@@ -87,7 +87,7 @@ class BirthDayViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
     rxBirthDayListItems.value = res.items!;
     rxBirthDayModel.value = res;
@@ -113,7 +113,7 @@ class BirthDayViewModel extends GetxController {
     String json =
         '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
     rxBirthDayListItems.value = res.items!;
     rxBirthDayModel.value = res;
@@ -139,7 +139,7 @@ class BirthDayViewModel extends GetxController {
     print('loading');
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
-    print(response.body);
+    
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
     rxBirthDayListItems.value = res.items!;
     rxBirthDayModel.value = res;

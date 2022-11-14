@@ -51,7 +51,7 @@ class ProfilesProcedureViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxDocumentFilterModel.update((val) {
       val!.totalRecords = documentFilterModel.totalRecords;
       val.items = documentFilterModel.items;
@@ -93,7 +93,7 @@ class ProfilesProcedureViewModel extends GetxController {
         '{"currentPage":1,"pageSize":10,"tuNgay":"$datefrom","denNgay":"$dateTo"}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     profileProcedureModel =
         ProfileProcedureModel.fromJson(jsonDecode(response.body));
     rxProfileProcedureListItems.value = profileProcedureModel.items!;
@@ -109,7 +109,7 @@ class ProfilesProcedureViewModel extends GetxController {
         String json =
             '{"currentPage":$page,"pageSize":10,"tuNgay":"$datefrom","denNgay":"$dateTo"}';
         response = await http.post(url, headers: headers, body: json);
-        print(response.body);
+        
         profileProcedureModel =
             ProfileProcedureModel.fromJson(jsonDecode(response.body));
         rxProfileProcedureListItems.addAll(profileProcedureModel.items!);
@@ -284,7 +284,7 @@ class ProfilesProcedureViewModel extends GetxController {
         String json =
             '{"currentPage":$page,"pageSize":10,"coQuanId":"$agenciesId","linhVuc":"$branch","trangThaiHoSo":"$status","nttId":"$groupProcudereId","ttId":"$procudereId"}';
         response = await http.post(url, headers: headers, body: json);
-        print(response.body);
+        
         profileProcedureModel =
             ProfileProcedureModel.fromJson(jsonDecode(response.body));
         rxProfileProcedureListItems.addAll(profileProcedureModel.items!);

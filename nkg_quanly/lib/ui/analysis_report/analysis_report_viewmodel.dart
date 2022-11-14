@@ -140,7 +140,7 @@ class AnalysisReportViewModel extends GetxController {
       String urlApi, RxList<AnalysisReportFilterModel> rxlist) async {
     final url = Uri.parse(urlApi);
     http.Response response = await http.get(url);
-    print(response.body);
+    
     var listRes = <AnalysisReportFilterModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisReportFilterModel.fromJson(e)).toList();
@@ -151,7 +151,7 @@ class AnalysisReportViewModel extends GetxController {
       RxList<AnalysisReportFilterModel> rxlist) async {
     final url = Uri.parse("$urlApi?typeSchool=$id");
     http.Response response = await http.get(url);
-    print(response.body);
+    
     var listRes = <AnalysisReportFilterModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisReportFilterModel.fromJson(e)).toList();
@@ -275,7 +275,7 @@ class AnalysisReportViewModel extends GetxController {
        """;
     http.Response response =
         await http.post(url, headers: headers, body: jsonBody);
-    print(response.body);
+    
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     if (typeScreen == listReportGDKT[0]) {
@@ -327,7 +327,7 @@ class AnalysisReportViewModel extends GetxController {
        """;
     http.Response response =
         await http.post(url, headers: headers, body: jsonBody);
-    print(response.body);
+    
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
@@ -370,7 +370,7 @@ class AnalysisReportViewModel extends GetxController {
        """;
     http.Response response =
         await http.post(url, headers: headers, body: jsonBody);
-    print(response.body);
+    
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
@@ -532,7 +532,7 @@ class AnalysisReportViewModel extends GetxController {
        """;
     http.Response response =
         await http.post(url, headers: headers, body: jsonBody);
-    print(response.body);
+    
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
@@ -580,7 +580,7 @@ class AnalysisReportViewModel extends GetxController {
        """;
     http.Response response =
         await http.post(url, headers: headers, body: jsonBody);
-    print(response.body);
+    
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
@@ -653,7 +653,7 @@ class AnalysisReportViewModel extends GetxController {
        """;
     http.Response response =
         await http.post(url, headers: headers, body: jsonBody);
-    print(response.body);
+    
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
@@ -715,7 +715,7 @@ class AnalysisReportViewModel extends GetxController {
        """;
     http.Response response =
         await http.post(url, headers: headers, body: jsonBody);
-    print(response.body);
+    
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
@@ -775,7 +775,7 @@ class AnalysisReportViewModel extends GetxController {
        """;
     http.Response response =
         await http.post(url, headers: headers, body: jsonBody);
-    print(response.body);
+    
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();
@@ -835,7 +835,7 @@ class AnalysisReportViewModel extends GetxController {
        """;
     http.Response response =
         await http.post(url, headers: headers, body: jsonBody);
-    print(response.body);
+    
     var listRes = <AnalysisChartModel>[];
     List a = json.decode(response.body) as List;
     listRes = a.map((e) => AnalysisChartModel.fromJson(e)).toList();

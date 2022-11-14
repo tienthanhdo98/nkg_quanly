@@ -59,7 +59,7 @@ class GroupWorkBookViewModel extends GetxController {
     print('loading');
     http.Response response = await http.delete(url, headers: headers);
     print(id);
-    print(response.body);
+    
     if (response.statusCode == 200) {
       postGroupWorkBookAll();
       Get.snackbar(
@@ -82,7 +82,7 @@ class GroupWorkBookViewModel extends GetxController {
       "description": "$description"
     }""";
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     if (response.statusCode == 200) {
       postGroupWorkBookAll();
       Get.snackbar(
@@ -113,7 +113,7 @@ class GroupWorkBookViewModel extends GetxController {
       "description": "$dess"
     }""";
     http.Response response = await http.put(url, headers: headers, body: json);
-    print(response.body);
+    
     if (response.statusCode == 200) {
       postGroupWorkBookAll();
       Get.snackbar(

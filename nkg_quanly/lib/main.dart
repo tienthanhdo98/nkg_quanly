@@ -31,7 +31,6 @@ import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profile_
 import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profiles_procedure_list_withstatistic.dart';
 import 'package:nkg_quanly/ui/profile_work/e_office/profile_work_e_office_list.dart';
 import 'package:nkg_quanly/ui/report/report_list.dart';
-import 'package:nkg_quanly/ui/report/report_screen.dart';
 import 'package:nkg_quanly/ui/setting/setting_screen.dart';
 import 'package:nkg_quanly/ui/theme/theme_data.dart';
 import 'package:nkg_quanly/ui/utility/group_contacts/group_contacts_list.dart';

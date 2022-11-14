@@ -48,7 +48,7 @@ class ReportViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxDocumentFilterModel.update((val) {
       val!.totalRecords = documentFilterModel.totalRecords;
       val.items = documentFilterModel.items;
@@ -60,7 +60,7 @@ class ReportViewModel extends GetxController {
     String json = '{"pageIndex":1,"pageSize":10}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     reportMode = ReportModel.fromJson(jsonDecode(response.body));
     rxReportStatisticTotal.value = reportMode.statistic!;
     rxReportListItems.value = reportMode.items!;
@@ -74,7 +74,7 @@ class ReportViewModel extends GetxController {
         page++;
         String json = '{"pageIndex":$page,"pageSize":10}';
         response = await http.post(url, headers: headers, body: json);
-        print(response.body);
+        
         reportMode =
             ReportModel.fromJson(jsonDecode(response.body));
         rxReportListItems.addAll(reportMode.items!);
@@ -88,7 +88,7 @@ class ReportViewModel extends GetxController {
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     reportMode = ReportModel.fromJson(jsonDecode(response.body));
     rxReportListItems.value = reportMode.items!;
     rxReportStatistic.value = reportMode.statistic!;
@@ -102,7 +102,7 @@ class ReportViewModel extends GetxController {
         page++;
         String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
         response = await http.post(url, headers: headers, body: json);
-        print(response.body);
+        
         reportMode =
             ReportModel.fromJson(jsonDecode(response.body));
         rxReportListItems.addAll(reportMode.items!);
@@ -135,7 +135,7 @@ class ReportViewModel extends GetxController {
           String json =
               '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
           response = await http.post(url, headers: headers, body: json);
-          print(response.body);
+          
           reportMode =
               ReportModel.fromJson(jsonDecode(response.body));
           rxReportListItems.addAll(reportMode.items!);
@@ -150,7 +150,7 @@ class ReportViewModel extends GetxController {
     print('loading');
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
-    print(response.body);
+    
     reportMode = ReportModel.fromJson(jsonDecode(response.body));
     rxReportListItems.value = reportMode.items!;
     rxReportStatistic.value = reportMode.statistic!;
@@ -166,7 +166,7 @@ class ReportViewModel extends GetxController {
         String jsonGetByMonth =
             '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dateFrom":"${formatDateToString(dateNow)}"}';
         response = await http.post(url, headers: headers, body: jsonGetByMonth);
-        print(response.body);
+        
         reportMode =
             ReportModel.fromJson(jsonDecode(response.body));
         rxReportListItems.addAll(reportMode.items!);
@@ -181,7 +181,7 @@ class ReportViewModel extends GetxController {
         '{"pageIndex":1,"pageSize":10,"level":"$level","status": "$status"}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     reportMode = ReportModel.fromJson(jsonDecode(response.body));
     rxReportListItems.value = reportMode.items!;
     rxReportStatistic.value = reportMode.statistic!;
@@ -196,7 +196,7 @@ class ReportViewModel extends GetxController {
         String json =
             '{"pageIndex":$page,"pageSize":10,"level":"$level","status": "$status"}';
         response = await http.post(url, headers: headers, body: json);
-        print(response.body);
+        
         reportMode =
             ReportModel.fromJson(jsonDecode(response.body));
         rxReportListItems.addAll(reportMode.items!);
@@ -253,7 +253,7 @@ class ReportViewModel extends GetxController {
       }
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     reportMode = ReportModel.fromJson(jsonDecode(response.body));
     rxReportListItems.value = reportMode.items!;
     rxReportStatistic.value = reportMode.statistic!;
@@ -273,7 +273,7 @@ class ReportViewModel extends GetxController {
           '{"pageIndex":$page,"pageSize":10,"state":"$state","departmentHandle": "$departmentHandle"}';
         }
         response = await http.post(url, headers: headers, body: json);
-        print(response.body);
+        
         reportMode =
             ReportModel.fromJson(jsonDecode(response.body));
         rxReportListItems.addAll(reportMode.items!);

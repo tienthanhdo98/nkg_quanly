@@ -80,7 +80,7 @@ class HelpdeskViewModel extends GetxController {
     print('loading');
     String json = '{"currentPage":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+
     helpdeskModel = HelpdeskModel.fromJson(jsonDecode(response.body));
     rxHelpdeskListStatistic.value = helpdeskModel.statistic!;
     rxHelpdeskListItems.value = helpdeskModel.items!;
@@ -112,7 +112,7 @@ class HelpdeskViewModel extends GetxController {
     String json =
         '{"currentPage":1,"pageSize":10,"createdDateFrom":"$dateFrom","createdDateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+
     helpdeskModel = HelpdeskModel.fromJson(jsonDecode(response.body));
     rxHelpdeskListItems.value = helpdeskModel.items!;
     //loadmore
@@ -145,7 +145,7 @@ class HelpdeskViewModel extends GetxController {
       json = '{"currentPage":1,"pageSize":10}';
     }
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+
     helpdeskModel = HelpdeskModel.fromJson(jsonDecode(response.body));
     rxHelpdeskListItems.value = helpdeskModel.items!;
     //loadmore
@@ -175,7 +175,7 @@ class HelpdeskViewModel extends GetxController {
   Future<void> getChartRecently() async {
     final url = Uri.parse(apiGetChartRecentlyHelpDesk);
     http.Response response = await http.get(url);
-    print(response.body);
+
     var listStatistic = <HelpDeskStatistic>[];
     List a = json.decode(response.body) as List;
     listStatistic = a.map((e) => HelpDeskStatistic.fromJson(e)).toList();

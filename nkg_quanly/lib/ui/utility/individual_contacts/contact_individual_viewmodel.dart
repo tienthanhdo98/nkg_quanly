@@ -57,7 +57,7 @@ class ContactIndividualViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url,headers: headers,body : json);
-    print(response.body);
+  
     contactModel =  ContactModel.fromJson(jsonDecode(response.body));
     rxContactListItems.value = contactModel.items!;
     //loadmore
@@ -80,7 +80,7 @@ class ContactIndividualViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10, "departmentId": "$departmentId"}';
     http.Response response = await http.post(url,headers: headers,body : json);
-    print(response.body);
+  
     contactModel =  ContactModel.fromJson(jsonDecode(response.body));
     rxContactListItems.value = contactModel.items!;
     //loadmore
@@ -104,7 +104,7 @@ class ContactIndividualViewModel extends GetxController {
     print('loading');
     http.Response response = await http.delete(url, headers: headers);
     print(id);
-    print(response.body);
+  
     if (response.statusCode == 200) {
       getContactList();
       Get.snackbar(
@@ -140,7 +140,7 @@ class ContactIndividualViewModel extends GetxController {
       "position": "$position"
     }""";
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+  
     if (response.statusCode == 200) {
       getContactList();
       Get.snackbar(
@@ -178,7 +178,7 @@ class ContactIndividualViewModel extends GetxController {
       "position": "$position"
     }""";
     http.Response response = await http.put(url, headers: headers, body: json);
-    print(response.body);
+  
     if (response.statusCode == 200) {
       getContactList();
       Get.snackbar(

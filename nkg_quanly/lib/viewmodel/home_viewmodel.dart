@@ -29,7 +29,7 @@ class HomeViewModel extends GetxController {
         'http://123.31.31.237:6002/api/weather?Lat=21.028511&Lon=105.804817';
     print('loading');
     http.Response response = await http.get(Uri.parse(url));
-    print(response.body);
+    
     WeatherModel weatherModel =
         WeatherModel.fromJson(jsonDecode(response.body));
     rxWeatherModel.value = weatherModel;
@@ -42,7 +42,7 @@ class HomeViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxDocumentFilterModel.update((val) {
       val!.totalRecords = documentFilterModel.totalRecords;
       val.items = documentFilterModel.items;
@@ -55,7 +55,7 @@ class HomeViewModel extends GetxController {
     final url = Uri.parse(apiGetDocumentStatistic);
     print('loading');
     http.Response response = await http.get(url);
-    print(response.body);
+    
     return DocumentStatisticModel.fromJson(jsonDecode(response.body));
   }
 
@@ -63,7 +63,7 @@ class HomeViewModel extends GetxController {
   Future<DocumentFilterModel> getQuantityDocumentBuUrl(String url) async {
     print('loading');
     http.Response response = await http.get(Uri.parse(url));
-    print(response.body);
+    
     return DocumentFilterModel.fromJson(jsonDecode(response.body));
   }
 }

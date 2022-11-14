@@ -78,7 +78,7 @@ class WorkBookViewModel extends GetxController {
     print('loading');
     http.Response response = await http.delete(url, headers: headers);
     print(id);
-    print(response.body);
+    
     if (response.statusCode == 200) {
       postWorkBookAll();
       Get.snackbar(
@@ -111,7 +111,7 @@ class WorkBookViewModel extends GetxController {
       "important": $important
     }""";
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     if (response.statusCode == 200) {
       postWorkBookAll();
       Get.snackbar(
@@ -153,7 +153,7 @@ class WorkBookViewModel extends GetxController {
       "important": $important
     }""";
     http.Response response = await http.put(url, headers: headers, body: json);
-    print(response.body);
+    
     if (response.statusCode == 200) {
       postWorkBookAll();
       Get.snackbar(
@@ -184,7 +184,7 @@ class WorkBookViewModel extends GetxController {
     String json =
         '{"pageIndex":1,"pageSize":30, "important": "$important","status":"$status"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
     rxWorkBookListItems.value = res.items!;
   }
@@ -196,7 +196,7 @@ class WorkBookViewModel extends GetxController {
     http.Response response;
     response = await http.post(url, headers: headers, body: json);
 
-    print(response.body);
+    
     GroupWorkbookModel res =
         GroupWorkbookModel.fromJson(jsonDecode(response.body));
     rxGroupWorkBookListItems.value = res.items!;

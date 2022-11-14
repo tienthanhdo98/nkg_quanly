@@ -25,7 +25,7 @@ class ProfileViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxDocumentFilterModel.update((val) {
       val!.totalRecords = documentFilterModel.totalRecords;
       val.items = documentFilterModel.items;
@@ -147,7 +147,7 @@ class ProfileViewModel extends GetxController {
   Future<DocumentFilterModel> getQuantityDocumentBuUrl(String url) async {
     print('loading');
     http.Response response = await http.get(Uri.parse(url));
-    print(response.body);
+    
     return DocumentFilterModel.fromJson(jsonDecode(response.body));
   }
 
@@ -156,7 +156,7 @@ class ProfileViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     profileModel = ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileStatisticTotal.value = profileModel.statistic!;
     rxProfileStatistic.value = profileModel.statistic!;
@@ -184,7 +184,7 @@ class ProfileViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileItems.value = res.items!;
     profileModel = ProfileModel.fromJson(jsonDecode(response.body));
@@ -215,7 +215,7 @@ class ProfileViewModel extends GetxController {
     String json =
         '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     profileModel= ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileStatistic.value = profileModel.statistic!;
     rxProfileItems.value = profileModel.items!;
@@ -245,7 +245,7 @@ class ProfileViewModel extends GetxController {
     print('loading');
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
-    print(response.body);
+    
     profileModel= ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileStatistic.value = profileModel.statistic!;
     rxProfileItems.value = profileModel.items!;
@@ -275,7 +275,7 @@ class ProfileViewModel extends GetxController {
     String json =
         '{"pageIndex":1,"pageSize":10,"typeSubmission":"$typeSubmission","submissionProblem":"$submissionProblem","unitEditor":"$unitEditor","state":"$state"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     profileModel= ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileStatistic.value = profileModel.statistic!;
     rxProfileItems.value = profileModel.items!;

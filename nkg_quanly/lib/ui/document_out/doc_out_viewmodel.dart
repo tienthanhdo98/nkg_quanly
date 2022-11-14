@@ -34,7 +34,7 @@ class DocumentOutViewModel extends GetxController {
     final url = Uri.parse(apiGetDocumentOut);
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     rxDocumentOutItems.value = res.items!;
     //loadmore
@@ -58,7 +58,7 @@ class DocumentOutViewModel extends GetxController {
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     rxDocumentOutItems.value = res.items!;
     //loadmore
@@ -85,7 +85,7 @@ class DocumentOutViewModel extends GetxController {
         '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     rxDocumentOutItems.value = res.items!;
     //loadmore
@@ -113,7 +113,7 @@ class DocumentOutViewModel extends GetxController {
         '{"pageIndex":1,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: jsonGetByMonth);
-    print(response.body);
+    
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     rxDocumentOutItems.value = res.items!;
     //loadmore
@@ -167,7 +167,7 @@ class DocumentOutViewModel extends GetxController {
     String json = '{"pageIndex":1,"pageSize":10,"status":"$status"}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     rxDocumentOutItems.value = res.items!;
     //loadmore

@@ -46,7 +46,7 @@ class BookingCarViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxDocumentFilterModel.update((val) {
       val!.totalRecords = documentFilterModel.totalRecords;
       val.items = documentFilterModel.items;
@@ -59,7 +59,7 @@ class BookingCarViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarItems.value = res.items!;
     rxBookingCarStatistic.value = res.statistic!;
@@ -70,7 +70,7 @@ class BookingCarViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarStatistic.value = res.statistic!;
     rxBookingCarItems.value = res.items!;
@@ -82,7 +82,7 @@ class BookingCarViewModel extends GetxController {
     String json =
         '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarItems.value = res.items!;
     rxBookingCarStatistic.value = res.statistic!;
@@ -93,7 +93,7 @@ class BookingCarViewModel extends GetxController {
     print('loading');
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
-    print(response.body);
+    
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarItems.value = res.items!;
     rxBookingCarStatistic.value = res.statistic!;
@@ -144,7 +144,7 @@ class BookingCarViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"status":"$status"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarItems.value = res.items!;
   }

@@ -30,7 +30,7 @@ class GuildlineViewModel extends GetxController {
     var url = Uri.parse(getGuideline);
     print('loading');
     http.Response response = await http.get(url);
-    print(response.body);
+    
     guidelineModel =  GuidelineModel.fromJson(jsonDecode(response.body));
     rxGuideLineListItems.value = guidelineModel.items!;
     //loadmore
@@ -53,7 +53,7 @@ class GuildlineViewModel extends GetxController {
     var url = Uri.parse("$getGuidelineDownload$id");
     print('loading');
     http.Response response = await http.get(url,headers: headers);
-    print(response.body);
+    
     return response.body;
   }
 

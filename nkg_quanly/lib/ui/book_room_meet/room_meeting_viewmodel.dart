@@ -60,7 +60,7 @@ class RoomMeetingViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
 
     // rxMeetingRoomStatistic.value = res.statistic!;
@@ -80,7 +80,7 @@ class RoomMeetingViewModel extends GetxController {
     String json =
         '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
 
     rxMeetingRoomStatistic.value = res.statistic!;
@@ -92,7 +92,7 @@ class RoomMeetingViewModel extends GetxController {
     print('loading');
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
-    print(response.body);
+    
     MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
 
     rxMeetingRoomStatistic.value = res.statistic!;
@@ -144,7 +144,7 @@ class RoomMeetingViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"status":"$status"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
     rxMeetingRoomItems.value = res.items!;
   }

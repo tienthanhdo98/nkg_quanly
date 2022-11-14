@@ -35,9 +35,8 @@ class PmisViewModel extends GetxController {
 
   Future<void> getUnitPmis() async {
     final url = Uri.parse(apiPmisGetUnit);
-    print('loading');
+
     http.Response response = await http.get(url);
-    print(response.body);
     var listUnit = <PmisUnitModel>[];
     List a = json.decode(response.body) as List;
     listUnit = a.map((e) => PmisUnitModel.fromJson(e)).toList();
@@ -81,9 +80,9 @@ class PmisViewModel extends GetxController {
     {
        url = Uri.parse("$apiStatisticTotal?unit=$unitId");
     }
-    print('$url');
+
     http.Response response = await http.get(url);
-    print(response.body);
+
     StatisticModel pmisStatisticModel =
         StatisticModel.fromJson(json.decode(response.body));
     rxTotalBienChe.value = pmisStatisticModel.tongSoBienChe!;
@@ -106,7 +105,7 @@ class PmisViewModel extends GetxController {
     }
     print('$url');
     http.Response response = await http.get(url);
-    print(response.body);
+
     var listUnit = <PmisChartModel>[];
     List a = json.decode(response.body) as List;
     listUnit = a.map((e) => PmisChartModel.fromJson(e)).toList();
@@ -136,7 +135,6 @@ class PmisViewModel extends GetxController {
     final url = Uri.parse(apiPmisPieChartByYear);
     print('loading');
     http.Response response = await http.get(url);
-    //print(response.body);
     var listUnit = <PmisChartModel>[];
     List a = json.decode(response.body) as List;
     listUnit = a.map((e) => PmisChartModel.fromJson(e)).toList();

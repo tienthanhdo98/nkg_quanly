@@ -90,7 +90,7 @@ class MissionViewModel extends GetxController {
     String json =
         '{"pageIndex":1,"pageSize":10,"state":"$status","level":"$level","organizationName":"$department"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     missionModel = MissionModel.fromJson(jsonDecode(response.body));
     rxMissionItem.value = missionModel.items!;
     rxMissionStatistic.value = missionModel.statistic!;
@@ -134,7 +134,7 @@ class MissionViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxDocumentFilterModel.update((val) {
       val!.totalRecords = documentFilterModel.totalRecords;
       val.items = documentFilterModel.items;
@@ -147,7 +147,7 @@ class MissionViewModel extends GetxController {
     print('loading $day');
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     missionModel = MissionModel.fromJson(jsonDecode(response.body));
     rxMissionItem.value = missionModel.items!;
     rxMissionStatistic.value = missionModel.statistic!;
@@ -179,7 +179,7 @@ class MissionViewModel extends GetxController {
           '{"pageIndex":1,"pageSize":10,"fromDate":"$datefrom","toDate":"$dateTo"}';
       http.Response response = await http.post(
           url, headers: headers, body: json);
-      print(response.body);
+      
 
       missionModel = MissionModel.fromJson(jsonDecode(response.body));
       rxMissionItem.value = missionModel.items!;
@@ -209,7 +209,7 @@ class MissionViewModel extends GetxController {
     print('loading');
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
-    print(response.body);
+    
     missionModel = MissionModel.fromJson(jsonDecode(response.body));
     rxMissionItem.value = missionModel.items!;
     rxMissionStatistic.value = missionModel.statistic!;
@@ -236,7 +236,7 @@ class MissionViewModel extends GetxController {
     final url = Uri.parse("$apiGetMissionDetail$id");
     print(url);
     http.Response response = await http.get(url);
-    print(response.body);
+    
     return MissionItem.fromJson(jsonDecode(response.body));
   }
 

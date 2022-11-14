@@ -34,12 +34,13 @@ class LoginViewModel extends GetxController {
   _initPrefs() async {
     pref ??= await SharedPreferences.getInstance();
   }
-  String loadFromShareFrefs() {
-    var res = pref?.getString(key) ?? "";
+  loadFromShareFrefs() {
+    String res = pref?.getString(key) ?? "";
     return  res;
   }
 
   saveToShareFrefs(String value) async {
+    await _initPrefs();
     pref?.setString(key, value);
   }
 
@@ -57,10 +58,10 @@ class LoginViewModel extends GetxController {
     };
     http.Response response = await http.post(Uri.parse(apiGetAccessToken),
         headers: headers, body: formMap);
-    print(response.body);
+    
     AccessTokenModel accessTokenModel =
         AccessTokenModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxAccessTokenSSO.value = accessTokenModel.accessToken!;
     rxIdAccessToken.value = accessTokenModel.idToken!;
     saveToShareFrefs(rxAccessTokenSSO.value);
@@ -84,7 +85,7 @@ class LoginViewModel extends GetxController {
         headers: headers, body: json);
     AccessTokenModel signUpModel =
         AccessTokenModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxAccessTokenSSO.value = signUpModel.accessToken!;
     rxIdAccessToken.value = signUpModel.idToken!;
     print("New AccessToken sso ${rxAccessTokenSSO.value}");
@@ -104,7 +105,7 @@ class LoginViewModel extends GetxController {
     };
     http.Response response = await http.post(Uri.parse(apiRevokeAccessToken),
         headers: headers, body: formMap);
-    print(response.body);
+    
     if (response.statusCode == 200) {
       rxAccessTokenSSO.value = "";
     }
@@ -117,7 +118,7 @@ class LoginViewModel extends GetxController {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     });
-    print(response.body);
+    
     if (response.statusCode == 200) {
       rxAccessTokenIoc.value = "";
     }
@@ -130,10 +131,10 @@ class LoginViewModel extends GetxController {
       'Accept': 'application/json',
       'Authorization': 'Bearer $accessToken',
     });
-    print(response.body);
+    
     UserInfoModel userInfoModel =
         UserInfoModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxUserInfoModel.value = userInfoModel;
   }
 
@@ -142,9 +143,9 @@ class LoginViewModel extends GetxController {
     Map<String, String> headers = {"Content-type": "application/json"};
     http.Response response =
         await http.post(Uri.parse(apiGetSignup), headers: headers, body: json);
-    print(response.body);
+    
     SignUpModel signUpModel = SignUpModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxSignUpModel.value = signUpModel;
     rxAccessTokenIoc.value = signUpModel.accessToken!;
     print("AccessTokenIoc ${rxAccessTokenIoc.value}");
@@ -161,7 +162,7 @@ class LoginViewModel extends GetxController {
     http.Response response = await http.post(Uri.parse(apiRefreshIocToken),
         headers: headers, body: json);
     SignUpModel signUpModel = SignUpModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxSignUpModel.value = signUpModel;
     rxAccessTokenIoc.value = signUpModel.accessToken!;
     print("New AccessTokenIoc ${rxAccessTokenIoc.value}");
@@ -173,10 +174,10 @@ class LoginViewModel extends GetxController {
 
   Future<void> getInfoLoginConfig() async {
     http.Response response = await http.get(Uri.parse(apiLoginConfig));
-    print(response.body);
+    
     InfoLoginConfig infoLoginConfig =
         await InfoLoginConfig.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxInfoLoginConfig.value = infoLoginConfig;
     urlLogin =
         "${infoLoginConfig.baseUrl}/oauth2/authorize?response_type=${infoLoginConfig.responseType}&client_id=${infoLoginConfig.clientID}&redirect_uri=${infoLoginConfig.redirectUri}&scope=${infoLoginConfig.scope}";

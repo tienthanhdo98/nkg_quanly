@@ -40,7 +40,7 @@ class DocumentNonApproveViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
-    print(response.body);
+    
     rxDocumentFilterModel.update((val) {
       val!.totalRecords = documentFilterModel.totalRecords;
       val.items = documentFilterModel.items;
@@ -63,7 +63,7 @@ class DocumentNonApproveViewModel extends GetxController {
     String json = '{"pageIndex":1,"pageSize":10}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     DocumentInModel res = DocumentInModel.fromJson(jsonDecode(response.body));
     rxDocumentInStatisticTotal.value = res.statistic!;
   }
@@ -72,7 +72,7 @@ class DocumentNonApproveViewModel extends GetxController {
     final url = Uri.parse("${apiGetDocumentDetail}id=$id");
     print('loading detail');
     http.Response response = await http.get(url);
-    print(response.body);
+    
     return DocumentInListItems.fromJson(jsonDecode(response.body));
   }
 
@@ -81,7 +81,7 @@ class DocumentNonApproveViewModel extends GetxController {
     String json = '{"pageIndex":1,"pageSize":10}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     documentInModel = DocumentInModel.fromJson(jsonDecode(response.body));
     rxItems.value = documentInModel.items!;
     rxDocumentInStatistic.value = documentInModel.statistic!;
@@ -108,7 +108,7 @@ class DocumentNonApproveViewModel extends GetxController {
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     documentInModel = DocumentInModel.fromJson(jsonDecode(response.body));
     rxItems.value = documentInModel.items!;
     rxDocumentInStatistic.value = documentInModel.statistic!;

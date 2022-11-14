@@ -60,7 +60,7 @@ class ProfileWorkViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkStatistic.value = res.statistic!;
   }
@@ -71,7 +71,7 @@ class ProfileWorkViewModel extends GetxController {
     //,"dayInMonth": "$day"
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!;
     rxProfileWorkStatistic.value = res.statistic!;
@@ -83,7 +83,7 @@ class ProfileWorkViewModel extends GetxController {
     String json =
         '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!;
     rxProfileWorkStatistic.value = res.statistic!;
@@ -94,7 +94,7 @@ class ProfileWorkViewModel extends GetxController {
     print('loading');
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
-    print(response.body);
+    
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!; rxProfileWorkStatistic.value = res.statistic!;
 
@@ -105,7 +105,7 @@ class ProfileWorkViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"status":"$status"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    print(response.body);
+    
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!;
     rxProfileWorkStatistic.value = res.statistic!;
