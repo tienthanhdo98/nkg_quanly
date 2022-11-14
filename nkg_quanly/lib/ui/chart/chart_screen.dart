@@ -129,9 +129,10 @@ class ChartScreen extends StatelessWidget {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Image.asset(
-                                          'assets/anhdemo.png',
+                                          'assets/anhdemo.jpeg',
                                           width: 150,
                                           height: 100,
+                                          fit: BoxFit.cover,
                                         ),
                                         Flexible(
                                           child: Padding(

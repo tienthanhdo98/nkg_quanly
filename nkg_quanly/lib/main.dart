@@ -24,7 +24,6 @@ import 'package:nkg_quanly/ui/helpdesk/help_desk_list.dart';
 import 'package:nkg_quanly/ui/helpdesk/help_desk_screen.dart';
 import 'package:nkg_quanly/ui/home/home_screen.dart';
 import 'package:nkg_quanly/ui/login/in_app_webiew_example.screen.dart';
-import 'package:nkg_quanly/ui/login/login_screen2.dart';
 import 'package:nkg_quanly/ui/mission/e_office/mission__e_office_list.dart';
 import 'package:nkg_quanly/ui/notification/notification_screen.dart';
 import 'package:nkg_quanly/ui/profile/e_office/profile_e_office_list.dart';
