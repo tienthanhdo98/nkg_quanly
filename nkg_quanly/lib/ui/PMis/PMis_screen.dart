@@ -25,7 +25,7 @@ class PMisScreen extends GetView {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              headerWidget("Tổng hợp thống kê hệ thống PMIS", context),
+              headerWidget("Tổng hợp thống kê hệ thống Thông tin nhân sự", context),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                 child: Row(
@@ -237,106 +237,106 @@ class FilterPmisUnitBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: Column(children: [
-            buttonLineInBottonSheet(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: kgray, borderRadius: BorderRadius.circular(10)),
-                height: 50,
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: Icon(Icons.search)),
-                    SizedBox(
-                      width: 200,
-                      child: TextField(
-                        maxLines: 1,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: kDarkGray, fontSize: 14),
-                          hintText: 'Tìm kiếm đơn vị...',
-                        ),
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 14),
-                        onSubmitted: (value) {
-                          pmisViewModel!.searchInnUnitList(value);
-                        },
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: Column(children: [
+          buttonLineInBottonSheet(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: kgray, borderRadius: BorderRadius.circular(10)),
+              height: 50,
+              width: double.infinity,
+              child: Row(
+                children: [
+                  const Padding(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Icon(Icons.search)),
+                  SizedBox(
+                    width: 200,
+                    child: TextField(
+                      maxLines: 1,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: kDarkGray, fontSize: 14),
+                        hintText: 'Tìm kiếm đơn vị...',
                       ),
-                    )
-                  ],
-                ),
+                      style:
+                          const TextStyle(color: Colors.black, fontSize: 14),
+                      onSubmitted: (value) {
+                        pmisViewModel!.searchInnUnitList(value);
+                      },
+                    ),
+                  )
+                ],
               ),
             ),
-            // Tất cả do vi
-            FilterAllItem( "Tất cả đơn vị", 1,pmisViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            //list van de trinh
-            SizedBox(
-              child: Obx(() => ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: pmisViewModel!.rxListPmisUnitModel.length,
-                  itemBuilder: (context, index) {
-                    var item = pmisViewModel!.rxListPmisUnitModel[index];
-                    return
-                      FilterItem(item.ten!,item.id!,index,
-                          pmisViewModel!.rxMapUnitId);
-                  })),
-            ),
-            //bottom butto
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          ),
+          // Tất cả do vi
+          FilterAllItem( "Tất cả đơn vị", 1,pmisViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          //list van de trinh
+          SizedBox(
+            height: 350,
+            child: Obx(() => ListView.builder(
+
+                physics: const BouncingScrollPhysics(),
+                itemCount: pmisViewModel!.rxListPmisUnitModel.length,
+                itemBuilder: (context, index) {
+                  var item = pmisViewModel!.rxListPmisUnitModel[index];
+                  return
+                    FilterItem(item.ten!,item.id!,index,
+                        pmisViewModel!.rxMapUnitId);
+                })),
+          ),
+          //bottom butto
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                          var listUnitId = "";
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                        var listUnitId = "";
 
-                          if (pmisViewModel!.mapAllFilter.containsKey(1)) {
-                            listUnitId = "";
-                          } else {
-                            pmisViewModel!.rxMapUnitId.forEach((key, value) {
-                              listUnitId += value;
-                            });
-                          }
+                        if (pmisViewModel!.mapAllFilter.containsKey(1)) {
+                          listUnitId = "";
+                        } else {
+                          pmisViewModel!.rxMapUnitId.forEach((key, value) {
+                            listUnitId += value;
+                          });
+                        }
 
-                          print(listUnitId);
-                          pmisViewModel!.getStatisticTotal(listUnitId);
-                          pmisViewModel!.getPmisPieChart(listUnitId);
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Áp dụng')),
-                  ),
-                )
-              ],
-            )
-          ]),
-        ),
+                        print(listUnitId);
+                        pmisViewModel!.getStatisticTotal(listUnitId);
+                        pmisViewModel!.getPmisPieChart(listUnitId);
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }

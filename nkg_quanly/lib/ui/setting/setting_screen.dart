@@ -116,12 +116,12 @@ class SettingScreen extends StatelessWidget {
                             } else {
                               return InkWell(
                                 onTap: () async {
-                                  print("rxAccessToken ${loginViewModel.rxAccessToken.value}");
+                                  print("rxAccessToken ${loginViewModel.rxAccessTokenSSO.value}");
                                   print("rxAccessTokenIoc ${loginViewModel.rxAccessTokenIoc.value}");
-                                 await loginViewModel.revokeAccessToken(loginViewModel.rxAccessToken.value);
+                                 await loginViewModel.revokeAccessToken(loginViewModel.rxAccessTokenSSO.value);
                                   await loginViewModel.revokeAccessTokenIoc(loginViewModel.rxAccessTokenIoc.value);
                                   print("clear");
-                                  print("rxAccessToken ${loginViewModel.rxAccessToken.value}");
+                                  print("rxAccessToken ${loginViewModel.rxAccessTokenSSO.value}");
                                   print("rxAccessTokenIoc ${loginViewModel.rxAccessTokenIoc.value}");
                                   loginViewModel.changeValueLoading(true);
                                   Get.off(() => InAppWebViewExampleScreen(isLogout: true,));

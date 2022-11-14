@@ -21,9 +21,10 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
 
   InAppWebViewController? webViewController;
   double progress = 0;
-
+  String? prefToken;
   @override
   void initState() {
+
     super.initState();
 
   }
@@ -35,6 +36,8 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    prefToken = loginViewModel.loadFromShareFrefs();
+    print("pref token: ${prefToken}");
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark, child :  SafeArea(
@@ -66,8 +69,21 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                   webViewController = controller;
                   await loginViewModel.getInfoLoginConfig();
                   if(widget.isLogout == false) {
-                    webViewController!.loadUrl(urlRequest: URLRequest(
-                        url: Uri.parse(loginViewModel.urlLogin)));
+                    if(prefToken != loginViewModel.rxAccessTokenSSO.value || prefToken == "") {
+                      webViewController!.loadUrl(urlRequest: URLRequest(
+                          url: Uri.parse(loginViewModel.urlLogin)));
+                    }
+                    else
+                      {
+                          await loginViewModel.getUserInfo(
+                              prefToken!);
+                          await loginViewModel.getAccessTokenIoc(
+                              loginViewModel.rxUserInfoModel.value.name!,
+                              loginViewModel.rxUserInfoModel.value.email!);
+                          loginViewModel.changeValueLoading(false);
+                          Get.off(() => const MainScreen());
+
+                      }
                   }else
                     {
                       webViewController!.loadUrl(urlRequest: URLRequest(
@@ -77,15 +93,15 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                     }
                 },
                 onUpdateVisitedHistory: (controller, url, isReload) async {
-                    print("updadte $url");
+                    print("onUpdateVisitedHistory $url");
                     if (url.toString().contains("?code=")) {
                       var re = RegExp(r'(?<=code=)(.*)(?=&)');
                       var authCode = re.firstMatch(url.toString());
                       if (authCode != null) {
                         print("code ${authCode.group(0)}");
-                        await loginViewModel.geAccessToken(authCode.group(0)!);
+                        await loginViewModel.geAccessTokenSSO(authCode.group(0)!);
                         await loginViewModel.getUserInfo(
-                            loginViewModel.rxAccessToken.value);
+                            loginViewModel.rxAccessTokenSSO.value);
                         await loginViewModel.getAccessTokenIoc(
                             loginViewModel.rxUserInfoModel.value.name!,
                             loginViewModel.rxUserInfoModel.value.email!);
@@ -108,9 +124,9 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                         var authCode = re.firstMatch(url.toString());
                         if (authCode != null) {
                           print("code ${authCode.group(0)}");
-                          await loginViewModel.geAccessToken(authCode.group(0)!);
+                          await loginViewModel.geAccessTokenSSO(authCode.group(0)!);
                           await loginViewModel.getUserInfo(
-                              loginViewModel.rxAccessToken.value);
+                              loginViewModel.rxAccessTokenSSO.value);
                           await loginViewModel.getAccessTokenIoc(
                               loginViewModel.rxUserInfoModel.value.name!,
                               loginViewModel.rxUserInfoModel.value.email!);
