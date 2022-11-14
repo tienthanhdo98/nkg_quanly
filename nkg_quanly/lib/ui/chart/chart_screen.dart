@@ -103,24 +103,17 @@ class ChartScreen extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15, 15, 5, 15),
-                                          child: Text(
-                                            'Thông báo khẩn',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline3,
-                                          )),
-                                      Image.asset(
-                                        'assets/icons/ic_speaker.png',
-                                        width: 24,
-                                        height: 24,
-                                      )
-                                    ],
-                                  ),
+                                  Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15, 15, 5, 15),
+                                      child: Text(
+                                        checkingStringNull(
+                                            chartViewModel.rxEventDes
+                                                .value.name),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3,
+                                      )),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         15, 0, 15, 40),

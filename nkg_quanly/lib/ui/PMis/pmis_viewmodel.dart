@@ -46,7 +46,7 @@ class PmisViewModel extends GetxController {
   void searchInnUnitList(String keySearch) async {
     if(keySearch != "") {
       var list = rxListPmisUnitModel.toList().where((element) =>
-          element.ten!.contains(keySearch)).toList();
+          element.ten!.toLowerCase().contains(keySearch.toLowerCase())).toList();
       rxListPmisUnitModel.value = list;
     }
     else
