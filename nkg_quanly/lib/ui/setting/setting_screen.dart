@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../const/const.dart';
 import '../../const/style.dart';
-import '../login/in_app_webiew_example.screen.dart';
+import '../login/login.dart';
 import '../theme/theme_data.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -125,7 +125,7 @@ class SettingScreen extends StatelessWidget {
                                   print("rxAccessToken ${loginViewModel.rxAccessTokenSSO.value}");
                                   print("rxAccessTokenIoc ${loginViewModel.rxAccessTokenIoc.value}");
                                   loginViewModel.changeValueLoading(true);
-                                  Get.off(() => InAppWebViewExampleScreen(isLogout: true,));
+                                  Get.off(() => LoginScreen(isLogout: true,));
                                 },
                                 child: Padding(
                                   padding:

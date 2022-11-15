@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../const/const.dart';
-import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../../model/ChartModel.dart';
 import '../../../model/analysis_report/preschool_chart_model.dart';
-import '../../../model/document_unprocess/document_filter.dart';
-import '../../../model/pmis_model/pmis_chart_model.dart';
 
 class AnalysisReportStackedChartWidget extends StatefulWidget {
   AnalysisReportStackedChartWidget(this.listEducationChart,{UniqueKey? key}) : super(key: key);

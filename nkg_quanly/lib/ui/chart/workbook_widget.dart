@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 
 import '../../const/utils.dart';
 import '../../const/widget.dart';
-import '../document_nonapproved/document_nonapproved_detail.dart';
-import '../document_out/document_out_list.dart';
 import '../workbook/workbook_list.dart';
 import '../workbook/workbook_viewmodel.dart';
 

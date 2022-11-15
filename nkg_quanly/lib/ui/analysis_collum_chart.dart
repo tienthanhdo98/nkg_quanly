@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/model/document_unprocess/document_filter.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../const/const.dart';
-import '../../const/utils.dart';
-import '../../const/widget.dart';
 import '../../model/ChartModel.dart';
 import '../../model/analysis_report/preschool_chart_model.dart';
-import '../../model/helpdesk_model/helpdesk_model.dart';
 import '../../model/pmis_model/pmis_chart_model.dart';
 
 class AnalysisCollumChartWidget2 extends StatefulWidget {

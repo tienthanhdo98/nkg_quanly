@@ -3,6 +3,7 @@ import 'package:nkg_quanly/ui/workbook/update_work_screen.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_detail.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_search.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
+
 import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/utils.dart';
@@ -233,7 +234,7 @@ Widget signWidget(WorkBookListItems docModel) {
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         Text(
-          docModel.status!,
+          checkingStringNull(docModel.status),
           style: const TextStyle(color: kGreenSign),
         )
       ],
@@ -247,7 +248,7 @@ Widget signWidget(WorkBookListItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.status!, style: const TextStyle(color: kOrangeSign))
+        Text(checkingStringNull(docModel.status), style: const TextStyle(color: kOrangeSign))
       ],
     );
   }

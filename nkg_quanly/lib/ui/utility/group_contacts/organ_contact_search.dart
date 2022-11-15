@@ -3,9 +3,6 @@ import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../../const/const.dart';
-import '../../document_nonapproved/document_nonapproved_detail.dart';
-import '../../document_nonapproved/document_nonapproved_list.dart';
-import '../individual_contacts/individual_contacts_list.dart';
 import 'contact_organization_viewmodel.dart';
 import 'group_contacts_list.dart';
 

@@ -3,10 +3,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
-import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../model/misstion/mission_detail.dart';
-import 'mission_list.dart';
+import 'e_office/mission__e_office_list.dart';
 import 'mission_viewmodel.dart';
 
 class MissionCommentsDetail extends GetView {
@@ -41,7 +40,7 @@ class MissionCommentsDetail extends GetView {
                   Expanded(
                       child: InkWell(
                     onTap: () {
-                      Get.offAll(() => MissionList());
+                      Get.offAll(() => MissionEOfficeList());
                     },
                     child: Align(
                         alignment: Alignment.centerRight,

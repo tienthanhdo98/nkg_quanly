@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
+
 import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/widget.dart';
@@ -184,10 +185,11 @@ class HelpDeskScreen extends GetView {
                           helpdeskViewModel,
                         ),
                       ),
+
                       SizedBox(
                         width: double.infinity,
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
+                          padding: const EdgeInsets.fromLTRB(15, 50, 15, 20),
                           child: ElevatedButton(
                             onPressed: () {
                               Get.to(() => HelpDeskList(

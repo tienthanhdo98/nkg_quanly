@@ -7,9 +7,7 @@ import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../document_unprocess/document_unprocess _screen.dart';
-import '../document_unprocess/document_unprocess_list.dart';
-import '../document_unprocess/document_unprocess_viewmodel.dart';
-import '../mission/mission_list.dart';
+import '../mission/e_office/mission__e_office_list.dart';
 import '../mission/mission_screen.dart';
 import '../mission/mission_viewmodel.dart';
 import '../theme/theme_data.dart';
@@ -46,7 +44,7 @@ class MissionWidget extends GetView {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            MissionList()));
+                                            MissionEOfficeList()));
                               },
                               child: const Align(
                                   alignment: Alignment.topRight,

@@ -90,7 +90,7 @@ class FilterReportScreen extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: 450,
+                                      height: 500,
                                       child: FilterStatusBottomSheet(
                                           reportViewModel));
                                 },
@@ -247,73 +247,71 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tat ca don vi
-            FilterAllItem( "Tất cả đơn vị", 1,reportViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: reportViewModel!.rxListDepartmentFilter.length,
-                  itemBuilder: (context, index) {
-                    var item = reportViewModel!.rxListDepartmentFilter[index];
-                    return
-                      FilterItem(item,item,index,
-                          reportViewModel!.mapDepartmentFilter);
-                  }),
-            ),
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            if (reportViewModel!.mapAllFilter.containsKey(1)) {
-                              reportViewModel!.changeValueSelectedDepartment(
-                                  "Tất cả đơn vị xử lý");
-                            } else {
-                              var department = "";
-                              reportViewModel!.mapDepartmentFilter
-                                  .forEach((key, value) {
-                                department += value;
-                              });
-                              reportViewModel!
-                                  .changeValueSelectedDepartment(department);
-                            }
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        child: Column(children: [
+          //tat ca don vi
+          FilterAllItem( "Tất cả đơn vị", 1,reportViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            height: 100,
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: reportViewModel!.rxListDepartmentFilter.length,
+                itemBuilder: (context, index) {
+                  var item = reportViewModel!.rxListDepartmentFilter[index];
+                  return
+                    FilterItem(item,item,index,
+                        reportViewModel!.mapDepartmentFilter);
+                }),
+          ),
+          //bottom button
+          Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (reportViewModel!.mapAllFilter.containsKey(1)) {
+                          reportViewModel!.changeValueSelectedDepartment(
+                              "Tất cả đơn vị xử lý");
+                        } else {
+                          var department = "";
+                          reportViewModel!.mapDepartmentFilter
+                              .forEach((key, value) {
+                            department += value;
+                          });
+                          reportViewModel!
+                              .changeValueSelectedDepartment(department);
+                        }
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }
@@ -328,74 +326,72 @@ class FilterStatusBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tat ca don vi
-            FilterAllItem( "Tất cả trạng thái", 2,reportViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: listReportState.length,
-                  itemBuilder: (context, index) {
-                    var item = listReportState[index];
-                    return
-                      FilterItem(item,item,index,
-                          reportViewModel!.mapStatusFilter);
-                  }),
-            ),
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            if (reportViewModel!.mapAllFilter.containsKey(2)) {
-                              reportViewModel!.changeValueSelectedStatus(
-                                  "Tất cả trạng thái");
-                            } else {
-                              var status = "";
-                              reportViewModel!.mapStatusFilter
-                                  .forEach((key, value) {
-                                status += value;
-                              });
-                              reportViewModel!
-                                  .changeValueSelectedStatus(status);
-                            }
-
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        child: Column(children: [
+          //tat ca don vi
+          FilterAllItem( "Tất cả trạng thái", 2,reportViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            height: 300,
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: listReportState.length,
+                itemBuilder: (context, index) {
+                  var item = listReportState[index];
+                  return
+                    FilterItem(item,item,index,
+                        reportViewModel!.mapStatusFilter);
+                }),
+          ),
+          //bottom button
+          Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (reportViewModel!.mapAllFilter.containsKey(2)) {
+                          reportViewModel!.changeValueSelectedStatus(
+                              "Tất cả trạng thái");
+                        } else {
+                          var status = "";
+                          reportViewModel!.mapStatusFilter
+                              .forEach((key, value) {
+                            status += value;
+                          });
+                          reportViewModel!
+                              .changeValueSelectedStatus(status);
+                        }
+
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }

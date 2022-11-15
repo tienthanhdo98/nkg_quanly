@@ -2,16 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
-import '../../const/const.dart';
-import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
-import '../../model/document_out_model/document_out_model.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
 import '../document_out/doc_out_viewmodel.dart';
 import '../document_out/document_out_list.dart';
-import '../theme/theme_data.dart';
 
 
 class DocumentOutWidget extends GetView {

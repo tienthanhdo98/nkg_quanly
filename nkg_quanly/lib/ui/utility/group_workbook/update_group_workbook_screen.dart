@@ -42,7 +42,7 @@ class UpdateGroupWorkBookScreen extends GetView {
                       ),
                       const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                       Expanded(
-                        child: Text("Chỉnh sửa liên hệ",
+                        child: Text("Chỉnh sửa nhóm công việc",
                           style: Theme.of(context).textTheme.headline1,
                         ),
                       ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/workbook/workbook_list.dart';
-import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';

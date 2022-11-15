@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/utility/group_contacts/update_new_contact_screen.dart';
 import 'package:nkg_quanly/ui/utility/individual_contacts/update_individual_contact_screen.dart';
 
 import '../../../const/const.dart';

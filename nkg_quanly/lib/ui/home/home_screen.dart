@@ -1,11 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
 import 'package:nkg_quanly/ui/document_nonapproved/document_nonapproved_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_screen.dart';
 import 'package:nkg_quanly/ui/report/report_screen.dart';
+
 import '../../const/const.dart';
-import '../../const/widget.dart';
 import '../../viewmodel/home_viewmodel.dart';
 import '../PMis/PMis_screen.dart';
 import '../analysis_report/analysis_report_menu.dart';
@@ -27,10 +28,8 @@ import '../profile_work/e_office/profile_work_e_office_list.dart';
 import '../report/report_in_menuhome/report_in_menuhome_list.dart';
 import '../utility/utility_screen.dart';
 import '../workbook/workbook_list.dart';
-import 'home_search.dart';
 import 'list_all_item_e_office.dart';
 import 'list_all_item_kgs.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeScreen extends GetView {
   final homeController = Get.put(HomeViewModel());
@@ -320,7 +319,7 @@ void menuToScreen(int type, String? header, String? icon) {
       Get.to(() => AnalysisReportMenu());
       break;
       case 7:
-      Get.to(() =>  ReportInMenuHomeList(header: header));
+      Get.to(() =>  ReportInMenuHomeList());
       break;
       case 8:
       Get.to(() => const UtilityScreen());

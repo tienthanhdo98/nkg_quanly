@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
-import 'package:nkg_quanly/ui/workbook/workbook_detail.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_list.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
 import '../../../const/const.dart';
-import '../utility/individual_contacts/individual_contacts_list.dart';
 
 
 

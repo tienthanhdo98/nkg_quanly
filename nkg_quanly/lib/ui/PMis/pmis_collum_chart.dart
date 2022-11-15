@@ -3,7 +3,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../const/const.dart';
 import '../../model/ChartModel.dart';
-import '../../model/document_unprocess/document_filter.dart';
 import '../../model/pmis_model/pmis_chart_model.dart';
 
 class PmisCollumChartWidget extends StatefulWidget {

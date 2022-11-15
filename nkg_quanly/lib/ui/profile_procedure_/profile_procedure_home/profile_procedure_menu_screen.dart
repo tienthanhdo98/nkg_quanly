@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profile_proc_report/profile_proc_report_screen.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profiles_procedure_list_withstatistic.dart';
 
-
 import '../../../const/const.dart';
 import '../../../const/utils.dart';
 

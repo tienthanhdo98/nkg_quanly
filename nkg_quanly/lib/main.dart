@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/ui/PMis/PMis_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/analysis_report_education_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_Infrastructure/report_infrastructure_screen.dart';
@@ -21,16 +22,15 @@ import 'package:nkg_quanly/ui/chart/chart_screen.dart';
 import 'package:nkg_quanly/ui/document_out/document_out_list.dart';
 import 'package:nkg_quanly/ui/document_unprocess/e_office/document_in_e_office_list.dart';
 import 'package:nkg_quanly/ui/helpdesk/help_desk_list.dart';
-import 'package:nkg_quanly/ui/helpdesk/help_desk_screen.dart';
 import 'package:nkg_quanly/ui/home/home_screen.dart';
-import 'package:nkg_quanly/ui/login/in_app_webiew_example.screen.dart';
+import 'package:nkg_quanly/ui/login/login.dart';
 import 'package:nkg_quanly/ui/mission/e_office/mission__e_office_list.dart';
 import 'package:nkg_quanly/ui/notification/notification_screen.dart';
 import 'package:nkg_quanly/ui/profile/e_office/profile_e_office_list.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profile_proc_report/profile_proc_report_screen.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profiles_procedure_list_withstatistic.dart';
 import 'package:nkg_quanly/ui/profile_work/e_office/profile_work_e_office_list.dart';
-import 'package:nkg_quanly/ui/report/report_list.dart';
+import 'package:nkg_quanly/ui/report/report_in_menuhome/report_in_menuhome_list.dart';
 import 'package:nkg_quanly/ui/setting/setting_screen.dart';
 import 'package:nkg_quanly/ui/theme/theme_data.dart';
 import 'package:nkg_quanly/ui/utility/group_contacts/group_contacts_list.dart';
@@ -42,7 +42,7 @@ import 'package:nkg_quanly/ui/workbook/workbook_list.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  initializeDateFormatting().then((_) => runApp(MyApp()));
+  initializeDateFormatting().then((_) => runApp(const MyApp()));
   //runApp(const MyApp());
 }
 
@@ -59,12 +59,12 @@ class MyApp extends StatelessWidget {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeClass.lightTheme,
-            home: InAppWebViewExampleScreen(),
+            home: const LoginScreen(),
             initialRoute: '/',
             routes: {
               '/PMisScreen': (context) => PMisScreen(),
               '/HelpDeskScreen': (context) => HelpDeskList(),
-              '/ReportScreen': (context) => ReportList(),
+              '/ReportScreen': (context) => ReportInMenuHomeList(),
               '/DocumentOutList': (context) => DocumentOutList(),
               '/ProfileEOfficeList': (context) => ProfileEOfficeList(),
               '/MissionEOfficeList': (context) => MissionEOfficeList(),
@@ -139,20 +139,34 @@ class MainScreenStage extends State<MainScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+        items:  <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Trang chủ',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
             label: 'Chức năng',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
+            icon: Stack(children: <Widget>[
+               const Icon(Icons.notifications),
+               Positioned(
+                  top: -1.0,
+                  right: -1.0,
+                  child: Stack(
+                    children: const <Widget>[
+                       Icon(
+                        Icons.brightness_1,
+                        size: 10.0,
+                        color: kRedChart,
+                      ),
+                    ],
+                  ))
+            ]),
             label: 'Thông báo',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.menu),
             label: 'Cài đặt',
           ),

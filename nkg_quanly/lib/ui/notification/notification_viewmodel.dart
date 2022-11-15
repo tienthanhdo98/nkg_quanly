@@ -2,13 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/const/api.dart';
+import 'package:nkg_quanly/const/const.dart';
 
 import '../../const/utils.dart';
-import '../../model/document_unprocess/document_filter.dart';
-import '../../model/misstion/mission_detail.dart';
-import '../../model/misstion/mission_model.dart';
 import '../../model/notification_model/notification_model.dart';
 
 class NotificationViewModel extends GetxController {

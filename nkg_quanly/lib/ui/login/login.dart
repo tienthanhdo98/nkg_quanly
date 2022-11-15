@@ -2,21 +2,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
 import '../../const/const.dart';
 import '../../const/utils.dart';
 import '../../main.dart';
 
 
-class InAppWebViewExampleScreen extends StatefulWidget {
-  const InAppWebViewExampleScreen({this.isLogout = false, Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({this.isLogout = false, Key? key}) : super(key: key);
   final bool isLogout ;
 
   @override
-  _InAppWebViewExampleScreenState createState() =>
-      _InAppWebViewExampleScreenState();
+  LoginScreenState createState() =>
+      LoginScreenState();
 }
 
-class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final GlobalKey webViewKey = GlobalKey();
 
   InAppWebViewController? webViewController;

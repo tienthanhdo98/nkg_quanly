@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
 
-
-import '../../const/const.dart';
-import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
-import '../../model/meeting_room/meeting_room_model.dart';
 import '../book_room_meet/book_room_list.dart';
 
 

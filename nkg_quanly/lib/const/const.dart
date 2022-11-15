@@ -38,6 +38,7 @@ const kLightBlue = Color(0xFF3D34FF);
 const kLightBlueSign = Color(0xFF65C0F7);
 // const kLightBlue = Color(0xFFdbeafe);
 const kLightBlueButton = Color(0xFF3797fb);
+const kLightBlueNotification= Color(0xffccdcfa);
 
 //chart
 const kBlueLineChart2 = Color(0xFF61a9f3);

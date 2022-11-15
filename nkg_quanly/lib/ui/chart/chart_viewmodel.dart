@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/utils.dart';
-import 'package:nkg_quanly/model/login/user_info_model.dart';
 
 import '../../model/event_model/event_model.dart';
 

@@ -5,8 +5,8 @@ import 'package:nkg_quanly/const/widget.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../const/const.dart';
+import 'e_office/mission__e_office_list.dart';
 import 'mission_detail.dart';
-import 'mission_list.dart';
 
 class MissionSearch extends GetView {
   String? header;

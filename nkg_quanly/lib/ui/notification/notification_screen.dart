@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/const/style.dart';
 
 import '../../const/const.dart';
 import '../../const/utils.dart';
@@ -45,6 +44,7 @@ class NotificationScreen extends GetView {
             padding: const EdgeInsets.fromLTRB(15, 15, 0, 15),
             child: Text("Thông báo",style : Theme.of(context).textTheme.headline1),
           ),
+          const Divider(height:0.5,thickness: 1),
           Expanded(
             child: Obx(() => (notificationViewModel.rxListNotificationItems.isNotEmpty) ? ListView.builder(
                 itemCount: notificationViewModel.rxListNotificationItems.length,
@@ -54,10 +54,18 @@ class NotificationScreen extends GetView {
                   return InkWell(
                       onTap: () {
                         Get.to(() => WorkBookDetail(
-                          id: item.id!,
+                          id: item.workbookId!,
                         ));
                       },
-                      child: NotificationWidgetItem(item));
+                      child: Container(
+                        color: kLightBlueNotification,
+                        child: Column(
+                          children: [
+                            NotificationWidgetItem(item),
+                            const Divider(height:0.5,thickness: 1)
+                          ],
+                        ),
+                      ));
                 }) : Padding(
               padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
               child: Text("Hiện tại chưa có thông báo nào",style: Theme.of(context).textTheme.headline4,),
@@ -76,36 +84,39 @@ class NotificationWidgetItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-      child: SizedBox(
-        height: 60,
-        child: Row(
-          children: [
-            Image.asset('assets/wordicon.png',height: 60,width: 50,),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-            Column(
+      padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+      child: Row(
+        children: [
+          Container(
+              child: Image.asset("assets/ic_person.png"),
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: kViolet,
+                borderRadius: BorderRadius.circular(30),
+              )),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+          Expanded(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${docModel!.createdBy}",
+                  "${docModel!.action}",maxLines: 2,overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 15, color: Colors.black,fontWeight: FontWeight.w500,fontFamily: 'Roboto'),
                 ),
                 const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
                 Text(
-                  "${docModel!.workName}- ",
-                  style: const TextStyle(fontSize: 13, color: Colors.black,fontWeight: FontWeight.w200,fontFamily: 'Roboto'),
-                ),
-                const Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
-                Text(
-                  formatDate(checkingStringNull(docModel!.createdDate)),
+                  displayTimeAgoFromTimestamp(checkingStringNull(docModel!.createdDate)),
                   style: TextStyle(fontSize: 13, color: kLightBlueSign,),
                 ),
 
               ],
             ),
-          ],
-        ),
+          ),
+          const Icon(Icons.delete)
+
+        ],
       ),
     );
   }

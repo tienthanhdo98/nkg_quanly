@@ -13,7 +13,6 @@ import '../chart/analysis_double_value_collum_chart.dart';
 import '../chart/analysis_penta_value_collum_chart.dart';
 import '../chart/analysis_pie_chart.dart';
 import '../chart/analysis_quadra_value_collum_chart.dart';
-import '../report_highschool/report_high_school_screen.dart';
 
 class ReportEducationQualityScreen extends GetView {
   ReportEducationQualityScreen({Key? key}) : super(key: key);

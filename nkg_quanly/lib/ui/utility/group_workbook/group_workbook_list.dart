@@ -3,13 +3,11 @@ import 'package:get/get.dart';
 import 'package:nkg_quanly/const/widget.dart';
 import 'package:nkg_quanly/ui/utility/group_workbook/update_group_workbook_screen.dart';
 import 'package:nkg_quanly/ui/utility/group_workbook/workbook_detail.dart';
-import 'package:nkg_quanly/ui/workbook/workbook_detail.dart';
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../model/group_workbook/group_workbook_model.dart';
 import '../../../model/workbook/workbook_model.dart';
-import '../../document_nonapproved/document_nonapproved_search.dart';
 import '../../theme/theme_data.dart';
 import 'add_new_group_wb_screen.dart';
 import 'group_workbook_search.dart';

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 
-
 import '../../const/api.dart';
 import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
-import '../profile/e_office/profile_e_office_list.dart';
-import '../profile/profile_screen.dart';
-import '../profile/profile_viewmodel.dart';
 import '../profile_procedure_/profiles_procedure_list.dart';
 import '../profile_procedure_/profiles_procedure_screen.dart';
 import '../profile_procedure_/profiles_procedure_viewmodel.dart';

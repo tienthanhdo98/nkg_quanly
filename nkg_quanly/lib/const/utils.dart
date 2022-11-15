@@ -171,6 +171,43 @@ String convertDateToWeekDayFormatWithoutWeeked(DateTime value) {
     return "";
   }
 }
+String displayTimeAgoFromTimestamp(String timestamp) {
+  final year = int.parse(timestamp.substring(0, 4));
+  final month = int.parse(timestamp.substring(5, 7));
+  final day = int.parse(timestamp.substring(8, 10));
+  final hour = int.parse(timestamp.substring(11, 13));
+  final minute = int.parse(timestamp.substring(14, 16));
+
+  final DateTime videoDate = DateTime(year, month, day, hour, minute);
+  final int diffInHours = DateTime.now().difference(videoDate).inHours;
+
+  String timeAgo = '';
+  String timeUnit = '';
+  int timeValue = 0;
+
+  if (diffInHours < 1) {
+    final diffInMinutes = DateTime.now().difference(videoDate).inMinutes;
+    timeValue = diffInMinutes;
+    timeUnit = 'phút';
+  } else if (diffInHours < 24) {
+    timeValue = diffInHours;
+    timeUnit = 'giờ';
+  } else if (diffInHours >= 24 && diffInHours < 24 * 7) {
+    timeValue = (diffInHours / 24).floor();
+    timeUnit = 'ngày';
+  } else if (diffInHours >= 24 * 7 && diffInHours < 24 * 30) {
+    timeValue = (diffInHours / (24 * 7)).floor();
+    timeUnit = 'tuần';
+  } else if (diffInHours >= 24 * 30 && diffInHours < 24 * 12 * 30) {
+    timeValue = (diffInHours / (24 * 30)).floor();
+    timeUnit = 'tháng';
+  } else {
+    timeValue = (diffInHours / (24 * 365)).floor();
+    timeUnit = 'năm';
+  }
+  timeAgo = '$timeValue $timeUnit';
+  return '$timeAgo trước';
+}
 
 String converWeekday(int weekday) {
   var thu = "";
@@ -384,145 +421,6 @@ String convertNameToEducationChartAnalysicReportViName(String value) {
       break;
     case "BieuDoSoSanhMucDoXoaMuChu":
       title = "Biểu đồ so sánh mức độ xóa mù chữ";
-      break;
-  }
-  return title;
-}
-
-String convertNameToPreSchoolChartAnalysicReportViName(String value) {
-  var title = "";
-  switch (value) {
-    case "BieuDoCoCauTreEmTheoCapHoc":
-      title = "Biểu đồ cơ cấu trẻ em theo cấp học";
-      break;
-    case "BieuDoCoCauTreEmTheoNhom":
-      title = "Biểu đồ cơ cấu trẻ em theo nhóm";
-      break;
-    case "BieuDoCoCauTreEmTheoDonVi":
-      title = "Biểu đồ cơ cấu trẻ em theo đơn vị";
-      break;
-    case "BieuDoCoCauTreEmTheoGioiTinh":
-      title = "Biểu đồ cơ cấu trẻ em theo giới tính";
-      break;
-    case "BieuDoCoCauTreEmTheoDanToc":
-      title = "Biểu đồ cơ cấu trẻ em theo dân tộc";
-      break;
-    case "BieuDoCoCauTreEmTheoHinhThucHoc":
-      title = "Biểu đồ cơ cấu trẻ em theo hình thức học";
-      break;
-    case "BieuDoSoSanhSoLuongTreEm":
-      title = "Biểu đồ so sánh số lượng trẻ em";
-      break;
-    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom12":
-      title = "Biểu đồ so sánh số lượng bình quân trẻ em/nhóm 1-2t";
-      break;
-    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom23":
-      title = "Biểu đồ so sánh số lượng bình quân trẻ em/nhóm 2-3t";
-      break;
-    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom34":
-      title = "Biểu đồ so sánh số lượng bình quân trẻ em/nhóm 3-4t";
-      break;
-    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom45":
-      title = "Biểu đồ so sánh số lượng bình quân trẻ em/nhóm 4-5t";
-      break;
-    case "BieuDoSoSanhSoLuongBinhQuanTreEmNhom56":
-      title = "Biểu đồ so sánh số lượng bình quân trẻ em/nhóm 5-6t";
-      break;
-    case "BieuDoTyLeTreTheoDinhDuong":
-      title = "Biểu đồ tỷ lệ trẻ theo dinh dưỡng";
-      break;
-    case "BieuDoSoSanhTyLeTreEmNuSuyDinhDuongTheoDanToc":
-      title = "Biểu đồ thống kê tỷ lệ trẻ em nữ suy dinh dưỡng theo dân tộc";
-      break;
-    case "TongSoTreDuocKiemTraSucKhoe":
-      title = "Tổng số trẻ được kiểm tra sức khỏe";
-      break;
-    case "CoCauMamNonTheoLoaiTruong":
-      title = "Cơ cấu trường mầm non theo loại trường";
-      break;
-    case "CoCauMamNonTheoDonViThanhLap":
-      title = "Cơ cấu trường mầm non theo đơn vị thành lập";
-      break;
-    case "CoCauMamNonTheoMucDoTruongChuanQuocGia":
-      title = "Cơ cấu trường mầm non theo mức độ trường chuẩn quốc gia";
-      break;
-    case "CoCauPhongHocTheoLoaiPhong":
-      title = "Cơ cấu phòng học theo loại phòng";
-      break;
-    case "BieuDoSoSanhSoLuongPhongHoc":
-      title = "Biểu đồ so sánh số lượng phòng học";
-      break;
-    case "BieuDoSoSanhSoLuongPhongHocNhoMuon":
-      title = "Biểu đồ so sánh số lượng phòng học nhờ, mượn";
-      break;
-    case "BieuDoSoSanhSoLuongPhongHocPhucVuHocTap":
-      title = "Biểu đồ so sánh số lượng phòng phục vụ học tập";
-      break;
-    case "BieuDoSoSanhSoLuongPhongHocKhac":
-      title = "Biểu đồ so sánh số lượng phòng khác";
-      break;
-    case "BieuDoSoSanhSoLuongTruong":
-      title = "Biểu đồ so sánh số lượng trường";
-      break;
-    case "BieuDoSoSanhSoLuongTruongDatChuan":
-      title = "Biểu đồ so sánh số lượng trường đạt chuẩn";
-      break;
-    case "BieuDoSoSanhSoLuongLop":
-      title = "Biểu đồ thống kê tỷ lệ trường đạt chuẩn quốc gia";
-      break;
-    case "BieuDoSoSanhSoLuongTheoLop":
-      title = "Biểu đồ so sánh số lượng theo lớp";
-      break;
-    case "BieuDoSoSanhSoLuongTheoNhomTre":
-      title = "Biểu đồ so sánh số lượng theo nhóm trẻ";
-      break;
-    case "BieuDoSoSanhTyLeTruongDatChuanQuocGia":
-      title = "Biểu đồ so sánh số lượng lớp";
-      break;
-    case "BieuDoSoSanhSoLuongNhom":
-      title = "Biểu đồ so sánh số lượng nhóm trẻ theo vùng";
-      break;
-    case "BieuDoCoCauCanBoGiaoVienNhanVienLaNuTheoDanTocThieuSo":
-      title = "Biểu đồ cơ cấu cán bộ quản lý, giáo viên, nhân viên là nữ theo dân tộc thiểu số";
-      break;
-    case "BieuDoSoSanhSoLuongCanBoGiaoVienNhanVien":
-      title = "Biểu đồ cơ cấu giáo viên theo trình độ đào tạo";
-      break;
-    case "BieuDoSoSanhBinhQuanSoGiaoVienNhom":
-      title = "Biểu đồ cơ cấu giáo viên theo độ tuổi";
-      break;
-    case "BieuDoSoSanhBinhQuanSoGiaoVienLop":
-      title = "Biểu đồ cơ cấu giáo viên theo đánh giá chuẩn nghề nghiệp";
-      break;
-    case "BieuDoSoSanhBinhQuanSoTreNhaTreGiaoVien":
-      title = "";
-      break;
-    case "BieuDoSoSanhBinhQuanSoTreMauGiaoGiaoVien":
-      title = "";
-      break;
-    case "BieuDoCoCauGiaoVienCapMamNonChiaTheoTrinhDoDaoTao":
-      title = "";
-      break;
-    case "BieuDoCoCauGiaoVienCapMamNonChiaTheoDanhGiaChuanChuyenNghiep":
-      title = "";
-      break;
-    case "BieuDoSoSanhSoBinhQuanGiaoVien":
-      title = "";
-      break;
-    case "SoGiaoVienNghiHuuTuyenMoi":
-      title = "";
-      break;
-    case "BieuDoCoCauGiaoVienCapMamNonChiaTheoDoTuoi":
-      title = "";
-      break;
-    case "BieuDoSoSanhSoLuongGiaoVien":
-      title = "";
-      break;
-    case "BieuDoSoSanhSoLuongGiaoVienDatChuan":
-      title = "";
-      break;
-    case "BieuDoSoSanhTyLeGiaoVienDatChuan":
-      title = "";
       break;
   }
   return title;

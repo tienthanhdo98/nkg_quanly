@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/ui/chart/calendar_work_widget.dart';
 import 'package:nkg_quanly/ui/chart/procedure_profile_widget.dart';
 import 'package:nkg_quanly/ui/chart/profile%20_widget.dart';
 import 'package:nkg_quanly/ui/chart/report_widget.dart';
 import 'package:nkg_quanly/ui/chart/workbook_widget.dart';
+
 import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../home/home_search.dart';
@@ -106,14 +106,14 @@ class ChartScreen extends StatelessWidget {
                                   Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           15, 15, 5, 15),
-                                      child: Text(
+                                      child: Obx(() => Text(
                                         checkingStringNull(
                                             chartViewModel.rxEventDes
                                                 .value.name),
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline3,
-                                      )),
+                                      ))),
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         15, 0, 15, 40),

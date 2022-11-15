@@ -9,14 +9,14 @@ import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../../model/report_model/report_model.dart';
 import '../../theme/theme_data.dart';
-import '../report_list.dart';
+
 import 'filter_report_screen.dart';
 
 class ReportInMenuHomeList extends GetView {
-  final String? header;
+
   final reportViewModel = Get.put(ReportViewModel());
 
-  ReportInMenuHomeList({Key? key, this.header}) : super(key: key);
+  ReportInMenuHomeList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +32,9 @@ class ReportInMenuHomeList extends GetView {
           children: [
             //header
             headerWidgetSearch(
-                header!,
+                "Báo cáo bộ",
                 ReportSearch(
-                  header: header,
+                  header: "Báo cáo bộ",
                 ),
                 context),
             Padding(

@@ -270,7 +270,6 @@ class ReportScreen extends GetView {
                         child: ElevatedButton(
                           onPressed: () {
                             Get.to(() => ReportInMenuHomeList(
-                                  header: header,
                                 ));
                           },
                           child: Text('Xem danh sách $header'),

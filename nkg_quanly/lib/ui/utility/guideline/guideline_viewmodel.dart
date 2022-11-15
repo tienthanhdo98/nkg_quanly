@@ -5,11 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
-import 'package:nkg_quanly/const/const.dart';
-import 'package:nkg_quanly/model/document/document_statistic_model.dart';
 
-import '../../../model/contact_model/contact_model.dart';
-import '../../../model/contact_model/organ_model.dart';
 import '../../../model/guildline_model/guildline_model.dart';
 
 

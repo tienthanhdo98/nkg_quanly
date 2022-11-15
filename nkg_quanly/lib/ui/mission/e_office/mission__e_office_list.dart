@@ -221,7 +221,7 @@ class MissionEOfficeList extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: 320,
+                                      height: 350,
                                       child: DetailMissionBottomSheet(
                                           index,
                                           missionViewModel

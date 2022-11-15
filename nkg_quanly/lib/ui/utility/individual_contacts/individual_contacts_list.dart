@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/const/utils.dart';
-import 'package:nkg_quanly/ui/utility/group_contacts/update_new_contact_screen.dart';
 import 'package:nkg_quanly/ui/utility/individual_contacts/update_individual_contact_screen.dart';
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
 import '../../../model/contact_model/contact_model.dart';
-import '../../document_nonapproved/document_nonapproved_search.dart';
 import '../../theme/theme_data.dart';
 import 'add_new_contact_screen.dart';
 import 'contact_individual_detail.dart';

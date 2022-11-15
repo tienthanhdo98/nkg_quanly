@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nkg_quanly/ui/report/report_detail.dart';
-import 'package:nkg_quanly/ui/report/report_list.dart';
-import 'package:nkg_quanly/ui/theme/theme_data.dart';
+
 import '../../const/const.dart';
 import '../document_out/search_controller.dart';
 import 'home_screen.dart';
