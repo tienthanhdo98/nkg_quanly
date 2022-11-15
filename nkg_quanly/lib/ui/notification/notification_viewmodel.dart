@@ -7,14 +7,16 @@ import 'package:nkg_quanly/const/const.dart';
 
 import '../../const/utils.dart';
 import '../../model/notification_model/notification_model.dart';
+import 'database_helper.dart';
+import 'notification_model_db.dart';
 
 class NotificationViewModel extends GetxController {
-
-
 
   Rx<NotificationModel> rxNotificationModel = NotificationModel().obs;
   RxList<NotificationItems> rxListNotificationItems = <NotificationItems>[].obs;
   ScrollController controller = ScrollController();
+
+  final dbHelper = DatabaseHelper.db;
 
   @override
   void onInit() {
@@ -44,6 +46,24 @@ class NotificationViewModel extends GetxController {
         await http.post(url, headers: headers, body: json);
         notificationModel = NotificationModel.fromJson(jsonDecode(response.body));
         rxListNotificationItems.addAll(notificationModel.items!);
+
+        dbHelper.database;
+        for (var element in notificationModel.items!) {
+          NotificationModelDB dbModel = NotificationModelDB(
+            id: element.id,
+            workbookId: element.workbookId,
+            workName: element.workName,
+            status: element.status,
+            action: element.action,
+            isDeleted: element.isDeleted,
+            createdDate: element.createdDate,
+            lastModifiedDate: element.lastModifiedDate,
+            createdBy: element.createdBy,
+            lastModifiedBy: element.lastModifiedBy,
+            isClick: false,
+          );
+          dbHelper.insertDB(dbModel);
+        }
       }
     });
   }

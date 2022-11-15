@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../const/const.dart';
@@ -53,6 +52,9 @@ class NotificationScreen extends GetView {
                   var item = notificationViewModel.rxListNotificationItems[index];
                   return InkWell(
                       onTap: () {
+                        notificationViewModel.dbHelper.database;
+                        notificationViewModel.dbHelper.getDataDB().then((value) => print("length: ${value.length}"));
+
                         Get.to(() => WorkBookDetail(
                           id: item.workbookId!,
                         ));
@@ -110,7 +112,6 @@ class NotificationWidgetItem extends StatelessWidget {
                   displayTimeAgoFromTimestamp(checkingStringNull(docModel!.createdDate)),
                   style: TextStyle(fontSize: 13, color: kLightBlueSign,),
                 ),
-
               ],
             ),
           ),
