@@ -14,9 +14,12 @@ class NotificationViewModel extends GetxController {
 
   Rx<NotificationModel> rxNotificationModel = NotificationModel().obs;
   RxList<NotificationItems> rxListNotificationItems = <NotificationItems>[].obs;
+  RxList<NotificationModelDB> rxListNotificationItemsDB = <NotificationModelDB>[].obs;
   ScrollController controller = ScrollController();
 
   final dbHelper = DatabaseHelper.db;
+
+
 
   @override
   void onInit() {
@@ -32,41 +35,43 @@ class NotificationViewModel extends GetxController {
     http.Response response = await http.post(url, headers: headers, body: json);
   
     NotificationModel notificationModel = NotificationModel.fromJson(jsonDecode(response.body));
-    rxListNotificationItems.value = notificationModel.items!;
+    // rxListNotificationItems.value = notificationModel.items!;
     //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        page++;
-        String json =
-            '{"pageIndex":$page,"pageSize":10}';
-        http.Response response =
-        await http.post(url, headers: headers, body: json);
-        notificationModel = NotificationModel.fromJson(jsonDecode(response.body));
-        rxListNotificationItems.addAll(notificationModel.items!);
-
-        dbHelper.database;
-        for (var element in notificationModel.items!) {
-          NotificationModelDB dbModel = NotificationModelDB(
-            id: element.id,
-            workbookId: element.workbookId,
-            workName: element.workName,
-            status: element.status,
-            action: element.action,
-            isDeleted: element.isDeleted,
-            createdDate: element.createdDate,
-            lastModifiedDate: element.lastModifiedDate,
-            createdBy: element.createdBy,
-            lastModifiedBy: element.lastModifiedBy,
-            isClick: false,
-          );
-          dbHelper.insertDB(dbModel);
-        }
-      }
-    });
+    // var page = 1;
+    // controller.dispose();
+    // controller = ScrollController();
+    // controller.addListener(() async {
+    //   if (controller.position.maxScrollExtent == controller.position.pixels) {
+    //     page++;
+    //     String json =
+    //         '{"pageIndex":$page,"pageSize":10}';
+    //     http.Response response =
+    //     await http.post(url, headers: headers, body: json);
+    //     notificationModel = NotificationModel.fromJson(jsonDecode(response.body));
+    //     rxListNotificationItems.addAll(notificationModel.items!);
+    //
+    //   }
+    // });
+    dbHelper.database;
+    for (var element in notificationModel.items!) {
+      NotificationModelDB dbModel = NotificationModelDB(
+        id: element.id,
+        workbookId: element.workbookId,
+        workName: element.workName,
+        status: element.status.toString(),
+        action: element.action,
+        isDeleted: element.isDeleted.toString(),
+        createdDate: element.createdDate,
+        lastModifiedDate: element.lastModifiedDate,
+        createdBy: element.createdBy,
+        lastModifiedBy: element.lastModifiedBy,
+        isClick: "false",
+      );
+      dbHelper.insertDB(dbModel);
+    }
+    rxListNotificationItemsDB.value = await dbHelper.getDataDB();
   }
+
 
 
 

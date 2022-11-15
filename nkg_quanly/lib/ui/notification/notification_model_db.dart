@@ -2,14 +2,14 @@ class NotificationModelDB {
   String? id;
   String? workbookId;
   String? workName;
-  bool? status;
+  String? status;
   String? action;
-  bool? isDeleted;
+  String? isDeleted;
   String? createdDate;
   String? lastModifiedDate;
   String? createdBy;
   String? lastModifiedBy;
-  bool? isClick;
+  String? isClick;
 
   NotificationModelDB(
       {this.id,

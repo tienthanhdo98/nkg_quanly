@@ -31,7 +31,7 @@ class DatabaseHelper{
       join(await getDatabasesPath(), db_name),
       onCreate: (db, version) {
         return db.execute(
-        'CREATE TABLE $db_table(id TEXT PRIMARY KEY, workbookId TEXT, workName TEXT, status BOOLEAN, action TEXT, isDeleted BOOLEAN, createdDate TEXT, lastModifiedDate TEXT, createdBy TEXT, lastModifiedBy TEXT, isClick BOOLEAN)',
+        'CREATE TABLE $db_table(id TEXT PRIMARY KEY, workbookId TEXT, workName TEXT, status TEXT, action TEXT, isDeleted TEXT, createdDate TEXT, lastModifiedDate TEXT, createdBy TEXT, lastModifiedBy TEXT, isClick TEXT)',
         );
       },
       version: 1,
@@ -55,14 +55,14 @@ class DatabaseHelper{
         id: maps[i]['id'],
         workbookId: maps[i]['workbookId'],
         workName: maps[i]['workName'],
-        status: maps[i]['status'],
+        status: maps[i]['status'].toString(),
         action: maps[i]['action'],
-        isDeleted: maps[i]['isDeleted'],
+        isDeleted: maps[i]['isDeleted'].toString(),
         createdDate: maps[i]['createdDate'],
         lastModifiedDate: maps[i]['lastModifiedDate'],
         createdBy: maps[i]['createdBy'],
         lastModifiedBy: maps[i]['lastModifiedBy'],
-        isClick: maps[i]['isClick'],
+        isClick: maps[i]['isClick'].toString(),
       );
     }).toList();
   }
@@ -76,8 +76,17 @@ class DatabaseHelper{
       whereArgs: [databaseModel.id],
     );
   }
+  updateIclickStatusDB(NotificationModelDB databaseModel) async {
+    final db = await database;
+    await db.update(
+      db_table,
+      databaseModel.toMap(),
+      where: 'id = ?',
+      whereArgs: [databaseModel.id],
+    );
+  }
 
-  deleteDB(int id) async {
+  deleteDB(String id) async {
     final db = await database;
     await db.delete(
       db_table,

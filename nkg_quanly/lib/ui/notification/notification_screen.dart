@@ -4,6 +4,7 @@ import '../../const/const.dart';
 import '../../const/utils.dart';
 import '../../model/notification_model/notification_model.dart';
 import '../workbook/workbook_detail.dart';
+import 'notification_model_db.dart';
 import 'notification_viewmodel.dart';
 
 class NotificationScreen extends GetView {
@@ -45,25 +46,36 @@ class NotificationScreen extends GetView {
           ),
           const Divider(height:0.5,thickness: 1),
           Expanded(
-            child: Obx(() => (notificationViewModel.rxListNotificationItems.isNotEmpty) ? ListView.builder(
-                itemCount: notificationViewModel.rxListNotificationItems.length,
+            child: Obx(() => (notificationViewModel.rxListNotificationItemsDB.isNotEmpty) ? ListView.builder(
+                itemCount: notificationViewModel.rxListNotificationItemsDB.length,
                 controller: notificationViewModel.controller,
                 itemBuilder: (context, index) {
-                  var item = notificationViewModel.rxListNotificationItems[index];
+                  var item = notificationViewModel.rxListNotificationItemsDB[index];
                   return InkWell(
-                      onTap: () {
-                        notificationViewModel.dbHelper.database;
-                        notificationViewModel.dbHelper.getDataDB().then((value) => print("length: ${value.length}"));
+                      onTap: () async {
+
+                       //  var updateItem = NotificationModelDB(id: item.id ,status: item.status,action:item.action ,createdBy: item.createdBy,createdDate: item.createdDate ,isClick: "true" ,isDeleted: item.isDeleted,lastModifiedBy: item.lastModifiedBy,lastModifiedDate:item.lastModifiedDate ,workbookId: item.workbookId,workName: item.workName);
+                       // await notificationViewModel.dbHelper.updateDB(updateItem);
+                       //  // Get a reference to the database.
+                       //  final db = await notificationViewModel.dbHelper.database;
+                       //  notificationViewModel.dbHelper.getDataDB().then((value)
+                       //  {
+                       //    value.forEach((element) {
+                       //      print("${element.workName}-${element.isClick}");
+                       //    });
+                       //  }
+
+                        // );
 
                         Get.to(() => WorkBookDetail(
                           id: item.workbookId!,
                         ));
                       },
                       child: Container(
-                        color: kLightBlueNotification,
+                        // color: item.isClick == "false" ? kLightBlueNotification : kGrayButton,
                         child: Column(
                           children: [
-                            NotificationWidgetItem(item),
+                            NotificationWidgetItem(item,notificationViewModel),
                             const Divider(height:0.5,thickness: 1)
                           ],
                         ),
@@ -79,9 +91,10 @@ class NotificationScreen extends GetView {
   }
 }
 class NotificationWidgetItem extends StatelessWidget {
-  const NotificationWidgetItem(this.docModel, {Key? key}) : super(key: key);
+  const NotificationWidgetItem(this.docModel, this.notificationViewModel, {Key? key}) : super(key: key);
 
-  final NotificationItems? docModel;
+  final NotificationModelDB? docModel;
+  final NotificationViewModel? notificationViewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +128,11 @@ class NotificationWidgetItem extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.delete)
+          InkWell(
+              onTap: () async {
+                //await notificationViewModel!.dbHelper.deleteDB(docModel!.id!);
+              },
+              child: const Icon(Icons.delete,color: Colors.red,))
 
         ],
       ),
