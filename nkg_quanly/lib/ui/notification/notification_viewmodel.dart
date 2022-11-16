@@ -106,7 +106,7 @@ class NotificationViewModel extends GetxController {
     }
   }
   Future<void> changeAllNotificationStatus() async {
-    final url = Uri.parse(apiGetChangeNotificationStatus);
+    final url = Uri.parse(apiGetChangeAllNotificationStatus);
     http.Response response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {

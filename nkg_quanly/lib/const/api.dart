@@ -183,4 +183,5 @@ const apiGetLatestEvent = "http://123.31.31.237:6002/api/events/event-latest";
 //notification
 const apiPostGetNotificationList = 'http://123.31.31.237:6002/api/notifications/search';
 const apiPostDeleteNotification = 'http://123.31.31.237:6002/api/notifications/deletes';
-const apiGetChangeNotificationStatus = 'http://123.31.31.237:6002/api/notifications/update-all-status';
+const apiGetChangeAllNotificationStatus = 'http://123.31.31.237:6002/api/notifications/update-all-status';
+const apiGetChangeNotificationStatus = 'http://123.31.31.237:6002/api/notifications/update-status?id=';
