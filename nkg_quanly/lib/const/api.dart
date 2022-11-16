@@ -108,6 +108,7 @@ const apiAddWorkBook = "http://123.31.31.237:6002/api/workbook";
 const apiWorkBookDetail = "http://123.31.31.237:6002/api/workbook/"; //id
 const apiWorkBookDelete = "http://123.31.31.237:6002/api/workbook/";
 const apiGroupWorkBookDetail = "http://123.31.31.237:6002/api/groupworkbook/"; //id
+const apiGetListWorkerWorkBook = "http://123.31.31.237:6002/api/users";
 //contact organization
 const apiPostSearchListContactOrganization = "http://123.31.31.237:6002/api/contact/organization/search";
 const apiContactOrgan = "http://123.31.31.237:6002/api/contact/organization/";
@@ -180,4 +181,6 @@ const apiLogoutSSO = "https://dangnhap.moet.gov.vn/oidc/logout";
 const apiGetLatestEvent = "http://123.31.31.237:6002/api/events/event-latest";
 
 //notification
-const apiPostNotificationList = 'http://123.31.31.237:6002/api/notifications/search';
+const apiPostGetNotificationList = 'http://123.31.31.237:6002/api/notifications/search';
+const apiPostDeleteNotification = 'http://123.31.31.237:6002/api/notifications/deletes';
+const apiGetChangeNotificationStatus = 'http://123.31.31.237:6002/api/notifications/update-all-status';

@@ -13,7 +13,7 @@ class MissionCommentsDetail extends GetView {
 
   final missionController = Get.put(MissionViewModel());
 
-  MissionCommentsDetail(this.missionDetailModel);
+  MissionCommentsDetail(this.missionDetailModel, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class MissionCommentsDetail extends GetView {
                   Expanded(
                       child: InkWell(
                     onTap: () {
-                      Get.offAll(() => MissionEOfficeList());
+                      Get.back();
                     },
                     child: Align(
                         alignment: Alignment.centerRight,

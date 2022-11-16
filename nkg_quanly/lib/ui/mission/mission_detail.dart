@@ -121,6 +121,7 @@ class MissionDetail extends GetView {
                           Expanded(
                             child: InkWell(
                               onTap: () {
+                                Get.back();
                                 Get.to(() =>
                                     MissionCommentsDetail(snapshot.data!));
                               },

@@ -9,6 +9,7 @@ import 'package:nkg_quanly/const/const.dart';
 import '../../const/utils.dart';
 import '../../model/workbook/group_workbook_model.dart';
 import '../../model/workbook/workbook_model.dart';
+import '../../model/workbook/worker_model.dart';
 
 class WorkBookViewModel extends GetxController {
   Map<String, String> headers = {"Content-type": "application/json"};
@@ -19,6 +20,8 @@ class WorkBookViewModel extends GetxController {
   RxList<WorkBookListItems> rxWorkBookListItems = <WorkBookListItems>[].obs;
   RxList<GroupWorkbookListItems> rxGroupWorkBookListItems =
       <GroupWorkbookListItems>[].obs;
+  RxList<WorkerModel> rxListWorkerModel =
+      <WorkerModel>[].obs;
   Rx<bool> rxSwitchState = false.obs;
   ScrollController controller = ScrollController();
 
@@ -26,7 +29,7 @@ class WorkBookViewModel extends GetxController {
   void onInit() {
     postGroupWorkBook();
     postWorkBookAll();
-
+    getListWorkerWorkBook();
     super.onInit();
   }
 
@@ -92,9 +95,8 @@ class WorkBookViewModel extends GetxController {
 
   Future<void> addWorkBookAll(
       String workName,
-      String groupWorkName,
       String description,
-      String worker,
+      String workerId,
       String status,
       bool important,
       String groupWorkId) async {
@@ -102,11 +104,9 @@ class WorkBookViewModel extends GetxController {
     print('loading');
     String json = """{
       "workName": "$workName",
-      "groupWorkName": "$groupWorkName",
       "groupWorkId": "$groupWorkId",
       "description": "$description",
-      "worker": "$worker",
-      "workBy": "$worker",
+      "workBy": "$workerId",
       "status": "$status",
       "important": $important
     }""";
@@ -133,9 +133,8 @@ class WorkBookViewModel extends GetxController {
   Future<void> updateWorkBook(
       String id,
       String workName,
-      String groupWorkName,
       String description,
-      String worker,
+      String workerId,
       String status,
       bool important,
       String groupWorkId) async {
@@ -144,11 +143,9 @@ class WorkBookViewModel extends GetxController {
     String json = """{
       "id": "$id",
       "workName": "$workName",
-      "groupWorkName": "$groupWorkName",
       "groupWorkId": "$groupWorkId",
       "description": "$description",
-      "worker": "$worker",
-      "workBy": "$worker",
+      "workBy": "$workerId",
       "status": "$status",
       "important": $important
     }""";
@@ -200,13 +197,28 @@ class WorkBookViewModel extends GetxController {
     GroupWorkbookModel res =
         GroupWorkbookModel.fromJson(jsonDecode(response.body));
     rxGroupWorkBookListItems.value = res.items!;
-    // if(res.totalRecords! > 10 )
-    //   {
-    //     String json = '{"pageIndex":2,"pageSize":${res.totalRecords}';
-    //     http.Response response = await http.post(url, headers: headers, body: json);
-    //     res =
-    //     GroupWorkbookModel.fromJson(jsonDecode(response.body));
-    //     rxGroupWorkBookListItems.addAll(res.items!);
-    //   }
+    if(res.totalRecords! > 10 )
+      {
+        String json = '{"pageIndex":2,"pageSize":10}';
+        http.Response response = await http.post(url, headers: headers, body: json);
+        res =
+        GroupWorkbookModel.fromJson(jsonDecode(response.body));
+        rxGroupWorkBookListItems.addAll(res.items!);
+      }
+  }
+  Future<void> getListWorkerWorkBook() async {
+    var tokenIOC = await loginViewModel.loadFromShareFrefs(keyTokenIOC);
+    print(tokenIOC);
+    http.Response response =
+    await http.get(Uri.parse(apiGetListWorkerWorkBook), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    });
+    print(response.body);
+    var listWorkerModel= <WorkerModel>[];
+    List listRes = json.decode(response.body) as List;
+    listWorkerModel = listRes.map((e) => WorkerModel.fromJson(e)).toList();
+    rxListWorkerModel.value = listWorkerModel;
   }
 }

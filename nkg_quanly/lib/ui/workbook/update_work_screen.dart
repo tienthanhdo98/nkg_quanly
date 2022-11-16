@@ -24,6 +24,7 @@ class UpdateWorkBookState extends State<UpdateWorkBookScreen> {
   String? groupWorkName;
   String? description;
   String? worker;
+  String? workerId;
   String? status;
   bool? important;
   String? groupWorkId;
@@ -36,6 +37,7 @@ class UpdateWorkBookState extends State<UpdateWorkBookScreen> {
     groupWorkName = widget.workBookListItems.groupWorkName?.trim();
     description = widget.workBookListItems.description?.trim();
     worker = widget.workBookListItems.worker?.trim();
+    workerId = widget.workBookListItems.workBy?.trim();
     status = widget.workBookListItems.status?.trim();
     important = widget.workBookListItems.important;
     groupWorkId = widget.workBookListItems.groupWorkId?.trim();
@@ -181,22 +183,60 @@ class UpdateWorkBookState extends State<UpdateWorkBookScreen> {
                           style: CustomTextStyle.grayColorTextStyle,
                         ),
                       ),
-                      TextField(
-                        controller: TextEditingController()
-                          ..text = checkingStringNull(worker),
-                        decoration: decoTextField,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline4,
-                        maxLines: 1,
-                        onChanged: (value) {
-                          print(value);
-                          worker = value;
-                        },
-                        onSubmitted: (value) {
-                          worker = value;
-                        },
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              color: kDarkGray, style: BorderStyle.solid, width: 1),
+                        ),
+                        child: Row(children: [
+                          Expanded(
+                            child: StatefulBuilder(
+                              builder: (context, workerStateChange) {
+                                return DropdownButton(
+                                  iconSize: 0.0,
+                                  value: worker,
+                                  style: Theme.of(context).textTheme.headline4,
+                                  underline: const SizedBox.shrink(),
+                                  items: workBookViewModel.rxListWorkerModel
+                                      .map((value) => DropdownMenuItem(
+                                    child: Text(value.userName!),
+                                    value: value.userName,
+                                  ))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    workerStateChange(
+                                            () => worker = value.toString());
+                                    for (var element in workBookViewModel
+                                        .rxListWorkerModel) {
+                                      if (element.userName ==
+                                          value.toString()) {
+                                        workerId = element.id;
+                                      }
+                                    }
+                                  },
+                                  isExpanded: false,
+                                  hint: const Text(
+                                    "Chọn người thực hiện",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Image.asset(
+                                  'assets/icons/ic_arrow_down.png',
+                                  width: 14,
+                                  height: 14,
+                                ),
+                              ))
+                        ]),
                       ),
                       //nguoi thuc hien
                       const Padding(
@@ -348,9 +388,8 @@ class UpdateWorkBookState extends State<UpdateWorkBookScreen> {
                                         workBookViewModel.updateWorkBook(
                                             id!,
                                             workName!,
-                                            groupWorkName!,
                                             description!,
-                                            worker!,
+                                            workerId!,
                                             status!,
                                             important!,
                                             groupWorkId!);

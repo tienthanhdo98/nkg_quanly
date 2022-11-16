@@ -26,6 +26,7 @@ import 'package:nkg_quanly/ui/home/home_screen.dart';
 import 'package:nkg_quanly/ui/login/login.dart';
 import 'package:nkg_quanly/ui/mission/e_office/mission__e_office_list.dart';
 import 'package:nkg_quanly/ui/notification/notification_screen.dart';
+import 'package:nkg_quanly/ui/notification/notification_viewmodel.dart';
 import 'package:nkg_quanly/ui/profile/e_office/profile_e_office_list.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profile_proc_report/profile_proc_report_screen.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profiles_procedure_list_withstatistic.dart';
@@ -93,6 +94,7 @@ class MyApp extends StatelessWidget {
               '/IndividualContactsList': (context) => IndividualContactsList(),
               '/GroupWorkBookList': (context) => GroupWorkBookList(),
 
+
             },
           );
         },
@@ -111,7 +113,7 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenStage extends State<MainScreen> {
   int _selectedIndex = 0;
-
+  final notificationViewModel = Get.put(NotificationViewModel());
   static final List<Widget> _widgetOptions = <Widget>[
     ChartScreen(),
     HomeScreen(),
@@ -150,20 +152,18 @@ class MainScreenStage extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Stack(children: <Widget>[
-               const Icon(Icons.notifications),
-               Positioned(
-                  top: -1.0,
-                  right: -1.0,
-                  child: Stack(
-                    children: const <Widget>[
-                       Icon(
-                        Icons.brightness_1,
-                        size: 10.0,
-                        color: kRedChart,
-                      ),
-                    ],
-                  ))
-            ]),
+                 const Icon(Icons.notifications),
+                 Obx(
+                     () => (notificationViewModel.isNewNotification.value == true) ? const Positioned(
+                      top: -1.0,
+                      right: -1.0,
+                      child: Icon(
+                       Icons.brightness_1,
+                       size: 10.0,
+                       color: kRedChart,
+                          )) : const SizedBox.shrink(),
+                 )
+              ]),
             label: 'Thông báo',
           ),
           const BottomNavigationBarItem(

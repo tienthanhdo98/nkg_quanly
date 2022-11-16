@@ -541,6 +541,7 @@ class DetailMissionBottomSheet extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
                         onPressed: () {
+                          Get.back();
                           Get.to(() =>
                               MissionDetail(id: int.parse(docModel!.id!)));
                         },

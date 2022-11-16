@@ -12,6 +12,7 @@ class AddNewWorkScreen extends GetView {
   String? groupWorkName;
   String? description;
   String? worker;
+  String? workerId;
   String? status;
   bool important = false;
   String? groupWorkId;
@@ -159,25 +160,60 @@ class AddNewWorkScreen extends GetView {
                       style: CustomTextStyle.grayColorTextStyle,
                     ),
                   ),
-                  TextField(
-                    decoration: InputDecoration(
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: kDarkGray, width: 1),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(
+                          color: kDarkGray, style: BorderStyle.solid, width: 1),
+                    ),
+                    child: Row(children: [
+                      Expanded(
+                        child: StatefulBuilder(
+                          builder: (context, workerStateChange) {
+                            return DropdownButton(
+                              iconSize: 0.0,
+                              value: worker,
+                              style: Theme.of(context).textTheme.headline4,
+                              underline: const SizedBox.shrink(),
+                              items: workBookViewModel.rxListWorkerModel
+                                  .map((value) => DropdownMenuItem(
+                                child: Text(value.userName!),
+                                value: value.userName,
+                              ))
+                                  .toList(),
+                              onChanged: (value) {
+                                workerStateChange(
+                                        () => worker = value.toString());
+                                for (var element in workBookViewModel
+                                    .rxListWorkerModel) {
+                                  if (element.userName ==
+                                      value.toString()) {
+                                    workerId = element.id;
+                                  }
+                                }
+                              },
+                              isExpanded: false,
+                              hint: const Text(
+                                "Chọn người thực hiện",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          },
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        filled: true,
-                        hintStyle: const TextStyle(color: Colors.black),
-                        hintText: "Nhập người thực hiện",
-                        fillColor: kWhite),
-                    style: Theme.of(context).textTheme.headline4,
-                    onChanged: (value) {
-                      worker = value;
-                    },
-                    onSubmitted: (value) {
-                      worker = value;
-                    },
+                      ),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Image.asset(
+                              'assets/icons/ic_arrow_down.png',
+                              width: 14,
+                              height: 14,
+                            ),
+                          ))
+                    ]),
                   ),
                   //nguoi thuc hien
                   const Padding(
@@ -295,21 +331,13 @@ class AddNewWorkScreen extends GetView {
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                             child: ElevatedButton(
                                 onPressed: () {
-                                  print(workName);
-                                  print(groupWorkName);
-                                  print(description);
-                                  print(worker);
-                                  print(status);
-                                  print(important);
-                                  print(groupWorkId);
                                   if (workName?.isNotEmpty == true ||
                                       groupWorkName?.isNotEmpty == true ||
                                       worker?.isNotEmpty== true ) {
                                     workBookViewModel.addWorkBookAll(
                                         workName!,
-                                        groupWorkName!,
                                         description!,
-                                        worker!,
+                                        workerId!,
                                         status!,
                                         important,
                                         groupWorkId!);

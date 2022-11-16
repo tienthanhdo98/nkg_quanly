@@ -53,7 +53,7 @@ class ProfileProcHomeDetail extends GetView {
                         ),
                         InkWell(
                           onTap: () {
-                            Get.offAll(() => ProfilesProcedureListWithStatistic());
+                            Get.back();
                           },
                           child: Align(
                               alignment: Alignment.centerRight,
@@ -82,14 +82,14 @@ class ProfileProcHomeDetail extends GetView {
                           padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
                           child: textCodeStyle(item.maSoBienNhan!)),
                       Padding(
-                          padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+                          padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
                           child: signProfileProcWidget(item)),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Đơn vị xử lý',
                               style: CustomTextStyle.grayColorTextStyle),
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
                           Text(item.tenCoquan!,
                               style: Theme.of(context).textTheme.headline5)
@@ -157,6 +157,7 @@ class ProfileProcHomeDetail extends GetView {
                           Expanded(
                             child: InkWell(
                               onTap: () {
+                                Get.back();
                                 Get.to(() =>
                                     ProfileProcCommentDetail(snapshot.data!));
                               },

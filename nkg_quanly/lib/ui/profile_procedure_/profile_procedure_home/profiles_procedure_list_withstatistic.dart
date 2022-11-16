@@ -550,6 +550,7 @@ class DetailProfileProcBottomSheet extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
                         onPressed: () {
+                          Get.back();
                           Get.to(() =>
                               ProfileProcHomeDetail(id: docModel!.maSoBienNhan!));
                         },

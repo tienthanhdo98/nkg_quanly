@@ -127,6 +127,10 @@ var listReportState = [
 String jsonGetByMonth =
     '{"pageIndex":1,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
 
+//key sharepref
+const String keyTokebSSO = "tokenSSO";
+const String keyTokenIOC = "tokenIOC";
+
 //
 final DatePickerController menuController = Get.put(DatePickerController());
 final loginViewModel = Get.put(LoginViewModel());

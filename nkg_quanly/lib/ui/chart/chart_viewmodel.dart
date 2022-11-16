@@ -14,10 +14,6 @@ import '../../model/event_model/event_model.dart';
 class ChartViewModel extends GetxController {
   Rx<EventModel> rxEventDes = EventModel().obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   Future<void> getLatestEvent(String token) async {
     http.Response response = await http.get(Uri.parse(apiGetLatestEvent),headers: {

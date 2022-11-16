@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/model/login/user_info_model.dart';
+import '../const/const.dart';
 import '../model/login/access_token_model.dart';
 import '../model/login/info_login_config.dart';
 import '../model/login/sign_up_model.dart';
@@ -20,34 +21,34 @@ class LoginViewModel extends GetxController {
   Rx<InfoLoginConfig> rxInfoLoginConfig = InfoLoginConfig().obs;
   String urlLogin = "";
   SharedPreferences? pref;
-  final String key = "tokenSSO";
+
   Map<String, String> headers = {
     "Content-type": "application/x-www-form-urlencoded"
   };
 
   @override
   void onInit() {
-    _initPrefs();
     getInfoLoginConfig();
     super.onInit();
   }
   _initPrefs() async {
     pref ??= await SharedPreferences.getInstance();
   }
-  loadFromShareFrefs() {
-    String res = pref?.getString(key) ?? "";
+  loadFromShareFrefs(String key) async {
+    await _initPrefs();
+    String res =  pref?.getString(key) ?? "";
     return  res;
   }
 
-  saveToShareFrefs(String value) async {
+  saveToShareFrefs(String value,String key) async {
     await _initPrefs();
-    pref?.setString(key, value);
+   await pref?.setString(key, value);
   }
 
   void changeValueLoading(bool value) {
     isLoginLoading.value = value;
   }
-
+  Rx<AccessTokenModel> rxAccessTokenModel = AccessTokenModel().obs;
   Future<void> geAccessTokenSSO(String authCode) async {
     Map<String, dynamic> formMap = {
       "grant_type": "authorization_code",
@@ -64,7 +65,8 @@ class LoginViewModel extends GetxController {
     
     rxAccessTokenSSO.value = accessTokenModel.accessToken!;
     rxIdAccessToken.value = accessTokenModel.idToken!;
-    saveToShareFrefs(rxAccessTokenSSO.value);
+    rxAccessTokenModel.value = accessTokenModel;
+    saveToShareFrefs(rxAccessTokenSSO.value,keyTokebSSO);
     print("access token sso : ${rxAccessTokenSSO.value}");
     print("ex : ${accessTokenModel.expiresIn}");
     Timer(Duration(seconds: accessTokenModel.expiresIn! - 60), () {
@@ -91,7 +93,7 @@ class LoginViewModel extends GetxController {
     print("New AccessToken sso ${rxAccessTokenSSO.value}");
     Timer(Duration(seconds: signUpModel.expiresIn! - 60), () {
       getRefreshAccessToken(signUpModel.refreshToken!);
-      saveToShareFrefs(rxAccessTokenSSO.value);
+      saveToShareFrefs(rxAccessTokenSSO.value,keyTokebSSO);
       print("het han token sso ");
     });
   }
@@ -148,6 +150,7 @@ class LoginViewModel extends GetxController {
     
     rxSignUpModel.value = signUpModel;
     rxAccessTokenIoc.value = signUpModel.accessToken!;
+    saveToShareFrefs(rxAccessTokenIoc.value,keyTokenIOC);
     print("AccessTokenIoc ${rxAccessTokenIoc.value}");
 
     Timer(Duration(seconds: signUpModel.expires! - 60), () {
@@ -165,6 +168,7 @@ class LoginViewModel extends GetxController {
     
     rxSignUpModel.value = signUpModel;
     rxAccessTokenIoc.value = signUpModel.accessToken!;
+    saveToShareFrefs(rxAccessTokenIoc.value,keyTokenIOC);
     print("New AccessTokenIoc ${rxAccessTokenIoc.value}");
     Timer.periodic(Duration(seconds: signUpModel.expires! - 60), (_) {
       getRefreshAccessTokenIoc(signUpModel.refreshToken!);

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/profile_procedure_/profiles_procedure_viewmodel.dart';
-
 import '../../model/profile_procedure_model/profile_procedure_model.dart';
 
 class ProfileProcDetail extends GetView {

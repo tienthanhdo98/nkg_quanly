@@ -15,7 +15,7 @@ class DatabaseHelper{
   final String db_name = "notification.db";
   final String db_table = "notification_table";
 
-  Future<Database> get database async {
+  Future<Database> get initDatabase async {
     if (_database != null) {
       Directory dr = await getApplicationDocumentsDirectory();
       print("db loca: ${dr.path}");
@@ -39,7 +39,7 @@ class DatabaseHelper{
   }
 
   insertDB(NotificationModelDB databaseModel) async {
-    final db = await database;
+    final db = await initDatabase;
     await db.insert(
       db_table,
       databaseModel.toMap(),
@@ -48,7 +48,7 @@ class DatabaseHelper{
   }
 
   Future<List<NotificationModelDB>> getDataDB() async {
-    final db = await database;
+    final db = await initDatabase;
     final List<Map<String, dynamic>> maps = await db.query(db_table);
     return List.generate(maps.length, (i) {
       return NotificationModelDB(
@@ -68,7 +68,7 @@ class DatabaseHelper{
   }
 
   updateDB(NotificationModelDB databaseModel) async {
-    final db = await database;
+    final db = await initDatabase;
     await db.update(
       db_table,
       databaseModel.toMap(),
@@ -77,7 +77,7 @@ class DatabaseHelper{
     );
   }
   updateIclickStatusDB(NotificationModelDB databaseModel) async {
-    final db = await database;
+    final db = await initDatabase;
     await db.update(
       db_table,
       databaseModel.toMap(),
@@ -87,11 +87,17 @@ class DatabaseHelper{
   }
 
   deleteDB(String id) async {
-    final db = await database;
+    final db = await initDatabase;
     await db.delete(
       db_table,
       where: 'id = ?',
       whereArgs: [id],
+    );
+  }
+  deleteAllDataDB() async {
+    final db = await initDatabase;
+    await db.delete(
+      db_table
     );
   }
 }

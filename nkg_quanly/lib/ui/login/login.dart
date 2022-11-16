@@ -25,19 +25,19 @@ class LoginScreenState extends State<LoginScreen> {
   String? prefToken;
   @override
   void initState() {
-
+    getPrefToken();
     super.initState();
 
   }
-
-  @override
-  void dispose() {
-    super.dispose();
+  void getPrefToken() async
+  {
+   var token = await loginViewModel.loadFromShareFrefs(keyTokebSSO);
+   prefToken = token;
   }
 
   @override
   Widget build(BuildContext context) {
-    prefToken =  loginViewModel.loadFromShareFrefs();
+
     print("pref token: ${prefToken}");
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -51,7 +51,7 @@ class LoginScreenState extends State<LoginScreen> {
               valueColor:
               AlwaysStoppedAnimation<Color>(Colors.green[800]!),
             )
-                : Center(), // this perform the loading on every page load
+                : const Center(), // this perform the loading on every page load
             Expanded(
               child:  InAppWebView(
                 initialOptions: InAppWebViewGroupOptions(
@@ -73,9 +73,11 @@ class LoginScreenState extends State<LoginScreen> {
                     if(prefToken == "") {
                       webViewController!.loadUrl(urlRequest: URLRequest(
                           url: Uri.parse(loginViewModel.urlLogin)));
+                      print("AAA: login null");
                     }
                     else
                       {
+                        loginViewModel.changeValueLoading(true);
                           await loginViewModel.getUserInfo(
                               prefToken!);
                           if(loginViewModel.rxUserInfoModel.value.name !=null) {
@@ -84,10 +86,12 @@ class LoginScreenState extends State<LoginScreen> {
                                 loginViewModel.rxUserInfoModel.value.email!);
                             loginViewModel.changeValueLoading(false);
                             //webViewController!.stopLoading();
+                            print("AAA: login witk token");
                             Get.off(() => const MainScreen());
                           }
                           else
                             {
+                              print("AAA: login toekExpire");
                               webViewController!.loadUrl(urlRequest: URLRequest(
                                   url: Uri.parse(loginViewModel.urlLogin)));
                             }

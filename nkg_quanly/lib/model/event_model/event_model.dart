@@ -8,7 +8,7 @@ class EventModel {
   String? timeEvent;
   bool? status;
   String? createdBy;
-  Null? lastModifiedBy;
+  dynamic lastModifiedBy;
   bool? isDeleted;
 
   EventModel(
