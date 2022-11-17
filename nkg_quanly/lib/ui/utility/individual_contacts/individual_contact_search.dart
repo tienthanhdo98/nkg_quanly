@@ -4,6 +4,7 @@ import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../../const/const.dart';
 import '../individual_contacts/individual_contacts_list.dart';
+import 'contact_individual_detail.dart';
 import 'contact_individual_viewmodel.dart';
 
 
@@ -101,10 +102,17 @@ class IndividualContactsSearch  extends GetView {
                           itemCount: searchController.rxIndividualContactListItems.length,
                           itemBuilder: (context, index) {
                             var item = searchController.rxIndividualContactListItems[index];
-                            return IndividualContactsItem(
-                                index,
-                                item,
-                                contactIndividualViewModel);
+                            return InkWell(
+                              onTap: () {
+                                Get.to(() => ContactIndividualDetail(
+                                  id: item.id!,
+                                ));
+                              },
+                              child: IndividualContactsItem(
+                                  index,
+                                  item,
+                                  contactIndividualViewModel),
+                            );
                           })),
                     ),
                   ),

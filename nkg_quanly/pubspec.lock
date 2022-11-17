@@ -117,7 +117,7 @@ packages:
       name: flutter_inappwebview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.7.1"
+    version: "5.7.1+1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -344,7 +344,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.27.5"
+    version: "0.27.7"
   shared_preferences:
     dependency: "direct dev"
     description:
@@ -461,14 +461,14 @@ packages:
       name: syncfusion_flutter_charts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.3.56"
+    version: "20.3.57"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.3.56"
+    version: "20.3.57"
   synchronized:
     dependency: transitive
     description:
@@ -566,7 +566,7 @@ packages:
       name: uuid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.6"
+    version: "3.0.7"
   vector_math:
     dependency: transitive
     description:

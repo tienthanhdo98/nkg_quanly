@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
+import 'package:nkg_quanly/ui/utility/group_workbook/workbook_detail.dart';
 
 import '../../../const/const.dart';
 import 'group_workbook_list.dart';
@@ -102,10 +103,17 @@ class GroupWorkbookSearch  extends GetView {
                           itemCount: searchController.rxListGroupWorkBookItems.length,
                           itemBuilder: (context, index) {
                             var item = searchController.rxListGroupWorkBookItems[index];
-                            return GroupWorkBookItem(
-                                index,
-                                item,
-                                groupWorkBookViewModel);
+                            return InkWell(
+                              onTap: (){
+                                Get.to(() => GroupWorkBookDetail(
+                                  id: item.id!,
+                                ));
+                              },
+                              child: GroupWorkBookItem(
+                                  index,
+                                  item,
+                                  groupWorkBookViewModel),
+                            );
                           })),
                     ),
                   ),

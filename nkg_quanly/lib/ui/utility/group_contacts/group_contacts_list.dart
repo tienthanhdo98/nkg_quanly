@@ -107,7 +107,6 @@ class GroupContactsList extends GetView {
                         .rxContactListItems[index];
                     return InkWell(
                       onTap: () {
-
                         showModalBottomSheet<void>(
                           isScrollControlled: true,
                           shape: const RoundedRectangleBorder(

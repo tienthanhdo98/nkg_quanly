@@ -101,10 +101,30 @@ class OrganContactsSearch  extends GetView {
                           itemCount: searchController.rxGroupContactListItems.length,
                           itemBuilder: (context, index) {
                             var item = searchController.rxGroupContactListItems[index];
-                            return GroupContactsItem(
-                                index,
-                                item,
-                                contactOrganizationViewModel);
+                            return InkWell(
+                              onTap: () {
+                                showModalBottomSheet<void>(
+                                  isScrollControlled: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20),
+                                    ),
+                                  ),
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SizedBox(
+                                        height: 400,
+                                        child: DetailOrganContactBottomSheet(
+                                            item, contactOrganizationViewModel));
+                                  },
+                                );
+                              },
+                              child: GroupContactsItem(
+                                  index,
+                                  item,
+                                  contactOrganizationViewModel),
+                            );
                           })),
                     ),
                   ),
