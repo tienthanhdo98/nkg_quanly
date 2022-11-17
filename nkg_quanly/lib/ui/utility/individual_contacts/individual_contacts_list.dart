@@ -106,11 +106,19 @@ class IndividualContactsList extends GetView {
                       itemCount:
                       contactIndividualViewModel.rxContactListItems.length,
                       itemBuilder: (context, index) {
-                        return IndividualContactsItem(
-                            index,
-                            contactIndividualViewModel
-                                .rxContactListItems[index],
-                            contactIndividualViewModel);
+                        var item = contactIndividualViewModel
+                            .rxContactListItems[index];
+                        return InkWell(
+                          onTap: () {
+                            Get.to(() => ContactIndividualDetail(
+                              id: item.id!,
+                            ));
+                          },
+                          child: IndividualContactsItem(
+                              index,
+                              item,
+                              contactIndividualViewModel),
+                        );
                       }) : loadingIcon() )),
             ],
           ) ),

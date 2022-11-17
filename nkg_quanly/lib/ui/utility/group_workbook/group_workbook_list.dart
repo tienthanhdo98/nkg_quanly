@@ -78,11 +78,19 @@ class GroupWorkBookList extends GetView {
                   itemCount:
                       groupWorkBookViewModel.rxListGroupWorkBookItems.length,
                   itemBuilder: (context, index) {
-                    return GroupWorkBookItem(
-                        index,
-                        groupWorkBookViewModel
-                            .rxListGroupWorkBookItems[index],
-                        groupWorkBookViewModel);
+                    var item =  groupWorkBookViewModel
+                        .rxListGroupWorkBookItems[index];
+                    return InkWell(
+                      onTap: (){
+                        Get.to(() => GroupWorkBookDetail(
+                          id: item.id!,
+                        ));
+                      },
+                      child: GroupWorkBookItem(
+                          index,
+                          item ,
+                          groupWorkBookViewModel),
+                    );
                   }) : loadingIcon())),
         ],
       )),

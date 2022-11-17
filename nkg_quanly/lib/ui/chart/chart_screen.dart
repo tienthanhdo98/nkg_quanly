@@ -46,12 +46,12 @@ class ChartScreen extends StatelessWidget {
                           child: Row(
                             children: [
                               Container(
-                                  child: const Icon(Icons.person),
+                                  child: Image.asset("assets/ic_person.png"),
                                   width: 60,
                                   height: 60,
                                   decoration: BoxDecoration(
                                     color: kViolet,
-                                    borderRadius: BorderRadius.circular(25),
+                                    borderRadius: BorderRadius.circular(30),
                                   )),
                               const Padding(
                                   padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),

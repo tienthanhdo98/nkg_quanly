@@ -13,8 +13,8 @@ Widget priorityWidget(dynamic docModel) {
         ),
         child: const Padding(
             padding: EdgeInsets.all(5),
-            child: Text('Thấp', style: TextStyle(color: kWhite))));
-  } else if (docModel.level == 'Trung bình') {
+            child: Text('Thấp', style: TextStyle(color: kWhite,fontSize: 14))));
+  } else if (docModel.level == 'Trung Bình') {
     return Container(
         decoration: BoxDecoration(
           color: kBluePriority,
@@ -24,7 +24,7 @@ Widget priorityWidget(dynamic docModel) {
             padding: EdgeInsets.all(5),
             child: Text(
               'Trung bình',
-              style: TextStyle(color: kWhite),
+              style: TextStyle(color: kWhite,fontSize: 14),
             )));
   } else {
     return Container(
@@ -34,7 +34,7 @@ Widget priorityWidget(dynamic docModel) {
         ),
         child: const Padding(
             padding: EdgeInsets.all(5),
-            child: Text('Cao', style: TextStyle(color: kWhite))));
+            child: Text('Cao', style: TextStyle(color: kWhite,fontSize: 14))));
   }
 }
 
@@ -368,6 +368,16 @@ Widget infoDetailWidget(String title,String value,BuildContext context)
           padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
           child: Text(value,
               style: Theme.of(context).textTheme.headline5,maxLines: 2,overflow: TextOverflow.ellipsis,))
+    ],
+  );
+}
+Widget sheetDetailBottemItem(String title, String value, BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(title, style: CustomTextStyle.grayColorTextStyle),
+      const Padding(padding: EdgeInsets.only(top: 5)),
+      Text(value, style: Theme.of(context).textTheme.headline5)
     ],
   );
 }

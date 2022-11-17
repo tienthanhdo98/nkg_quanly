@@ -12,8 +12,6 @@ import '../misstion_search.dart';
 import 'filter_mission_screen.dart';
 
 class MissionEOfficeList extends GetView {
-
-
   final missionViewModel = Get.put(MissionViewModel());
 
   MissionEOfficeList({Key? key}) : super(key: key);
@@ -113,8 +111,8 @@ class MissionEOfficeList extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                      missionViewModel.rxMissionStatistic
-                                          .value.chuaXuLy
+                                      missionViewModel
+                                          .rxMissionStatistic.value.chuaXuLy
                                           .toString(),
                                       style: textBlackCountEofficeStyle)
                                 ],
@@ -126,8 +124,8 @@ class MissionEOfficeList extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    missionViewModel.rxMissionStatistic
-                                        .value.dangThucHien
+                                    missionViewModel
+                                        .rxMissionStatistic.value.dangThucHien
                                         .toString(),
                                     style: textBlackCountEofficeStyle,
                                   )
@@ -205,7 +203,7 @@ class MissionEOfficeList extends GetView {
           Expanded(
               child: Obx(() => (missionViewModel.rxMissionItem.isNotEmpty)
                   ? ListView.builder(
-                      controller:   missionViewModel.controller,
+                      controller: missionViewModel.controller,
                       itemCount: missionViewModel.rxMissionItem.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -232,7 +230,7 @@ class MissionEOfficeList extends GetView {
                             child: MissionListItem(
                                 index, missionViewModel.rxMissionItem[index]));
                       })
-                  :noData())),
+                  : noData())),
           //bottom
           Obx(() => Container(
                 decoration: BoxDecoration(
@@ -474,50 +472,23 @@ class DetailMissionBottomSheet extends StatelessWidget {
           ),
           signWidgetMission(docModel!),
           SizedBox(
+            height: 120,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
-              shrinkWrap: true,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 0,
+              childAspectRatio: 3.5 / 2,
               crossAxisCount: 3,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Người xử lý',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.organizationName!,
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thời hạn',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.deadline!),
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày xử lý',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                          formatDate(docModel!.processingDate!),
-                          style: Theme.of(context).textTheme.headline5,
-                        ))
-                  ],
-                ),
+                sheetDetailBottemItem('Người xử lý',
+                    docModel!.organizationName!, context),
+                sheetDetailBottemItem('Thời hạn',
+                    docModel!.deadline!, context),
+                sheetDetailBottemItem('Ngày xử lý',
+                    docModel!.processingDate!, context),
+                sheetDetailBottemItem('Ngày khởi tạo',
+                    formatDate(docModel!.innitiatedDate!), context),
+
               ],
             ),
           ),
@@ -559,8 +530,7 @@ class DetailMissionBottomSheet extends StatelessWidget {
 }
 
 class FilterMissionBottomSheet extends StatelessWidget {
-  const FilterMissionBottomSheet( this.missionViewModel,
-      {Key? key})
+  const FilterMissionBottomSheet(this.missionViewModel, {Key? key})
       : super(key: key);
   final MissionViewModel? missionViewModel;
 

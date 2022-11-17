@@ -117,7 +117,7 @@ class ProfileSearch  extends GetView {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return SizedBox(
-                                          height: 320,
+                                          height: 340,
                                           child: DetailProfileBottomSheet(
                                               index,item));
                                     },

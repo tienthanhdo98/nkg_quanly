@@ -13,6 +13,7 @@ export 'package:get/get.dart';
 export 'package:intl/intl.dart';
 export 'package:table_calendar/table_calendar.dart';
 export 'package:numberpicker/numberpicker.dart';
+export 'package:url_launcher/url_launcher.dart';
 
 DateTime dateNow = DateTime.now();
 

@@ -41,12 +41,12 @@ class SettingScreen extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                          child: const Icon(Icons.verified_user),
-                          width: 70,
-                          height: 70,
+                          child: Image.asset("assets/ic_person.png"),
+                          width: 60,
+                          height: 60,
                           decoration: BoxDecoration(
                             color: kViolet,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(30),
                           )),
                       const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                       Column(

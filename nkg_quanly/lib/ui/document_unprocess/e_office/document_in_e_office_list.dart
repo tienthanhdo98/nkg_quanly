@@ -24,341 +24,350 @@ class DocumentInEOfficeList extends GetView {
     return Scaffold(
       body: SafeArea(
           child: Column(
-        children: [
-          //header
-          headerWidgetSearch(
-              header!,
-              DocumentnonapprovedSearch(
-                isApprove: true,
-              ),
-              context),
-          //date table
-          headerTableDatePicker(context, documentUnprocessViewModel),
-          //list
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Column(
-              children: [
-                Row(
+            children: [
+              //header
+              headerWidgetSearch(
+                  header!,
+                  DocumentnonapprovedSearch(
+                    isApprove: true,
+                  ),
+                  context),
+              //date table
+              headerTableDatePicker(context, documentUnprocessViewModel),
+              //list
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: Column(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Text(
-                          'Tất cả văn bản đến',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (menuController.rxShowStatistic.value == true) {
-                              menuController.changeStateShowStatistic(false);
-                            } else {
-                              menuController.changeStateShowStatistic(true);
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                            child: Row(children: [
-                              Obx(() => (documentUnprocessViewModel
-                                          .rxDocumentInStatistic.value.tong !=
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Tất cả văn bản đến',
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .headline5,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                if (menuController.rxShowStatistic.value ==
+                                    true) {
+                                  menuController.changeStateShowStatistic(
+                                      false);
+                                } else {
+                                  menuController.changeStateShowStatistic(true);
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                child: Row(children: [
+                                  Obx(() =>
+                                  (documentUnprocessViewModel
+                                      .rxDocumentInStatistic.value.tong !=
                                       null)
-                                  ? Text(
+                                      ? Text(
                                       documentUnprocessViewModel
                                           .rxDocumentInStatistic.value.tong
                                           .toString(),
                                       style: textBlueCountTotalStyle)
-                                  : const Text("")),
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                  child: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: kBlueButton,
-                                  ))
-                            ]),
-                          ),
+                                      : const Text("")),
+                                  const Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                      child: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: kBlueButton,
+                                      ))
+                                ]),
+                              ),
+                            ),
+                          ],
                         ),
+                        const Spacer(),
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: ElevatedButton(
+                              style: elevetedButtonWhite,
+                              onPressed: () {
+                                Get.to(() =>
+                                    FilterDocInScreen(
+                                        documentUnprocessViewModel));
+                              },
+                              child: const Text(
+                                'Bộ lọc',
+                                style: TextStyle(color: kVioletButton),
+                              ),
+                            ))
                       ],
                     ),
-                    const Spacer(),
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          style: elevetedButtonWhite,
-                          onPressed: () {
-                            Get.to(() =>
-                                FilterDocInScreen(documentUnprocessViewModel));
-                          },
-                          child: const Text(
-                            'Bộ lọc',
-                            style: TextStyle(color: kVioletButton),
-                          ),
-                        ))
+                    Obx(() =>
+                    (menuController.rxShowStatistic.value == true)
+                        ? Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: SizedBox(
+                        child: GridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisSpacing: 10,
+                          childAspectRatio: 3 / 2,
+                          mainAxisSpacing: 0,
+                          crossAxisCount: 3,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Chưa xử lý',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                    checkingStringNull(
+                                        documentUnprocessViewModel
+                                            .rxDocumentInStatistic
+                                            .value
+                                            .chuaXuLy
+                                            .toString()),
+                                    style: textBlackCountEofficeStyle)
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Đang xử lý',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic
+                                          .value
+                                          .dangXuLy
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Đã xử lý',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic.value.daXuLy
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Đã bút phê',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic
+                                          .value
+                                          .daButPhe
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Chưa bút phê',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic
+                                          .value
+                                          .chuaButPhe
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Trong hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic
+                                          .value
+                                          .trongHan
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Quá hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic.value.quaHan
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('HT trước hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic
+                                          .value
+                                          .hoanThanhTruocHan
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Hoàn thành trong hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic
+                                          .value
+                                          .hoanThanhTrongHan
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Hoàn thành quá hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic
+                                          .value
+                                          .hoanThanhQuaHan
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Chưa HT trong hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic
+                                          .value
+                                          .chuaHoanThanhTrongHan
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Text('Chưa HT quá hạn',
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                  checkingStringNull(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic
+                                          .value
+                                          .chuaHoanThanhQuaHan
+                                          .toString()),
+                                  style: textBlackCountEofficeStyle,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                        : const SizedBox.shrink())
                   ],
                 ),
-                Obx(() => (menuController.rxShowStatistic.value == true)
-                    ? Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: SizedBox(
-                          child: GridView.count(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 3 / 2,
-                            mainAxisSpacing: 0,
-                            crossAxisCount: 3,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Chưa xử lý',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingStringNull(
-                                          documentUnprocessViewModel
-                                              .rxDocumentInStatistic
-                                              .value
-                                              .chuaXuLy
-                                              .toString()),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Đang xử lý',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic
-                                            .value
-                                            .dangXuLy
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Đã xử lý',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic.value.daXuLy
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Đã bút phê',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic
-                                            .value
-                                            .daButPhe
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Chưa bút phê',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic
-                                            .value
-                                            .chuaButPhe
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Trong hạn',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic
-                                            .value
-                                            .trongHan
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Quá hạn',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic.value.quaHan
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('HT trước hạn',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic
-                                            .value
-                                            .hoanThanhTruocHan
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Hoàn thành trong hạn',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic
-                                            .value
-                                            .hoanThanhTrongHan
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Hoàn thành quá hạn',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic
-                                            .value
-                                            .hoanThanhQuaHan
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Chưa HT trong hạn',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic
-                                            .value
-                                            .chuaHoanThanhTrongHan
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 30,
-                                    child: Text('Chưa HT quá hạn',
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                    checkingStringNull(
-                                        documentUnprocessViewModel
-                                            .rxDocumentInStatistic
-                                            .value
-                                            .chuaHoanThanhQuaHan
-                                            .toString()),
-                                    style: textBlackCountEofficeStyle,
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : const SizedBox.shrink())
-              ],
-            ),
-          ),
-          const Padding(
-              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-              child: Divider(
-                thickness: 1,
-              )),
-          Expanded(
-              child: Obx(() => (documentUnprocessViewModel.rxItems.isNotEmpty)
-                  ? ListView.builder(
-                  controller: documentUnprocessViewModel.controller,
+              ),
+              const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Divider(
+                    thickness: 1,
+                  )),
+              Expanded(
+                  child: Obx(() =>
+                  (documentUnprocessViewModel.rxItems.isNotEmpty)
+                      ? ListView.builder(
+                      controller: documentUnprocessViewModel.controller,
                       itemCount: documentUnprocessViewModel.rxItems.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -385,77 +394,84 @@ class DocumentInEOfficeList extends GetView {
                             child: DocumentNonProcessListItem(index,
                                 documentUnprocessViewModel.rxItems[index]));
                       })
-                  : noData())),
-          //bottom
-          Obx(() => Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    border: Border(
-                        top:
-                            BorderSide(color: Theme.of(context).dividerColor))),
-                height: 50,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          menuController.rxSelectedDay.value = DateTime.now();
-                          documentUnprocessViewModel
-                              .onSelectDay(DateTime.now());
-                          documentUnprocessViewModel.swtichBottomButton(0);
-                        },
-                        child: bottomDateButton(
-                            "Ngày",
-                            documentUnprocessViewModel
-                                .selectedBottomButton.value,
-                            0),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          DateTime dateTo =
+                      : noData())),
+              //bottom
+              Obx(() =>
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Theme
+                            .of(context)
+                            .cardColor,
+                        border: Border(
+                            top:
+                            BorderSide(color: Theme
+                                .of(context)
+                                .dividerColor))),
+                    height: 50,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              menuController.rxSelectedDay.value = DateTime
+                                  .now();
+                              documentUnprocessViewModel
+                                  .onSelectDay(DateTime.now());
+                              documentUnprocessViewModel.swtichBottomButton(0);
+                            },
+                            child: bottomDateButton(
+                                "Ngày",
+                                documentUnprocessViewModel
+                                    .selectedBottomButton.value,
+                                0),
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              DateTime dateTo =
                               dateNow.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateTo);
-                          print(strdateFrom);
-                          print(strdateTo);
-                          documentUnprocessViewModel.getDocumentByWeek(
-                              strdateFrom, strdateTo);
-                          documentUnprocessViewModel.swtichBottomButton(1);
-                        },
-                        child: bottomDateButton(
-                            "Tuần",
-                            documentUnprocessViewModel
-                                .selectedBottomButton.value,
-                            1),
-                      ),
+                              String strdateFrom = formatDateToString(dateNow);
+                              String strdateTo = formatDateToString(dateTo);
+                              print(strdateFrom);
+                              print(strdateTo);
+                              documentUnprocessViewModel.getDocumentByWeek(
+                                  strdateFrom, strdateTo);
+                              documentUnprocessViewModel.swtichBottomButton(1);
+                            },
+                            child: bottomDateButton(
+                                "Tuần",
+                                documentUnprocessViewModel
+                                    .selectedBottomButton.value,
+                                1),
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              documentUnprocessViewModel.getDocumentByMonth();
+                              documentUnprocessViewModel.swtichBottomButton(2);
+                            },
+                            child: bottomDateButton(
+                                "Tháng",
+                                documentUnprocessViewModel
+                                    .selectedBottomButton.value,
+                                2),
+                          ),
+                        )
+                      ],
                     ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          documentUnprocessViewModel.getDocumentByMonth();
-                          documentUnprocessViewModel.swtichBottomButton(2);
-                        },
-                        child: bottomDateButton(
-                            "Tháng",
-                            documentUnprocessViewModel
-                                .selectedBottomButton.value,
-                            2),
-                      ),
-                    )
-                  ],
-                ),
-              ))
-        ],
-      )),
+                  ))
+            ],
+          )),
     );
   }
 }
 
 class DocumentNonProcessListItem extends StatelessWidget {
-  const DocumentNonProcessListItem(this.index, this.docModel, {Key? key}) : super(key: key);
+  const DocumentNonProcessListItem(this.index, this.docModel, {Key? key})
+      : super(key: key);
 
   final int? index;
   final DocumentInListItems? docModel;
@@ -471,7 +487,10 @@ class DocumentNonProcessListItem extends StatelessWidget {
               Expanded(
                 child: Text(
                   "${index! + 1}. ${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline3,
                 ),
               ),
               Align(
@@ -480,7 +499,7 @@ class DocumentNonProcessListItem extends StatelessWidget {
             ],
           ),
           Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+              padding: const EdgeInsets.only(bottom: 5, top: 5),
               child: textCodeStyle(docModel!.code!)),
           signWidget(docModel!),
           SizedBox(
@@ -501,7 +520,10 @@ class DocumentNonProcessListItem extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(docModel!.departmentPublic!,
-                            style: Theme.of(context).textTheme.headline5))
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline5))
                   ],
                 ),
                 Column(
@@ -512,7 +534,10 @@ class DocumentNonProcessListItem extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(formatDate(docModel!.toDate!),
-                            style: Theme.of(context).textTheme.headline5))
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline5))
                   ],
                 ),
                 Column(
@@ -523,7 +548,10 @@ class DocumentNonProcessListItem extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(formatDate(docModel!.endDate!),
-                            style: Theme.of(context).textTheme.headline5))
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline5))
                   ],
                 ),
               ],
@@ -547,7 +575,7 @@ class DetailDocInBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 30, 25, 25),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -569,7 +597,10 @@ class DetailDocInBottomSheet extends StatelessWidget {
               Expanded(
                 child: Text(
                   "${index! + 1}. ${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline3,
                 ),
               ),
               Align(
@@ -577,15 +608,17 @@ class DetailDocInBottomSheet extends StatelessWidget {
                   child: priorityWidget(docModel!)),
             ],
           ),
+          Padding(
+              padding: const EdgeInsets.only(bottom: 5, top: 5),
+              child: textCodeStyle(docModel!.code!)),
           signWidget(docModel!),
           SizedBox(
+            height: 120,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
-              shrinkWrap: true,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              crossAxisSpacing: 30,
-              childAspectRatio: 3 / 2,
+              childAspectRatio: 3.5 / 2,
               crossAxisCount: 3,
               children: <Widget>[
                 Column(
@@ -596,7 +629,10 @@ class DetailDocInBottomSheet extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(docModel!.departmentPublic!,
-                            style: Theme.of(context).textTheme.headline5))
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline5))
                   ],
                 ),
                 Column(
@@ -607,7 +643,10 @@ class DetailDocInBottomSheet extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(formatDate(docModel!.toDate!),
-                            style: Theme.of(context).textTheme.headline5))
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline5))
                   ],
                 ),
                 Column(
@@ -618,7 +657,10 @@ class DetailDocInBottomSheet extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(formatDate(docModel!.endDate!),
-                            style: Theme.of(context).textTheme.headline5))
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline5))
                   ],
                 ),
                 Column(
@@ -629,7 +671,10 @@ class DetailDocInBottomSheet extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(formatDate(docModel!.endDate!),
-                            style: Theme.of(context).textTheme.headline5))
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline5))
                   ],
                 ),
                 Column(
@@ -640,7 +685,10 @@ class DetailDocInBottomSheet extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(docModel!.status!,
-                            style: Theme.of(context).textTheme.headline5))
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline5))
                   ],
                 ),
                 Column(
@@ -651,7 +699,10 @@ class DetailDocInBottomSheet extends StatelessWidget {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                         child: Text(docModel!.state!,
-                            style: Theme.of(context).textTheme.headline5))
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headline5))
                   ],
                 ),
               ],
@@ -675,9 +726,17 @@ class DetailDocInBottomSheet extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
-                      onPressed: () {
-                        Get.to(() =>
-                            DocumentnonapprovedDetail(id: docModel!.id!));
+                      onPressed: () async {
+                        var urlFile =
+                            "http://123.31.31.237:6002/api/documentin/download-document?id=${docModel!.id}";
+                        if (await canLaunchUrl(Uri.parse(urlFile))) {
+                          launchUrl(
+                            Uri.parse(urlFile),
+                            webViewConfiguration: const WebViewConfiguration(
+                                enableJavaScript: true, enableDomStorage: true),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
                       },
                       style: buttonFilterBlue,
                       child: const Text('Xem chi tiết')),
@@ -703,7 +762,7 @@ Widget signWidget(DocumentInListItems docModel) {
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         const Text(
           "Đã xử lý",
-          style: TextStyle(color: kGreenSign),
+          style: TextStyle(color: kGreenSign, fontSize: 12),
         )
       ],
     );
@@ -718,7 +777,7 @@ Widget signWidget(DocumentInListItems docModel) {
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         const Text(
           "Đang xử lý",
-          style: TextStyle(color: kOrangeSign),
+          style: TextStyle(color: kOrangeSign, fontSize: 12),
         )
       ],
     );
@@ -733,7 +792,7 @@ Widget signWidget(DocumentInListItems docModel) {
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         const Text(
           "Chưa xử lý",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontSize: 12),
         )
       ],
     );
@@ -769,25 +828,26 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                           fontSize: 16),
                     ),
                   ),
-                  Obx(() => (menuController.listPriorityStatus.containsKey(0))
+                  Obx(() =>
+                  (menuController.listPriorityStatus.containsKey(0))
                       ? InkWell(
-                          onTap: () {
-                            menuController.checkboxPriorityState(false, 0, "");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        menuController.checkboxPriorityState(false, 0, "");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            menuController.checkboxPriorityState(true, 0, "");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        menuController.checkboxPriorityState(true, 0, "");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -806,27 +866,28 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController.listPriorityStatus.containsKey(1))
+                  Obx(() =>
+                  (menuController.listPriorityStatus.containsKey(1))
                       ? InkWell(
-                          onTap: () {
-                            menuController.checkboxPriorityState(
-                                false, 1, "Cao;Trung bình;Thấp;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        menuController.checkboxPriorityState(
+                            false, 1, "Cao;Trung bình;Thấp;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            menuController.checkboxPriorityState(
-                                true, 1, "Cao;Trung bình;Thấp;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        menuController.checkboxPriorityState(
+                            true, 1, "Cao;Trung bình;Thấp;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -847,27 +908,28 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController.listPriorityStatus.containsKey(2))
+                  Obx(() =>
+                  (menuController.listPriorityStatus.containsKey(2))
                       ? InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxPriorityState(false, 2, "Cao;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        menuController
+                            .checkboxPriorityState(false, 2, "Cao;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxPriorityState(true, 2, "Cao;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        menuController
+                            .checkboxPriorityState(true, 2, "Cao;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -888,27 +950,28 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController.listPriorityStatus.containsKey(3))
+                  Obx(() =>
+                  (menuController.listPriorityStatus.containsKey(3))
                       ? InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxPriorityState(false, 3, "Trung bình;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        menuController
+                            .checkboxPriorityState(false, 3, "Trung bình;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxPriorityState(true, 3, "Trung bình;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        menuController
+                            .checkboxPriorityState(true, 3, "Trung bình;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -929,27 +992,28 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController.listPriorityStatus.containsKey(4))
+                  Obx(() =>
+                  (menuController.listPriorityStatus.containsKey(4))
                       ? InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxPriorityState(false, 4, "Thấp;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        menuController
+                            .checkboxPriorityState(false, 4, "Thấp;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxPriorityState(true, 4, "Thấp;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        menuController
+                            .checkboxPriorityState(true, 4, "Thấp;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -971,27 +1035,28 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController.listStateStatus.containsKey(0))
+                  Obx(() =>
+                  (menuController.listStateStatus.containsKey(0))
                       ? InkWell(
-                          onTap: () {
-                            menuController.checkboxStatusState(
-                                false, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        menuController.checkboxStatusState(
+                            false, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            menuController.checkboxStatusState(
-                                true, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        menuController.checkboxStatusState(
+                            true, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -1012,27 +1077,28 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController.listStateStatus.containsKey(1))
+                  Obx(() =>
+                  (menuController.listStateStatus.containsKey(1))
                       ? InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxStatusState(false, 1, "Chưa xử lý;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        menuController
+                            .checkboxStatusState(false, 1, "Chưa xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxStatusState(true, 1, "Chưa xử lý;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        menuController
+                            .checkboxStatusState(true, 1, "Chưa xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -1053,27 +1119,28 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController.listStateStatus.containsKey(2))
+                  Obx(() =>
+                  (menuController.listStateStatus.containsKey(2))
                       ? InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxStatusState(false, 2, "Đang xử lý;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        menuController
+                            .checkboxStatusState(false, 2, "Đang xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxStatusState(true, 2, "Đang xử lý;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        menuController
+                            .checkboxStatusState(true, 2, "Đang xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -1094,27 +1161,28 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController.listStateStatus.containsKey(3))
+                  Obx(() =>
+                  (menuController.listStateStatus.containsKey(3))
                       ? InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxStatusState(false, 3, "Đã xử lý;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
+                      onTap: () {
+                        menuController
+                            .checkboxStatusState(false, 3, "Đã xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
                       : InkWell(
-                          onTap: () {
-                            menuController
-                                .checkboxStatusState(true, 3, "Đã xử lý;");
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
+                      onTap: () {
+                        menuController
+                            .checkboxStatusState(true, 3, "Đã xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -1136,27 +1204,27 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Obx(() =>
-                      (menuController.listDepartmentStatus.containsKey(0))
-                          ? InkWell(
-                              onTap: () {
-                                menuController.checkboxDepartmentState(
-                                    false, 0, "Bộ;Sở;");
-                              },
-                              child: Image.asset(
-                                'assets/icons/ic_checkbox_active.png',
-                                width: 30,
-                                height: 30,
-                              ))
-                          : InkWell(
-                              onTap: () {
-                                menuController.checkboxDepartmentState(
-                                    true, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
-                              },
-                              child: Image.asset(
-                                'assets/icons/ic_checkbox_unactive.png',
-                                width: 30,
-                                height: 30,
-                              )))
+                  (menuController.listDepartmentStatus.containsKey(0))
+                      ? InkWell(
+                      onTap: () {
+                        menuController.checkboxDepartmentState(
+                            false, 0, "Bộ;Sở;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController.checkboxDepartmentState(
+                            true, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -1178,27 +1246,27 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Obx(() =>
-                      (menuController.listDepartmentStatus.containsKey(1))
-                          ? InkWell(
-                              onTap: () {
-                                menuController
-                                    .checkboxDepartmentState(false, 1, "Bộ;");
-                              },
-                              child: Image.asset(
-                                'assets/icons/ic_checkbox_active.png',
-                                width: 30,
-                                height: 30,
-                              ))
-                          : InkWell(
-                              onTap: () {
-                                menuController
-                                    .checkboxDepartmentState(true, 1, "Bộ;");
-                              },
-                              child: Image.asset(
-                                'assets/icons/ic_checkbox_unactive.png',
-                                width: 30,
-                                height: 30,
-                              )))
+                  (menuController.listDepartmentStatus.containsKey(1))
+                      ? InkWell(
+                      onTap: () {
+                        menuController
+                            .checkboxDepartmentState(false, 1, "Bộ;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController
+                            .checkboxDepartmentState(true, 1, "Bộ;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),
@@ -1220,27 +1288,27 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Obx(() =>
-                      (menuController.listDepartmentStatus.containsKey(2))
-                          ? InkWell(
-                              onTap: () {
-                                menuController
-                                    .checkboxDepartmentState(false, 2, "Sở;");
-                              },
-                              child: Image.asset(
-                                'assets/icons/ic_checkbox_active.png',
-                                width: 30,
-                                height: 30,
-                              ))
-                          : InkWell(
-                              onTap: () {
-                                menuController
-                                    .checkboxDepartmentState(true, 2, "Sở;");
-                              },
-                              child: Image.asset(
-                                'assets/icons/ic_checkbox_unactive.png',
-                                width: 30,
-                                height: 30,
-                              )))
+                  (menuController.listDepartmentStatus.containsKey(2))
+                      ? InkWell(
+                      onTap: () {
+                        menuController
+                            .checkboxDepartmentState(false, 2, "Sở;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      ))
+                      : InkWell(
+                      onTap: () {
+                        menuController
+                            .checkboxDepartmentState(true, 2, "Sở;");
+                      },
+                      child: Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )))
                 ],
               ),
             ),

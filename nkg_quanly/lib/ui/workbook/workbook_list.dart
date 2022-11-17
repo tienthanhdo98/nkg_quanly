@@ -105,10 +105,18 @@ class WorkBookList extends GetView {
                 controller: workBookViewModel.controller,
                   itemCount: workBookViewModel.rxWorkBookListItems.length,
                   itemBuilder: (context, index) {
-                    return WorkBookItem(
-                        index,
-                        workBookViewModel.rxWorkBookListItems[index],
-                        workBookViewModel);
+                  var item = workBookViewModel.rxWorkBookListItems[index];
+                    return InkWell(
+                      onTap: () {
+                        Get.to(() => WorkBookDetail(
+                          id: item.id!,
+                        ));
+                      },
+                      child: WorkBookItem(
+                          index,
+                          item,
+                          workBookViewModel),
+                    );
                   }) : loadingIcon())),
         ],
       )),

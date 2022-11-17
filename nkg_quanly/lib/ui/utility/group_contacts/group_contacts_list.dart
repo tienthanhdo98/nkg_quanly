@@ -103,11 +103,33 @@ class GroupContactsList extends GetView {
                   itemCount:
                       contactOrganizationViewModel.rxContactListItems.length,
                   itemBuilder: (context, index) {
-                    return GroupContactsItem(
-                        index,
-                        contactOrganizationViewModel
-                            .rxContactListItems[index],
-                        contactOrganizationViewModel);
+                    var item = contactOrganizationViewModel
+                        .rxContactListItems[index];
+                    return InkWell(
+                      onTap: () {
+
+                        showModalBottomSheet<void>(
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                          ),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SizedBox(
+                                height: 400,
+                                child: DetailOrganContactBottomSheet(
+                                    item, contactOrganizationViewModel));
+                          },
+                        );
+                      },
+                      child: GroupContactsItem(
+                          index,
+                          item,
+                          contactOrganizationViewModel),
+                    );
                   }): loadingIcon())),
         ],
       )),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:nkg_quanly/model/proflie_model/profile_model.dart';
 import 'package:nkg_quanly/ui/profile/e_office/profile_filter_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_viewmodel.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
@@ -82,7 +83,7 @@ class ProfileEOfficeList extends GetView {
                           },
                           child: const Text(
                             'Bộ lọc',
-                            style: TextStyle(color: kVioletButton),
+                            style: TextStyle(color: kVioletButton,fontSize: 14),
                           ),
                         ))
                   ],
@@ -254,7 +255,7 @@ class ProfileEOfficeList extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: 300,
+                                      height: 340,
                                       child: DetailProfileBottomSheet(
                                           index,
                                           profileViewModel
@@ -323,7 +324,8 @@ class ProfileEOfficeList extends GetView {
 }
 
 class ProfileListItem extends StatelessWidget {
-  ProfileListItem(this.index, this.docModel);
+  const ProfileListItem(this.index, this.docModel, {Key? key})
+      : super(key: key);
 
   final int? index;
   final ProfileItems? docModel;
@@ -339,7 +341,7 @@ class ProfileListItem extends StatelessWidget {
               Expanded(
                 child: Text(
                   "${index! + 1}. ${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline2,
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               ),
               Align(
@@ -348,15 +350,15 @@ class ProfileListItem extends StatelessWidget {
             ],
           ),
           Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+              padding: const EdgeInsets.only(bottom: 5),
               child: textCodeStyle(docModel!.code!)),
           signWidget(docModel!),
           SizedBox(
-            height: 70,
+            height: 60,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              padding: const EdgeInsets.only(top: 10),
               crossAxisSpacing: 10,
               mainAxisSpacing: 0,
               crossAxisCount: 3,
@@ -365,24 +367,32 @@ class ProfileListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('Người xử lý',
-                        style: CustomTextStyle.secondTextStyle),
-                    Text(docModel!.handler!)
+                        style: CustomTextStyle.grayColorTextStyle),
+                    const Padding(padding: EdgeInsets.only(top: 5)),
+                    Text(
+                      docModel!.handler!,
+                      style: Theme.of(context).textTheme.headline5,
+                    )
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('Thời hạn',
-                        style: CustomTextStyle.secondTextStyle),
-                    Text(formatDate(docModel!.deadline!))
+                        style: CustomTextStyle.grayColorTextStyle),
+                    const Padding(padding: EdgeInsets.only(top: 5)),
+                    Text(formatDate(docModel!.deadline!),
+                        style: Theme.of(context).textTheme.headline5)
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('Ngày xử lý',
-                        style: CustomTextStyle.secondTextStyle),
-                    Text(formatDate(docModel!.dateProcess!))
+                        style: CustomTextStyle.grayColorTextStyle),
+                    const Padding(padding: EdgeInsets.only(top: 5)),
+                    Text(formatDate(docModel!.dateProcess!),
+                        style: Theme.of(context).textTheme.headline5)
                   ],
                 ),
               ],
@@ -413,7 +423,7 @@ class DetailProfileBottomSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Tất cả hồ sơ trình',
+            'Thông tin hồ sơ trình',
             style: TextStyle(
                 color: kBlueButton,
                 fontWeight: FontWeight.w500,
@@ -438,9 +448,12 @@ class DetailProfileBottomSheet extends StatelessWidget {
                   child: priorityWidget(docModel!)),
             ],
           ),
+          Padding(
+              padding: const EdgeInsets.only(bottom: 5,top: 5),
+              child: textCodeStyle(docModel!.code!)),
           signWidget(docModel!),
           SizedBox(
-            height: 100,
+            height: 120,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
@@ -448,46 +461,16 @@ class DetailProfileBottomSheet extends StatelessWidget {
               childAspectRatio: 3.5 / 2,
               crossAxisCount: 3,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Đơn vị soạn thảo',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Text(docModel!.unitEditor!, style: Theme.of(context).textTheme.headline5)
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày khởi tạo',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Text(formatDate(docModel!.innitiatedDate!), style: Theme.of(context).textTheme.headline5)
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Người xử lý',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Text(formatDate(docModel!.dateProcess!), style: Theme.of(context).textTheme.headline5)
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thời hạn',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Text(formatDate(docModel!.deadline!), style: Theme.of(context).textTheme.headline5)
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày xử lý',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Text(formatDate(docModel!.dateProcess!), style: Theme.of(context).textTheme.headline5)
-                  ],
-                ),
+                sheetDetailBottemItem(
+                    'Đơn vị soạn thảo', docModel!.unitEditor!, context),
+                sheetDetailBottemItem('Ngày khởi tạo',
+                    formatDate(docModel!.innitiatedDate!), context),
+                sheetDetailBottemItem(
+                    'Người xử lý', formatDate(docModel!.dateProcess!), context),
+                sheetDetailBottemItem(
+                    'Thời hạn', formatDate(docModel!.deadline!), context),
+                sheetDetailBottemItem(
+                    'Ngày xử lý', formatDate(docModel!.dateProcess!), context),
               ],
             ),
           ),
@@ -533,6 +516,8 @@ class DetailProfileBottomSheet extends StatelessWidget {
   }
 }
 
+
+
 Widget signWidget(ProfileItems docModel) {
   if (docModel.state == "Đã duyệt") {
     return Row(
@@ -545,7 +530,7 @@ Widget signWidget(ProfileItems docModel) {
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         Text(
           docModel.state!,
-          style: const TextStyle(color: kGreenSign,fontSize: 12),
+          style: const TextStyle(color: kGreenSign, fontSize: 12),
         )
       ],
     );
@@ -558,7 +543,8 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: kOrangeSign,fontSize: 12))
+        Text(docModel.state!,
+            style: const TextStyle(color: kOrangeSign, fontSize: 12))
       ],
     );
   } else if (docModel.state == "Đã thu hồi") {
@@ -570,7 +556,8 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: kRedPriority,fontSize: 12))
+        Text(docModel.state!,
+            style: const TextStyle(color: kRedPriority, fontSize: 12))
       ],
     );
   } else if (docModel.state == "Đã tiếp nhận") {
@@ -582,7 +569,8 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: Colors.black,fontSize: 12))
+        Text(docModel.state!,
+            style: const TextStyle(color: Colors.black, fontSize: 12))
       ],
     );
   } else {
@@ -594,7 +582,8 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: Colors.black,fontSize: 12))
+        Text(docModel.state!,
+            style: const TextStyle(color: Colors.black, fontSize: 12))
       ],
     );
   }
