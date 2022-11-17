@@ -70,6 +70,7 @@ class CustomTextStyle {
       fontSize: 12,
       fontFamily: 'Roboto',
       fontWeight: FontWeight.w700);
+
 }
 
 final kUnActiveButtonStyle =

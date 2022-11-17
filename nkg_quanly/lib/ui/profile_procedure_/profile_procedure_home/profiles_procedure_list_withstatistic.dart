@@ -524,7 +524,7 @@ class DetailProfileProcBottomSheet extends StatelessWidget {
                 infoDetailWidget('Tên cơ quan',docModel!.tenCoquan!,context),
                 infoDetailWidget('Hạn xử lý',formatDate(docModel!.ngayHenTraKetQua!),context),
                 infoDetailWidget('Tình trạng hồ sơ',docModel!.tinhTrangHoSo!,context),
-                infoDetailWidget('Lĩnh vực',"docModel!.tenLinhVuc!docModel!.tenLinhVuc!docModel!.tenLinhVuc!",context),
+                infoDetailWidget('Lĩnh vực',docModel!.tenLinhVuc!,context),
                 infoDetailWidget('Hình thức tiếp nhận',docModel!.receptionForm!,context),
                 infoDetailWidget('Loại hồ sơ',docModel!.receptionForm!,context),
               ],
@@ -539,7 +539,8 @@ class DetailProfileProcBottomSheet extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     child: ElevatedButton(
                         onPressed: () {
-                          Get.back();
+                          //Get.back();
+                          Get.toNamed('/HomeScreen');
                         },
                         style: buttonFilterWhite,
                         child: const Text('Đóng')),

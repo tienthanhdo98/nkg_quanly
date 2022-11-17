@@ -164,7 +164,7 @@ class DocumentUnprocessList extends GetView {
 }
 
 class DocumentNonProcessListItem extends StatelessWidget {
-  DocumentNonProcessListItem(this.index, this.docModel);
+  const DocumentNonProcessListItem(this.index, this.docModel, {Key? key}) : super(key: key);
 
   final int? index;
   final DocumentInListItems? docModel;

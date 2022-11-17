@@ -93,6 +93,7 @@ class MyApp extends StatelessWidget {
               '/GroupContactsList': (context) => GroupContactsList(),
               '/IndividualContactsList': (context) => IndividualContactsList(),
               '/GroupWorkBookList': (context) => GroupWorkBookList(),
+              '/HomeScreen': (context) => HomeScreen(),
 
 
             },

@@ -19,7 +19,6 @@ class PmisViewModel extends GetxController {
     getPmisPieChartByUnit();
     getPmisPieChart("");
     getUnitPmis();
-
     super.onInit();
   }
 

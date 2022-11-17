@@ -374,7 +374,7 @@ class DocumentInEOfficeList extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: 340,
+                                      height: 350,
                                       child: DetailDocInBottomSheet(
                                           index,
                                           documentUnprocessViewModel
@@ -658,34 +658,32 @@ class DetailDocInBottomSheet extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          Align(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.to(() =>
-                              DocumentnonapprovedDetail(id: docModel!.id!));
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Xem chi tiết')),
-                  ),
-                )
-              ],
-            ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(() =>
+                            DocumentnonapprovedDetail(id: docModel!.id!));
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Xem chi tiết')),
+                ),
+              )
+            ],
           )
         ],
       ),

@@ -8,12 +8,8 @@ import '../../theme/theme_data.dart';
 import '../profile_viewmodel.dart';
 
 class ProfileFilterScreen extends GetView {
-  ProfileFilterScreen(this.profileViewModel, {Key? key}) : super(key: key);
+  const ProfileFilterScreen(this.profileViewModel, {Key? key}) : super(key: key);
   final ProfileViewModel? profileViewModel;
-  String? department;
-
-  String? level;
-  String? status;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +105,7 @@ class ProfileFilterScreen extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: 350,
+                                    height: 300,
                                     child: FilterSubmitTypeBottomSheet(
                                         profileViewModel));
                               },
@@ -138,7 +134,7 @@ class ProfileFilterScreen extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: 400,
+                                    height: 500,
                                     child: FilterStateBottomSheet(
                                         profileViewModel));
                               },
@@ -221,62 +217,59 @@ class FilterStateBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tat ca trang thai
-            FilterAllItem(
-                "Tất cả trạng thái", 1, profileViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: listProfileState.length,
-                  itemBuilder: (context, index) {
-                    var item = listProfileState[index];
-                    return FilterItem(
-                        item, item, index, profileViewModel!.mapState);
-                  }),
-            ),
-            //bottom button
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        child: Column(children: [
+          //tat ca trang thai
+          FilterAllItem(
+              "Tất cả trạng thái", 1, profileViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            height: 330,
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: listProfileState.length,
+                itemBuilder: (context, index) {
+                  var item = listProfileState[index];
+                  return FilterItem(
+                      item, item, index, profileViewModel!.mapState);
+                }),
+          ),
+          //bottom button
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }
@@ -291,61 +284,57 @@ class FilterUnitBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tat ca don vi
-            FilterAllItem("Tất cả đơn vị", 2, profileViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: profileViewModel!.rxListUnitEditor.length,
-                  itemBuilder: (context, index) {
-                    var item = profileViewModel!.rxListUnitEditor[index];
-                    return FilterItem(item, item, index,
-                        profileViewModel!.mapUnitEditorFilter);
-                  }),
-            ),
-            //bottom button
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        child: Column(children: [
+          //tat ca don vi
+          FilterAllItem("Tất cả đơn vị", 2, profileViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: profileViewModel!.rxListUnitEditor.length,
+                itemBuilder: (context, index) {
+                  var item = profileViewModel!.rxListUnitEditor[index];
+                  return FilterItem(item, item, index,
+                      profileViewModel!.mapUnitEditorFilter);
+                }),
+          ),
+          //bottom button
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }
@@ -360,61 +349,58 @@ class FilterSubmitProblemBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tat ca van de trinh
-            FilterAllItem(
-                "Tất cả trạng thái", 3, profileViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: profileViewModel!.rxListSubmissProblem.length,
-                  itemBuilder: (context, index) {
-                    var item = profileViewModel!.rxListSubmissProblem[index];
-                    return FilterItem(
-                        item, item, index, profileViewModel!.mapSubmissProblem);
-                  }),
-            ),
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        child: Column(children: [
+          //tat ca van de trinh
+          FilterAllItem(
+              "Tất cả trạng thái", 3, profileViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: profileViewModel!.rxListSubmissProblem.length,
+                itemBuilder: (context, index) {
+                  var item = profileViewModel!.rxListSubmissProblem[index];
+                  return FilterItem(
+                      item, item, index, profileViewModel!.mapSubmissProblem);
+                }),
+          ),
+          //bottom button
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }
@@ -429,62 +415,59 @@ class FilterSubmitTypeBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tat ca loai phieu
-            FilterAllItem(
-                "Tất cả loại phiếu trình", 4, profileViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            //list van de trinh
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: profileViewModel!.rxListTypeSubmission.length,
-                  itemBuilder: (context, index) {
-                    var item = profileViewModel!.rxListTypeSubmission[index];
-                    return FilterItem(
-                        item, item, index, profileViewModel!.mapTypeSubmission);
-                  }),
-            ),
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        child: Column(children: [
+          //tat ca loai phieu
+          FilterAllItem(
+              "Tất cả loại phiếu trình", 4, profileViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          //list van de trinh
+          SizedBox(
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: profileViewModel!.rxListTypeSubmission.length,
+                itemBuilder: (context, index) {
+                  var item = profileViewModel!.rxListTypeSubmission[index];
+                  return FilterItem(
+                      item, item, index, profileViewModel!.mapTypeSubmission);
+                }),
+          ),
+          //bottom button
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }

@@ -16,7 +16,6 @@ class PMisScreen extends GetView {
 
   PMisScreen({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -325,8 +324,6 @@ class FilterPmisUnitBottomSheet extends StatelessWidget {
                             listUnitId += value;
                           });
                         }
-
-                        print(listUnitId);
                         pmisViewModel!.getStatisticTotal(listUnitId);
                         pmisViewModel!.getPmisPieChart(listUnitId);
                       },

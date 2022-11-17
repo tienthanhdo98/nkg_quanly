@@ -2,23 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:nkg_quanly/model/proflie_model/profile_model.dart';
 import 'package:nkg_quanly/ui/profile/e_office/profile_filter_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_viewmodel.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
 import '../../../const/widget.dart';
-import '../../mission/profile_detail.dart';
 import '../../theme/theme_data.dart';
 import '../profile_search.dart';
 
 class ProfileEOfficeList extends GetView {
-
-
   final profileViewModel = Get.put(ProfileViewModel());
 
   ProfileEOfficeList({Key? key}) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +23,7 @@ class ProfileEOfficeList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-             "Hồ sơ trình",
-              ProfileSearch(
-                  profileViewModel
-              ),
-              context),
+              "Hồ sơ trình", ProfileSearch(profileViewModel), context),
           //date table
           headerTableDatePicker(context, profileViewModel),
           //list
@@ -263,7 +254,7 @@ class ProfileEOfficeList extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: 320,
+                                      height: 300,
                                       child: DetailProfileBottomSheet(
                                           index,
                                           profileViewModel
@@ -417,7 +408,7 @@ class DetailProfileBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -433,13 +424,13 @@ class DetailProfileBottomSheet extends StatelessWidget {
             thickness: 1,
             color: kBlueButton,
           ),
-          const Padding(padding: const EdgeInsets.fromLTRB(0, 10, 0, 0)),
+          const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
           Row(
             children: [
               Expanded(
                 child: Text(
                   "${index! + 1}. ${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline2,
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               ),
               Align(
@@ -449,70 +440,92 @@ class DetailProfileBottomSheet extends StatelessWidget {
           ),
           signWidget(docModel!),
           SizedBox(
-            height: 70,
+            height: 100,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 0,
+              childAspectRatio: 3.5 / 2,
               crossAxisCount: 3,
               children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text('Đơn vị soạn thảo',
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Text(docModel!.unitEditor!, style: Theme.of(context).textTheme.headline5)
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Ngày khởi tạo',
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Text(formatDate(docModel!.innitiatedDate!), style: Theme.of(context).textTheme.headline5)
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     const Text('Người xử lý',
-                        style: CustomTextStyle.secondTextStyle),
-                    Text(docModel!.handler!)
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Text(formatDate(docModel!.dateProcess!), style: Theme.of(context).textTheme.headline5)
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('Thời hạn',
-                        style: CustomTextStyle.secondTextStyle),
-                    Text(formatDate(docModel!.deadline!))
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Text(formatDate(docModel!.deadline!), style: Theme.of(context).textTheme.headline5)
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('Ngày xử lý',
-                        style: CustomTextStyle.secondTextStyle),
-                    Text(formatDate(docModel!.dateProcess!))
+                        style: CustomTextStyle.grayColorTextStyle),
+                    Text(formatDate(docModel!.dateProcess!), style: Theme.of(context).textTheme.headline5)
                   ],
                 ),
               ],
             ),
           ),
           const Spacer(),
-          Align(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.to(() => ProfileDetail(id: 1));
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Xem chi tiết')),
-                  ),
-                )
-              ],
-            ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        var urlFile =
+                            "http://123.31.31.237:6002/api/profiles/download-profile?id=${docModel!.id}";
+                        if (await canLaunchUrl(Uri.parse(urlFile))) {
+                          launchUrl(
+                            Uri.parse(urlFile),
+                            webViewConfiguration: const WebViewConfiguration(
+                                enableJavaScript: true, enableDomStorage: true),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Xem chi tiết')),
+                ),
+              )
+            ],
           )
         ],
       ),
@@ -532,7 +545,7 @@ Widget signWidget(ProfileItems docModel) {
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         Text(
           docModel.state!,
-          style: const TextStyle(color: kGreenSign),
+          style: const TextStyle(color: kGreenSign,fontSize: 12),
         )
       ],
     );
@@ -545,7 +558,7 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: kOrangeSign))
+        Text(docModel.state!, style: const TextStyle(color: kOrangeSign,fontSize: 12))
       ],
     );
   } else if (docModel.state == "Đã thu hồi") {
@@ -557,7 +570,7 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: kRedPriority))
+        Text(docModel.state!, style: const TextStyle(color: kRedPriority,fontSize: 12))
       ],
     );
   } else if (docModel.state == "Đã tiếp nhận") {
@@ -569,7 +582,7 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: Colors.black))
+        Text(docModel.state!, style: const TextStyle(color: Colors.black,fontSize: 12))
       ],
     );
   } else {
@@ -581,7 +594,7 @@ Widget signWidget(ProfileItems docModel) {
           width: 14,
         ),
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: Colors.black))
+        Text(docModel.state!, style: const TextStyle(color: Colors.black,fontSize: 12))
       ],
     );
   }

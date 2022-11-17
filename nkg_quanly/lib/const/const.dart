@@ -42,6 +42,7 @@ const kLightBlueNotification= Color(0xffccdcfa);
 
 //chart
 const kBlueLineChart2 = Color(0xFF61a9f3);
+const kBlackText = Color(0xFF494949);
 
 //Dark Mode
 const kDBackGround = Color(0xFF1b1c30);
