@@ -315,15 +315,10 @@ class ReportContinuingEducationScreen extends GetView {
                             var item = analysisReportViewModel
                                 .rxListChartAnalysis[index];
                             return checkNameToShowContinuingeducationChart(
-                                item, context);
+                                item, analysisReportViewModel,context);
                           }))
                     ],
-                  ) : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [Padding(
-                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Center(child: CircularProgressIndicator()),
-                    )],)),
+                  ) : loadingWidget(context)),
                 ),
               ),
             ),
@@ -354,7 +349,7 @@ Widget countReport(
                   ),
                   Padding(
                       padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                      child: Text(checkingStringNull(item![0].value), style: textBlueCountTotalStyle))
+                      child: Text(checkingStringNull(item[0].value), style: textBlueCountTotalStyle))
                 ],
               ),
             ),
@@ -472,7 +467,7 @@ var listReportGDTX = [
 ];
 
 Widget checkNameToShowContinuingeducationChart(
-    AnalysisChartModel items, BuildContext context) {
+    AnalysisChartModel items,AnalysisReportViewModel analysisReportViewModel, BuildContext context) {
   Widget? chartWidget = const SizedBox();
   String? chartName = "";
 
@@ -636,7 +631,54 @@ Widget checkNameToShowContinuingeducationChart(
                 ),
                 const Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    var curIndex = analysisReportViewModel.rxTypeScreen.value;
+                    if(curIndex ==  0) {
+                      analysisReportViewModel
+                          .getListContinuingEducation(
+                          "1",
+                          analysisReportViewModel
+                              .rxSelectedSemesterId.value,
+                          analysisReportViewModel
+                              .rxSelectedRegionID.value,
+                          analysisReportViewModel
+                              .rxSelectedProvinceId.value,
+                          analysisReportViewModel
+                              .rxSelectedSchoolYearID.value,
+                          listReportGDTX[0]);
+                    }
+                    else if(curIndex == 1)
+                    {
+                      analysisReportViewModel
+                          .getListContinuingEducation(
+                          "1",
+                          analysisReportViewModel
+                              .rxSelectedSemesterId.value,
+                          analysisReportViewModel
+                              .rxSelectedRegionID.value,
+                          analysisReportViewModel
+                              .rxSelectedProvinceId.value,
+                          analysisReportViewModel
+                              .rxSelectedSchoolYearID.value,
+                          listReportGDTX[1]);
+                    }
+                    else {
+                      analysisReportViewModel
+                          .getListContinuingEducation(
+                          "2",
+                          analysisReportViewModel
+                              .rxSelectedSemesterId.value,
+                          analysisReportViewModel
+                              .rxSelectedRegionID.value,
+                          analysisReportViewModel
+                              .rxSelectedProvinceId.value,
+                          analysisReportViewModel
+                              .rxSelectedSchoolYearID.value,
+                          listReportGDTX[2]);
+                    }
+                    analysisReportViewModel
+                        .changeStateLoadingData(true);
+                  },
                   child: Image.asset("assets/icons/ic_refresh.png",
                       width: 16, height: 16),
                 )

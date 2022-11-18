@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profiles_procedure_list_withstatistic.dart';
+import 'package:nkg_quanly/ui/profile_procedure_/profiles_procedure_list.dart';
 
 import '../../const/const.dart';
+import '../../const/widget.dart';
 import '../document_out/search_controller.dart';
 
 class ProfileProcSearch extends GetView {
@@ -77,29 +79,50 @@ class ProfileProcSearch extends GetView {
                 ),
               ),
             ),
-            // Expanded(
-            //   child: Container(
-            //
-            //     height: double.infinity,
-            //     child: Padding(
-            //       padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
-            //       child: SizedBox(
-            //         height: 200,
-            //         child: Obx(() => ListView.builder(
-            //             itemCount: searchController.listDataProfileProc.length,
-            //             itemBuilder: (context, index) {
-            //               return InkWell(
-            //                   onTap: () {
-            //                     Get.to(() => ProfileProcDetail(
-            //                         id: 1));
-            //                   },
-            //                   child:
-            //                   ProfileProcItem(index, searchController.listDataProfileProc[index]));
-            //             })),
-            //       ),
-            //     ),
-            //   ),
-            // )
+            Expanded(
+              child: SizedBox(
+                height: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  child: SizedBox(
+                    height: 200,
+                    child:
+                    Obx(() => (searchController.isLoading.value == false)
+                        ? ListView.builder(
+                        controller: searchController.controller,
+                        itemCount: searchController.listDataProfileProc.length,
+                        itemBuilder: (context, index) {
+                          var item = searchController.listDataProfileProc[index];
+                          return  InkWell(
+                              onTap: () {
+                                showModalBottomSheet<void>(
+                                  isScrollControlled: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20),
+                                    ),
+                                  ),
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    var item = searchController.listDataProfileProc[index];
+                                    return SizedBox(
+                                        height: 340,
+                                        child: DetailProfileProcBottomSheet(
+                                            index,
+                                            item));
+                                  },
+                                );
+                              },
+                              child: ProfileProcItem(
+                                  index,
+                                  item));
+                        })
+                        : loadingIcon()),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

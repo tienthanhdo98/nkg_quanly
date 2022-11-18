@@ -125,7 +125,7 @@ class ProfileSearch  extends GetView {
                                 },
                                 child: ProfileListItem(
                                     index, item));
-                          }): loadingIcon()),
+                          }): loadingWidget(context)),
                     ),
                   ),
                 ),

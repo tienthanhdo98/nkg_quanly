@@ -72,7 +72,7 @@ class UpdateGroupWorkBookScreen extends GetView {
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: Text(
-                          "Tên cán bộ:",
+                          "Tên nhóm công việc:",
                           style: CustomTextStyle.grayColorTextStyle,
                         ),
                       ),

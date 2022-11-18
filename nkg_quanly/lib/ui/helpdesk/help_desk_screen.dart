@@ -203,7 +203,9 @@ class HelpDeskScreen extends GetView {
                         ),
                       )
                     ])
-                    : Center(child: loadingIcon()),
+                    : SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(child: loadingIcon())),
               )),
             ),
           ],

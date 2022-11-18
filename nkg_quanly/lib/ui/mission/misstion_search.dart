@@ -93,14 +93,29 @@ class MissionSearch extends GetView {
                         controller: searchController.controller,
                         itemCount: searchController.listDataMission.length,
                         itemBuilder: (context, index) {
+                          var item = searchController.listDataMission[index];
                           return InkWell(
                               onTap: () {
-                                Get.to(() => MissionDetail(
-                                    id: int.parse(searchController
-                                        .listDataMission[index].id!)));
+                                showModalBottomSheet<void>(
+                                  isScrollControlled: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20),
+                                    ),
+                                  ),
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SizedBox(
+                                        height: 340,
+                                        child: DetailMissionBottomSheet(
+                                            index,
+                                            item));
+                                  },
+                                );
                               },
-                              child: MissionListItem(index,
-                                  searchController.listDataMission[index]));
+                              child: MissionListItem(
+                                  index,item));
                         }) : loadingIcon()),
                   ),
                 ),

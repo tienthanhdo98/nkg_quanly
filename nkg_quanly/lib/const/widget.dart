@@ -354,30 +354,53 @@ Widget border(Widget widget, BuildContext context) {
           ]),
       child: widget);
 }
-Widget infoDetailWidget(String title,String value,BuildContext context)
-{
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(
-        height: 25,
-        child: Text(title,
-            style: CustomTextStyle.grayColorTextStyle),
-      ),
-      Padding(
-          padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-          child: Text(value,
-              style: Theme.of(context).textTheme.headline5,maxLines: 2,overflow: TextOverflow.ellipsis,))
-    ],
-  );
-}
+
 Widget sheetDetailBottemItem(String title, String value, BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(title, style: CustomTextStyle.grayColorTextStyle),
       const Padding(padding: EdgeInsets.only(top: 5)),
-      Text(value, style: Theme.of(context).textTheme.headline5)
+      Text(value, style: Theme.of(context).textTheme.headline5,maxLines: 2,)
     ],
   );
 }
+Widget sheetButtonDetailButtonClose() {
+  return  Expanded(
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: ElevatedButton(
+          onPressed: () {
+            Get.back();
+          },
+          style: buttonFilterWhite,
+          child: const Text('Đóng')),
+    ),
+  );
+}
+Widget sheetButtonDetailButtonOk(VoidCallback voidCallBack) {
+  return Expanded(
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: ElevatedButton(
+          onPressed: voidCallBack,
+          style: buttonFilterBlue,
+          child: const Text('Xem chi tiết')),
+    ),
+  );
+}
+
+Widget sheetButtonDetailTitleItem(int index,String title,BuildContext context) {
+  return  Text(
+    "${index + 1}. $title",
+    style: Theme.of(context).textTheme.headline3,maxLines: 3,overflow: TextOverflow.ellipsis,
+  );
+}
+Widget loadingWidget(BuildContext context)
+{
+  return  SizedBox(
+      height: MediaQuery.of(context).size.height*0.4,
+      child: Center(child: loadingIcon()));
+}
+
+

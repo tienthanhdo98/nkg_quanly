@@ -3,7 +3,6 @@ import 'package:nkg_quanly/model/proflie_model/profile_model.dart';
 import 'package:nkg_quanly/ui/profile/e_office/profile_filter_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_viewmodel.dart';
 
-
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
@@ -83,7 +82,8 @@ class ProfileEOfficeList extends GetView {
                           },
                           child: const Text(
                             'Bộ lọc',
-                            style: TextStyle(color: kVioletButton,fontSize: 14),
+                            style:
+                                TextStyle(color: kVioletButton, fontSize: 14),
                           ),
                         ))
                   ],
@@ -255,7 +255,7 @@ class ProfileEOfficeList extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: 340,
+                                      height: 350,
                                       child: DetailProfileBottomSheet(
                                           index,
                                           profileViewModel
@@ -418,7 +418,7 @@ class DetailProfileBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -438,22 +438,20 @@ class DetailProfileBottomSheet extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  "${index! + 1}. ${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
+                child: sheetButtonDetailTitleItem(index!,docModel!.name!,context),
               ),
+              const Padding(padding: EdgeInsets.only(right: 5)),
               Align(
                   alignment: Alignment.centerRight,
                   child: priorityWidget(docModel!)),
             ],
           ),
           Padding(
-              padding: const EdgeInsets.only(bottom: 5,top: 5),
+              padding: const EdgeInsets.only(bottom: 5, top: 5),
               child: textCodeStyle(docModel!.code!)),
           signWidget(docModel!),
           SizedBox(
-            height: 120,
+            height: 110,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
@@ -466,9 +464,9 @@ class DetailProfileBottomSheet extends StatelessWidget {
                 sheetDetailBottemItem('Ngày khởi tạo',
                     formatDate(docModel!.innitiatedDate!), context),
                 sheetDetailBottemItem(
-                    'Người xử lý', formatDate(docModel!.dateProcess!), context),
-                sheetDetailBottemItem(
                     'Thời hạn', formatDate(docModel!.deadline!), context),
+                sheetDetailBottemItem(
+                    'Người xử lý', docModel!.handler!, context),
                 sheetDetailBottemItem(
                     'Ngày xử lý', formatDate(docModel!.dateProcess!), context),
               ],
@@ -477,37 +475,19 @@ class DetailProfileBottomSheet extends StatelessWidget {
           const Spacer(),
           Row(
             children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      style: buttonFilterWhite,
-                      child: const Text('Đóng')),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        var urlFile =
-                            "http://123.31.31.237:6002/api/profiles/download-profile?id=${docModel!.id}";
-                        if (await canLaunchUrl(Uri.parse(urlFile))) {
-                          launchUrl(
-                            Uri.parse(urlFile),
-                            webViewConfiguration: const WebViewConfiguration(
-                                enableJavaScript: true, enableDomStorage: true),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        }
-                      },
-                      style: buttonFilterBlue,
-                      child: const Text('Xem chi tiết')),
-                ),
-              )
+              sheetButtonDetailButtonClose(),
+              sheetButtonDetailButtonOk(() async {
+                var urlFile =
+                    "http://123.31.31.237:6002/api/profiles/download-profile?id=${docModel!.id}";
+                if (await canLaunchUrl(Uri.parse(urlFile))) {
+                  launchUrl(
+                    Uri.parse(urlFile),
+                    webViewConfiguration: const WebViewConfiguration(
+                        enableJavaScript: true, enableDomStorage: true),
+                    mode: LaunchMode.externalApplication,
+                  );
+                }
+              })
             ],
           )
         ],
@@ -515,8 +495,6 @@ class DetailProfileBottomSheet extends StatelessWidget {
     );
   }
 }
-
-
 
 Widget signWidget(ProfileItems docModel) {
   if (docModel.state == "Đã duyệt") {

@@ -389,7 +389,7 @@ class ProfilesProcedureListWithStatistic extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: 400,
+                                      height: 360,
                                       child: DetailProfileProcBottomSheet(
                                           index,
                                           profilesProcedureViewModel
@@ -484,7 +484,7 @@ class DetailProfileProcBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 30, 25, 25),
+      padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -501,32 +501,27 @@ class DetailProfileProcBottomSheet extends StatelessWidget {
             color: kBlueButton,
           ),
           const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-          Text(
-            "${index! + 1}. ${docModel!.tenThuTucHanhChinh!}",
-            style: Theme.of(context).textTheme.headline5,
-          ),
+          sheetButtonDetailTitleItem(index!,docModel!.tenThuTucHanhChinh!,context),
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
               child: textCodeStyle(docModel!.maSoBienNhan!)),
           signProfileProcWidget(docModel!),
           SizedBox(
-            height: 150,
+            height: 120,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
-
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 3/2,
+              childAspectRatio: 3.5 / 2,
+
               crossAxisCount: 3,
               children: <Widget>[
-                infoDetailWidget('Tên cơ quan',docModel!.tenCoquan!,context),
-                infoDetailWidget('Hạn xử lý',formatDate(docModel!.ngayHenTraKetQua!),context),
-                infoDetailWidget('Tình trạng hồ sơ',docModel!.tinhTrangHoSo!,context),
-                infoDetailWidget('Lĩnh vực',docModel!.tenLinhVuc!,context),
-                infoDetailWidget('Hình thức tiếp nhận',docModel!.receptionForm!,context),
-                infoDetailWidget('Loại hồ sơ',docModel!.receptionForm!,context),
+                sheetDetailBottemItem('Tên cơ quan',docModel!.tenCoquan!,context),
+                sheetDetailBottemItem('Hạn xử lý',formatDate(docModel!.ngayHenTraKetQua!),context),
+                sheetDetailBottemItem('Tình trạng hồ sơ',docModel!.tinhTrangHoSo!,context),
+                sheetDetailBottemItem('Lĩnh vực',docModel!.tenLinhVuc!,context),
+                sheetDetailBottemItem('Hình thức tiếp nhận',docModel!.receptionForm!,context),
+                sheetDetailBottemItem('Loại hồ sơ',docModel!.receptionForm!,context),
               ],
             ),
           ),
@@ -534,31 +529,12 @@ class DetailProfileProcBottomSheet extends StatelessWidget {
           Align(
             child: Row(
               children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          //Get.back();
-                          Get.toNamed('/HomeScreen');
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                          Get.to(() =>
-                              ProfileProcHomeDetail(id: docModel!.maSoBienNhan!));
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Xem chi tiết')),
-                  ),
-                )
+                sheetButtonDetailButtonClose(),
+                sheetButtonDetailButtonOk(() async {
+                  Get.back();
+                  Get.to(() =>
+                      ProfileProcHomeDetail(id: docModel!.maSoBienNhan!));
+                })
               ],
             ),
           )

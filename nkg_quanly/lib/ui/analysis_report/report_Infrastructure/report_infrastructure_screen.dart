@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
@@ -179,14 +178,18 @@ class ReportInfrastructureChatScreen extends GetView {
                                                 20, 0, 0, 0)),
                                         InkWell(
                                           onTap: () {
-                                            var  curIndex = analysisReportViewModel.rxTypeScreen.value;
-                                            // analysisReportViewModel.getDisabilityEducation(
-                                            //     "${curIndex + 1}",
-                                            //     analysisReportViewModel.rxSelectedSemesterId.value,
-                                            //     analysisReportViewModel.rxSelectedRegionID.value,
-                                            //     analysisReportViewModel.rxSelectedProvinceId.value,
-                                            //     analysisReportViewModel.rxSelectedSchoolYearID.value,
-                                            //     listReportGDKT[curIndex]);
+                                            analysisReportViewModel
+                                                .getListChartInfrastructure(
+                                                analysisReportViewModel
+                                                    .rxSelectedSchoolLevelID.value,
+                                                analysisReportViewModel
+                                                    .rxSelectedRegionID.value,
+                                                analysisReportViewModel
+                                                    .rxSelectedProvinceId.value,
+                                                analysisReportViewModel
+                                                    .rxSelectedSchoolYearID.value);
+                                            analysisReportViewModel
+                                                .changeStateLoadingData(true);
                                           },
                                           child: Image.asset(
                                               "assets/icons/ic_refresh.png",
@@ -202,12 +205,7 @@ class ReportInfrastructureChatScreen extends GetView {
                                 context),
                           );
                         })
-                        : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [Padding(
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Center(child: CircularProgressIndicator()),
-                      )],))),
+                        : loadingWidget(context))),
               ),
             ),
           )

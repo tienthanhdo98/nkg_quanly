@@ -184,16 +184,7 @@ class ReportEducationQualityScreen extends GetView {
                                       analysisReportViewModel, context))
                                 ],
                               )
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                    child: Center(
-                                        child: CircularProgressIndicator()),
-                                  )
-                                ],
-                              ))),
+                            : loadingWidget(context))),
               ),
             ),
           )
@@ -520,7 +511,7 @@ var listReportEduQualityType = [
   "Báo cáo chi tiết khen thưởng học sinh",
 ];
 
-Widget chartQualityEduWidget(String chartName, List<ChartChildItems>? items,
+Widget chartQualityEduWidget(String chartName, List<ChartChildItems>? items,AnalysisReportViewModel analysisReportViewModel,
     BuildContext context, String type) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
@@ -538,7 +529,24 @@ Widget chartQualityEduWidget(String chartName, List<ChartChildItems>? items,
                 ),
                 const Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    var index = analysisReportViewModel.rxTypeScreen.value;
+                    if (index == 0) {
+                      analysisReportViewModel
+                          .getListQualityEducationByType("0");
+                    } else if (index == 1) {
+                      analysisReportViewModel
+                          .getListQualityEducationByType("1");
+                    } else if (index == 2) {
+                      analysisReportViewModel
+                          .getListQualityEducationByType("2");
+                    } else if (index == 3) {
+                      analysisReportViewModel
+                          .getListQualityEducationByType("3");
+                    }
+                    analysisReportViewModel
+                        .changeStateLoadingData(true);
+                  },
                   child: Image.asset("assets/icons/ic_refresh.png",
                       width: 16, height: 16),
                 )
@@ -590,17 +598,17 @@ Widget listChartQualityEduScreen(
       shrinkWrap: true,
       children: [
         chartQualityEduWidget("Xếp hạng năng lực theo tỉnh/TP",
-            listChart[1].items!, context, "2"),
+            listChart[1].items!, analysisReportViewModel,context, "2"),
         chartQualityEduWidget(
-            "Xếp hạng năng lực theo vùng", listChart[0].items!, context, "2"),
+            "Xếp hạng năng lực theo vùng", listChart[0].items!,analysisReportViewModel, context, "2"),
         chartQualityEduWidget(
-            "Xếp loại học sinh", listChart[2].items!, context, "2"),
+            "Xếp loại học sinh", listChart[2].items!,analysisReportViewModel, context, "2"),
         chartQualityEduWidget(
-            "Phổ điểm của học sinh", listChart[3].items!, context, "2"),
+            "Phổ điểm của học sinh", listChart[3].items!,analysisReportViewModel, context, "2"),
         chartQualityEduWidget("Xếp loại học sinh theo năm học",
-            listChart[4].items!, context, "3"),
+            listChart[4].items!, analysisReportViewModel,context, "3"),
         chartQualityEduWidget("Phổ điểm của học sinh theo năm học",
-            listChart[5].items!, context, "4"),
+            listChart[5].items!,analysisReportViewModel, context, "4"),
       ],
     );
   } else if (analysisReportViewModel.rxTypeScreen.value == 1) {
@@ -609,16 +617,16 @@ Widget listChartQualityEduScreen(
       shrinkWrap: true,
       children: [
         chartQualityEduWidget("Cơ cấu học sinh hoàn thành chương trình học",
-            listChart[2].items!, context, "1"),
+            listChart[2].items!,analysisReportViewModel, context, "1"),
         chartQualityEduWidget(
             "Xếp hạng tỷ lệ học sinh hoàn thành chương trình theo vùng",
             listChart[1].items!,
-            context,
+            analysisReportViewModel, context,
             "1"),
         chartQualityEduWidget(
             "Xếp hạng tỷ lệ học sinh hoàn thành chương trình theo tỉnh/TP",
             listChart[0].items!,
-            context,
+            analysisReportViewModel, context,
             "2"),
       ],
     );
@@ -628,24 +636,24 @@ Widget listChartQualityEduScreen(
       shrinkWrap: true,
       children: [
         chartQualityEduWidget("Xếp loại năng lực học sinh theo vùng",
-            listChart[0].items!, context, "2"),
+            listChart[0].items!, analysisReportViewModel,context, "2"),
         chartQualityEduWidget("So sánh năng lực học sinh theo kỳ",
-            listChart[1].items!, context, "2"),
+            listChart[1].items!,analysisReportViewModel, context, "2"),
         chartQualityEduWidget("Xếp loại năng lực học sinh theo tỉnh, thành phố",
-            listChart[4].items!, context, "4"),
+            listChart[4].items!,analysisReportViewModel, context, "4"),
         chartQualityEduWidget("So sánh năng lực học sinh theo năm",
-            listChart[5].items!, context, "4"),
+            listChart[5].items!,analysisReportViewModel, context, "4"),
         chartQualityEduWidget('Xếp loại phẩm chất học sinh theo vùng',
-            listChart[2].items!, context, "2"),
+            listChart[2].items!,analysisReportViewModel, context, "2"),
         chartQualityEduWidget('So sánh phẩm chất học sinh theo kỳ',
-            listChart[1].items!, context, "2"),
+            listChart[1].items!,analysisReportViewModel, context, "2"),
         chartQualityEduWidget(
             'Xếp loại phẩm chất học sinh theo tỉnh, thành phố',
             listChart[6].items,
-            context,
+            analysisReportViewModel,  context,
             "5"),
         chartQualityEduWidget("So sánh phẩm chất học sinh theo năm",
-            listChart[7].items!, context, "5"),
+            listChart[7].items!, analysisReportViewModel,context, "5"),
       ],
     );
   } else if (analysisReportViewModel.rxTypeScreen.value == 3) {
@@ -654,15 +662,15 @@ Widget listChartQualityEduScreen(
       shrinkWrap: true,
       children: [
         chartQualityEduWidget("Thống kê tỷ lệ HS được khen thưởng theo năm",
-            listChart[6].items!, context, "2"),
+            listChart[6].items!,analysisReportViewModel, context, "2"),
         chartQualityEduWidget('Xếp hạng tỉnh/TP theo tỷ lệ HS được khen thưởng',
-            listChart[2].items!, context, "2"),
+            listChart[2].items!,analysisReportViewModel, context, "2"),
         chartQualityEduWidget("Xếp hạng vùng theo tỷ lệ HS khen thưởng",
-            listChart[1].items!, context, "2"),
+            listChart[1].items!,analysisReportViewModel, context, "2"),
         chartQualityEduWidget('Thống kê tỷ lệ HS được khen thưởng theo học kỳ',
-            listChart[7].items!, context, "2"),
+            listChart[7].items!,analysisReportViewModel, context, "2"),
         chartQualityEduWidget("Thống kê tỷ lệ học sinh theo khen thưởng",
-            listChart[2].items!, context, "1"),
+            listChart[2].items!,analysisReportViewModel, context, "1"),
       ],
     );
   }
@@ -670,40 +678,3 @@ Widget listChartQualityEduScreen(
   return resWidget!;
 }
 
-// String chartNameToNameQualityEdu (String chartName) {
-//   var name = "";
-//   switch (chartName) {
-//     case "XepHangThanhPho":
-//       {
-//         name = "Xếp hạng năng lực theo tỉnh/TP";
-//       }
-//       break;
-//     case "XepHangVung":
-//       {
-//         name = "Xếp hạng năng lực theo vùng";
-//       }
-//       break;
-//     case "BieuDoXepLoaiHocSinh":
-//       {
-//         name = "Xếp loại học sinh";
-//       }
-//       break;
-//     case "BieuDoPhoDiemCuaHocSinh":
-//       {
-//         name = "Phổ điểm của học sinh";
-//       }
-//       break;
-//     case "BieuDoXepLoaiHocSinh":
-//       {
-//         name = "Xếp loại học sinh theo năm học";
-//       }
-//       break;
-//     case "BieuDoPhoDiemCuaHocSinh":
-//       {
-//         name = "Phổ điểm của học sinh theo năm học";
-//       }
-//       break;
-//
-//   }
-//   return name;
-// }

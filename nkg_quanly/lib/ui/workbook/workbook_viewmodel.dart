@@ -197,14 +197,22 @@ class WorkBookViewModel extends GetxController {
     GroupWorkbookModel res =
         GroupWorkbookModel.fromJson(jsonDecode(response.body));
     rxGroupWorkBookListItems.value = res.items!;
-    if(res.totalRecords! > 10 )
+    for(int i = 2; i < res.pageCount! ;i++)
       {
-        String json = '{"pageIndex":2,"pageSize":10}';
+        String json = '{"pageIndex":$i,"pageSize":10}';
         http.Response response = await http.post(url, headers: headers, body: json);
         res =
-        GroupWorkbookModel.fromJson(jsonDecode(response.body));
+            GroupWorkbookModel.fromJson(jsonDecode(response.body));
         rxGroupWorkBookListItems.addAll(res.items!);
       }
+    // if(res.totalRecords! > 10 )
+    //   {
+    //     String json = '{"pageIndex":2,"pageSize":10}';
+    //     http.Response response = await http.post(url, headers: headers, body: json);
+    //     res =
+    //     GroupWorkbookModel.fromJson(jsonDecode(response.body));
+    //     rxGroupWorkBookListItems.addAll(res.items!);
+    //   }
   }
   Future<void> getListWorkerWorkBook() async {
     var tokenIOC = await loginViewModel.loadFromShareFrefs(keyTokenIOC);

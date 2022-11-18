@@ -192,7 +192,7 @@ class AnalysisReportEducationScreen extends GetView {
                               return const SizedBox.shrink();
                             }
                           })
-                      : loadingIcon()),
+                      : loadingWidget(context)),
                 ),
               ),
             ),

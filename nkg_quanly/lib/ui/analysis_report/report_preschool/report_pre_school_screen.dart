@@ -18,7 +18,7 @@ class ReportPreSchoolScreen extends GetView {
   final analysisReportViewModel = Get.put(AnalysisReportViewModel());
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     var filterType = listReportPreSchoolType[0];
     analysisReportViewModel.getDataPreSchool();
     return Scaffold(
@@ -245,21 +245,12 @@ class ReportPreSchoolScreen extends GetView {
                             ? Column(
                                 children: [
                                   Obx(() => countReportTypeScreen(
-                                      analysisReportViewModel, context)),
+                                      analysisReportViewModel,analysisReportViewModel, context)),
                                   Obx(() => listChartScreen(
-                                      analysisReportViewModel, context))
+                                      analysisReportViewModel,analysisReportViewModel, context))
                                 ],
                               )
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                    child: Center(
-                                        child: CircularProgressIndicator()),
-                                  )
-                                ],
-                              ))),
+                            : loadingWidget(context))),
               ),
             ),
           )
@@ -270,7 +261,7 @@ class ReportPreSchoolScreen extends GetView {
 }
 
 Widget listChartScreen(
-    AnalysisReportViewModel analysisReportViewModel, BuildContext context) {
+    AnalysisReportViewModel analysisReportViewModel, BuildContextanalysisReportViewModel, context) {
   Widget? resWidget;
   var listChart = analysisReportViewModel.rxListChartAnalysis;
   if (analysisReportViewModel.rxTypeScreen.value == 0) {
@@ -278,26 +269,26 @@ Widget listChartScreen(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: [
-        chartWidget(listChart[0].chartName!, listChart[0].items!, context, "1"),
-        chartWidget(listChart[1].chartName!, listChart[1].items!, context, "1"),
-        chartWidget(listChart[2].chartName!, listChart[2].items!, context, "1"),
-        chartWidget(listChart[8].chartName!, listChart[8].items!, context, "2"),
+        chartWidget(listChart[0].chartName!, listChart[0].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[1].chartName!, listChart[1].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[2].chartName!, listChart[2].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[8].chartName!, listChart[8].items!,analysisReportViewModel, context, "2"),
         chartWidget(
-            listChart[14].chartName!, listChart[14].items!, context, "2"),
-        chartWidget(listChart[9].chartName!, listChart[9].items!, context, "2"),
-        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "1"),
-        chartWidget(listChart[4].chartName!, listChart[4].items!, context, "2"),
-        chartWidget(listChart[5].chartName!, listChart[5].items!, context, "2"),
-        chartWidget(listChart[6].chartName!, listChart[6].items!, context, "2"),
-        chartWidget(listChart[7].chartName!, listChart[7].items!, context, "2"),
+            listChart[14].chartName!, listChart[14].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[9].chartName!, listChart[9].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[3].chartName!, listChart[3].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[4].chartName!, listChart[4].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[5].chartName!, listChart[5].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[6].chartName!, listChart[6].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[7].chartName!, listChart[7].items!,analysisReportViewModel, context, "2"),
         chartWidget(
-            listChart[11].chartName!, listChart[11].items!, context, "2"),
+            listChart[11].chartName!, listChart[11].items!,analysisReportViewModel, context, "2"),
         chartWidget(
-            listChart[12].chartName!, listChart[12].items!, context, "2"),
+            listChart[12].chartName!, listChart[12].items!,analysisReportViewModel, context, "2"),
         chartWidget(
-            listChart[13].chartName!, listChart[13].items!, context, "2"),
+            listChart[13].chartName!, listChart[13].items!,analysisReportViewModel, context, "2"),
         chartWidget(
-            listChart[17].chartName!, listChart[17].items!, context, "3"),
+            listChart[17].chartName!, listChart[17].items!,analysisReportViewModel, context, "3"),
       ],
     );
   } else if (analysisReportViewModel.rxTypeScreen.value == 1) {
@@ -305,20 +296,20 @@ Widget listChartScreen(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: [
-        chartWidget(listChart[0].chartName!, listChart[0].items!, context, "1"),
-        chartWidget(listChart[1].chartName!, listChart[1].items!, context, "1"),
-        chartWidget(listChart[2].chartName!, listChart[2].items!, context, "1"),
-        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "1"),
-        chartWidget(listChart[4].chartName!, listChart[5].items!, context, "1"),
-        chartWidget(listChart[5].chartName!, listChart[5].items!, context, "1"),
-        chartWidget(listChart[6].chartName!, listChart[6].items!, context, "2"),
-        chartWidget(listChart[7].chartName!, listChart[7].items!, context, "2"),
-        chartWidget(listChart[8].chartName!, listChart[8].items!, context, "2"),
-        chartWidget(listChart[9].chartName!, listChart[9].items!, context, "2"),
+        chartWidget(listChart[0].chartName!, listChart[0].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[1].chartName!, listChart[1].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[2].chartName!, listChart[2].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[3].chartName!, listChart[3].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[4].chartName!, listChart[5].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[5].chartName!, listChart[5].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[6].chartName!, listChart[6].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[7].chartName!, listChart[7].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[8].chartName!, listChart[8].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[9].chartName!, listChart[9].items!,analysisReportViewModel, context, "2"),
         chartWidget(
-            listChart[10].chartName!, listChart[10].items!, context, "2"),
+            listChart[10].chartName!, listChart[10].items!,analysisReportViewModel, context, "2"),
         chartWidget(
-            listChart[11].chartName!, listChart[11].items!, context, "2"),
+            listChart[11].chartName!, listChart[11].items!,analysisReportViewModel, context, "2"),
       ],
     );
   } else if (analysisReportViewModel.rxTypeScreen.value == 2) {
@@ -326,8 +317,8 @@ Widget listChartScreen(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: [
-        chartWidget(listChart[0].chartName!, listChart[0].items!, context, "1"),
-        chartWidget(listChart[1].chartName!, listChart[1].items!, context, "1"),
+        chartWidget(listChart[0].chartName!, listChart[0].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[1].chartName!, listChart[1].items!,analysisReportViewModel, context, "1"),
       ],
     );
   } else if (analysisReportViewModel.rxTypeScreen.value == 3) {
@@ -335,18 +326,18 @@ Widget listChartScreen(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: [
-        chartWidget(listChart[0].chartName!, listChart[0].items!, context, "1"),
-        chartWidget(listChart[6].chartName!, listChart[6].items!, context, "1"),
+        chartWidget(listChart[0].chartName!, listChart[0].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[6].chartName!, listChart[6].items!,analysisReportViewModel, context, "1"),
         chartWidget(
-            listChart[10].chartName!, listChart[10].items!, context, "1"),
-        chartWidget(listChart[7].chartName!, listChart[7].items!, context, "1"),
-        chartWidget(listChart[1].chartName!, listChart[1].items!, context, "2"),
+            listChart[10].chartName!, listChart[10].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[7].chartName!, listChart[7].items!,analysisReportViewModel, context, "1"),
+        chartWidget(listChart[1].chartName!, listChart[1].items!,analysisReportViewModel, context, "2"),
         chartWidget(
-            listChart[14].chartName!, listChart[14].items!, context, "2"),
-        chartWidget(listChart[2].chartName!, listChart[2].items!, context, "2"),
-        chartWidget(listChart[3].chartName!, listChart[3].items!, context, "2"),
-        chartWidget(listChart[4].chartName!, listChart[4].items!, context, "2"),
-        chartWidget(listChart[5].chartName!, listChart[5].items!, context, "2"),
+            listChart[14].chartName!, listChart[14].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[2].chartName!, listChart[2].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[3].chartName!, listChart[3].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[4].chartName!, listChart[4].items!,analysisReportViewModel, context, "2"),
+        chartWidget(listChart[5].chartName!, listChart[5].items!,analysisReportViewModel, context, "2"),
       ],
     );
   }
@@ -354,7 +345,7 @@ Widget listChartScreen(
   return resWidget!;
 }
 
-Widget chartWidget(String chartName, List<ChartChildItems> items,
+Widget chartWidget(String chartName, List<ChartChildItems> items,AnalysisReportViewModel analysisReportViewModel,
     BuildContext context, String type) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
@@ -372,7 +363,24 @@ Widget chartWidget(String chartName, List<ChartChildItems> items,
                 ),
                 const Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    var curIndex = analysisReportViewModel
+                        .rxTypeScreen.value;
+                    //   analysisReportViewModel.clearSelectedFilter();
+                    analysisReportViewModel.getListChartPreSchool(
+                        "${curIndex + 1}",
+                        analysisReportViewModel
+                            .rxSelectedSemesterId.value,
+                        analysisReportViewModel
+                            .rxSelectedRegionID.value,
+                        analysisReportViewModel
+                            .rxSelectedProvinceId.value,
+                        analysisReportViewModel
+                            .rxSelectedSchoolYearID.value,
+                        listReportPreSchoolType[curIndex]);
+                    analysisReportViewModel
+                        .changeStateLoadingData(true);
+                  },
                   child: Image.asset("assets/icons/ic_refresh.png",
                       width: 16, height: 16),
                 )
@@ -381,7 +389,7 @@ Widget chartWidget(String chartName, List<ChartChildItems> items,
             getChartByType(items, type)
           ]),
         ),
-        context),
+      context),
   );
 }
 
@@ -610,7 +618,7 @@ String chartNameToNameSecondSchool(String chartName) {
 }
 
 Widget countReportTypeScreen(
-    AnalysisReportViewModel analysisReportViewModel, BuildContext context) {
+    AnalysisReportViewModel analysisReportViewModel, BuildContextanalysisReportViewModel, context) {
   var item = analysisReportViewModel.rxInfoReport.value.items;
   if (analysisReportViewModel.rxTypeScreen.value == 2) {
     return Column(

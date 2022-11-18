@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
@@ -19,7 +20,7 @@ class BookingCarViewModel extends GetxController {
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   RxList<BookingCarListItems> rxBookingCarItems = <BookingCarListItems>[].obs;
   Rx<BookingStatistic> rxBookingCarStatistic = BookingStatistic().obs;
-
+  ScrollController controller = ScrollController();
   Map<String, String> headers = {"Content-type": "application/json"};
 
   @override
@@ -42,7 +43,7 @@ class BookingCarViewModel extends GetxController {
 
   Future<void> getFilterForChart(String url) async {
     rxDocumentFilterModel.refresh();
-    print('loading');
+   
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
@@ -56,29 +57,57 @@ class BookingCarViewModel extends GetxController {
   //book car
   Future<void> postBookingCarByDay(String day) async {
     final url = Uri.parse(apiGetBookingCarListItems);
-    print('loading');
+   
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarItems.value = res.items!;
     rxBookingCarStatistic.value = res.statistic!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = BookingCarModel.fromJson(jsonDecode(response.body));
+        rxBookingCarItems.addAll(res.items!);
+      }
+    });
   }
 
   Future<void> postBookingCarStatistic() async {
     final url = Uri.parse(apiGetBookingCarListItems);
-    print('loading');
+   
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
     
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarStatistic.value = res.statistic!;
     rxBookingCarItems.value = res.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = BookingCarModel.fromJson(jsonDecode(response.body));
+        rxBookingCarItems.addAll(res.items!);
+      }
+    });
   }
 
   Future<void> postookingCarByWeek(String datefrom, String dateTo) async {
     final url = Uri.parse(apiGetBookingCarListItems);
-    print('loading');
+   
     String json =
         '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
@@ -86,17 +115,46 @@ class BookingCarViewModel extends GetxController {
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarItems.value = res.items!;
     rxBookingCarStatistic.value = res.statistic!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = BookingCarModel.fromJson(jsonDecode(response.body));
+        rxBookingCarItems.addAll(res.items!);
+      }
+    });
   }
 
   Future<void> postBookingCarByMonth() async {
     final url = Uri.parse(apiGetBookingCarListItems);
-    print('loading');
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
     
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarItems.value = res.items!;
     rxBookingCarStatistic.value = res.statistic!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String jsonGetByMonth =
+            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: jsonGetByMonth);
+        res = BookingCarModel.fromJson(jsonDecode(response.body));
+        rxBookingCarItems.addAll(res.items!);
+      }
+    });
   }
 
   Future<MeetingRoomItems> getRoomMeetingDetail(int id) async {
@@ -141,12 +199,26 @@ class BookingCarViewModel extends GetxController {
 
   Future<void> getBookingCarByFilter(String status) async {
     final url = Uri.parse(apiGetBookingCarListItems);
-    print('loading');
+   
     String json = '{"pageIndex":1,"pageSize":10,"status":"$status"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarItems.value = res.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"status":"$status"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = BookingCarModel.fromJson(jsonDecode(response.body));
+        rxBookingCarItems.addAll(res.items!);
+      }
+    });
   }
 //end filter
 

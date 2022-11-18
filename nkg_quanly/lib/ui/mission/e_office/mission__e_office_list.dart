@@ -18,6 +18,7 @@ class MissionEOfficeList extends GetView {
 
   @override
   Widget build(BuildContext context) {
+    missionViewModel.getMissionDefault(true);
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -206,6 +207,7 @@ class MissionEOfficeList extends GetView {
                       controller: missionViewModel.controller,
                       itemCount: missionViewModel.rxMissionItem.length,
                       itemBuilder: (context, index) {
+                        var item = missionViewModel.rxMissionItem[index];
                         return InkWell(
                             onTap: () {
                               showModalBottomSheet<void>(
@@ -219,16 +221,13 @@ class MissionEOfficeList extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: 350,
+                                      height: 340,
                                       child: DetailMissionBottomSheet(
-                                          index,
-                                          missionViewModel
-                                              .rxMissionItem[index]));
+                                          index, item));
                                 },
                               );
                             },
-                            child: MissionListItem(
-                                index, missionViewModel.rxMissionItem[index]));
+                            child: MissionListItem(index, item));
                       })
                   : noData())),
           //bottom
@@ -246,7 +245,10 @@ class MissionEOfficeList extends GetView {
                       child: InkWell(
                         onTap: () {
                           menuController.rxSelectedDay.value = DateTime.now();
-                          missionViewModel.onSelectDay(DateTime.now());
+                          String strdateFrom = formatDateToString(dateNow);
+                          String strdateTo = formatDateToString(dateNow);
+                          missionViewModel.getMissionByFromAndToDate(
+                              strdateFrom, strdateTo);
                           missionViewModel.swtichBottomButton(0);
                         },
                         child: bottomDateButton("Ngày",
@@ -260,7 +262,7 @@ class MissionEOfficeList extends GetView {
                               dateNow.add(const Duration(days: 7));
                           String strdateFrom = formatDateToString(dateNow);
                           String strdateTo = formatDateToString(dateTo);
-                          missionViewModel.getMissionByWeek(
+                          missionViewModel.getMissionByFromAndToDate(
                               strdateFrom, strdateTo);
                           missionViewModel.swtichBottomButton(1);
                         },
@@ -271,7 +273,12 @@ class MissionEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          missionViewModel.getMissionByMonth();
+                          DateTime dateTo =
+                          dateNow.subtract(const Duration(days: 30));
+                          String strdateFrom = formatDateToString(dateTo);
+                          String strdateTo = formatDateToString(dateNow);
+                          missionViewModel.getMissionByFromAndToDate(
+                              strdateFrom, strdateTo);
                           missionViewModel.swtichBottomButton(2);
                         },
                         child: bottomDateButton("Tháng",
@@ -288,7 +295,7 @@ class MissionEOfficeList extends GetView {
 }
 
 class MissionListItem extends StatelessWidget {
-  MissionListItem(this.index, this.docModel);
+  const MissionListItem(this.index, this.docModel, {Key? key}) : super(key: key);
 
   final int? index;
   final MissionItem? docModel;
@@ -302,10 +309,7 @@ class MissionListItem extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  "${index! + 1}. ${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
+                child: sheetButtonDetailTitleItem(index!,docModel!.name!,context),
               ),
               Align(
                   alignment: Alignment.centerRight,
@@ -322,45 +326,15 @@ class MissionListItem extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 0,
+              childAspectRatio: 3.5 / 2,
               crossAxisCount: 3,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Người xử lý',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.organizationName!,
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thời hạn',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.deadline!),
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày xử lý',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                          formatDate(docModel!.processingDate!),
-                          style: Theme.of(context).textTheme.headline5,
-                        ))
-                  ],
-                ),
+                sheetDetailBottemItem(
+                    'Đơn vị xử lý', docModel!.organizationName!, context),
+                sheetDetailBottemItem(
+                    'Hạn xử lý', formatDate(docModel!.deadline!), context),
+                sheetDetailBottemItem(
+                    'Tình trạng xử lý', docModel!.status!, context),
               ],
             ),
           ),
@@ -440,7 +414,7 @@ class DetailMissionBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 30, 25, 25),
+      padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -460,19 +434,19 @@ class DetailMissionBottomSheet extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  "${index! + 1}. ${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
+                child: sheetButtonDetailTitleItem(index!,docModel!.name!,context),
               ),
               Align(
                   alignment: Alignment.centerRight,
                   child: priorityWidget(docModel!)),
             ],
           ),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+              child: textCodeStyle(docModel!.code!)),
           signWidgetMission(docModel!),
           SizedBox(
-            height: 120,
+            height: 110,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
@@ -480,15 +454,14 @@ class DetailMissionBottomSheet extends StatelessWidget {
               childAspectRatio: 3.5 / 2,
               crossAxisCount: 3,
               children: <Widget>[
-                sheetDetailBottemItem('Người xử lý',
-                    docModel!.organizationName!, context),
-                sheetDetailBottemItem('Thời hạn',
-                    docModel!.deadline!, context),
-                sheetDetailBottemItem('Ngày xử lý',
-                    docModel!.processingDate!, context),
+                sheetDetailBottemItem(
+                    'Đơn vị xử lý', docModel!.organizationName!, context),
+                sheetDetailBottemItem(
+                    'Hạn xử lý', formatDate(docModel!.deadline!), context),
+                sheetDetailBottemItem(
+                    'Tình trạng xử lý', docModel!.status!, context),
                 sheetDetailBottemItem('Ngày khởi tạo',
                     formatDate(docModel!.innitiatedDate!), context),
-
               ],
             ),
           ),
@@ -496,30 +469,12 @@ class DetailMissionBottomSheet extends StatelessWidget {
           Align(
             child: Row(
               children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                          Get.to(() =>
-                              MissionDetail(id: int.parse(docModel!.id!)));
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Xem chi tiết')),
-                  ),
-                )
+                sheetButtonDetailButtonClose(),
+                sheetButtonDetailButtonOk(() async {
+                  Get.back();
+                  Get.to(() =>
+                      MissionDetail(id: int.parse(docModel!.id!)));
+                })
               ],
             ),
           )

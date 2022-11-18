@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../../model/document/document_model.dart';
-import '../../document_nonapproved/document_nonapproved_detail.dart';
 import '../../document_nonapproved/document_nonapproved_search.dart';
 import '../../theme/theme_data.dart';
 import '../document_unprocess_viewmodel.dart';
+import 'document_in_search.dart';
 import 'filter_doc_in_screen.dart';
 
 class DocumentInEOfficeList extends GetView {
@@ -28,8 +26,7 @@ class DocumentInEOfficeList extends GetView {
               //header
               headerWidgetSearch(
                   header!,
-                  DocumentnonapprovedSearch(
-                    isApprove: true,
+                  DocumentInSearch(
                   ),
                   context),
               //date table
@@ -383,7 +380,7 @@ class DocumentInEOfficeList extends GetView {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(
-                                      height: 350,
+                                      height: 340,
                                       child: DetailDocInBottomSheet(
                                           index,
                                           documentUnprocessViewModel
@@ -434,8 +431,6 @@ class DocumentInEOfficeList extends GetView {
                               dateNow.add(const Duration(days: 7));
                               String strdateFrom = formatDateToString(dateNow);
                               String strdateTo = formatDateToString(dateTo);
-                              print(strdateFrom);
-                              print(strdateTo);
                               documentUnprocessViewModel.getDocumentByWeek(
                                   strdateFrom, strdateTo);
                               documentUnprocessViewModel.swtichBottomButton(1);
@@ -485,13 +480,7 @@ class DocumentNonProcessListItem extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  "${index! + 1}. ${docModel!.name}",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline3,
-                ),
+                child: sheetButtonDetailTitleItem(index!,docModel!.name!,context),
               ),
               Align(
                   alignment: Alignment.centerRight,
@@ -512,48 +501,14 @@ class DocumentNonProcessListItem extends StatelessWidget {
               mainAxisSpacing: 0,
               crossAxisCount: 3,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Đơn vị ban hành',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.departmentPublic!,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày đến',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.toDate!),
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thời hạn',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.endDate!),
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline5))
-                  ],
-                ),
+                sheetDetailBottemItem(
+                    'Đơn vị ban hành', docModel!.departmentPublic!, context),
+                sheetDetailBottemItem(
+                    'Ngày đến',formatDate(docModel!.toDate!), context),
+                sheetDetailBottemItem(
+                    'Hạn xử lý', formatDate(docModel!.endDate!), context),
+
+
               ],
             ),
           ),
@@ -575,7 +530,7 @@ class DetailDocInBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -595,13 +550,7 @@ class DetailDocInBottomSheet extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  "${index! + 1}. ${docModel!.name}",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline3,
-                ),
+                child:   sheetButtonDetailTitleItem(index!,docModel!.name!,context),
               ),
               Align(
                   alignment: Alignment.centerRight,
@@ -613,7 +562,7 @@ class DetailDocInBottomSheet extends StatelessWidget {
               child: textCodeStyle(docModel!.code!)),
           signWidget(docModel!),
           SizedBox(
-            height: 120,
+            height: 110,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
@@ -621,127 +570,38 @@ class DetailDocInBottomSheet extends StatelessWidget {
               childAspectRatio: 3.5 / 2,
               crossAxisCount: 3,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Đơn vị ban hành',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.departmentPublic!,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày đến',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.toDate!),
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thời hạn',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.endDate!),
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thời hạn',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.endDate!),
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Tình trạng HT',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.status!,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Tình trạng VB',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.state!,
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headline5))
-                  ],
-                ),
+                sheetDetailBottemItem(
+                    'Đơn vị ban hành', docModel!.departmentPublic!, context),
+                // sheetDetailBottemItem(
+                //     'Đơn vị xử lý', docModel!.departmentPublic!, context),
+                sheetDetailBottemItem(
+                    'Ngày đến',formatDate(docModel!.toDate!), context),
+                sheetDetailBottemItem(
+                    'Hạn xử lý', formatDate(docModel!.endDate!), context),
+                sheetDetailBottemItem(
+                    'Tình trạng HT', docModel!.status!, context),
+                sheetDetailBottemItem(
+                    'Tình trạng VB', docModel!.state!, context),
+
               ],
             ),
           ),
           const Spacer(),
           Row(
             children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      style: buttonFilterWhite,
-                      child: const Text('Đóng')),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        var urlFile =
-                            "http://123.31.31.237:6002/api/documentin/download-document?id=${docModel!.id}";
-                        if (await canLaunchUrl(Uri.parse(urlFile))) {
-                          launchUrl(
-                            Uri.parse(urlFile),
-                            webViewConfiguration: const WebViewConfiguration(
-                                enableJavaScript: true, enableDomStorage: true),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        }
-                      },
-                      style: buttonFilterBlue,
-                      child: const Text('Xem chi tiết')),
-                ),
-              )
+              sheetButtonDetailButtonClose(),
+              sheetButtonDetailButtonOk(() async {
+                var urlFile =
+                    "http://123.31.31.237:6002/api/documentin/download-document?id=${docModel!.id}";
+                if (await canLaunchUrl(Uri.parse(urlFile))) {
+                  launchUrl(
+                    Uri.parse(urlFile),
+                    webViewConfiguration: const WebViewConfiguration(
+                        enableJavaScript: true, enableDomStorage: true),
+                    mode: LaunchMode.externalApplication,
+                  );
+                }
+              })
             ],
           )
         ],
@@ -1360,9 +1220,6 @@ class FilterDocUnprocessBottomSheet extends StatelessWidget {
                                 department += value;
                               });
                             }
-                            print(status);
-                            print(level);
-                            print(department);
                             reportViewModel!
                                 .getDocumentByFilter(status, level, department);
                           },

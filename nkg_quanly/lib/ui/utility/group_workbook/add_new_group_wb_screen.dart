@@ -85,7 +85,7 @@ class AddNewGroupWorkBookScreen extends GetView {
                           desnameWB = value;
                         },
                       ),
-                      const Spacer(),
+                      const Padding(padding: EdgeInsets.only(top:15)),
                       Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).cardColor,
@@ -119,8 +119,6 @@ class AddNewGroupWorkBookScreen extends GetView {
                                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: ElevatedButton(
                                     onPressed: () {
-                                      print(nameWB);
-                                      print(desnameWB);
                                       if (nameWB?.isNotEmpty == true ||
                                           desnameWB?.isNotEmpty == true) {
                                         groupWorkBookViewModel.addGroupWorkBookAll(

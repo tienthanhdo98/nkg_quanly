@@ -139,7 +139,7 @@ final loginViewModel = Get.put(LoginViewModel());
 void loadDataByRangeDay(
     GetxController viewModel, String fromDate, String toDate) {
   if (viewModel is MissionViewModel) {
-    viewModel.getMissionByWeek(fromDate, toDate);
+    viewModel.getMissionByFromAndToDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is CalendarWorkViewModel) {
@@ -1024,7 +1024,10 @@ Widget headerWidget(String header, BuildContext context) {
 
 void loadDataByDay(GetxController viewModel) {
   if (viewModel is MissionViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
+    // viewModel.onSelectDay(menuController.rxSelectedDay.value);
+    String strdateFrom = formatDateToString(menuController.rxSelectedDay.value);
+    String strdateTo = formatDateToString(menuController.rxSelectedDay.value);
+    viewModel.getMissionByFromAndToDate(strdateFrom,strdateTo);
     Get.back();
   }
   if (viewModel is CalendarWorkViewModel) {
@@ -1087,7 +1090,10 @@ void loadDataByDay(GetxController viewModel) {
 
 void loadDataByDayNoBack(GetxController viewModel) {
   if (viewModel is MissionViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
+    // viewModel.onSelectDay(menuController.rxSelectedDay.value);
+    String strdateFrom = formatDateToString(menuController.rxSelectedDay.value);
+    String strdateTo = formatDateToString(menuController.rxSelectedDay.value);
+    viewModel.getMissionByFromAndToDate(strdateFrom,strdateTo);
   }
   if (viewModel is CalendarWorkViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);

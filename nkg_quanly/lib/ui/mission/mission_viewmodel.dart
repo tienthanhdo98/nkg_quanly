@@ -17,15 +17,25 @@ class MissionViewModel extends GetxController {
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   RxList<MissionItem> rxMissionItem = <MissionItem>[].obs;
   Rx<MissionStatistic> rxMissionStatistic = MissionStatistic().obs;
+  Rx<MissionStatistic> rxMissionStatisticTotal = MissionStatistic().obs;
   ScrollController controller = ScrollController();
   MissionModel missionModel = MissionModel();
 
   @override
   void onInit() {
-    getFilterDepartment();
-    getFilterForChart("${apiGetMissionChart}0");
-    getMissionByDay(formatDateToString(dateNow));
+    getDataInWidget();
+
     super.onInit();
+  }
+
+  void getDataInScreen() {
+    getFilterDepartment();
+    getMissionDefault(true);
+  }
+
+  void getDataInWidget() {
+    getFilterForChart("${apiGetMissionChart}0");
+    getMissionDefault(false);
   }
 
   //filter
@@ -90,7 +100,7 @@ class MissionViewModel extends GetxController {
     String json =
         '{"pageIndex":1,"pageSize":10,"state":"$status","level":"$level","organizationName":"$department"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    
+
     missionModel = MissionModel.fromJson(jsonDecode(response.body));
     rxMissionItem.value = missionModel.items!;
     rxMissionStatistic.value = missionModel.statistic!;
@@ -105,7 +115,7 @@ class MissionViewModel extends GetxController {
         String json =
             '{"pageIndex":$page,"pageSize":10,"state":"$status","level":"$level","organizationName":"$department"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
+            await http.post(url, headers: headers, body: json);
         missionModel = MissionModel.fromJson(jsonDecode(response.body));
         rxMissionItem.addAll(missionModel.items!);
         print("loadmore w at $page");
@@ -123,63 +133,61 @@ class MissionViewModel extends GetxController {
     selectedBottomButton.value = button;
   }
 
-  void onSelectDay(DateTime selectedDay) {
-    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
-    getMissionByDay(strSelectedDay);
-  }
-
   Future<void> getFilterForChart(String url) async {
     rxDocumentFilterModel.refresh();
     print('loading');
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
-    
+
     rxDocumentFilterModel.update((val) {
       val!.totalRecords = documentFilterModel.totalRecords;
       val.items = documentFilterModel.items;
     });
   }
 
+  Future<void> getMissionDefault(bool isInScreen) async {
 
-  Future<void> getMissionByDay(String day) async {
     final url = Uri.parse(apiGetMission);
-    print('loading $day');
-    String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
+    String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    
+
     missionModel = MissionModel.fromJson(jsonDecode(response.body));
-    rxMissionItem.value = missionModel.items!;
-    rxMissionStatistic.value = missionModel.statistic!;
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore week");
-        page++;
-        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
-        http.Response response =
-        await http.post(url, headers: headers, body: json);
-        missionModel = MissionModel.fromJson(jsonDecode(response.body));
-        rxMissionItem.addAll(missionModel.items!);
-        print("loadmore w at $page");
+    if(isInScreen) {
+      rxMissionItem.value = missionModel.items!;
+      rxMissionStatisticTotal.value = missionModel.statistic!;
+      rxMissionStatistic.value = missionModel.statistic!;
+      //loadmore
+      var page = 1;
+      controller.dispose();
+      controller = ScrollController();
+      controller.addListener(() async {
+        if (controller.position.maxScrollExtent == controller.position.pixels) {
+          page++;
+          String json = '{"pageIndex":$page,"pageSize":10}';
+          http.Response response =
+          await http.post(url, headers: headers, body: json);
+          missionModel = MissionModel.fromJson(jsonDecode(response.body));
+          rxMissionItem.addAll(missionModel.items!);
+        }
+      });
+    }
+    else
+      {
+        rxMissionStatisticTotal.value = missionModel.statistic!;
       }
-    });
   }
 
-  Future<void> getMissionByWeek(String datefrom, String dateTo) async {
-    if(datefrom != "" || dateTo != "" ) {
+  Future<void> getMissionByFromAndToDate(String datefrom, String dateTo) async {
+    if (datefrom != "" || dateTo != "") {
       final url = Uri.parse(apiGetMission);
       print('loading');
       print('date from $datefrom');
       print('date to $dateTo');
       String json =
           '{"pageIndex":1,"pageSize":10,"fromDate":"$datefrom","toDate":"$dateTo"}';
-      http.Response response = await http.post(
-          url, headers: headers, body: json);
-      
+      http.Response response =
+          await http.post(url, headers: headers, body: json);
 
       missionModel = MissionModel.fromJson(jsonDecode(response.body));
       rxMissionItem.value = missionModel.items!;
@@ -195,7 +203,7 @@ class MissionViewModel extends GetxController {
           String json =
               '{"pageIndex":$page,"pageSize":10,"fromDate":"$datefrom","toDate":"$dateTo"}';
           http.Response response =
-          await http.post(url, headers: headers, body: json);
+              await http.post(url, headers: headers, body: json);
           missionModel = MissionModel.fromJson(jsonDecode(response.body));
           rxMissionItem.addAll(missionModel.items!);
           print("loadmore w at $page");
@@ -204,42 +212,16 @@ class MissionViewModel extends GetxController {
     }
   }
 
-  Future<void> getMissionByMonth() async {
-    final url = Uri.parse(apiGetMission);
-    print('loading');
-    http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-    
-    missionModel = MissionModel.fromJson(jsonDecode(response.body));
-    rxMissionItem.value = missionModel.items!;
-    rxMissionStatistic.value = missionModel.statistic!;
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore week");
-        page++;
-        String jsonGetByMonth =
-            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
-        http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-        missionModel = MissionModel.fromJson(jsonDecode(response.body));
-        rxMissionItem.addAll(missionModel.items!);
-        print("loadmore w at $page");
-      }
-    });
-  }
+
 
   Future<MissionItem> getMissionDetail(int id) async {
     final url = Uri.parse("$apiGetMissionDetail$id");
     print(url);
     http.Response response = await http.get(url);
-    
+
     return MissionItem.fromJson(jsonDecode(response.body));
   }
 
-  //e office
+//e office
 
 }

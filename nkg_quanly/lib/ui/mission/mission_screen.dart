@@ -46,7 +46,7 @@ class MissionScreen extends GetView {
                                     style: CustomTextStyle
                                         .robotow400s12TextStyle),
                                 Text(checkingNullNumberAndConvertToString(missionViewModel
-                                    .rxMissionStatistic.value.tong),
+                                    .   rxMissionStatisticTotal.value.tong),
                                   style: const TextStyle(
                                       color: kBlueButton, fontSize: 40),
                                 )
@@ -86,7 +86,7 @@ class MissionScreen extends GetView {
                                   const Text('Chưa xử lý',
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
-                                  Text(checkingNullNumberAndConvertToString(missionViewModel.rxMissionStatistic.value.chuaXuLy),
+                                  Text(checkingNullNumberAndConvertToString(missionViewModel.   rxMissionStatisticTotal.value.chuaXuLy),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20))
@@ -100,7 +100,7 @@ class MissionScreen extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    checkingNullNumberAndConvertToString(missionViewModel.rxMissionStatistic.value.dangThucHien
+                                    checkingNullNumberAndConvertToString(missionViewModel.   rxMissionStatisticTotal.value.dangThucHien
                                     ),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -116,7 +116,7 @@ class MissionScreen extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    checkingNullNumberAndConvertToString(missionViewModel.rxMissionStatistic.value.daHuy),
+                                    checkingNullNumberAndConvertToString(missionViewModel.   rxMissionStatisticTotal.value.daHuy),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),
@@ -131,7 +131,7 @@ class MissionScreen extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    checkingNullNumberAndConvertToString(missionViewModel.rxMissionStatistic.value.daTamDung),
+                                    checkingNullNumberAndConvertToString(missionViewModel.   rxMissionStatisticTotal.value.daTamDung),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),
@@ -146,7 +146,7 @@ class MissionScreen extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    checkingNullNumberAndConvertToString(missionViewModel.rxMissionStatistic.value.quaHan),
+                                    checkingNullNumberAndConvertToString(missionViewModel.   rxMissionStatisticTotal.value.quaHan),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),
@@ -161,7 +161,7 @@ class MissionScreen extends GetView {
                                       style: CustomTextStyle
                                           .robotow400s12TextStyle),
                                   Text(
-                                    checkingNullNumberAndConvertToString(missionViewModel.rxMissionStatistic.value.trongHan),
+                                    checkingNullNumberAndConvertToString(missionViewModel.   rxMissionStatisticTotal.value.trongHan),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),
@@ -207,7 +207,7 @@ class MissionScreen extends GetView {
           ),
           Obx(() => (missionViewModel.rxDocumentFilterModel.value.items?.isNotEmpty == true) ? chartItemForMission(
               missionViewModel.selectedChartButton.value,
-              missionViewModel) : SizedBox()),
+              missionViewModel) : const SizedBox()),
           Expanded(
             child: Align(
               alignment: Alignment.bottomCenter,

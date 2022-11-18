@@ -207,6 +207,8 @@ class ReportBeneficiaryScreen extends GetView {
                                                         .rxSelectedSchoolYearID
                                                         .value,
                                                   );
+                                                  analysisReportViewModel
+                                                      .changeStateLoadingData(true);
                                                 },
                                                 child: Image.asset(
                                                     "assets/icons/ic_refresh.png",
@@ -225,16 +227,7 @@ class ReportBeneficiaryScreen extends GetView {
                                       context),
                                 ],
                               )
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                    child: Center(
-                                        child: CircularProgressIndicator()),
-                                  )
-                                ],
-                              ))),
+                            : loadingWidget(context))),
               ),
             ),
           )

@@ -62,7 +62,7 @@ class MissionWidget extends GetView {
                             Text(
                               checkingNullNumberAndConvertToString(
                                   missionViewModel
-                                      .rxMissionStatistic.value.tong),
+                                      .rxMissionStatisticTotal.value.tong),
                               style: const TextStyle(
                                   color: kBlueButton, fontSize: 40),
                             )

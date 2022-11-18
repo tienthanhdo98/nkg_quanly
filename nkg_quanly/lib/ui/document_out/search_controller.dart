@@ -41,14 +41,14 @@ class SearchController extends GetxController {
   RxList<HelpDeskListItems> rxHelpdeskListItems = <HelpDeskListItems>[].obs;
   RxList<MenuListItem> rxListSearchHome = <MenuListItem>[].obs;
   Rx<bool> isLoading = false.obs;
-  void changeLoadingState(bool value)
-  {
+
+  void changeLoadingState(bool value) {
     isLoading.value = value;
   }
+
   void searchDataDocOut(String keyword) async {
     final url = Uri.parse(apiGetDocumentOut);
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
-    print('loading');
     http.Response response = await http.post(url, headers: headers, body: json);
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     listDataDocOut.value = res.items!;
@@ -57,41 +57,40 @@ class SearchController extends GetxController {
   void searchDataMission(String keyword) async {
     final url = Uri.parse(apiGetMission);
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
-    print('loading');
+
     http.Response response = await http.post(url, headers: headers, body: json);
     MissionModel res = MissionModel.fromJson(jsonDecode(response.body));
-  
+
     listDataMission.value = res.items!;
     changeLoadingState(false);
     //loadmore
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+         
         page++;
-        String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+        String json = '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
+            await http.post(url, headers: headers, body: json);
         res = MissionModel.fromJson(jsonDecode(response.body));
         listDataMission.addAll(res.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
 
   void searchDataRoomMeeting(String keyword) async {
     final url = Uri.parse(apiPostAllMeetingroomSearch);
-    print('loading');
+
     String json = '{"pageIndex":1,"pageSize":10,"keyword":"$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
-    print(res.totalRecords);
     listDataRoomMeeting.value = res.items!;
   }
 
   void searchDataCalendarWork(String keyword) async {
     final url = Uri.parse(apiPostCalendarWork);
-    print('loading');
+
     String json = '{"pageIndex":1,"pageSize":10,"keyword":"$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     CalendarWorkModel res =
@@ -102,32 +101,31 @@ class SearchController extends GetxController {
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+         
         page++;
-        String json = '{"pageIndex":1,"pageSize":10,"keyword":"$keyword"}';
+        String json = '{"pageIndex":$page,"pageSize":10,"keyword":"$keyword"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
+            await http.post(url, headers: headers, body: json);
         res = CalendarWorkModel.fromJson(jsonDecode(response.body));
         listDataCalendarWork.addAll(res.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
 
   void searchDataBirthDay(String keyword) async {
     final url = Uri.parse(apiPostBirthDay);
-    print('loading');
+
     String json = '{"pageIndex":1,"pageSize":10,"keyword":"$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
-    print(res.totalRecords);
     listDataBirthDay.value = res.items!;
   }
 
   void searchDataProfile(String keyword) async {
     final url = Uri.parse(apiGetProfile);
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
-    print('loading');
+
     http.Response response = await http.post(url, headers: headers, body: json);
     ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
     listDataProfile.value = res.items!;
@@ -136,27 +134,42 @@ class SearchController extends GetxController {
   void searchDataReport(String keyword) async {
     final url = Uri.parse(apiGetReportModel);
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
-    print('loading');
+
     http.Response response = await http.post(url, headers: headers, body: json);
-  
+
     ReportModel reportModel = ReportModel.fromJson(jsonDecode(response.body));
     listDataReport.value = reportModel.items!;
   }
 
   void searchDataProfileProc(String keyword) async {
     final url = Uri.parse(apiPostProfileProcedureModel);
-    String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+    String json = '{"currentPage":1,"pageSize":10,"tuKhoa" : "$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     ProfileProcedureModel reportModel =
         ProfileProcedureModel.fromJson(jsonDecode(response.body));
     listDataProfileProc.value = reportModel.items!;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+         
+        page++;
+        String json =
+            '{"currentPage":$page,"pageSize":10,"tuKhoa" : "$keyword"}';
+        http.Response response =
+            await http.post(url, headers: headers, body: json);
+        reportModel = ProfileProcedureModel.fromJson(jsonDecode(response.body));
+        listDataProfileProc.addAll(reportModel.items!);
+          
+      }
+    });
   }
 
   //doc non approve
   void searchData(String keyword) async {
     final url = Uri.parse(apiGetDocumentOut);
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
-    print('loading');
+
     http.Response response = await http.post(url, headers: headers, body: json);
     DocumentInModel res = DocumentInModel.fromJson(jsonDecode(response.body));
     listData.value = res.items!;
@@ -165,22 +178,25 @@ class SearchController extends GetxController {
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+         
         page++;
-        String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
+            await http.post(url, headers: headers, body: json);
         res = DocumentInModel.fromJson(jsonDecode(response.body));
         listData.addAll(res.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
+
   RxList<ProfileWorkListItems> rxProfileWorkList = <ProfileWorkListItems>[].obs;
+
   void searchProfileWork(String keyword) async {
     final url = Uri.parse(apiPostProfile);
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
-    print('loading');
+
     http.Response response = await http.post(url, headers: headers, body: json);
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!;
@@ -189,25 +205,25 @@ class SearchController extends GetxController {
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+         
         page++;
-        String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
+            await http.post(url, headers: headers, body: json);
         res = ProfileWorkModel.fromJson(jsonDecode(response.body));
         rxProfileWorkList.addAll(res.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
 
-
   Future<void> searchHelpdesk(String keyword) async {
     final url = Uri.parse(apiPostHelpDesk);
-    print('loading');
+
     String json = '{"currentPage":1,"pageSize":10,"subject" : "$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-  
+
     HelpdeskModel res = HelpdeskModel.fromJson(jsonDecode(response.body));
     rxHelpdeskListItems.value = res.items!;
     changeLoadingState(false);
@@ -215,66 +231,73 @@ class SearchController extends GetxController {
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+         
         page++;
-        String json = '{"currentPage":$page,"pageSize":10,"subject" : "$keyword"}';
+        String json =
+            '{"currentPage":$page,"pageSize":10,"subject" : "$keyword"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
+            await http.post(url, headers: headers, body: json);
         res = HelpdeskModel.fromJson(jsonDecode(response.body));
         rxHelpdeskListItems.addAll(res.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
+
   //booking car
   RxList<BookingCarListItems> rxBookingCarItems = <BookingCarListItems>[].obs;
+
   void searchBookingCar(String keyword) async {
     final url = Uri.parse(apiGetBookingCarListItems);
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
-    print('loading');
+
     http.Response response = await http.post(url, headers: headers, body: json);
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
-  
+
     rxBookingCarItems.value = res.items!;
     changeLoadingState(false);
     //loadmore
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+         
         page++;
-        String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
+            await http.post(url, headers: headers, body: json);
         res = BookingCarModel.fromJson(jsonDecode(response.body));
         rxBookingCarItems.addAll(res.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
+
   //booking room
   RxList<MeetingRoomItems> rxMeetingRoomItems = <MeetingRoomItems>[].obs;
+
   void searchRoomMeeting(String keyword) async {
     final url = Uri.parse(apiPostAllMeetingroomSearch);
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
-    print('loading');
+
     http.Response response = await http.post(url, headers: headers, body: json);
     MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
-  
+
     rxMeetingRoomItems.value = res.items!;
     changeLoadingState(false);
     //loadmore
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+         
         page++;
-        String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
+            await http.post(url, headers: headers, body: json);
         res = MeetingRoomModel.fromJson(jsonDecode(response.body));
         rxMeetingRoomItems.addAll(res.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
@@ -284,7 +307,7 @@ class SearchController extends GetxController {
 
   Future<void> searchOrganContact(String keyword) async {
     final url = Uri.parse(apiPostSearchListContactOrganization);
-    print('loading');
+
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     ContactModel contactModel =
@@ -294,7 +317,7 @@ class SearchController extends GetxController {
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+         
         page++;
         String json =
             '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
@@ -302,7 +325,7 @@ class SearchController extends GetxController {
             await http.post(url, headers: headers, body: json);
         contactModel = ContactModel.fromJson(jsonDecode(response.body));
         rxGroupContactListItems.addAll(contactModel.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
@@ -313,10 +336,10 @@ class SearchController extends GetxController {
 
   Future<void> searchIndividualContact(String keyword) async {
     var url = Uri.parse(apiSearhIndividualContact);
-    print('loading');
+
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-  
+
     ContactModel contactModel =
         ContactModel.fromJson(jsonDecode(response.body));
     rxIndividualContactListItems.value = contactModel.items!;
@@ -324,8 +347,6 @@ class SearchController extends GetxController {
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
-        print(keyword);
         page++;
         String json =
             '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
@@ -333,17 +354,18 @@ class SearchController extends GetxController {
             await http.post(url, headers: headers, body: json);
         contactModel = ContactModel.fromJson(jsonDecode(response.body));
         rxIndividualContactListItems.addAll(contactModel.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
+
   //workbook
   RxList<WorkBookListItems> rxWorkBookListItems = <WorkBookListItems>[].obs;
+
   Future<void> searchWorkbook(String keyword) async {
     final url = Uri.parse(apiPostWorkBookSearch);
-    print('loading');
-    String json =
-        '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
+
+    String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
     rxWorkBookListItems.value = res.items!;
@@ -351,84 +373,95 @@ class SearchController extends GetxController {
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore week");
         page++;
         String json =
             '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
+            await http.post(url, headers: headers, body: json);
         res = WorkbookModel.fromJson(jsonDecode(response.body));
         rxWorkBookListItems.addAll(res.items!);
-        print("loadmore w at $page");
+
       }
     });
   }
+
   //group workbook
-  RxList<GroupWorkBookItems> rxListGroupWorkBookItems = <GroupWorkBookItems>[].obs;
+  RxList<GroupWorkBookItems> rxListGroupWorkBookItems =
+      <GroupWorkBookItems>[].obs;
+
   Future<void> searchGroupWorkbook(String keyword) async {
     final url = Uri.parse(apiSearchGroupWorkBook);
-    print('loading');
+
     String json = '{"pageIndex":1,"pageSize":10, "keyword":"$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    GroupWorkBookModel groupWorkBookModel = GroupWorkBookModel.fromJson(jsonDecode(response.body));
+    GroupWorkBookModel groupWorkBookModel =
+        GroupWorkBookModel.fromJson(jsonDecode(response.body));
     rxListGroupWorkBookItems.value = groupWorkBookModel.items!;
     //loadmore
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+         
         page++;
         String json = '{"pageIndex":$page,"pageSize":10, "keyword":"$keyword"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
-        groupWorkBookModel =  GroupWorkBookModel.fromJson(jsonDecode(response.body));
+            await http.post(url, headers: headers, body: json);
+        groupWorkBookModel =
+            GroupWorkBookModel.fromJson(jsonDecode(response.body));
         rxListGroupWorkBookItems.addAll(groupWorkBookModel.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
+
   //profile
   RxList<ProfileItems> rxProfileItems = <ProfileItems>[].obs;
+
   Future<void> searchProfile(String keyword) async {
     final url = Uri.parse(apiGetProfile);
-    print('loading');
+
     String json = '{"pageIndex":1,"pageSize":10, "keyword":"$keyword"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-  
-    ProfileModel profileModel = ProfileModel.fromJson(jsonDecode(response.body));
+
+    ProfileModel profileModel =
+        ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileItems.value = profileModel.items!;
     changeLoadingState(false);
     //loadmore
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
+         
         page++;
         String json = '{"pageIndex":$page,"pageSize":10, "keyword":"$keyword"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
-        profileModel =  ProfileModel.fromJson(jsonDecode(response.body));
+            await http.post(url, headers: headers, body: json);
+        profileModel = ProfileModel.fromJson(jsonDecode(response.body));
         rxProfileItems.addAll(profileModel.items!);
-        print("loadmore day at $page");
+          
       }
     });
   }
+
   //guideline
   RxList<GuidelineListItems> rxListGuideline = <GuidelineListItems>[].obs;
+
   Future<void> searchGuideLine(String keyword) async {
-    var url = Uri.parse("http://123.31.31.237:6002/api/guidelines/search?Keyword=$keyword&PageIndex=1&PageSize=10");
+    var url = Uri.parse(
+        "http://123.31.31.237:6002/api/guidelines/search?Keyword=$keyword&PageIndex=1&PageSize=10");
     http.Response response = await http.get(url);
-    GuidelineModel groupWorkBookModel = GuidelineModel.fromJson(jsonDecode(response.body));
+    GuidelineModel groupWorkBookModel =
+        GuidelineModel.fromJson(jsonDecode(response.body));
     rxListGuideline.value = groupWorkBookModel.items!;
     //loadmore
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         page++;
-        url = Uri.parse("http://123.31.31.237:6002/api/guidelines/search?Keyword=$keyword&PageIndex=$page&PageSize=10");
-        http.Response response =
-        await http.get(url);
-        groupWorkBookModel =  GuidelineModel.fromJson(jsonDecode(response.body));
+        url = Uri.parse(
+            "http://123.31.31.237:6002/api/guidelines/search?Keyword=$keyword&PageIndex=$page&PageSize=10");
+        http.Response response = await http.get(url);
+        groupWorkBookModel = GuidelineModel.fromJson(jsonDecode(response.body));
         rxListGuideline.addAll(groupWorkBookModel.items!);
       }
     });

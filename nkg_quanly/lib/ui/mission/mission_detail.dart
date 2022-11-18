@@ -53,7 +53,7 @@ class MissionDetail extends GetView {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Người xử lý',
+                          const Text('Đơn vị xử lý',
                               style: CustomTextStyle.grayColorTextStyle),
                           Text(item.organizationName!,
                               style: Theme.of(context).textTheme.headline5)

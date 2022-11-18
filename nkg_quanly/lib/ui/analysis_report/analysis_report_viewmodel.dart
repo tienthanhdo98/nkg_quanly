@@ -314,10 +314,7 @@ class AnalysisReportViewModel extends GetxController {
     String schoolYearId,
   ) async {
     final url = Uri.parse(postChartInfrastructure);
-    print("typeSchool : $typeSchool");
-    print("areaId : $areaId");
-    print("provinceId : $provinceId");
-    print("schoolYearId : $schoolYearId");
+
     var jsonBody = """
        {
       "typeSchool": "$typeSchool",

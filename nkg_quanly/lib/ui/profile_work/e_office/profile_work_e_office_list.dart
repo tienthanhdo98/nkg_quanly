@@ -24,11 +24,7 @@ class ProfileWorkEOfficeList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,
-              ProfileWorkSearch(
-                  profileWorkViewModel
-              ),
-              context),
+              header!, ProfileWorkSearch(profileWorkViewModel), context),
           //date table
           headerTableDatePicker(context, profileWorkViewModel),
           //list
@@ -215,8 +211,7 @@ class ProfileWorkEOfficeList extends GetView {
                 thickness: 1,
               )),
           Expanded(
-            child: Obx (() => (profileWorkViewModel
-                .rxProfileWorkList.isNotEmpty)
+            child: Obx(() => (profileWorkViewModel.rxProfileWorkList.isNotEmpty)
                 ? ListView.builder(
                     itemCount: profileWorkViewModel.rxProfileWorkList.length,
                     itemBuilder: (context, index) {
@@ -233,7 +228,7 @@ class ProfileWorkEOfficeList extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: 400,
+                                    height: 340,
                                     child: DetailProfileWorkBottomSheet(
                                         index,
                                         profileWorkViewModel
@@ -325,7 +320,7 @@ class ProfileWorkItem extends StatelessWidget {
               child: textCodeStyle(docModel!.code!)),
           signWidgetProfileWork(docModel!),
           SizedBox(
-            height: 70,
+            height: 60,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
@@ -334,41 +329,12 @@ class ProfileWorkItem extends StatelessWidget {
               mainAxisSpacing: 0,
               crossAxisCount: 3,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Người xử lý',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.handler!,
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thời hạn',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.endDate!),
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày xử lý',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                          formatDate(docModel!.toDate!),
-                          style: Theme.of(context).textTheme.headline5,
-                        ))
-                  ],
-                ),
+                sheetDetailBottemItem(
+                    'Người xử lý', docModel!.handler!, context),
+                sheetDetailBottemItem(
+                    'Thời hạn', formatDate(docModel!.endDate!), context),
+                sheetDetailBottemItem(
+                    'Ngày xử lý', formatDate(docModel!.toDate!), context),
               ],
             ),
           ),
@@ -474,7 +440,7 @@ class DetailProfileWorkBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 30, 25, 25),
+      padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -491,107 +457,38 @@ class DetailProfileWorkBottomSheet extends StatelessWidget {
             color: kBlueButton,
           ),
           const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-          Expanded(
-            child: Text(
-              "${index! + 1}. ${docModel!.name}",
-              style: Theme.of(context).textTheme.headline3,
-            ),
-          ),
+          sheetButtonDetailTitleItem(index!,docModel!.name!,context),
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
               child: textCodeStyle(docModel!.code!)),
           signWidgetProfileWork(docModel!),
           SizedBox(
-            height: 130,
+            height: 110,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
-              primary: false,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              crossAxisSpacing: 10,
-              childAspectRatio: 3 / 2,
-              mainAxisSpacing: 0,
+              childAspectRatio: 3.5 / 2,
               crossAxisCount: 3,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Người xử lý',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.handler!,
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thời hạn',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.endDate!),
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày xử lý',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                          formatDate(docModel!.toDate!),
-                          style: Theme.of(context).textTheme.headline5,
-                        ))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày khởi tạo',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                          formatDate(docModel!.innitiatedDate!),
-                          style: Theme.of(context).textTheme.headline5,
-                        ))
-                  ],
-                ),
+                sheetDetailBottemItem(
+                    'Người xử lý', docModel!.handler!, context),
+                sheetDetailBottemItem(
+                    'Thời hạn', formatDate(docModel!.endDate!), context),
+                sheetDetailBottemItem(
+                    'Ngày xử lý', formatDate(docModel!.toDate!), context),
+                sheetDetailBottemItem('Ngày khởi tạo',
+                    formatDate(docModel!.innitiatedDate!), context),
               ],
             ),
           ),
           const Spacer(),
-          Align(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          // Get.to(() =>
-                          //     MissionDetail(id: int.parse(docModel!.id!)));
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Xem chi tiết')),
-                  ),
-                )
-              ],
-            ),
+          Row(
+            children: [
+              sheetButtonDetailButtonClose(),
+              sheetButtonDetailButtonOk(() async {
+
+              })
+            ],
           )
         ],
       ),
@@ -615,7 +512,8 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
           child: Column(children: [
             // Tất cả trang thai
-            FilterAllItem( "Tất cả trạng thái", 3,profileWorkViewModel!.mapAllFilter),
+            FilterAllItem(
+                "Tất cả trạng thái", 3, profileWorkViewModel!.mapAllFilter),
             const Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Divider(
@@ -629,9 +527,8 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
                   itemCount: listProfileWorkStatus.length,
                   itemBuilder: (context, index) {
                     var item = listProfileWorkStatus[index];
-                    return
-                      FilterItem(item,item,index,
-                          profileWorkViewModel!.mapStatus);
+                    return FilterItem(
+                        item, item, index, profileWorkViewModel!.mapStatus);
                   }),
             ),
 

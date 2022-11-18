@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../../model/booking_car/booking_car_model;.dart';
-import '../booking_car_list.dart';
 import '../booking_car_search.dart';
 import '../booking_car_viewmodel.dart';
 
@@ -15,7 +12,7 @@ class BookingEOfficeCarList extends GetView {
 
   final bookCarViewModel = Get.put(BookingCarViewModel());
 
-  BookingEOfficeCarList();
+  BookingEOfficeCarList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +119,7 @@ class BookingEOfficeCarList extends GetView {
           Expanded(
             child: Obx(() => (bookCarViewModel.rxBookingCarItems.isNotEmpty)
                 ? ListView.builder(
+                    controller: bookCarViewModel.controller,
                     itemCount: bookCarViewModel.rxBookingCarItems.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
@@ -209,7 +207,7 @@ class BookingEOfficeCarList extends GetView {
 }
 
 class BookCarEOfficeItem extends StatelessWidget {
-  BookCarEOfficeItem(this.index, this.docModel);
+  const BookCarEOfficeItem(this.index, this.docModel, {Key? key}) : super(key: key);
 
   final int? index;
   final BookingCarListItems? docModel;
@@ -241,7 +239,7 @@ class BookCarEOfficeItem extends StatelessWidget {
                 const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                 signWidget(docModel!),
                 SizedBox(
-                  height: 50,
+                  height: 60,
                   child: GridView.count(
                     physics: const NeverScrollableScrollPhysics(),
                     primary: false,
@@ -250,44 +248,13 @@ class BookCarEOfficeItem extends StatelessWidget {
                     mainAxisSpacing: 0,
                     crossAxisCount: 3,
                     children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Người đăng ký',
-                              style: CustomTextStyle.grayColorTextStyle),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                              child: Text(
-                                  checkingStringNull(docModel!.registerUser),
-                                  style: Theme.of(context).textTheme.headline5))
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Ngày đăng ký',
-                              style: CustomTextStyle.grayColorTextStyle),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                              child: Text(
-                                  formatDate(checkingStringNull(
-                                      docModel!.registrationDate)),
-                                  style: Theme.of(context).textTheme.headline5))
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Thời gian đăng ký',
-                              style: CustomTextStyle.grayColorTextStyle),
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                              child: Text(
-                                checkingStringNull(docModel!.registrationTime),
-                                style: Theme.of(context).textTheme.headline5,
-                              ))
-                        ],
-                      ),
+                      sheetDetailBottemItem('Người đăng ký',
+                          checkingStringNull(docModel!.registerUser), context),
+                      sheetDetailBottemItem('Ngày đăng ký',
+                        formatDate(
+                            checkingStringNull(docModel!.registrationDate)), context),
+                      sheetDetailBottemItem('Thời gian đăng ký',
+                          checkingStringNull(docModel!.registrationTime), context),
                     ],
                   ),
                 ),
@@ -314,7 +281,7 @@ class DetailBookingCarsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 30, 25, 25),
+      padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -330,83 +297,42 @@ class DetailBookingCarsBottomSheet extends StatelessWidget {
             thickness: 1,
             color: kBlueButton,
           ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "${index! + 1}. ${docModel!.code}",
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: priorityCarWidget(docModel!)),
+            ],
+          ),
           const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
           signWidget(docModel!),
           SizedBox(
-            height: 135,
+            height: 120,
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
               primary: false,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              crossAxisSpacing: 10,
-              childAspectRatio: 3 / 2,
-              mainAxisSpacing: 0,
+              childAspectRatio: 3.5 / 2,
               crossAxisCount: 3,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Người đăng ký',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(checkingStringNull(docModel!.registerUser),
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày đăng ký',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                            formatDate(
-                                checkingStringNull(docModel!.registrationDate)),
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thời gian đăng ký',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                          checkingStringNull(docModel!.registrationTime),
-                          style: Theme.of(context).textTheme.headline5,
-                        ))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ngày khởi tạo',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                          formatDate(
-                              checkingStringNull(docModel!.innitiatedDate)),
-                          style: Theme.of(context).textTheme.headline5,
-                        ))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Nội dung',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                          checkingStringNull(docModel!.content),
-                          style: Theme.of(context).textTheme.headline5,
-                        ))
-                  ],
-                ),
+                sheetDetailBottemItem('Người đăng ký',
+                    checkingStringNull(docModel!.registerUser), context),
+                sheetDetailBottemItem('Ngày đăng ký',
+                    formatDate(
+                        checkingStringNull(docModel!.registrationDate)), context),
+                sheetDetailBottemItem('Thời gian đăng ký',
+                    checkingStringNull(docModel!.registrationTime), context),
+                sheetDetailBottemItem('Ngày khởi tạo',
+                    formatDate(
+                        checkingStringNull(docModel!.innitiatedDate)), context),
+                sheetDetailBottemItem('Nội dung',
+                    checkingStringNull(docModel!.content), context),
               ],
             ),
           ),
@@ -431,6 +357,67 @@ class DetailBookingCarsBottomSheet extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+Widget priorityCarWidget(BookingCarListItems docModel) {
+  if (docModel.status == "Đã đặt lịch") {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+        child: Image.asset(
+          'assets/icons/ic_car_green.png',
+          height: 18,
+          width: 18,
+        ));
+  } else {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+        child: Image.asset(
+          'assets/icons/ic_car_yellow.png',
+          height: 18,
+          width: 18,
+        ));
+  }
+}
+
+Widget signWidget(BookingCarListItems docModel) {
+  if (docModel.status == "Đã đặt lịch") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(
+          docModel.status!,
+          style: const TextStyle(
+              color: kGreenSign,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: 'Roboto'),
+        )
+      ],
+    );
+  } else {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_not_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(
+          docModel.status!,
+          style: const TextStyle(
+              color: kOrangeSign,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              fontFamily: 'Roboto'),
+        )
+      ],
     );
   }
 }
