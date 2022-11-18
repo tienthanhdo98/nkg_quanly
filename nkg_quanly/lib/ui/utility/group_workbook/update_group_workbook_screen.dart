@@ -106,8 +106,7 @@ class UpdateGroupWorkBookScreen extends GetView {
                           dess = value;
                         },
                       ),
-
-                      const Spacer(),
+                      const Padding(padding: EdgeInsets.only(top:15)),
                       Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).cardColor,
@@ -168,7 +167,7 @@ class UpdateGroupWorkBookScreen extends GetView {
                                             RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(18.0),
                                         ))),
-                                    child: Text('Lưu')),
+                                    child: const Text('Lưu')),
                               ),
                             )
                           ],
