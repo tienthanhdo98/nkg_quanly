@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:nkg_quanly/const/style.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/const/widget.dart';
+import 'package:nkg_quanly/ui/search_screen.dart';
 import 'package:nkg_quanly/ui/theme/theme_data.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,8 +28,8 @@ class GuidelineList extends GetView {
           //header
           headerWidgetSearch(
               "Hướng dẫn sử dụng",
-              GuidelineSearch(
-                  guildlineViewModel),
+              SearchScreen(
+                hintText: 'Nhập tiêu đề tài liệu',typeScreen: type_guildline,),
               context),
 
           const Padding(
@@ -61,8 +62,7 @@ class GuidelineList extends GetView {
                       },
                       child: GuideItem(
                           index,
-                          item,
-                          guildlineViewModel),
+                          item,),
                     );
                   }) : loadingIcon())),
         ],
@@ -72,11 +72,10 @@ class GuidelineList extends GetView {
 }
 
 class GuideItem extends StatelessWidget {
-  GuideItem(this.index, this.docModel, this.guildlineViewModel);
+  GuideItem(this.index, this.docModel);
 
   final int? index;
   final GuidelineListItems? docModel;
-  final GuildlineViewModel? guildlineViewModel;
 
   @override
   Widget build(BuildContext context) {

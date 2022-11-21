@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../../const/const.dart';
+import '../../../const/widget.dart';
 import 'contact_organization_viewmodel.dart';
 import 'group_contacts_list.dart';
 
@@ -19,6 +20,7 @@ class OrganContactsSearch  extends GetView {
     return WillPopScope(
       onWillPop: () async {
         searchController.rxGroupContactListItems.clear();
+        searchController.isHaveData.value = false;
         return true;
       },
       child: Scaffold(
@@ -40,6 +42,7 @@ class OrganContactsSearch  extends GetView {
                       InkWell(
                         onTap: () {
                           searchController.rxGroupContactListItems.clear();
+                          searchController.isHaveData.value = false;
                           Get.back();
                         },
                         child: Image.asset(
@@ -76,6 +79,7 @@ class OrganContactsSearch  extends GetView {
                                     style: const TextStyle(color: Colors.black),
                                     onSubmitted: (value) {
                                       searchController.searchOrganContact(value);
+                                      searchController. changeLoadingState(true);
                                     },
                                     // onChanged: (value) {
                                     //    searchController.searchData(value);
@@ -96,36 +100,7 @@ class OrganContactsSearch  extends GetView {
                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: SizedBox(
                       height: 200,
-                      child: Obx(() => ListView.builder(
-                          controller: searchController.controller,
-                          itemCount: searchController.rxGroupContactListItems.length,
-                          itemBuilder: (context, index) {
-                            var item = searchController.rxGroupContactListItems[index];
-                            return InkWell(
-                              onTap: () {
-                                showModalBottomSheet<void>(
-                                  isScrollControlled: true,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(20),
-                                    ),
-                                  ),
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return SizedBox(
-                                        height: 400,
-                                        child: DetailOrganContactBottomSheet(
-                                            item, contactOrganizationViewModel));
-                                  },
-                                );
-                              },
-                              child: GroupContactsItem(
-                                  index,
-                                  item,
-                                  contactOrganizationViewModel),
-                            );
-                          })),
+                      child: Obx(() => searchResultOranContactWidget(searchController,contactOrganizationViewModel)),
                     ),
                   ),
                 ),
@@ -135,6 +110,51 @@ class OrganContactsSearch  extends GetView {
         ),
       ),
     );
+  }
+}
+Widget searchResultOranContactWidget(
+    SearchController searchController,ContactOrganizationViewModel contactOrganizationViewModel) {
+  if (searchController.isHaveData.value == true) {
+    if (searchController.isLoading.value == false) {
+      if (searchController.rxGroupContactListItems.isNotEmpty) {
+        return ListView.builder(
+            controller: searchController.controller,
+            itemCount: searchController.rxGroupContactListItems.length,
+            itemBuilder: (context, index) {
+              var item = searchController.rxGroupContactListItems[index];
+              return InkWell(
+                onTap: () {
+                  showModalBottomSheet<void>(
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SizedBox(
+                          height: 400,
+                          child: DetailOrganContactBottomSheet(
+                              item, contactOrganizationViewModel));
+                    },
+                  );
+                },
+                child: GroupContactsItem(
+                    index,
+                    item,
+                    contactOrganizationViewModel),
+              );
+            });
+      } else {
+        return noData();
+      }
+    } else {
+      return loadingIcon();
+    }
+  } else {
+    return const SizedBox();
   }
 }
 

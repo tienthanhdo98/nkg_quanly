@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/model/calendarwork_model/calendarwork_model.dart';
+import 'package:nkg_quanly/ui/search_screen.dart';
 
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
@@ -22,7 +23,7 @@ class CalendarWorkEOfficeScreen extends GetView {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //header
-            headerWidgetSearch("Lịch làm việc", CalendarWorkSearch(), context),
+            headerWidgetSearch("Lịch làm việc", SearchScreen(hintText: 'Nhập tên công việc',typeScreen: type_calendar_work), context),
             //date table
             headerTableDatePicker(context, calendarWorkController),
             //list work

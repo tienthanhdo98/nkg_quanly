@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../../const/const.dart';
+import '../../../const/widget.dart';
 import '../individual_contacts/individual_contacts_list.dart';
 import 'contact_individual_detail.dart';
 import 'contact_individual_viewmodel.dart';
@@ -20,6 +21,7 @@ class IndividualContactsSearch  extends GetView {
     return WillPopScope(
       onWillPop: () async {
         searchController.rxIndividualContactListItems.clear();
+        searchController.isHaveData.value = false;
         return true;
       },
       child: Scaffold(
@@ -41,6 +43,7 @@ class IndividualContactsSearch  extends GetView {
                       InkWell(
                         onTap: () {
                           searchController.rxIndividualContactListItems.clear();
+                          searchController.isHaveData.value = false;
                           Get.back();
                         },
                         child: Image.asset(
@@ -77,6 +80,7 @@ class IndividualContactsSearch  extends GetView {
                                     style: const TextStyle(color: Colors.black),
                                     onSubmitted: (value) {
                                       searchController.searchIndividualContact(value);
+                                      searchController. changeLoadingState(true);
                                     },
                                     // onChanged: (value) {
                                     //    searchController.searchData(value);
@@ -97,23 +101,7 @@ class IndividualContactsSearch  extends GetView {
                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: SizedBox(
                       height: 200,
-                      child: Obx(() => ListView.builder(
-                          controller: searchController.controller,
-                          itemCount: searchController.rxIndividualContactListItems.length,
-                          itemBuilder: (context, index) {
-                            var item = searchController.rxIndividualContactListItems[index];
-                            return InkWell(
-                              onTap: () {
-                                Get.to(() => ContactIndividualDetail(
-                                  id: item.id!,
-                                ));
-                              },
-                              child: IndividualContactsItem(
-                                  index,
-                                  item,
-                                  contactIndividualViewModel),
-                            );
-                          })),
+                      child: Obx(() => searchResultIndividualContactWidget(searchController,contactIndividualViewModel)),
                     ),
                   ),
                 ),
@@ -123,6 +111,38 @@ class IndividualContactsSearch  extends GetView {
         ),
       ),
     );
+  }
+}
+Widget searchResultIndividualContactWidget(
+    SearchController searchController,ContactIndividualViewModel contactIndividualViewModel) {
+  if (searchController.isHaveData.value == true) {
+    if (searchController.isLoading.value == false) {
+      if (searchController.rxIndividualContactListItems.isNotEmpty) {
+        return ListView.builder(
+            controller: searchController.controller,
+            itemCount: searchController.rxIndividualContactListItems.length,
+            itemBuilder: (context, index) {
+              var item = searchController.rxIndividualContactListItems[index];
+              return InkWell(
+                onTap: () {
+                  Get.to(() => ContactIndividualDetail(
+                    id: item.id!,
+                  ));
+                },
+                child: IndividualContactsItem(
+                    index,
+                    item,
+                    contactIndividualViewModel),
+              );
+            });
+      } else {
+        return noData();
+      }
+    } else {
+      return loadingIcon();
+    }
+  } else {
+    return const SizedBox();
   }
 }
 

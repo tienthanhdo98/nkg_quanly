@@ -62,7 +62,7 @@ class WorkBookList extends GetView {
                           context: context,
                           builder: (BuildContext context) {
                             return SizedBox(
-                                height: 600,
+                                height: 550,
                                 child: FilterWorkbookFilterBottomSheet(
                                     workBookViewModel));
                           },
@@ -125,7 +125,7 @@ class WorkBookList extends GetView {
 }
 
 class WorkBookItem extends StatelessWidget {
-  WorkBookItem(this.index, this.docModel, this.workBookViewModel);
+  const WorkBookItem(this.index, this.docModel, this.workBookViewModel, {Key? key}) : super(key: key);
 
   final int? index;
   final WorkBookListItems? docModel;
@@ -483,175 +483,172 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tatca
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Obx(() => (workBookViewModel!.mapAllFilter.containsKey(0))
-                  ? InkWell(
-                      onTap: () {
-                      checkboxFilterValue(
-                            false, 0, "", workBookViewModel!.mapAllFilter);
-                      },
-                      child: Row(
-                        children: [
-                          const Expanded(
-                            child: Text(
-                              'Tất cả công việc',
-                              style: TextStyle(
-                                  color: kBlueButton,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16),
-                            ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        child: Column(children: [
+          //tatca
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            child: Obx(() => (workBookViewModel!.mapAllFilter.containsKey(0))
+                ? InkWell(
+                    onTap: () {
+                    checkboxFilterValue(
+                          false, 0, "", workBookViewModel!.mapAllFilter);
+                    },
+                    child: Row(
+                      children: [
+                        const Expanded(
+                          child: Text(
+                            'Tất cả công việc',
+                            style: TextStyle(
+                                color: kBlueButton,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Roboto',
+                                fontSize: 16),
                           ),
-                          Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          )
-                        ],
-                      ),
-                    )
-                  : InkWell(
-                      onTap: () {
-                        checkboxFilterValue(
-                            true, 0, "", workBookViewModel!.mapAllFilter);
-                      },
-                      child: Row(
-                        children: [
-                          const Expanded(
-                            child: Text(
-                              'Tất cả công việc',
-                              style: TextStyle(
-                                  color: kBlueButton,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16),
-                            ),
-                          ),
-                          Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )
-                        ],
-                      ),
-                    )),
-            ),
-            // tat ca muc do
-            const Divider(
-              thickness: 1,
-              color: kBlueButton,
-            ),
-            // Tất cả van de trinh
-            FilterAllItem("Tất cả độ quan trọng", 1,workBookViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            //list van de trinh
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: listImportant.length,
-                  itemBuilder: (context, index) {
-                    var item = listImportant[index];
-                    return FilterItem(item,item,index,
-                        workBookViewModel!.mapImportantFilter);
-                  }),
-            ),
-            // Tất cả loai phieu trinh
-            FilterAllItem( "Tất cả trạng thái", 2,workBookViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: lisStatus.length,
-                  itemBuilder: (context, index) {
-                    var item = lisStatus[index];
-                    return FilterItem(item,item,index,
-                        workBookViewModel!.mapStatusFilter);
-                  }),
-            ),
-
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                            var status = "";
-                            var important = "";
-                            if (workBookViewModel!.mapAllFilter
-                                .containsKey(0)) {
-                              workBookViewModel!.postWorkBookByFilter(
-                                important,
-                                status,
-                              );
-                            } else {
-                              if (workBookViewModel!.mapAllFilter
-                                  .containsKey(2)) {
-                                important = "";
-                              } else {
-                                workBookViewModel!.mapImportantFilter
-                                    .forEach((key, value) {
-                                  important += value;
-                                });
-                              }
-                              if (workBookViewModel!.mapAllFilter
-                                  .containsKey(3)) {
-                                status = "";
-                              } else {
-                                workBookViewModel!.mapStatusFilter
-                                    .forEach((key, value) {
-                                  status += value;
-                                });
-                              }
-                            }
-                            print(important);
-                            print(status);
-                            workBookViewModel!.postWorkBookByFilter(
-                              important,
-                              status,
-                            );
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
+                        ),
+                        Image.asset(
+                          'assets/icons/ic_checkbox_active.png',
+                          width: 30,
+                          height: 30,
+                        )
+                      ],
                     ),
                   )
-                ],
+                : InkWell(
+                    onTap: () {
+                      checkboxFilterValue(
+                          true, 0, "", workBookViewModel!.mapAllFilter);
+                    },
+                    child: Row(
+                      children: [
+                        const Expanded(
+                          child: Text(
+                            'Tất cả công việc',
+                            style: TextStyle(
+                                color: kBlueButton,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Roboto',
+                                fontSize: 16),
+                          ),
+                        ),
+                        Image.asset(
+                          'assets/icons/ic_checkbox_unactive.png',
+                          width: 30,
+                          height: 30,
+                        )
+                      ],
+                    ),
+                  )),
+          ),
+          // tat ca muc do
+          const Divider(
+            thickness: 1,
+            color: kBlueButton,
+          ),
+          // Tất cả van de trinh
+          FilterAllItem("Tất cả độ quan trọng", 1,workBookViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          //list van de trinh
+          SizedBox(
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: listImportant.length,
+                itemBuilder: (context, index) {
+                  var item = listImportant[index];
+                  return FilterItem(item,item,index,
+                      workBookViewModel!.mapImportantFilter);
+                }),
+          ),
+          // Tất cả loai phieu trinh
+          FilterAllItem( "Tất cả trạng thái", 2,workBookViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: lisStatus.length,
+                itemBuilder: (context, index) {
+                  var item = lisStatus[index];
+                  return FilterItem(item,item,index,
+                      workBookViewModel!.mapStatusFilter);
+                }),
+          ),
+
+          //bottom button
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                        var status = "";
+                        var important = "";
+                        if (workBookViewModel!.mapAllFilter
+                            .containsKey(0)) {
+                          workBookViewModel!.postWorkBookByFilter(
+                            important,
+                            status,
+                          );
+                        } else {
+                          if (workBookViewModel!.mapAllFilter
+                              .containsKey(2)) {
+                            important = "";
+                          } else {
+                            workBookViewModel!.mapImportantFilter
+                                .forEach((key, value) {
+                              important += value;
+                            });
+                          }
+                          if (workBookViewModel!.mapAllFilter
+                              .containsKey(3)) {
+                            status = "";
+                          } else {
+                            workBookViewModel!.mapStatusFilter
+                                .forEach((key, value) {
+                              status += value;
+                            });
+                          }
+                        }
+                        print(important);
+                        print(status);
+                        workBookViewModel!.postWorkBookByFilter(
+                          important,
+                          status,
+                        );
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }

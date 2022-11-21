@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:nkg_quanly/ui/search_screen.dart';
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../../model/document/document_model.dart';
-import '../../document_nonapproved/document_nonapproved_search.dart';
 import '../../theme/theme_data.dart';
 import '../document_unprocess_viewmodel.dart';
 import 'document_in_search.dart';
@@ -26,7 +26,9 @@ class DocumentInEOfficeList extends GetView {
               //header
               headerWidgetSearch(
                   header!,
-                  DocumentInSearch(
+                  SearchScreen(
+                    hintText: 'Nhập mã văn bản, tên văn bản',
+                    typeScreen: type_document_in,
                   ),
                   context),
               //date table
@@ -480,7 +482,7 @@ class DocumentNonProcessListItem extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: sheetButtonDetailTitleItem(index!,docModel!.name!,context),
+                child: sheetButtonDetailTitleItem(docModel!.name!,context),
               ),
               Align(
                   alignment: Alignment.centerRight,
@@ -550,7 +552,7 @@ class DetailDocInBottomSheet extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child:   sheetButtonDetailTitleItem(index!,docModel!.name!,context),
+                child:   sheetButtonDetailTitleItem(docModel!.name!,context),
               ),
               Align(
                   alignment: Alignment.centerRight,

@@ -11,7 +11,6 @@ import '../../../model/misstion/mission_detail.dart';
 import '../../../model/profile_procedure_model/profile_procedure_model.dart';
 import '../../mission/mission_detail.dart';
 import '../../theme/theme_data.dart';
-import '../profiles_procedure_list.dart';
 import '../profiles_procedure_viewmodel.dart';
 
 

@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/const/const.dart';
+import 'package:nkg_quanly/ui/search_screen.dart';
 
 import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../../model/birthday_model/birthday_model.dart';
-import 'birthday_search.dart';
+
 import 'birthday_viewmodel.dart';
 
 class BirthDayScreen extends GetView {
@@ -25,7 +26,7 @@ class BirthDayScreen extends GetView {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //header
-            headerWidgetSearch('Sinh nhật', BirthDaySearch(), context),
+            headerWidgetSearch('Sinh nhật', SearchScreen(hintText: 'Nhập tên cán bộ, chức vụ',typeScreen: type_birthDay,), context),
             //date table
             headerTableDatePicker(context, birthDayViewModel),
             //

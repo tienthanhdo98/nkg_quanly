@@ -72,7 +72,7 @@ class DocumentOutWidget extends GetView {
                         },
                         child: DocOutListItem(
                             index,
-                            documentOutViewModel.rxDocumentOutItems[index],false));
+                            documentOutViewModel.rxDocumentOutItems[index]));
                   })
                   : noData())),
         ],

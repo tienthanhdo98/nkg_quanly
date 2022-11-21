@@ -59,9 +59,7 @@ class HomeSearch extends GetView {
                                     hintText: 'Nhập tên chức năng',
                                   ),
                                   style: const TextStyle(color: Colors.black),
-                                  onSubmitted: (value) {
-                                    searchController.searchDataReport(value);
-                                  },
+
                                   onChanged: (value) {
                                     //print(value);
                                     searchByKeywork(value, searchController);

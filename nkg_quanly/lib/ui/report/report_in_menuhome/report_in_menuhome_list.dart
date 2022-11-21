@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nkg_quanly/ui/report/report_search.dart';
 import 'package:nkg_quanly/ui/report/report_viewmodel.dart';
-import 'package:url_launcher/url_launcher.dart';
-
+import 'package:nkg_quanly/ui/search_screen.dart';
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
@@ -33,8 +31,9 @@ class ReportInMenuHomeList extends GetView {
             //header
             headerWidgetSearch(
                 "Báo cáo bộ",
-                ReportSearch(
-                  header: "Báo cáo bộ",
+                SearchScreen(
+                  hintText: 'Nhập mã báo cáo, tên báo cáo',
+                  typeScreen: type_report,
                 ),
                 context),
             Padding(
@@ -982,6 +981,86 @@ class FilterReportBottomSheet extends StatelessWidget {
           ]),
         ),
       ),
+    );
+  }
+}
+
+Widget signReportWidget(ReportListItems docModel) {
+  if (docModel.state == "Đúng hạn") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.state!, style: const TextStyle(color: kGreenSign))
+      ],
+    );
+  } else if (docModel.state == "Sớm hạn") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_still.png',
+          height: 14,
+          color: kLightBlueSign,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.state!, style: const TextStyle(color: kLightBlueSign))
+      ],
+    );
+  } else if (docModel.state == "Chưa đến hạn") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_still.png',
+          height: 14,
+          color: kRedChart,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.state!, style: const TextStyle(color: kRedChart))
+      ],
+    );
+  } else if (docModel.state == "Quá hạn") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_outdate.png',
+          height: 14,
+          color: kRedChart,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.state!, style: const TextStyle(color: kRedChart))
+      ],
+    );
+  } else if (docModel.state == "Đã tiếp nhận") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_still.png',
+          height: 14,
+          color: kGreenSign,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.state!, style: const TextStyle(color: kGreenSign))
+      ],
+    );
+  } else {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_not_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(docModel.status!, style: const TextStyle(color: kOrangeSign))
+      ],
     );
   }
 }

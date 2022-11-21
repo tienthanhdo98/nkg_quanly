@@ -6,6 +6,7 @@ import 'package:nkg_quanly/ui/workbook/workbook_list.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
 import '../../../const/const.dart';
+import '../../const/widget.dart';
 
 
 
@@ -21,6 +22,7 @@ class WorkbookSearch  extends GetView {
     return WillPopScope(
       onWillPop: () async {
         searchController.rxWorkBookListItems.clear();
+        searchController.isHaveData.value = false;
         return true;
       },
       child: Scaffold(
@@ -42,6 +44,7 @@ class WorkbookSearch  extends GetView {
                       InkWell(
                         onTap: () {
                           searchController.rxWorkBookListItems.clear();
+                          searchController.isHaveData.value = false;
                           Get.back();
                         },
                         child: Image.asset(
@@ -78,10 +81,8 @@ class WorkbookSearch  extends GetView {
                                     style: const TextStyle(color: Colors.black),
                                     onSubmitted: (value) {
                                       searchController.searchWorkbook(value);
+                                      searchController.changeLoadingState(true);
                                     },
-                                    // onChanged: (value) {
-                                    //    searchController.searchData(value);
-                                    // },
                                   ),
                                 )
                               ],
@@ -98,23 +99,7 @@ class WorkbookSearch  extends GetView {
                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: SizedBox(
                       height: 200,
-                      child: Obx(() => ListView.builder(
-                          controller: searchController.controller,
-                          itemCount: searchController.rxWorkBookListItems.length,
-                          itemBuilder: (context, index) {
-                            var item = searchController.rxWorkBookListItems[index];
-                            return InkWell(
-                              onTap: () {
-                                Get.to(() => WorkBookDetail(
-                                  id: item.id!,
-                                ));
-                              },
-                              child: WorkBookItem(
-                                  index,
-                                  item,
-                                  workBookViewModel),
-                            );
-                          })),
+                      child: Obx(() => searchResultWorkBookWidget(searchController,searchController.rxWorkBookListItems,workBookViewModel)),
                     ),
                   ),
                 ),
@@ -124,6 +109,39 @@ class WorkbookSearch  extends GetView {
         ),
       ),
     );
+  }
+}
+
+Widget searchResultWorkBookWidget(
+    SearchController searchController, List list,WorkBookViewModel workBookViewModel) {
+  if (searchController.isHaveData.value == true) {
+    if (searchController.isLoading.value == false) {
+      if (list.isNotEmpty) {
+        return ListView.builder(
+            controller: searchController.controller,
+            itemCount: searchController.rxWorkBookListItems.length,
+            itemBuilder: (context, index) {
+              var item = searchController.rxWorkBookListItems[index];
+              return InkWell(
+                onTap: () {
+                  Get.to(() => WorkBookDetail(
+                    id: item.id!,
+                  ));
+                },
+                child: WorkBookItem(
+                    index,
+                    item,
+                    workBookViewModel),
+              );
+            });
+      } else {
+        return noData();
+      }
+    } else {
+      return loadingIcon();
+    }
+  } else {
+    return const SizedBox();
   }
 }
 

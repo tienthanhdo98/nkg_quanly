@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/report/report_detail.dart';
-
+import 'package:nkg_quanly/ui/report/report_in_menuhome/report_in_menuhome_list.dart';
 
 import '../../const/const.dart';
 import '../../const/style.dart';
@@ -91,16 +91,16 @@ class ReportSearch extends GetView {
                   child: SizedBox(
                     height: 200,
                     child: Obx(() => ListView.builder(
+                        controller: searchController.controller,
                         itemCount: searchController.listDataReport.length,
                         itemBuilder: (context, index) {
+                          var item = searchController.listDataReport[index];
                           return InkWell(
-                              onTap: () {
-                                Get.to(() => ReportDetail(
-                                    id: searchController
-                                        .listDataReport[index].id!));
+                              onTap: () async {
+                                await launchUrl(Uri.parse(
+                                    "http://123.31.31.237:6002/api/reportapiclient/download-report?id=1"));
                               },
-                              child: ReportItem(index,
-                                  searchController.listDataReport[index]));
+                              child: ReportItemInMenu(index, item));
                         })),
                   ),
                 ),
@@ -112,168 +112,17 @@ class ReportSearch extends GetView {
     );
   }
 }
-class ReportItem extends StatelessWidget {
-  ReportItem(this.index, this.docModel);
-
-  final int? index;
-  final ReportListItems? docModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "${index! + 1}. ${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: priorityWidget(docModel!)),
-            ],
-          ),
-          signReportWidget(docModel!),
-          SizedBox(
-            height: 100,
-            child: GridView.count(
-              physics: const NeverScrollableScrollPhysics(),
-              primary: false,
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 0,
-              crossAxisCount: 3,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Đơn vị thực hiện',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(docModel!.departmentHandle!,
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Thời hạn',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.endDate!),
-                            style: Theme.of(context).textTheme.headline5))
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('File đính kèm',
-                        style: CustomTextStyle.grayColorTextStyle),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(
-                          docModel!.detail!,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: blueTextStyle,
-                        ))
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const Divider(
-            thickness: 1.5,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-
-Widget signReportWidget(ReportListItems docModel) {
-  if (docModel.state == "Đúng hạn") {
-    return Row(
-      children: [
-        Image.asset(
-          'assets/icons/ic_sign.png',
-          height: 14,
-          width: 14,
-        ),
-        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: kGreenSign))
-      ],
-    );
-  } else if (docModel.state == "Sớm hạn") {
-    return Row(
-      children: [
-        Image.asset(
-          'assets/icons/ic_still.png',
-          height: 14,
-          color: kLightBlueSign,
-          width: 14,
-        ),
-        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: kLightBlueSign))
-      ],
-    );
-  } else if (docModel.state == "Chưa đến hạn") {
-    return Row(
-      children: [
-        Image.asset(
-          'assets/icons/ic_still.png',
-          height: 14,
-          color: kRedChart,
-          width: 14,
-        ),
-        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: kRedChart))
-      ],
-    );
-  } else if (docModel.state == "Quá hạn") {
-    return Row(
-      children: [
-        Image.asset(
-          'assets/icons/ic_outdate.png',
-          height: 14,
-          color: kRedChart,
-          width: 14,
-        ),
-        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: kRedChart))
-      ],
-    );
-  } else if (docModel.state == "Đã tiếp nhận") {
-    return Row(
-      children: [
-        Image.asset(
-          'assets/icons/ic_still.png',
-          height: 14,
-          color: kGreenSign,
-          width: 14,
-        ),
-        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.state!, style: const TextStyle(color: kGreenSign))
-      ],
-    );
-  } else {
-    return Row(
-      children: [
-        Image.asset(
-          'assets/icons/ic_not_sign.png',
-          height: 14,
-          width: 14,
-        ),
-        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-        Text(docModel.status!, style: const TextStyle(color: kOrangeSign))
-      ],
-    );
-  }
+Widget listReportResultWidget(SearchController searchController, List list) {
+  return ListView.builder(
+      controller: searchController.controller,
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        var item = list[index];
+        return InkWell(
+            onTap: () async {
+              await launchUrl(Uri.parse(
+                  "http://123.31.31.237:6002/api/reportapiclient/download-report?id=1"));
+            },
+            child: ReportItemInMenu(index, item));
+      });
 }

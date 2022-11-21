@@ -5,6 +5,7 @@ import '../../../const/style.dart';
 import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../../model/misstion/mission_detail.dart';
+import '../../search_screen.dart';
 import '../../theme/theme_data.dart';
 import '../mission_detail.dart';
 import '../mission_viewmodel.dart';
@@ -26,8 +27,9 @@ class MissionEOfficeList extends GetView {
           //header
           headerWidgetSearch(
               "Nhiệm vụ",
-              MissionSearch(
-                header: "Nhiệm vụ",
+              SearchScreen(
+                hintText: 'Nhập mã nhiệm vụ, tên nhiệm vụ',
+                typeScreen: type_mission,
               ),
               context),
           //date table
@@ -223,11 +225,11 @@ class MissionEOfficeList extends GetView {
                                   return SizedBox(
                                       height: 340,
                                       child: DetailMissionBottomSheet(
-                                          index, item));
+                                           item));
                                 },
                               );
                             },
-                            child: MissionListItem(index, item));
+                            child: MissionListItem(item));
                       })
                   : noData())),
           //bottom
@@ -295,9 +297,9 @@ class MissionEOfficeList extends GetView {
 }
 
 class MissionListItem extends StatelessWidget {
-  const MissionListItem(this.index, this.docModel, {Key? key}) : super(key: key);
+  const MissionListItem(this.docModel, {Key? key}) : super(key: key);
 
-  final int? index;
+
   final MissionItem? docModel;
 
   @override
@@ -309,7 +311,7 @@ class MissionListItem extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: sheetButtonDetailTitleItem(index!,docModel!.name!,context),
+                child: sheetButtonDetailTitleItem(docModel!.name!,context),
               ),
               Align(
                   alignment: Alignment.centerRight,
@@ -406,9 +408,8 @@ Widget signWidgetMission(MissionItem docModel) {
 }
 
 class DetailMissionBottomSheet extends StatelessWidget {
-  const DetailMissionBottomSheet(this.index, this.docModel, {Key? key})
+  const DetailMissionBottomSheet( this.docModel, {Key? key})
       : super(key: key);
-  final int? index;
   final MissionItem? docModel;
 
   @override
@@ -434,7 +435,7 @@ class DetailMissionBottomSheet extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: sheetButtonDetailTitleItem(index!,docModel!.name!,context),
+                child: sheetButtonDetailTitleItem(docModel!.name!,context),
               ),
               Align(
                   alignment: Alignment.centerRight,

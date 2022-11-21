@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nkg_quanly/ui/search_screen.dart';
 
 import '../../const/const.dart';
 import '../../const/style.dart';
@@ -29,8 +30,9 @@ class DocumentOutList extends GetView {
           //header
           headerWidgetSearch(
               "Văn bản đi chờ phát hành",
-              DocumenOutSearch(
-                header:   "Văn bản đi chờ phát hành",
+              SearchScreen(
+                hintText: 'Nhập mã văn bản, tên văn bản',
+                typeScreen: type_document_out,
               ),
               context),
           //date table
@@ -96,8 +98,7 @@ class DocumentOutList extends GetView {
                             },
                             child: DocOutListItem(
                                 index,
-                                documentOutViewModel.rxDocumentOutItems[index],
-                                false));
+                                documentOutViewModel.rxDocumentOutItems[index]));
                       })
                   : noData())),
           //bottom
@@ -160,11 +161,11 @@ class DocumentOutList extends GetView {
 }
 
 class DocOutListItem extends StatelessWidget {
-  DocOutListItem(this.index, this.docModel, this.isNonApprove);
+  DocOutListItem(this.index, this.docModel);
 
   final int? index;
   final DocumentOutItems? docModel;
-  final bool? isNonApprove;
+
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
-import '../profile_procedure_/profiles_procedure_list.dart';
+import '../profile_procedure_/profile_procedure_home/profiles_procedure_list_withstatistic.dart';
 import '../profile_procedure_/profiles_procedure_screen.dart';
 import '../profile_procedure_/profiles_procedure_viewmodel.dart';
 import '../theme/theme_data.dart';
@@ -44,7 +44,7 @@ class ProcedureProfileWidget extends GetView {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            ProfilesProcedureList()));
+                                            ProfilesProcedureListWithStatistic()));
                               },
                               child: const Align(
                                   alignment: Alignment.topRight,

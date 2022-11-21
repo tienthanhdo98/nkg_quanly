@@ -99,20 +99,7 @@ class HelpdeskSearch  extends GetView {
                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: SizedBox(
                       height: 200,
-                      child: Obx(() => (searchController.isLoading.value == false) ? ListView.builder(
-                           controller: searchController.controller,
-                          itemCount: searchController.rxHelpdeskListItems.length,
-                          itemBuilder: (context, index) {
-                            var item = searchController.rxHelpdeskListItems[index];
-                            return  InkWell(
-                                onTap: () {
-                                  // Get.to(() => DocumentnonapprovedDetail(
-                                  //     id: helpdeskViewModel
-                                  //         .rxHelpdeskListItems[index].id!));
-                                },
-                                child: HelpDeskListItem(
-                                    index, searchController.rxHelpdeskListItems[index], helpdeskViewModel));
-                          }): loadingIcon()),
+                      child: Obx(() => searchResultHelpDeskWidget(searchController,helpdeskViewModel)),
                     ),
                   ),
                 ),
@@ -124,5 +111,36 @@ class HelpdeskSearch  extends GetView {
     );
   }
 }
+
+Widget searchResultHelpDeskWidget(
+    SearchController searchController,HelpdeskViewModel helpdeskViewModel) {
+  if (searchController.isHaveData.value == true) {
+    if (searchController.isLoading.value == false) {
+      if (searchController.rxHelpdeskListItems.isNotEmpty) {
+        return ListView.builder(
+            controller: searchController.controller,
+            itemCount: searchController.rxHelpdeskListItems.length,
+            itemBuilder: (context, index) {
+              var item = searchController.rxHelpdeskListItems[index];
+              return  InkWell(
+                  onTap: () {
+                    // Get.to(() => DocumentnonapprovedDetail(
+                    //     id: helpdeskViewModel
+                    //         .rxHelpdeskListItems[index].id!));
+                  },
+                  child: HelpDeskListItem(
+                      index,item, helpdeskViewModel));
+            });
+      } else {
+        return noData();
+      }
+    } else {
+      return loadingIcon();
+    }
+  } else {
+    return const SizedBox();
+  }
+}
+
 
 

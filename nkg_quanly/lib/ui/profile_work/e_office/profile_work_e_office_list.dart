@@ -5,6 +5,7 @@ import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
 import '../../../const/widget.dart';
+import '../../search_screen.dart';
 import '../../theme/theme_data.dart';
 import '../profile_work_search.dart';
 import '../profile_work_viewmodel.dart';
@@ -24,7 +25,10 @@ class ProfileWorkEOfficeList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!, ProfileWorkSearch(profileWorkViewModel), context),
+              header!,  SearchScreen(
+            hintText: 'Nhập mã hồ sơ',
+            typeScreen: type_profile_work,
+          ),context),
           //date table
           headerTableDatePicker(context, profileWorkViewModel),
           //list
@@ -457,7 +461,7 @@ class DetailProfileWorkBottomSheet extends StatelessWidget {
             color: kBlueButton,
           ),
           const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-          sheetButtonDetailTitleItem(index!,docModel!.name!,context),
+          sheetButtonDetailTitleItem(docModel!.name!,context),
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
               child: textCodeStyle(docModel!.code!)),

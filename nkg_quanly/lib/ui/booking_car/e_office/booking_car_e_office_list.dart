@@ -4,6 +4,7 @@ import '../../../const/style.dart';
 import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../../model/booking_car/booking_car_model;.dart';
+import '../../search_screen.dart';
 import '../booking_car_search.dart';
 import '../booking_car_viewmodel.dart';
 
@@ -23,8 +24,9 @@ class BookingEOfficeCarList extends GetView {
           //header
           headerWidgetSearch(
               "Bố trí và điều động xe ô tô",
-              BookingCarSearch(
-                  bookCarViewModel
+              SearchScreen(
+                  hintText: 'Nhập số xe',
+                 typeScreen: type_cars ,
               ),
               context),
           //date table

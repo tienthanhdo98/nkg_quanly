@@ -4,6 +4,7 @@ import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 import 'package:nkg_quanly/ui/utility/group_workbook/workbook_detail.dart';
 
 import '../../../const/const.dart';
+import '../../../const/widget.dart';
 import 'group_workbook_list.dart';
 import 'group_workbook_viewmodel.dart';
 
@@ -21,6 +22,7 @@ class GroupWorkbookSearch  extends GetView {
     return WillPopScope(
       onWillPop: () async {
         searchController.rxListGroupWorkBookItems.clear();
+        searchController.isHaveData.value = false;
         return true;
       },
       child: Scaffold(
@@ -42,6 +44,7 @@ class GroupWorkbookSearch  extends GetView {
                       InkWell(
                         onTap: () {
                           searchController.rxListGroupWorkBookItems.clear();
+                          searchController.isHaveData.value = false;
                           Get.back();
                         },
                         child: Image.asset(
@@ -78,6 +81,8 @@ class GroupWorkbookSearch  extends GetView {
                                     style: const TextStyle(color: Colors.black),
                                     onSubmitted: (value) {
                                       searchController.searchGroupWorkbook(value);
+                                      searchController.changeLoadingState(true);
+
                                     },
                                     // onChanged: (value) {
                                     //    searchController.searchData(value);
@@ -98,23 +103,7 @@ class GroupWorkbookSearch  extends GetView {
                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: SizedBox(
                       height: 200,
-                      child: Obx(() => ListView.builder(
-                          controller: searchController.controller,
-                          itemCount: searchController.rxListGroupWorkBookItems.length,
-                          itemBuilder: (context, index) {
-                            var item = searchController.rxListGroupWorkBookItems[index];
-                            return InkWell(
-                              onTap: (){
-                                Get.to(() => GroupWorkBookDetail(
-                                  id: item.id!,
-                                ));
-                              },
-                              child: GroupWorkBookItem(
-                                  index,
-                                  item,
-                                  groupWorkBookViewModel),
-                            );
-                          })),
+                      child: Obx(() => searchResultGroupWorkBooktWidget(searchController,groupWorkBookViewModel)),
                     ),
                   ),
                 ),
@@ -124,6 +113,38 @@ class GroupWorkbookSearch  extends GetView {
         ),
       ),
     );
+  }
+}
+Widget searchResultGroupWorkBooktWidget(
+    SearchController searchController,GroupWorkBookViewModel groupWorkBookViewModel) {
+  if (searchController.isHaveData.value == true) {
+    if (searchController.isLoading.value == false) {
+      if (searchController.rxListGroupWorkBookItems.isNotEmpty) {
+        return ListView.builder(
+            controller: searchController.controller,
+            itemCount: searchController.rxListGroupWorkBookItems.length,
+            itemBuilder: (context, index) {
+              var item = searchController.rxListGroupWorkBookItems[index];
+              return InkWell(
+                onTap: (){
+                  Get.to(() => GroupWorkBookDetail(
+                    id: item.id!,
+                  ));
+                },
+                child: GroupWorkBookItem(
+                    index,
+                    item,
+                    groupWorkBookViewModel),
+              );
+            });
+      } else {
+        return noData();
+      }
+    } else {
+      return loadingIcon();
+    }
+  } else {
+    return const SizedBox();
   }
 }
 

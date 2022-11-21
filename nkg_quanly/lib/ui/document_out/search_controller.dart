@@ -41,9 +41,23 @@ class SearchController extends GetxController {
   RxList<HelpDeskListItems> rxHelpdeskListItems = <HelpDeskListItems>[].obs;
   RxList<MenuListItem> rxListSearchHome = <MenuListItem>[].obs;
   Rx<bool> isLoading = false.obs;
+  Rx<bool> isHaveData = false.obs;
 
   void changeLoadingState(bool value) {
     isLoading.value = value;
+  }
+  void clearData(){
+    listDataMission.clear();
+    rxBookingCarItems.clear();
+    rxMeetingRoomItems.clear();
+    rxProfileWorkList.clear();
+    rxProfileItems.clear();
+    listData.clear();
+    listDataCalendarWork.clear();
+    listDataProfileProc.clear();
+    listDataReport.clear();
+    rxWorkBookListItems.clear();
+    isHaveData.value = false;
   }
 
   void searchDataDocOut(String keyword) async {
@@ -52,6 +66,21 @@ class SearchController extends GetxController {
     http.Response response = await http.post(url, headers: headers, body: json);
     DocumentOutModel res = DocumentOutModel.fromJson(jsonDecode(response.body));
     listDataDocOut.value = res.items!;
+    changeLoadingState(false);
+    isHaveData.value = true;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = DocumentOutModel.fromJson(jsonDecode(response.body));
+        listDataDocOut.addAll(res.items!);
+
+      }
+    });
   }
 
   void searchDataMission(String keyword) async {
@@ -63,18 +92,19 @@ class SearchController extends GetxController {
 
     listDataMission.value = res.items!;
     changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-         
+
         page++;
         String json = '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
         http.Response response =
             await http.post(url, headers: headers, body: json);
         res = MissionModel.fromJson(jsonDecode(response.body));
         listDataMission.addAll(res.items!);
-          
+
       }
     });
   }
@@ -97,6 +127,7 @@ class SearchController extends GetxController {
         CalendarWorkModel.fromJson(jsonDecode(response.body));
     listDataCalendarWork.value = res.items!;
     changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -120,6 +151,21 @@ class SearchController extends GetxController {
     http.Response response = await http.post(url, headers: headers, body: json);
     BirthDayModel res = BirthDayModel.fromJson(jsonDecode(response.body));
     listDataBirthDay.value = res.items!;
+    changeLoadingState(false);
+    isHaveData.value = true;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"keyword":"$keyword"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        res = BirthDayModel.fromJson(jsonDecode(response.body));
+        listDataBirthDay.addAll(res.items!);
+
+      }
+    });
   }
 
   void searchDataProfile(String keyword) async {
@@ -139,6 +185,22 @@ class SearchController extends GetxController {
 
     ReportModel reportModel = ReportModel.fromJson(jsonDecode(response.body));
     listDataReport.value = reportModel.items!;
+    changeLoadingState(false);
+    isHaveData.value = true;
+    //loadmore
+    var page = 1;
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"keyword" : "$keyword"}';
+        http.Response response =
+        await http.post(url, headers: headers, body: json);
+        reportModel = ReportModel.fromJson(jsonDecode(response.body));
+        listDataReport.addAll(reportModel.items!);
+
+      }
+    });
   }
 
   void searchDataProfileProc(String keyword) async {
@@ -148,11 +210,13 @@ class SearchController extends GetxController {
     ProfileProcedureModel reportModel =
         ProfileProcedureModel.fromJson(jsonDecode(response.body));
     listDataProfileProc.value = reportModel.items!;
+    changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
-         
+
         page++;
         String json =
             '{"currentPage":$page,"pageSize":10,"tuKhoa" : "$keyword"}';
@@ -160,7 +224,7 @@ class SearchController extends GetxController {
             await http.post(url, headers: headers, body: json);
         reportModel = ProfileProcedureModel.fromJson(jsonDecode(response.body));
         listDataProfileProc.addAll(reportModel.items!);
-          
+
       }
     });
   }
@@ -174,6 +238,7 @@ class SearchController extends GetxController {
     DocumentInModel res = DocumentInModel.fromJson(jsonDecode(response.body));
     listData.value = res.items!;
     changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -201,6 +266,7 @@ class SearchController extends GetxController {
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!;
     changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -227,6 +293,7 @@ class SearchController extends GetxController {
     HelpdeskModel res = HelpdeskModel.fromJson(jsonDecode(response.body));
     rxHelpdeskListItems.value = res.items!;
     changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -249,6 +316,7 @@ class SearchController extends GetxController {
 
   void searchBookingCar(String keyword) async {
     final url = Uri.parse(apiGetBookingCarListItems);
+    print(keyword);
     String json = '{"pageIndex":1,"pageSize":10,"keyword" : "$keyword"}';
 
     http.Response response = await http.post(url, headers: headers, body: json);
@@ -256,6 +324,7 @@ class SearchController extends GetxController {
 
     rxBookingCarItems.value = res.items!;
     changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -285,6 +354,7 @@ class SearchController extends GetxController {
 
     rxMeetingRoomItems.value = res.items!;
     changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -313,6 +383,8 @@ class SearchController extends GetxController {
     ContactModel contactModel =
         ContactModel.fromJson(jsonDecode(response.body));
     rxGroupContactListItems.value = contactModel.items!;
+    changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -343,6 +415,8 @@ class SearchController extends GetxController {
     ContactModel contactModel =
         ContactModel.fromJson(jsonDecode(response.body));
     rxIndividualContactListItems.value = contactModel.items!;
+    changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -369,6 +443,8 @@ class SearchController extends GetxController {
     http.Response response = await http.post(url, headers: headers, body: json);
     WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
     rxWorkBookListItems.value = res.items!;
+    changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -397,6 +473,8 @@ class SearchController extends GetxController {
     GroupWorkBookModel groupWorkBookModel =
         GroupWorkBookModel.fromJson(jsonDecode(response.body));
     rxListGroupWorkBookItems.value = groupWorkBookModel.items!;
+    changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -427,6 +505,7 @@ class SearchController extends GetxController {
         ProfileModel.fromJson(jsonDecode(response.body));
     rxProfileItems.value = profileModel.items!;
     changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {
@@ -453,6 +532,8 @@ class SearchController extends GetxController {
     GuidelineModel groupWorkBookModel =
         GuidelineModel.fromJson(jsonDecode(response.body));
     rxListGuideline.value = groupWorkBookModel.items!;
+    changeLoadingState(false);
+    isHaveData.value = true;
     //loadmore
     var page = 1;
     controller.addListener(() async {

@@ -7,8 +7,9 @@ import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
 import '../../../const/widget.dart';
+import '../../search_screen.dart';
 import '../../theme/theme_data.dart';
-import '../profile_search.dart';
+
 
 class ProfileEOfficeList extends GetView {
   final profileViewModel = Get.put(ProfileViewModel());
@@ -20,225 +21,234 @@ class ProfileEOfficeList extends GetView {
     return Scaffold(
       body: SafeArea(
           child: Column(
-        children: [
-          //header
-          headerWidgetSearch(
-              "Hồ sơ trình", ProfileSearch(profileViewModel), context),
-          //date table
-          headerTableDatePicker(context, profileViewModel),
-          //list
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Column(
-              children: [
-                Row(
+            children: [
+              //header
+              headerWidgetSearch(
+                  "Hồ sơ trình", SearchScreen(hintText:'Nhập mã hồ sơ, tên hồ sơ', typeScreen:type_profile), context),
+              //date table
+              headerTableDatePicker(context, profileViewModel),
+              //list
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: Column(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Text(
-                          'Tất cả hồ sơ trình',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (menuController.rxShowStatistic.value == true) {
-                              menuController.changeStateShowStatistic(false);
-                            } else {
-                              menuController.changeStateShowStatistic(true);
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                            child: Row(children: [
-                              Obx(() => (profileViewModel
-                                          .rxProfileStatistic.value.hoSoTrinh !=
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Tất cả hồ sơ trình',
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .headline5,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                if (menuController.rxShowStatistic.value ==
+                                    true) {
+                                  menuController.changeStateShowStatistic(
+                                      false);
+                                } else {
+                                  menuController.changeStateShowStatistic(true);
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                child: Row(children: [
+                                  Obx(() =>
+                                  (profileViewModel
+                                      .rxProfileStatistic.value.hoSoTrinh !=
                                       null)
-                                  ? Text(
+                                      ? Text(
                                       profileViewModel
                                           .rxProfileStatistic.value.hoSoTrinh
                                           .toString(),
                                       style: textBlueCountTotalStyle)
-                                  : const Text("0",
+                                      : const Text("0",
                                       style: textBlueCountTotalStyle)),
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                  child: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: kBlueButton,
-                                  ))
-                            ]),
-                          ),
+                                  const Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                      child: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: kBlueButton,
+                                      ))
+                                ]),
+                              ),
+                            ),
+                          ],
                         ),
+                        const Spacer(),
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: ElevatedButton(
+                              style: elevetedButtonWhite,
+                              onPressed: () {
+                                Get.to(() =>
+                                    ProfileFilterScreen(profileViewModel));
+                              },
+                              child: const Text(
+                                'Bộ lọc',
+                                style:
+                                TextStyle(color: kVioletButton, fontSize: 14),
+                              ),
+                            ))
                       ],
                     ),
-                    const Spacer(),
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          style: elevetedButtonWhite,
-                          onPressed: () {
-                            Get.to(() => ProfileFilterScreen(profileViewModel));
-                          },
-                          child: const Text(
-                            'Bộ lọc',
-                            style:
-                                TextStyle(color: kVioletButton, fontSize: 14),
-                          ),
-                        ))
+                    Obx(() =>
+                    (menuController.rxShowStatistic.value == true)
+                        ? Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: SizedBox(
+                        child: GridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 4,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 28,
+                                  child: Text("Tạo mới",
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                    checkingNullNumberAndConvertToString(
+                                        profileViewModel
+                                            .rxProfileStatistic.value.taoMoi),
+                                    style: textBlackCountEofficeStyle)
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 28,
+                                  child: Text("Chờ duyệt",
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                    checkingNullNumberAndConvertToString(
+                                        profileViewModel.rxProfileStatistic
+                                            .value.choDuyet),
+                                    style: textBlackCountEofficeStyle)
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 28,
+                                  child: Text("Ý kiến đơn vị",
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                    checkingNullNumberAndConvertToString(
+                                        profileViewModel.rxProfileStatistic
+                                            .value.yKienDonVi),
+                                    style: textBlackCountEofficeStyle)
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 28,
+                                  child: Text("Đã thu hồi",
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                    checkingNullNumberAndConvertToString(
+                                        profileViewModel.rxProfileStatistic
+                                            .value.daThuHoi),
+                                    style: textBlackCountEofficeStyle)
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 28,
+                                  child: Text("Đã duyệt",
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                    checkingNullNumberAndConvertToString(
+                                        profileViewModel.rxProfileStatistic
+                                            .value.daDuyet),
+                                    style: textBlackCountEofficeStyle)
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 28,
+                                  child: Text("Chờ tiếp nhận",
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                    checkingNullNumberAndConvertToString(
+                                        profileViewModel.rxProfileStatistic
+                                            .value.choTiepNhan),
+                                    style: textBlackCountEofficeStyle)
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 28,
+                                  child: Text("Đã tiếp nhận",
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                    checkingNullNumberAndConvertToString(
+                                        profileViewModel.rxProfileStatistic
+                                            .value.daTiepNhan),
+                                    style: textBlackCountEofficeStyle)
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 28,
+                                  child: Text("Hồ sơ trình chờ phát hành",
+                                      style: CustomTextStyle
+                                          .robotow400s12TextStyle),
+                                ),
+                                Text(
+                                    checkingNullNumberAndConvertToString(
+                                        profileViewModel.rxProfileStatistic
+                                            .value.hoSoTrinhChoPhatHanh),
+                                    style: textBlackCountEofficeStyle)
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                        : const SizedBox.shrink())
                   ],
                 ),
-                Obx(() => (menuController.rxShowStatistic.value == true)
-                    ? Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: SizedBox(
-                          child: GridView.count(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            crossAxisCount: 4,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Tạo mới",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          profileViewModel
-                                              .rxProfileStatistic.value.taoMoi),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Chờ duyệt",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          profileViewModel.rxProfileStatistic
-                                              .value.choDuyet),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Ý kiến đơn vị",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          profileViewModel.rxProfileStatistic
-                                              .value.yKienDonVi),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Đã thu hồi",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          profileViewModel.rxProfileStatistic
-                                              .value.daThuHoi),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Đã duyệt",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          profileViewModel.rxProfileStatistic
-                                              .value.daDuyet),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Chờ tiếp nhận",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          profileViewModel.rxProfileStatistic
-                                              .value.choTiepNhan),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Đã tiếp nhận",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          profileViewModel.rxProfileStatistic
-                                              .value.daTiepNhan),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 28,
-                                    child: Text("Hồ sơ trình chờ phát hành",
-                                        style: CustomTextStyle
-                                            .robotow400s12TextStyle),
-                                  ),
-                                  Text(
-                                      checkingNullNumberAndConvertToString(
-                                          profileViewModel.rxProfileStatistic
-                                              .value.hoSoTrinhChoPhatHanh),
-                                      style: textBlackCountEofficeStyle)
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : const SizedBox.shrink())
-              ],
-            ),
-          ),
-          const Divider(
-            thickness: 1,
-          ),
-          Expanded(
-              child: Obx(() => (profileViewModel.rxProfileItems.isNotEmpty)
-                  ? ListView.builder(
+              ),
+              const Divider(
+                thickness: 1,
+              ),
+              Expanded(
+                  child: Obx(() =>
+                  (profileViewModel.rxProfileItems.isNotEmpty)
+                      ? ListView.builder(
                       controller: profileViewModel.controller,
                       itemCount: profileViewModel.rxProfileItems.length,
                       itemBuilder: (context, index) {
@@ -266,59 +276,65 @@ class ProfileEOfficeList extends GetView {
                             child: ProfileListItem(
                                 index, profileViewModel.rxProfileItems[index]));
                       })
-                  : const Text("Không có hồ sơ trình nào"))),
-          //bottom
-          Obx(() => Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    border: Border(
-                        top:
-                            BorderSide(color: Theme.of(context).dividerColor))),
-                height: 50,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          menuController.rxSelectedDay.value = DateTime.now();
-                          profileViewModel.onSelectDay(DateTime.now());
-                          profileViewModel.swtichBottomButton(0);
-                        },
-                        child: bottomDateButton("Ngày",
-                            profileViewModel.selectedBottomButton.value, 0),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          DateTime dateTo =
+                      : const Text("Không có hồ sơ trình nào"))),
+              //bottom
+              Obx(() =>
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Theme
+                            .of(context)
+                            .cardColor,
+                        border: Border(
+                            top:
+                            BorderSide(color: Theme
+                                .of(context)
+                                .dividerColor))),
+                    height: 50,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              menuController.rxSelectedDay.value = DateTime
+                                  .now();
+                              profileViewModel.onSelectDay(DateTime.now());
+                              profileViewModel.swtichBottomButton(0);
+                            },
+                            child: bottomDateButton("Ngày",
+                                profileViewModel.selectedBottomButton.value, 0),
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              DateTime dateTo =
                               dateNow.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateTo);
-                          profileViewModel.postProfileByWeek(
-                              strdateFrom, strdateTo);
-                          profileViewModel.swtichBottomButton(1);
-                        },
-                        child: bottomDateButton("Tuần",
-                            profileViewModel.selectedBottomButton.value, 1),
-                      ),
+                              String strdateFrom = formatDateToString(dateNow);
+                              String strdateTo = formatDateToString(dateTo);
+                              profileViewModel.postProfileByWeek(
+                                  strdateFrom, strdateTo);
+                              profileViewModel.swtichBottomButton(1);
+                            },
+                            child: bottomDateButton("Tuần",
+                                profileViewModel.selectedBottomButton.value, 1),
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              profileViewModel.postProfileByMonth();
+                              profileViewModel.swtichBottomButton(2);
+                            },
+                            child: bottomDateButton("Tháng",
+                                profileViewModel.selectedBottomButton.value, 2),
+                          ),
+                        )
+                      ],
                     ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          profileViewModel.postProfileByMonth();
-                          profileViewModel.swtichBottomButton(2);
-                        },
-                        child: bottomDateButton("Tháng",
-                            profileViewModel.selectedBottomButton.value, 2),
-                      ),
-                    )
-                  ],
-                ),
-              ))
-        ],
-      )),
+                  ))
+            ],
+          )),
     );
   }
 }
@@ -341,7 +357,10 @@ class ProfileListItem extends StatelessWidget {
               Expanded(
                 child: Text(
                   "${index! + 1}. ${docModel!.name}",
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline3,
                 ),
               ),
               Align(
@@ -371,7 +390,10 @@ class ProfileListItem extends StatelessWidget {
                     const Padding(padding: EdgeInsets.only(top: 5)),
                     Text(
                       docModel!.handler!,
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headline5,
                     )
                   ],
                 ),
@@ -382,7 +404,10 @@ class ProfileListItem extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     const Padding(padding: EdgeInsets.only(top: 5)),
                     Text(formatDate(docModel!.deadline!),
-                        style: Theme.of(context).textTheme.headline5)
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline5)
                   ],
                 ),
                 Column(
@@ -392,7 +417,10 @@ class ProfileListItem extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     const Padding(padding: EdgeInsets.only(top: 5)),
                     Text(formatDate(docModel!.dateProcess!),
-                        style: Theme.of(context).textTheme.headline5)
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline5)
                   ],
                 ),
               ],
@@ -438,7 +466,7 @@ class DetailProfileBottomSheet extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: sheetButtonDetailTitleItem(index!,docModel!.name!,context),
+                child: sheetButtonDetailTitleItem(docModel!.name!, context),
               ),
               const Padding(padding: EdgeInsets.only(right: 5)),
               Align(
@@ -478,7 +506,8 @@ class DetailProfileBottomSheet extends StatelessWidget {
               sheetButtonDetailButtonClose(),
               sheetButtonDetailButtonOk(() async {
                 var urlFile =
-                    "http://123.31.31.237:6002/api/profiles/download-profile?id=${docModel!.id}";
+                    "http://123.31.31.237:6002/api/profiles/download-profile?id=${docModel!
+                    .id}";
                 if (await canLaunchUrl(Uri.parse(urlFile))) {
                   launchUrl(
                     Uri.parse(urlFile),

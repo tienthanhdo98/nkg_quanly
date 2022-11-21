@@ -1856,15 +1856,159 @@ class FilterSemesterBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+        child: Column(children: [
+          FilterAllItem(
+              "Tất cả học kì", 1, analysisReportViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: analysisReportViewModel!.rxListSemester.length,
+                itemBuilder: (context, index) {
+                  var item = analysisReportViewModel!.rxListSemester[index];
+                  return FilterItem(item.name!, item.id!, index,
+                      analysisReportViewModel!.mapSemesterFilter);
+                }),
+          ),
+          //bottom button
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (analysisReportViewModel!.mapAllFilter
+                            .containsKey(1)) {
+                          analysisReportViewModel!.changeValueSelectedFilter(
+                              analysisReportViewModel!.rxSelectedSemester,
+                              "Tất cả học kỳ");
+                          analysisReportViewModel!.changeValueSelectedFilter(
+                              analysisReportViewModel!.rxSelectedSemesterId,
+                              "");
+                        } else {
+                          var semester = "";
+                          var semesterName = "";
+                          var semesterID = "";
+                          analysisReportViewModel!.mapSemesterFilter
+                              .forEach((key, value) {
+                            semester += value;
+                          });
+                          var listId = semester.split(";");
+                          for (var id in listId) {
+                            for (var item
+                                in analysisReportViewModel!.rxListSemester) {
+                              if (item.id == id) {
+                                semesterName += "${item.name!};";
+                                semesterID += "${item.id!};";
+                              }
+                            }
+                          }
+                          if (semesterName != "") {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedSemester,
+                                semesterName.substring(
+                                    0, semesterName.length - 1));
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedSemesterId,
+                                semesterID.substring(0, semesterID.length - 1));
+                          } else {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedSemester,
+                                "");
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedSemesterId,
+                                "");
+                          }
+                        }
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
+      ),
+    );
+  }
+}
+
+class FilterProvinceBottomSheet extends StatelessWidget {
+  const FilterProvinceBottomSheet(this.analysisReportViewModel, {Key? key})
+      : super(key: key);
+  final AnalysisReportViewModel? analysisReportViewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        return true;
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
           child: Column(children: [
             //search
-
-            //tat ca don vi
-            FilterAllItem(
-                "Tất cả học kì", 1, analysisReportViewModel!.mapAllFilter),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: kgray, borderRadius: BorderRadius.circular(10)),
+                height: 50,
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    const Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Icon(Icons.search)),
+                    SizedBox(
+                      width: 200,
+                      child: TextField(
+                        maxLines: 1,
+                        textCapitalization: TextCapitalization.sentences,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(color: kDarkGray, fontSize: 14),
+                          hintText: 'Tìm kiếm tỉnh. thành phố...',
+                        ),
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 14),
+                        onSubmitted: (value) {
+                          analysisReportViewModel!
+                              .searchProvinceInFilterList(value);
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            //tat ca linh cuc
+            FilterAllItem("Tất cả tỉnh, thành phố", 2,
+                analysisReportViewModel!.mapAllFilter),
             const Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Divider(
@@ -1872,17 +2016,21 @@ class FilterSemesterBottomSheet extends StatelessWidget {
                   color: kgray,
                 )),
             SizedBox(
-              child: ListView.builder(
+              height: MediaQuery.of(context).size.height * 0.52,
+              child: Obx(() => ListView.builder(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
-                  itemCount: analysisReportViewModel!.rxListSemester.length,
+                  itemCount:
+                      analysisReportViewModel!.rxListProvinceByRegion.length,
                   itemBuilder: (context, index) {
-                    var item = analysisReportViewModel!.rxListSemester[index];
+                    var item =
+                        analysisReportViewModel!.rxListProvinceByRegion[index];
                     return FilterItem(item.name!, item.id!, index,
-                        analysisReportViewModel!.mapSemesterFilter);
-                  }),
+                        analysisReportViewModel!.mapProvinceFilter);
+                  })),
             ),
             //bottom button
+            const Spacer(),
             Align(
               alignment: Alignment.bottomCenter,
               child: Row(
@@ -1892,7 +2040,8 @@ class FilterSemesterBottomSheet extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       child: ElevatedButton(
                           onPressed: () {
-                            Get.back();
+                            // Get.back();
+                            Navigator.of(context).maybePop();
                           },
                           style: buttonFilterWhite,
                           child: const Text('Đóng')),
@@ -1904,58 +2053,52 @@ class FilterSemesterBottomSheet extends StatelessWidget {
                       child: ElevatedButton(
                           onPressed: () {
                             if (analysisReportViewModel!.mapAllFilter
-                                .containsKey(1)) {
+                                .containsKey(2)) {
+                              changeValueSelectedFilter(
+                                  analysisReportViewModel!.rxSelectedProvince,
+                                  "Tất cả lĩnh vực");
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                       analysisReportViewModel!
-                                          .rxSelectedSemester,
-                                      "Tất cả học kỳ");
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedSemesterId,
+                                          .rxSelectedProvinceId,
                                       "");
                             } else {
-                              var semester = "";
-                              var semesterName = "";
-                              var semesterID = "";
-                              analysisReportViewModel!.mapSemesterFilter
+                              var province = "";
+                              var provinceName = "";
+                              var provinceId = "";
+                              analysisReportViewModel!.mapProvinceFilter
                                   .forEach((key, value) {
-                                semester += value;
+                                province += value;
                               });
-                              var listId = semester.split(";");
+                              var listId = province.split(";");
                               for (var id in listId) {
                                 for (var item in analysisReportViewModel!
-                                    .rxListSemester) {
+                                    .rxListProvinceByRegion) {
                                   if (item.id == id) {
-                                    semesterName += "${item.name!};";
-                                    semesterID += "${item.id!};";
+                                    provinceName += "${item.name!};";
+                                    provinceId += "${item.id!};";
                                   }
                                 }
                               }
-                              if (semesterName != "") {
+                              if (provinceName != "") {
+                                changeValueSelectedFilter(
+                                    analysisReportViewModel!.rxSelectedProvince,
+                                    provinceName.substring(
+                                        0, provinceName.length - 1));
                                 analysisReportViewModel!
                                     .changeValueSelectedFilter(
                                         analysisReportViewModel!
-                                            .rxSelectedSemester,
-                                        semesterName.substring(
-                                            0, semesterName.length - 1));
-                                analysisReportViewModel!
-                                    .changeValueSelectedFilter(
-                                        analysisReportViewModel!
-                                            .rxSelectedSemesterId,
-                                        semesterID.substring(
-                                            0, semesterID.length - 1));
+                                            .rxSelectedProvinceId,
+                                        provinceId.substring(
+                                            0, provinceId.length - 1));
                               } else {
+                                changeValueSelectedFilter(
+                                    analysisReportViewModel!.rxSelectedProvince,
+                                    "");
                                 analysisReportViewModel!
                                     .changeValueSelectedFilter(
                                         analysisReportViewModel!
-                                            .rxSelectedSemester,
-                                        "");
-                                analysisReportViewModel!
-                                    .changeValueSelectedFilter(
-                                        analysisReportViewModel!
-                                            .rxSelectedSemesterId,
+                                            .rxSelectedProvinceId,
                                         "");
                               }
                             }
@@ -1975,172 +2118,6 @@ class FilterSemesterBottomSheet extends StatelessWidget {
   }
 }
 
-class FilterProvinceBottomSheet extends StatelessWidget {
-  const FilterProvinceBottomSheet(this.analysisReportViewModel, {Key? key})
-      : super(key: key);
-  final AnalysisReportViewModel? analysisReportViewModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return true;
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-            child: Column(children: [
-              //search
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: kgray, borderRadius: BorderRadius.circular(10)),
-                  height: 50,
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: Icon(Icons.search)),
-                      SizedBox(
-                        width: 200,
-                        child: TextField(
-                          maxLines: 1,
-                          textCapitalization: TextCapitalization.sentences,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintStyle:
-                                TextStyle(color: kDarkGray, fontSize: 14),
-                            hintText: 'Tìm kiếm tỉnh. thành phố...',
-                          ),
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
-                          onSubmitted: (value) {
-                            analysisReportViewModel!
-                                .searchProvinceInFilterList(value);
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              //tat ca linh cuc
-              FilterAllItem("Tất cả tỉnh, thành phố", 2,
-                  analysisReportViewModel!.mapAllFilter),
-              const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: Divider(
-                    thickness: 1,
-                    color: kgray,
-                  )),
-              SizedBox(
-                child: Obx(() => ListView.builder(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount:
-                        analysisReportViewModel!.rxListProvinceByRegion.length,
-                    itemBuilder: (context, index) {
-                      var item = analysisReportViewModel!
-                          .rxListProvinceByRegion[index];
-                      return FilterItem(item.name!, item.id!, index,
-                          analysisReportViewModel!.mapProvinceFilter);
-                    })),
-              ),
-              //bottom button
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: ElevatedButton(
-                            onPressed: () {
-                              // Get.back();
-                              Navigator.of(context).maybePop();
-                            },
-                            style: buttonFilterWhite,
-                            child: const Text('Đóng')),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: ElevatedButton(
-                            onPressed: () {
-                              if (analysisReportViewModel!.mapAllFilter
-                                  .containsKey(2)) {
-                                changeValueSelectedFilter(
-                                    analysisReportViewModel!.rxSelectedProvince,
-                                    "Tất cả lĩnh vực");
-                                analysisReportViewModel!
-                                    .changeValueSelectedFilter(
-                                        analysisReportViewModel!
-                                            .rxSelectedProvinceId,
-                                        "");
-                              } else {
-                                var province = "";
-                                var provinceName = "";
-                                var provinceId = "";
-                                analysisReportViewModel!.mapProvinceFilter
-                                    .forEach((key, value) {
-                                  province += value;
-                                });
-                                var listId = province.split(";");
-                                for (var id in listId) {
-                                  for (var item in analysisReportViewModel!
-                                      .rxListProvinceByRegion) {
-                                    if (item.id == id) {
-                                      provinceName += "${item.name!};";
-                                      provinceId += "${item.id!};";
-                                    }
-                                  }
-                                }
-                                if (provinceName != "") {
-                                  changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedProvince,
-                                      provinceName.substring(
-                                          0, provinceName.length - 1));
-                                  analysisReportViewModel!
-                                      .changeValueSelectedFilter(
-                                          analysisReportViewModel!
-                                              .rxSelectedProvinceId,
-                                          provinceId.substring(
-                                              0, provinceId.length - 1));
-                                } else {
-                                  changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedProvince,
-                                      "");
-                                  analysisReportViewModel!
-                                      .changeValueSelectedFilter(
-                                          analysisReportViewModel!
-                                              .rxSelectedProvinceId,
-                                          "");
-                                }
-                              }
-                              Get.back();
-                            },
-                            style: buttonFilterBlue,
-                            child: const Text('Áp dụng')),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ]),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class FilterRegionBottomSheet extends StatelessWidget {
   const FilterRegionBottomSheet(this.analysisReportViewModel, this.typeScreen,
       {Key? key})
@@ -2152,149 +2129,158 @@ class FilterRegionBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Column(children: [
-        //search
-        Padding(
-          padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
-          child: Container(
-            decoration: BoxDecoration(
-                color: kgray, borderRadius: BorderRadius.circular(10)),
-            height: 50,
-            width: double.infinity,
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+        child: Column(children: [
+          //search
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 20),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: kgray, borderRadius: BorderRadius.circular(10)),
+              height: 50,
+              width: double.infinity,
+              child: Row(
+                children: [
+                  const Padding(
+                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Icon(Icons.search)),
+                  SizedBox(
+                    width: 200,
+                    child: TextField(
+                      maxLines: 1,
+                      textCapitalization: TextCapitalization.sentences,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: kDarkGray, fontSize: 14),
+                        hintText: 'Tìm kiếm khu vực...',
+                      ),
+                      style: const TextStyle(color: Colors.black, fontSize: 14),
+                      onSubmitted: (value) {
+                        analysisReportViewModel!
+                            .searchRegionInFilterList(value);
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          //tat ca trang thai
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount: analysisReportViewModel!.rxListRegion.length,
+                itemBuilder: (context, index) {
+                  var item = analysisReportViewModel!.rxListRegion[index];
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Obx(() => (index ==
+                              analysisReportViewModel!.rxIndexItemRegion.value)
+                          ? InkWell(
+                              onTap: () {
+                                analysisReportViewModel!
+                                    .changeValueIndexRegion(index);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(15),
+                                width: MediaQuery.of(context).size.width,
+                                color: kLightBlue,
+                                child: Text(
+                                  item.name!,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'Roboto'),
+                                ),
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                analysisReportViewModel!
+                                    .changeValueIndexRegion(index);
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(15),
+                                child: Text(
+                                  item.name!,
+                                  style: CustomTextStyle.roboto400s16TextStyle,
+                                ),
+                              ),
+                            )),
+                    ],
+                  );
+                }),
+          ),
+          //bottom button
+          const Spacer(),
+          Align(
             child: Row(
               children: [
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Icon(Icons.search)),
-                SizedBox(
-                  width: 200,
-                  child: TextField(
-                    maxLines: 1,
-                    textCapitalization: TextCapitalization.sentences,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(color: kDarkGray, fontSize: 14),
-                      hintText: 'Tìm kiếm khu vực...',
-                    ),
-                    style: const TextStyle(color: Colors.black, fontSize: 14),
-                    onSubmitted: (value) {
-                      analysisReportViewModel!.searchRegionInFilterList(value);
-                    },
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        style: buttonFilterWhite,
+                        child: const Text('Đóng')),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          var region = "";
+                          var regionID = "";
+                          analysisReportViewModel!.rxListRegion
+                              .asMap()
+                              .forEach((index, value) {
+                            if (index ==
+                                analysisReportViewModel!
+                                    .rxIndexItemRegion.value) {
+                              region = value.name!;
+                              regionID = value.id!;
+                              analysisReportViewModel!
+                                  .changeValueSelectedFilter(
+                                      analysisReportViewModel!
+                                          .rxSelectedRegionID,
+                                      regionID);
+                              analysisReportViewModel!
+                                  .getListProvinceByRegion();
+                            }
+                          });
+                          changeValueSelectedFilter(
+                              analysisReportViewModel!.rxSelectedRegion,
+                              region);
+                          if (typeScreen == TYPE_SCREEN_EDUCATION) {
+                            analysisReportViewModel!.getUniversalEducationChart(
+                                analysisReportViewModel!
+                                    .rxSelectedRegionID.value,
+                                analysisReportViewModel!
+                                    .rxSelectedSchoolYearID.value);
+                            analysisReportViewModel!.scrollToTop();
+                            Get.back();
+                          } else {
+                            Get.back();
+                          }
+                        },
+                        style: buttonFilterBlue,
+                        child: const Text('Áp dụng')),
                   ),
                 )
               ],
             ),
-          ),
-        ),
-        //tat ca trang thai
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.4,
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              itemCount: analysisReportViewModel!.rxListRegion.length,
-              itemBuilder: (context, index) {
-                var item = analysisReportViewModel!.rxListRegion[index];
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Obx(() => (index ==
-                            analysisReportViewModel!.rxIndexItemRegion.value)
-                        ? InkWell(
-                            onTap: () {
-                              analysisReportViewModel!
-                                  .changeValueIndexRegion(index);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(15),
-                              width: MediaQuery.of(context).size.width,
-                              color: kLightBlue,
-                              child: Text(
-                                item.name!,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Roboto'),
-                              ),
-                            ),
-                          )
-                        : InkWell(
-                            onTap: () {
-                              analysisReportViewModel!
-                                  .changeValueIndexRegion(index);
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(15),
-                              child: Text(
-                                item.name!,
-                                style: CustomTextStyle.roboto400s16TextStyle,
-                              ),
-                            ),
-                          )),
-                  ],
-                );
-              }),
-        ),
-        //bottom button
-        const Spacer(),
-        Align(
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      style: buttonFilterWhite,
-                      child: const Text('Đóng')),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        var region = "";
-                        var regionID = "";
-                        analysisReportViewModel!.rxListRegion
-                            .asMap()
-                            .forEach((index, value) {
-                          if (index ==
-                              analysisReportViewModel!
-                                  .rxIndexItemRegion.value) {
-                            region = value.name!;
-                            regionID = value.id!;
-                            analysisReportViewModel!.changeValueSelectedFilter(
-                                analysisReportViewModel!.rxSelectedRegionID,
-                                regionID);
-                            analysisReportViewModel!.getListProvinceByRegion();
-                          }
-                        });
-                        changeValueSelectedFilter(
-                            analysisReportViewModel!.rxSelectedRegion, region);
-                        if (typeScreen == TYPE_SCREEN_EDUCATION) {
-                          analysisReportViewModel!.getUniversalEducationChart(
-                              analysisReportViewModel!.rxSelectedRegionID.value,
-                              analysisReportViewModel!
-                                  .rxSelectedSchoolYearID.value);
-                          analysisReportViewModel!.scrollToTop();
-                          Get.back();
-                        } else {
-                          Get.back();
-                        }
-                      },
-                      style: buttonFilterBlue,
-                      child: const Text('Áp dụng')),
-                ),
-              )
-            ],
-          ),
-        )
-      ]),
+          )
+        ]),
+      ),
     );
   }
 }
@@ -2315,7 +2301,7 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
           child: Column(children: [
             //search
             Padding(
@@ -2409,9 +2395,9 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                                   "Tất cả năm học");
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
-                                  analysisReportViewModel!
-                                      .rxSelectedSchoolYearID,
-                                  "");
+                                      analysisReportViewModel!
+                                          .rxSelectedSchoolYearID,
+                                      "");
                             } else {
                               analysisReportViewModel!.mapSchoolYearFilter
                                   .forEach((key, value) {
@@ -2450,7 +2436,6 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                                             .rxSelectedSchoolYearID,
                                         "");
                               }
-
                             }
                             Get.back();
                           },
@@ -2484,7 +2469,7 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
           child: Column(children: [
             //search
             Padding(
@@ -2533,7 +2518,7 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                 )),
             //list van de trinh
             Obx(() => SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.25,
                   child: ListView.builder(
                       physics: const BouncingScrollPhysics(),
                       itemCount:
@@ -2547,36 +2532,87 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                 )),
             //bottom button
             const Spacer(),
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        style: buttonFilterWhite,
+                        child: const Text('Đóng')),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            var schoolLevelItem = "";
-                            var schoolLevelName = "";
-                            var schoolLevelId = "";
-                            if (analysisReportViewModel!.mapAllFilter
-                                    .containsKey(5) ||
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          var schoolLevelItem = "";
+                          var schoolLevelName = "";
+                          var schoolLevelId = "";
+                          if (analysisReportViewModel!.mapAllFilter
+                                  .containsKey(5) ||
+                              analysisReportViewModel!
+                                  .mapSchoolLevelFilter.isEmpty) {
+                            changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedSchoolLevel,
+                                "Tất cả cấp học");
+                            analysisReportViewModel!.changeValueSelectedFilter(
                                 analysisReportViewModel!
-                                    .mapSchoolLevelFilter.isEmpty) {
+                                    .rxSelectedSchoolLevelID,
+                                "");
+                            schoolLevelId = "1;2;3;4;";
+                            analysisReportViewModel!.getListFilterWithParam(
+                                schoolLevelId,
+                                getClass,
+                                analysisReportViewModel!.rxListClass);
+                            analysisReportViewModel!.getListFilterWithParam(
+                                schoolLevelId,
+                                getSubject,
+                                analysisReportViewModel!.rxListSubject);
+                          } else {
+                            analysisReportViewModel!.mapSchoolLevelFilter
+                                .forEach((key, value) {
+                              schoolLevelItem += value;
+                            });
+                            var listId = schoolLevelItem.split(";");
+                            for (var id in listId) {
+                              for (var item in analysisReportViewModel!
+                                  .rxListSchoolLevel) {
+                                if (item.id == id) {
+                                  schoolLevelName += "${item.name!};";
+                                  schoolLevelId += "${item.id!};";
+                                  analysisReportViewModel!
+                                      .changeValueSelectedFilter(
+                                          analysisReportViewModel!
+                                              .rxSelectedSchoolLevelID,
+                                          schoolLevelId.substring(
+                                              0, schoolLevelId.length - 1));
+                                }
+                              }
+                            }
+                            if (schoolLevelName != "") {
                               changeValueSelectedFilter(
                                   analysisReportViewModel!
                                       .rxSelectedSchoolLevel,
-                                  "Tất cả cấp học");
+                                  schoolLevelName.substring(
+                                      0, schoolLevelName.length - 1));
+                              analysisReportViewModel!.getListFilterWithParam(
+                                  schoolLevelId,
+                                  getClass,
+                                  analysisReportViewModel!.rxListClass);
+                              analysisReportViewModel!.getListFilterWithParam(
+                                  schoolLevelId,
+                                  getSubject,
+                                  analysisReportViewModel!.rxListSubject);
+                            } else {
+                              changeValueSelectedFilter(
+                                  analysisReportViewModel!
+                                      .rxSelectedSchoolLevel,
+                                  "");
                               analysisReportViewModel!
                                   .changeValueSelectedFilter(
                                       analysisReportViewModel!
@@ -2591,71 +2627,16 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                                   schoolLevelId,
                                   getSubject,
                                   analysisReportViewModel!.rxListSubject);
-                            } else {
-                              analysisReportViewModel!.mapSchoolLevelFilter
-                                  .forEach((key, value) {
-                                schoolLevelItem += value;
-                              });
-                              var listId = schoolLevelItem.split(";");
-                              for (var id in listId) {
-                                for (var item in analysisReportViewModel!
-                                    .rxListSchoolLevel) {
-                                  if (item.id == id) {
-                                    schoolLevelName += "${item.name!};";
-                                    schoolLevelId += "${item.id!};";
-                                    analysisReportViewModel!
-                                        .changeValueSelectedFilter(
-                                            analysisReportViewModel!
-                                                .rxSelectedSchoolLevelID,
-                                            schoolLevelId.substring(
-                                                0, schoolLevelId.length - 1));
-                                  }
-                                }
-                              }
-                              if (schoolLevelName != "") {
-                                changeValueSelectedFilter(
-                                    analysisReportViewModel!
-                                        .rxSelectedSchoolLevel,
-                                    schoolLevelName.substring(
-                                        0, schoolLevelName.length - 1));
-                                analysisReportViewModel!.getListFilterWithParam(
-                                    schoolLevelId,
-                                    getClass,
-                                    analysisReportViewModel!.rxListClass);
-                                analysisReportViewModel!.getListFilterWithParam(
-                                    schoolLevelId,
-                                    getSubject,
-                                    analysisReportViewModel!.rxListSubject);
-                              } else {
-                                changeValueSelectedFilter(
-                                    analysisReportViewModel!
-                                        .rxSelectedSchoolLevel,
-                                    "");
-                                analysisReportViewModel!
-                                    .changeValueSelectedFilter(
-                                        analysisReportViewModel!
-                                            .rxSelectedSchoolLevelID,
-                                        "");
-                                schoolLevelId = "1;2;3;4;";
-                                analysisReportViewModel!.getListFilterWithParam(
-                                    schoolLevelId,
-                                    getClass,
-                                    analysisReportViewModel!.rxListClass);
-                                analysisReportViewModel!.getListFilterWithParam(
-                                    schoolLevelId,
-                                    getSubject,
-                                    analysisReportViewModel!.rxListSubject);
-                              }
                             }
+                          }
 
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
-              ),
+                          Get.back();
+                        },
+                        style: buttonFilterBlue,
+                        child: const Text('Áp dụng')),
+                  ),
+                )
+              ],
             )
           ]),
         ),
@@ -2674,7 +2655,7 @@ class FilterPointBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //search
           //tat ca don vi
@@ -2687,7 +2668,7 @@ class FilterPointBottomSheet extends StatelessWidget {
                 color: kgray,
               )),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.32,
+            height: MediaQuery.of(context).size.height * 0.30,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: analysisReportViewModel!.rxListPoint.length,
@@ -2698,85 +2679,71 @@ class FilterPointBottomSheet extends StatelessWidget {
                 }),
           ),
           //bottom button
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          if (analysisReportViewModel!.mapAllFilter
-                              .containsKey(6)) {
-                            analysisReportViewModel!.changeValueSelectedFilter(
-                                analysisReportViewModel!.rxSelectedPoint,
-                                "Tất cả điểm");
-                            analysisReportViewModel!
-                                .changeValueSelectedFilter(
-                                analysisReportViewModel!
-                                    .rxSelectedPointId,
-                                "");
-                          } else {
-                            var point = "";
-                            var pointName = "";
-                            var pointId = "";
-                            analysisReportViewModel!.mapPointFilter
-                                .forEach((key, value) {
-                              point += value;
-                            });
-                            var listId = point.split(";");
-                            for (var id in listId) {
-                              for (var item
-                                  in analysisReportViewModel!.rxListPoint) {
-                                if (item.id == id) {
-                                  pointName += "${item.name};";
-                                  pointId += "${item.id};";
-                                }
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (analysisReportViewModel!.mapAllFilter
+                            .containsKey(6)) {
+                          analysisReportViewModel!.changeValueSelectedFilter(
+                              analysisReportViewModel!.rxSelectedPoint,
+                              "Tất cả điểm");
+                          analysisReportViewModel!.changeValueSelectedFilter(
+                              analysisReportViewModel!.rxSelectedPointId, "");
+                        } else {
+                          var point = "";
+                          var pointName = "";
+                          var pointId = "";
+                          analysisReportViewModel!.mapPointFilter
+                              .forEach((key, value) {
+                            point += value;
+                          });
+                          var listId = point.split(";");
+                          for (var id in listId) {
+                            for (var item
+                                in analysisReportViewModel!.rxListPoint) {
+                              if (item.id == id) {
+                                pointName += "${item.name};";
+                                pointId += "${item.id};";
                               }
                             }
-                            if (pointName != "") {
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!.rxSelectedPoint,
-                                      pointName.substring(
-                                          0, pointName.length - 1));
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedPointId,
-                                      pointId.substring(0, pointId.length - 1));
-                            } else {
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!.rxSelectedPoint,
-                                      "");
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedPointId,
-                                      "");
-                            }
                           }
-                          Get.back();
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Áp dụng')),
-                  ),
-                )
-              ],
-            ),
+                          if (pointName != "") {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedPoint,
+                                pointName.substring(0, pointName.length - 1));
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedPointId,
+                                pointId.substring(0, pointId.length - 1));
+                          } else {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedPoint, "");
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedPointId, "");
+                          }
+                        }
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
           )
         ]),
       ),
@@ -2794,7 +2761,7 @@ class FilterSubjectBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //search
           //tat ca don vi
@@ -2807,7 +2774,7 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                 color: kgray,
               )),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.32,
+            height: MediaQuery.of(context).size.height * 0.30,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: analysisReportViewModel!.rxListSubject.length,
@@ -2818,88 +2785,73 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                 }),
           ),
           //bottom button
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          if (analysisReportViewModel!.mapAllFilter
-                              .containsKey(7)) {
-                            analysisReportViewModel!.changeValueSelectedFilter(
-                                analysisReportViewModel!.rxSelectedSubject,
-                                "Tất cả môn học");
-                            analysisReportViewModel!
-                                .changeValueSelectedFilter(
-                                analysisReportViewModel!
-                                    .rxSelectedSubjectID,
-                                "");
-                          } else {
-                            var agencies = "";
-                            var agenciesName = "";
-                            var agenciesID = "";
-                            analysisReportViewModel!.mapSubjectFilter
-                                .forEach((key, value) {
-                              agencies += value;
-                            });
-                            var listId = agencies.split(";");
-                            for (var id in listId) {
-                              for (var item
-                                  in analysisReportViewModel!.rxListSubject) {
-                                if (item.id == id) {
-                                  agenciesName += "${item.name};";
-                                  agenciesID += "${item.id};";
-                                }
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (analysisReportViewModel!.mapAllFilter
+                            .containsKey(7)) {
+                          analysisReportViewModel!.changeValueSelectedFilter(
+                              analysisReportViewModel!.rxSelectedSubject,
+                              "Tất cả môn học");
+                          analysisReportViewModel!.changeValueSelectedFilter(
+                              analysisReportViewModel!.rxSelectedSubjectID, "");
+                        } else {
+                          var agencies = "";
+                          var agenciesName = "";
+                          var agenciesID = "";
+                          analysisReportViewModel!.mapSubjectFilter
+                              .forEach((key, value) {
+                            agencies += value;
+                          });
+                          var listId = agencies.split(";");
+                          for (var id in listId) {
+                            for (var item
+                                in analysisReportViewModel!.rxListSubject) {
+                              if (item.id == id) {
+                                agenciesName += "${item.name};";
+                                agenciesID += "${item.id};";
                               }
                             }
-                            if (agenciesName != "") {
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedSubject,
-                                      agenciesName.substring(
-                                          0, agenciesName.length - 1));
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedSubjectID,
-                                      agenciesID.substring(
-                                          0, agenciesID.length - 1));
-                            } else {
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedSubject,
-                                      "");
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedSubjectID,
-                                      "");
-                            }
                           }
-                          Get.back();
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Áp dụng')),
-                  ),
-                )
-              ],
-            ),
+                          if (agenciesName != "") {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedSubject,
+                                agenciesName.substring(
+                                    0, agenciesName.length - 1));
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedSubjectID,
+                                agenciesID.substring(0, agenciesID.length - 1));
+                          } else {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedSubject, "");
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedSubjectID,
+                                "");
+                          }
+                        }
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
           )
         ]),
       ),
@@ -2917,7 +2869,7 @@ class FilterClassBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //search
           //tat ca don vi
@@ -2929,7 +2881,7 @@ class FilterClassBottomSheet extends StatelessWidget {
                 color: kgray,
               )),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.32,
+            height: MediaQuery.of(context).size.height * 0.30,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: analysisReportViewModel!.rxListClass.length,
@@ -2940,85 +2892,71 @@ class FilterClassBottomSheet extends StatelessWidget {
                 }),
           ),
           //bottom button
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          if (analysisReportViewModel!.mapAllFilter
-                              .containsKey(8)) {
-                            analysisReportViewModel!.changeValueSelectedFilter(
-                                analysisReportViewModel!.rxSelectedClass,
-                                "Tất cả lớp");
-                            analysisReportViewModel!
-                                .changeValueSelectedFilter(
-                                analysisReportViewModel!
-                                    .rxSelectedClassId,
-                                "");
-                          } else {
-                            var agencies = "";
-                            var className = "";
-                            var classId = "";
-                            analysisReportViewModel!.mapClassFilter
-                                .forEach((key, value) {
-                              agencies += value;
-                            });
-                            var listId = agencies.split(";");
-                            for (var id in listId) {
-                              for (var item
-                                  in analysisReportViewModel!.rxListClass) {
-                                if (item.id == id) {
-                                  className += "${item.name};";
-                                  classId += "${item.id};";
-                                }
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (analysisReportViewModel!.mapAllFilter
+                            .containsKey(8)) {
+                          analysisReportViewModel!.changeValueSelectedFilter(
+                              analysisReportViewModel!.rxSelectedClass,
+                              "Tất cả lớp");
+                          analysisReportViewModel!.changeValueSelectedFilter(
+                              analysisReportViewModel!.rxSelectedClassId, "");
+                        } else {
+                          var agencies = "";
+                          var className = "";
+                          var classId = "";
+                          analysisReportViewModel!.mapClassFilter
+                              .forEach((key, value) {
+                            agencies += value;
+                          });
+                          var listId = agencies.split(";");
+                          for (var id in listId) {
+                            for (var item
+                                in analysisReportViewModel!.rxListClass) {
+                              if (item.id == id) {
+                                className += "${item.name};";
+                                classId += "${item.id};";
                               }
                             }
-                            if (className != "") {
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!.rxSelectedClass,
-                                      className.substring(
-                                          0, className.length - 1));
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedClassId,
-                                      classId.substring(0, classId.length - 1));
-                            } else {
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!.rxSelectedClass,
-                                      "");
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedClassId,
-                                      "");
-                            }
                           }
-                          Get.back();
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Áp dụng')),
-                  ),
-                )
-              ],
-            ),
+                          if (className != "") {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedClass,
+                                className.substring(0, className.length - 1));
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedClassId,
+                                classId.substring(0, classId.length - 1));
+                          } else {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedClass, "");
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!.rxSelectedClassId, "");
+                          }
+                        }
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
           )
         ]),
       ),
@@ -3037,7 +2975,7 @@ class FilterClassificationBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //search
           //tat ca don vi
@@ -3050,7 +2988,7 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                 color: kgray,
               )),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.32,
+            height: MediaQuery.of(context).size.height * 0.30,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: analysisReportViewModel!.rxListClassification.length,
@@ -3062,90 +3000,82 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                 }),
           ),
           //bottom button
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          if (analysisReportViewModel!.mapAllFilter
-                              .containsKey(9)) {
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (analysisReportViewModel!.mapAllFilter
+                            .containsKey(9)) {
+                          analysisReportViewModel!.changeValueSelectedFilter(
+                              analysisReportViewModel!.rxSelectedClassification,
+                              "Tất cả học lực");
+                          analysisReportViewModel!.changeValueSelectedFilter(
+                              analysisReportViewModel!
+                                  .rxSelectedClassificationID,
+                              "");
+                        } else {
+                          var classification = "";
+                          var classificationName = "";
+                          var classificationId = "";
+                          analysisReportViewModel!.mapClassificationFilter
+                              .forEach((key, value) {
+                            classification += value;
+                          });
+                          var listId = classification.split(";");
+                          for (var id in listId) {
+                            for (var item in analysisReportViewModel!
+                                .rxListClassification) {
+                              if (item.id == id) {
+                                classificationName += "${item.name};";
+                                classificationId += "${item.id};";
+                              }
+                            }
+                          }
+                          if (classificationName != "") {
                             analysisReportViewModel!.changeValueSelectedFilter(
                                 analysisReportViewModel!
                                     .rxSelectedClassification,
-                                "Tất cả học lực");
-                            analysisReportViewModel!
-                                .changeValueSelectedFilter(
+                                classificationName.substring(
+                                    0, classificationName.length - 1));
+
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!
+                                    .rxSelectedClassificationID,
+                                classificationId.substring(
+                                    0, classificationId.length - 1));
+                          } else {
+                            analysisReportViewModel!.changeValueSelectedFilter(
+                                analysisReportViewModel!
+                                    .rxSelectedClassification,
+                                "");
+                            analysisReportViewModel!.changeValueSelectedFilter(
                                 analysisReportViewModel!
                                     .rxSelectedClassificationID,
                                 "");
-                          } else {
-                            var classification = "";
-                            var classificationName = "";
-                            var classificationId = "";
-                            analysisReportViewModel!.mapClassificationFilter
-                                .forEach((key, value) {
-                              classification += value;
-                            });
-                            var listId = classification.split(";");
-                            for (var id in listId) {
-                              for (var item in analysisReportViewModel!
-                                  .rxListClassification) {
-                                if (item.id == id) {
-                                  classificationName += "${item.name};";
-                                  classificationId += "${item.id};";
-                                }
-                              }
-                            }
-                            if (classificationName != "") {
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedClassification,
-                                      classificationName.substring(
-                                          0, classificationName.length - 1));
-
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedClassificationID,
-                                      classificationId.substring(
-                                          0, classificationId.length - 1));
-                            } else {
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedClassification,
-                                      "");
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
-                                      analysisReportViewModel!
-                                          .rxSelectedClassificationID,
-                                      "");
-                            }
                           }
-                          Get.back();
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Áp dụng')),
-                  ),
-                )
-              ],
-            ),
+                        }
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
           )
         ]),
       ),

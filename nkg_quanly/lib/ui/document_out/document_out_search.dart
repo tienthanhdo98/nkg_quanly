@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/document_out/search_controller.dart';
-
 import '../../const/const.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
 import 'document_out_list.dart';
@@ -96,10 +94,8 @@ class DocumenOutSearch extends GetView {
                                     id: searchController
                                         .listDataDocOut[index].id!));
                               },
-                              child: DocOutListItem(
-                                  index,
-                                  searchController.listDataDocOut[index],
-                                  false));
+                              child: DocOutListItem(index,
+                                  searchController.listDataDocOut[index]));
                         })),
                   ),
                 ),
@@ -110,4 +106,21 @@ class DocumenOutSearch extends GetView {
       ),
     );
   }
+}
+
+Widget listDocOutSearchResultWidget(
+    SearchController searchController, List list) {
+  return ListView.builder(
+      controller: searchController.controller,
+      itemCount: searchController.listDataDocOut.length,
+      itemBuilder: (context, index) {
+        var item = list[index];
+        return InkWell(
+            onTap: () {
+              Get.to(() => DocumentnonapprovedDetail(
+                  id: item.id!));
+            },
+            child:
+                DocOutListItem(index, item));
+      });
 }

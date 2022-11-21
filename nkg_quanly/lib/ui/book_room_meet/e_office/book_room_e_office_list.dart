@@ -6,6 +6,7 @@ import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
 import '../../../const/widget.dart';
+import '../../search_screen.dart';
 import '../book_room_list.dart';
 import '../booking_meeting_search.dart';
 
@@ -28,8 +29,9 @@ class BookRoomEOfficeList extends GetView {
           //header
           headerWidgetSearch(
               "Bố trí phòng họp",
-              BookingMeetingSearch(
-                  roomMeetingViewModel
+              SearchScreen(
+                hintText: 'Nhập tên phòng họp, tên lịch họp',
+                typeScreen: type_room_meeting,
               ),
               context),
           //date table

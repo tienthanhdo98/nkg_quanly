@@ -5,6 +5,7 @@ import 'package:nkg_quanly/model/calendarwork_model/calendarwork_model.dart';
 
 import '../../const/style.dart';
 import '../../const/widget.dart';
+import '../search_screen.dart';
 import 'calendar_work_detail.dart';
 import 'calendar_work_search.dart';
 import 'calendar_work_viewmodel.dart';
@@ -23,7 +24,7 @@ class CalendarWorkScreen extends GetView {
         child: Column(
           children: [
             //header
-            headerWidgetSearch("Lịch làm việc", CalendarWorkSearch(), context),
+            headerWidgetSearch("Lịch làm việc", SearchScreen(hintText: 'Nhập tên công việc',typeScreen: type_calendar_work), context),
             //date table
             headerTableDatePicker(context, calendarWorkController),
             //list work

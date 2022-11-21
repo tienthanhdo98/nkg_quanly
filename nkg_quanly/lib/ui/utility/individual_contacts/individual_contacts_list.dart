@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/ui/utility/individual_contacts/update_individual_contact_screen.dart';
-
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
@@ -18,7 +16,6 @@ class IndividualContactsList extends GetView {
   final contactIndividualViewModel = Get.put(ContactIndividualViewModel());
 
   IndividualContactsList({Key? key}) : super(key: key);
-//Center(child: const CircularProgressIndicator())
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +59,7 @@ class IndividualContactsList extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: 500,
+                                    height: 440,
                                     child: FilterContactIndividualBottomSheet(
                                         contactIndividualViewModel));
                               },
@@ -188,7 +185,7 @@ class IndividualContactsItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Phòng ban',
+                    const Text('Phòng bàn',
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -372,8 +369,8 @@ class DeleteContactSheetBottomSheet extends StatelessWidget {
             "Thông báo",
             style: Theme.of(context).textTheme.headline1,
           ),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(40, 15, 40, 0),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(40, 15, 40, 0),
               child: Text(
                 'Bạn chắc chắn muốn xóa bản ghi?',
                 style: CustomTextStyle.roboto400s16TextStyle,
@@ -460,113 +457,112 @@ class FilterContactIndividualBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: Column(children: [
-            buttonLineInBottonSheet(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: kgray, borderRadius: BorderRadius.circular(10)),
-                  height: 50,
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: Icon(Icons.search)),
-                      SizedBox(
-                        width: 200,
-                        child: TextField(
-                          maxLines: 1,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintStyle:
-                                TextStyle(color: kDarkGray, fontSize: 14),
-                            hintText: 'Tìm kiếm đơn vị...',
-                          ),
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
-                          onSubmitted: (value) {
-                            // contactIndividualViewModel!.rxOrganList.where((item) => item.name!.contains(value));
-                            contactIndividualViewModel!
-                                .searchInDepartList(value);
-                          },
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: Column(children: [
+          buttonLineInBottonSheet(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: kgray, borderRadius: BorderRadius.circular(10)),
+                height: 50,
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    const Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Icon(Icons.search)),
+                    SizedBox(
+                      width: 200,
+                      child: TextField(
+                        maxLines: 1,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintStyle:
+                              TextStyle(color: kDarkGray, fontSize: 14),
+                          hintText: 'Tìm kiếm đơn vị...',
                         ),
-                      )
-                    ],
-                  )),
-            ),
-            // Tất cả van de trinh
-            FilterAllItem( "Tất cả phòng ban", 1,contactIndividualViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
+                        style: const TextStyle(
+                            color: Colors.black, fontSize: 14),
+                        onSubmitted: (value) {
+                          // contactIndividualViewModel!.rxOrganList.where((item) => item.name!.contains(value));
+                          contactIndividualViewModel!
+                              .searchInDepartList(value);
+                        },
+                      ),
+                    )
+                  ],
                 )),
-            //list van de trinh
-            SizedBox(
-              child: Obx(() => ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount:
-                      contactIndividualViewModel!.rxDepartmentList.length,
-                  itemBuilder: (context, index) {
-                    var item =
-                        contactIndividualViewModel!.rxDepartmentList[index];
-                    return
-                      FilterItem(item.name!,item.id!,index,
-                          contactIndividualViewModel!.rxMapDepartmentFilter);
-                  })),
-            ),
-            //bottom butto
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          ),
+          // Tất cả van de trinh
+          FilterAllItem( "Tất cả phòng ban", 1,contactIndividualViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          //list van de trinh
+          SizedBox(
+            child: Obx(() => ListView.builder(
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                itemCount:
+                    contactIndividualViewModel!.rxDepartmentList.length,
+                itemBuilder: (context, index) {
+                  var item =
+                      contactIndividualViewModel!.rxDepartmentList[index];
+                  return
+                    FilterItem(item.name!,item.id!,index,
+                        contactIndividualViewModel!.rxMapDepartmentFilter);
+                })),
+          ),
+          //bottom butto
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                          var departmentId = "";
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                        var departmentId = "";
 
-                          if (contactIndividualViewModel!.mapAllFilter
-                              .containsKey(1)) {
-                            departmentId = "";
-                          } else {
-                            contactIndividualViewModel!.rxMapDepartmentFilter
-                                .forEach((key, value) {
-                              departmentId += value;
-                            });
-                          }
+                        if (contactIndividualViewModel!.mapAllFilter
+                            .containsKey(1)) {
+                          departmentId = "";
+                        } else {
+                          contactIndividualViewModel!.rxMapDepartmentFilter
+                              .forEach((key, value) {
+                            departmentId += value;
+                          });
+                        }
 
-                          print(departmentId);
-                          contactIndividualViewModel!.getContactListByFilter(
-                            departmentId,
-                          );
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Áp dụng')),
-                  ),
-                )
-              ],
-            )
-          ]),
-        ),
+                        print(departmentId);
+                        contactIndividualViewModel!.getContactListByFilter(
+                          departmentId,
+                        );
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }

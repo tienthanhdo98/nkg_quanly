@@ -113,3 +113,15 @@ class CalendarWorkSearch extends GetView {
     );
   }
 }
+Widget listCalendarWorkSearchResultWidget(SearchController searchController, List list) {
+  return ListView.builder(
+      controller: searchController.controller,
+      itemCount:
+      searchController.listDataCalendarWork.length,
+      itemBuilder: (context, index) {
+        return CalendarEOfficeWorkItem(
+            index,
+            searchController
+                .listDataCalendarWork[index]);;
+      }) ;
+}

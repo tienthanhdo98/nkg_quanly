@@ -177,9 +177,23 @@ class WorkBookViewModel extends GetxController {
 
   Future<void> postWorkBookByFilter(String important, String status) async {
     final url = Uri.parse(apiPostWorkBookSearch);
-    print('loading');
+    var strImportant = "";
+    print(important);
+    if(important == "Quan trọng;")
+      {
+        strImportant  = "true";
+      }
+    else if(important == "Không quan trọng;")
+      {
+        strImportant = "false";
+      }
+    else
+      {
+        strImportant = "";
+      }
+    print(strImportant);
     String json =
-        '{"pageIndex":1,"pageSize":30, "important": "$important","status":"$status"}';
+        '{"pageIndex":1,"pageSize":30, "important": "$strImportant","status":"$status"}';
     http.Response response = await http.post(url, headers: headers, body: json);
     
     WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));

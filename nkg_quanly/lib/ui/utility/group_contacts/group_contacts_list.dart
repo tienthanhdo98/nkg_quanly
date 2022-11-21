@@ -59,7 +59,7 @@ class GroupContactsList extends GetView {
                           context: context,
                           builder: (BuildContext context) {
                             return SizedBox(
-                                height: 400,
+                                height: 500,
                                 child: FilterContactOrganBottomSheet(
                                     contactOrganizationViewModel));
                           },
@@ -199,7 +199,7 @@ class GroupContactsItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Phòng ban',
+                    const Text('Tổ chức',
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
@@ -484,110 +484,109 @@ class FilterContactOrganBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: Column(children: [
-            buttonLineInBottonSheet(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: kgray, borderRadius: BorderRadius.circular(10)),
-                  height: 50,
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          child: Icon(Icons.search)),
-                      SizedBox(
-                        width: 200,
-                        child: TextField(
-                          maxLines: 1,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintStyle:
-                                TextStyle(color: kDarkGray, fontSize: 14),
-                            hintText: 'Tìm kiếm đơn vị...',
-                          ),
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
-                          onSubmitted: (value) {
-                            contactOrganizationViewModel!
-                                .searchInOrganList(value);
-                          },
-
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: Column(children: [
+          buttonLineInBottonSheet(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: kgray, borderRadius: BorderRadius.circular(10)),
+                height: 50,
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    const Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Icon(Icons.search)),
+                    SizedBox(
+                      width: 200,
+                      child: TextField(
+                        maxLines: 1,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintStyle:
+                              TextStyle(color: kDarkGray, fontSize: 14),
+                          hintText: 'Tìm kiếm đơn vị...',
                         ),
-                      )
-                    ],
-                  )),
-            ),
-            // Tất cả to chuc
-            FilterAllItem( "Tất cả tổ chức", 1,contactOrganizationViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
+                        style: const TextStyle(
+                            color: Colors.black, fontSize: 14),
+                        onSubmitted: (value) {
+                          contactOrganizationViewModel!
+                              .searchInOrganList(value);
+                        },
+
+                      ),
+                    )
+                  ],
                 )),
-            //list van de trinh
-            SizedBox(
-              child: Obx(() => ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: contactOrganizationViewModel!.rxOrganList.length,
-                  itemBuilder: (context, index) {
-                    var item = contactOrganizationViewModel!.rxOrganList[index];
-                    return  FilterItem(item.name!,item.id!,index,
-                        contactOrganizationViewModel!.rxMapOrganFilter);
-                  })),
-            ),
-            //bottom butto
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          ),
+          // Tất cả to chuc
+          FilterAllItem( "Tất cả tổ chức", 1,contactOrganizationViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          //list van de trinh
+          SizedBox(
+            height: 250,
+            child: Obx(() => ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: contactOrganizationViewModel!.rxOrganList.length,
+                itemBuilder: (context, index) {
+                  var item = contactOrganizationViewModel!.rxOrganList[index];
+                  return  FilterItem(item.name!,item.id!,index,
+                      contactOrganizationViewModel!.rxMapOrganFilter);
+                })),
+          ),
+          //bottom butto
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                          var organizationId = "";
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                        var organizationId = "";
 
-                          if (contactOrganizationViewModel!.mapAllFilter
-                              .containsKey(1)) {
-                            organizationId = "";
-                          } else {
-                            contactOrganizationViewModel!.rxMapOrganFilter
-                                .forEach((key, value) {
-                              organizationId += value;
-                            });
-                          }
+                        if (contactOrganizationViewModel!.mapAllFilter
+                            .containsKey(1)) {
+                          organizationId = "";
+                        } else {
+                          contactOrganizationViewModel!.rxMapOrganFilter
+                              .forEach((key, value) {
+                            organizationId += value;
+                          });
+                        }
 
-                          print(organizationId);
-                          contactOrganizationViewModel!.getContactListByFilter(
-                            organizationId,
-                          );
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Áp dụng')),
-                  ),
-                )
-              ],
-            )
-          ]),
-        ),
+                        print(organizationId);
+                        contactOrganizationViewModel!.getContactListByFilter(
+                          organizationId,
+                        );
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }
@@ -640,7 +639,7 @@ class DetailOrganContactBottomSheet extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Phòng ban',
+                    const Text('Tổ chức',
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),

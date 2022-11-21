@@ -138,4 +138,34 @@ class ProfileSearch  extends GetView {
   }
 }
 
+Widget listProfileSearchResultWidget(SearchController searchController, List list) {
+  return  ListView.builder(
+      controller: searchController.controller,
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        var item = list[index];
+        return  InkWell(
+            onTap: () {
+              showModalBottomSheet<void>(
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                context: context,
+                builder: (BuildContext context) {
+                  return SizedBox(
+                      height: 340,
+                      child: DetailProfileBottomSheet(
+                          index,item));
+                },
+              );
+            },
+            child: ProfileListItem(
+                index, item));
+      });
+}
+
 
