@@ -75,7 +75,7 @@ class AnalysisPieChartState extends State<AnalysisPieChartWidget> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: listPreSchoolChartItems.length,
                       itemBuilder: (_, index) {
-                        var item = listPreSchoolChartItems![index].name;
+                        var item = listPreSchoolChartItems[index].name;
                         return legendChartCircleVerti(
                             item!, listColorChart[index]);
                       }),

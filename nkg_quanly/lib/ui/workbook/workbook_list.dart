@@ -62,7 +62,7 @@ class WorkBookList extends GetView {
                           context: context,
                           builder: (BuildContext context) {
                             return SizedBox(
-                                height: 550,
+                                height: 540,
                                 child: FilterWorkbookFilterBottomSheet(
                                     workBookViewModel));
                           },
@@ -484,7 +484,7 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tatca
           Padding(
@@ -556,6 +556,7 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
               )),
           //list van de trinh
           SizedBox(
+            height: 120,
             child: ListView.builder(
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
@@ -575,6 +576,7 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
                 color: kgray,
               )),
           SizedBox(
+            height: 120,
             child: ListView.builder(
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),

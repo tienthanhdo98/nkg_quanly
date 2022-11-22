@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/search_screen.dart';
 
 import '../../const/const.dart';
@@ -18,7 +16,7 @@ class DocumentOutList extends GetView {
 
   final documentOutViewModel = Get.put(DocumentOutViewModel());
 
-  DocumentOutList();
+  DocumentOutList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +61,7 @@ class DocumentOutList extends GetView {
                             context: context,
                             builder: (BuildContext context) {
                               return SizedBox(
-                                  height: 400,
+                                  height: 350,
                                   child: FilterDocumentOutBottomSheet(
                                       documentOutViewModel));
                             },
@@ -253,124 +251,121 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tatca
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Tất cả văn bản đi chờ phát hành',
-                      style: TextStyle(
-                          color: kBlueButton,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Roboto',
-                          fontSize: 16),
-                    ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+        child: Column(children: [
+          //tatca
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    'Tất cả văn bản đi chờ phát hành',
+                    style: TextStyle(
+                        color: kBlueButton,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'Roboto',
+                        fontSize: 16),
                   ),
-                  Obx(() => (documentOutViewModel!.mapAllFilter.containsKey(0))
-                      ? InkWell(
-                          onTap: () {
-                            documentOutViewModel!.checkboxFilterAll(false, 0);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_active.png',
-                            width: 30,
-                            height: 30,
-                          ))
-                      : InkWell(
-                          onTap: () {
-                            documentOutViewModel!.checkboxFilterAll(true, 0);
-                          },
-                          child: Image.asset(
-                            'assets/icons/ic_checkbox_unactive.png',
-                            width: 30,
-                            height: 30,
-                          )))
-                ],
-              ),
+                ),
+                Obx(() => (documentOutViewModel!.mapAllFilter.containsKey(0))
+                    ? InkWell(
+                        onTap: () {
+                          documentOutViewModel!.checkboxFilterAll(false, 0);
+                        },
+                        child: Image.asset(
+                          'assets/icons/ic_checkbox_active.png',
+                          width: 30,
+                          height: 30,
+                        ))
+                    : InkWell(
+                        onTap: () {
+                          documentOutViewModel!.checkboxFilterAll(true, 0);
+                        },
+                        child: Image.asset(
+                          'assets/icons/ic_checkbox_unactive.png',
+                          width: 30,
+                          height: 30,
+                        )))
+              ],
             ),
-            const Divider(
-              thickness: 1,
-              color: kBlueButton,
-            ),
-            // Tất cả trang thai
-            FilterAllItem(
-                'Tất cả trạng thái', 3, documentOutViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: lisStatus.length,
-                  itemBuilder: (context, index) {
-                    var item = lisStatus[index];
-                    return FilterItem(item, item.toString(), index,
-                        documentOutViewModel!.mapStatusFilter);
-                  }),
-            ),
+          ),
+          const Divider(
+            thickness: 1,
+            color: kBlueButton,
+          ),
+          // Tất cả trang thai
+          FilterAllItem(
+              'Tất cả trạng thái', 3, documentOutViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            height: 120,
+            child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: lisStatus.length,
+                itemBuilder: (context, index) {
+                  var item = lisStatus[index];
+                  return FilterItem(item, item.toString(), index,
+                      documentOutViewModel!.mapStatusFilter);
+                }),
+          ),
 
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            var status = "";
-                            if (documentOutViewModel!.mapAllFilter
-                                .containsKey(0)) {
-                              documentOutViewModel!.postDocOutByFilter(
-                                status,
-                              );
-                            } else {
-                              if (documentOutViewModel!.mapAllFilter
-                                  .containsKey(3)) {
-                                status = "";
-                              } else {
-                                documentOutViewModel!.mapStatusFilter
-                                    .forEach((key, value) {
-                                  status += value;
-                                });
-                              }
-                            }
-                            print(status);
-                            documentOutViewModel!.postDocOutByFilter(
-                              status,
-                            );
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+          //bottom button
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        var status = "";
+                        if (documentOutViewModel!.mapAllFilter
+                            .containsKey(0)) {
+                          documentOutViewModel!.postDocOutByFilter(
+                            status,
+                          );
+                        } else {
+                          if (documentOutViewModel!.mapAllFilter
+                              .containsKey(3)) {
+                            status = "";
+                          } else {
+                            documentOutViewModel!.mapStatusFilter
+                                .forEach((key, value) {
+                              status += value;
+                            });
+                          }
+                        }
+                        print(status);
+                        documentOutViewModel!.postDocOutByFilter(
+                          status,
+                        );
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }

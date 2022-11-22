@@ -197,7 +197,7 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca don vi
           FilterAllItem( 'Tất cả đơn vị ban hành', 1,missionViewModel!.mapAllFilter),
@@ -211,7 +211,7 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
             height: 150,
             child: ListView.builder(
                 shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: missionViewModel!.rxListDepartmentFilter.length,
                 itemBuilder: (context, index) {
                   var item = missionViewModel!.rxListDepartmentFilter[index];
@@ -221,33 +221,32 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
                 }),
           ),
           //bottom button
-          Align(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Áp dụng')),
-                  ),
-                )
-              ],
-            ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
           )
         ]),
       ),
@@ -265,7 +264,7 @@ class FilterLevelmentBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca muc do
           FilterAllItem( "Tất cả mức độ'", 2,missionViewModel!.mapAllFilter),
@@ -280,7 +279,7 @@ class FilterLevelmentBottomSheet extends StatelessWidget {
             height: 200,
             child: ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: listLevel.length,
                 itemBuilder: (context, index) {
                   var item = listLevel[index];
@@ -290,33 +289,32 @@ class FilterLevelmentBottomSheet extends StatelessWidget {
                 }),
           ),
           //bottom button
-          Align(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterWhite,
-                        child: const Text('Đóng')),
-                  ),
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        style: buttonFilterBlue,
-                        child: const Text('Áp dụng')),
-                  ),
-                )
-              ],
-            ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
           )
         ]),
       ),
@@ -358,7 +356,7 @@ class FilterStatusBottomSheet extends StatelessWidget {
                 }),
           ),
           //bottom button
-          Spacer(),
+          const Spacer(),
           Row(
             children: [
               Expanded(

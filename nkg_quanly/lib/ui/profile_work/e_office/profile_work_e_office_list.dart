@@ -7,7 +7,6 @@ import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../search_screen.dart';
 import '../../theme/theme_data.dart';
-import '../profile_work_search.dart';
 import '../profile_work_viewmodel.dart';
 
 class ProfileWorkEOfficeList extends GetView {
@@ -15,7 +14,7 @@ class ProfileWorkEOfficeList extends GetView {
 
   final profileWorkViewModel = Get.put(ProfileWorkViewModel());
 
-  ProfileWorkEOfficeList({this.header});
+  ProfileWorkEOfficeList({Key? key, this.header}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -303,7 +302,7 @@ class ProfileWorkEOfficeList extends GetView {
 }
 
 class ProfileWorkItem extends StatelessWidget {
-  ProfileWorkItem(this.index, this.docModel);
+  const ProfileWorkItem(this.index, this.docModel, {Key? key}) : super(key: key);
 
   final int? index;
   final ProfileWorkListItems? docModel;
@@ -511,82 +510,79 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            // Tất cả trang thai
-            FilterAllItem(
-                "Tất cả trạng thái", 3, profileWorkViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: listProfileWorkStatus.length,
-                  itemBuilder: (context, index) {
-                    var item = listProfileWorkStatus[index];
-                    return FilterItem(
-                        item, item, index, profileWorkViewModel!.mapStatus);
-                  }),
-            ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+        child: Column(children: [
+          // Tất cả trang thai
+          FilterAllItem(
+              "Tất cả trạng thái", 3, profileWorkViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            height: 360,
+            child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: listProfileWorkStatus.length,
+                itemBuilder: (context, index) {
+                  var item = listProfileWorkStatus[index];
+                  return FilterItem(
+                      item, item, index, profileWorkViewModel!.mapStatus);
+                }),
+          ),
 
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            var status = "";
-                            if (profileWorkViewModel!.mapAllFilter
-                                .containsKey(0)) {
-                              profileWorkViewModel!.postProfileWorkByFilter(
-                                status,
-                              );
-                            } else {
-                              if (profileWorkViewModel!.mapAllFilter
-                                  .containsKey(3)) {
-                                status = "";
-                              } else {
-                                profileWorkViewModel!.mapStatus
-                                    .forEach((key, value) {
-                                  status += value;
-                                });
-                              }
-                            }
-                            print(status);
-                            profileWorkViewModel!
-                                .postProfileWorkByFilter(status);
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+          //bottom button
+          Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        var status = "";
+                        if (profileWorkViewModel!.mapAllFilter
+                            .containsKey(0)) {
+                          profileWorkViewModel!.postProfileWorkByFilter(
+                            status,
+                          );
+                        } else {
+                          if (profileWorkViewModel!.mapAllFilter
+                              .containsKey(3)) {
+                            status = "";
+                          } else {
+                            profileWorkViewModel!.mapStatus
+                                .forEach((key, value) {
+                              status += value;
+                            });
+                          }
+                        }
+                        print(status);
+                        profileWorkViewModel!
+                            .postProfileWorkByFilter(status);
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }

@@ -485,7 +485,7 @@ class FilterContactOrganBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
         child: Column(children: [
           buttonLineInBottonSheet(),
           Padding(

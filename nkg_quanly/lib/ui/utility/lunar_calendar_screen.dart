@@ -145,7 +145,7 @@ class LunarCalendarScreen extends GetView {
                                   return Column(children: [
                                     Text(formatDateToStringDD(day),
                                       style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
-                                    Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                                    const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
                                     Container(
                                       padding: const EdgeInsets.all(5),
                                       decoration:BoxDecoration(

@@ -73,16 +73,7 @@ class UpdateIndividualContactState
                       style: Theme.of(context).textTheme.headline1,
                     ),
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Image.asset(
-                          'assets/icons/ic_trash_del.png',
-                          width: 20,
-                          height: 20,
-                        )),
-                  )
+
                 ],
               ),
             ),
@@ -114,11 +105,9 @@ class UpdateIndividualContactState
                             .headline4,
                         onChanged: (value) {
                           employeeName = value;
-                          print(value);
                         },
                         onSubmitted: (value) {
                           employeeName = value;
-                          print(value);
                         },
                       ),
                       //Nhập tên tổ chức
@@ -291,9 +280,7 @@ class UpdateIndividualContactState
                                       Get.back();
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      primary: kWhite,
-                                      //change background color of button
-                                      onPrimary: kBlueButton,
+                                      foregroundColor: kBlueButton, backgroundColor: kWhite,
                                       //change text color of button
                                       shape: RoundedRectangleBorder(
                                           borderRadius:

@@ -57,7 +57,7 @@ class HelpDeskList extends GetView {
                             context: context,
                             builder: (BuildContext context) {
                               return SizedBox(
-                                  height: 450,
+                                  height: 400,
                                   child: FilterHelpDeskBottomSheet(helpdeskViewModel));
                             },
                           );
@@ -157,7 +157,7 @@ class HelpDeskList extends GetView {
 }
 
 class HelpDeskListItem extends StatelessWidget {
-  HelpDeskListItem(this.index, this.docModel,this.helpdeskViewModel);
+  HelpDeskListItem(this.index, this.docModel,this.helpdeskViewModel, {Key? key}) : super(key: key);
 
   final int? index;
   final HelpDeskListItems? docModel;
@@ -228,86 +228,83 @@ class FilterHelpDeskBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            // Tất cả trang thai state
-            FilterAllItem( "Tất cả trạng thái", 1,helpdeskViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            Obx(()=>SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: helpdeskViewModel!.rxHelpdeskFilterList.length,
-                  itemBuilder: (context, index) {
-                    var item = helpdeskViewModel!.rxHelpdeskFilterList[index];
-                    return
-                      FilterItem(item.name!,item.status.toString(),index,
-                          helpdeskViewModel!.mapStatusFilter);
-                  }),
-            )),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+        child: Column(children: [
+          // Tất cả trang thai state
+          FilterAllItem( "Tất cả trạng thái", 1,helpdeskViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          Obx(()=>SizedBox(
+            height: 210,
+            child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: helpdeskViewModel!.rxHelpdeskFilterList.length,
+                itemBuilder: (context, index) {
+                  var item = helpdeskViewModel!.rxHelpdeskFilterList[index];
+                  return
+                    FilterItem(item.name!,item.status.toString(),index,
+                        helpdeskViewModel!.mapStatusFilter);
+                }),
+          )),
 
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                            var status = "";
-                              if(helpdeskViewModel!.mapAllFilter.containsKey(1))
+          //bottom button
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                        var status = "";
+                          if(helpdeskViewModel!.mapAllFilter.containsKey(1))
+                            {
+                              helpdeskViewModel!
+                                  .postHelpdeskListByFilter(status);
+                            }
+                          else
+                            {
+                              helpdeskViewModel!.mapStatusFilter
+                                  .forEach((key, value) {
+                                status += value;
+                              });
+                              if(status.isNotEmpty)
                                 {
                                   helpdeskViewModel!
-                                      .postHelpdeskListByFilter(status);
+                                      .postHelpdeskListByFilter(status.substring(0,status.length-1));
                                 }
-                              else
-                                {
-                                  helpdeskViewModel!.mapStatusFilter
-                                      .forEach((key, value) {
-                                    status += value;
-                                  });
-                                  if(status.isNotEmpty)
-                                    {
-                                      helpdeskViewModel!
-                                          .postHelpdeskListByFilter(status.substring(0,status.length-1));
-                                    }
-                                  else{
-                                    helpdeskViewModel!
-                                        .postHelpdeskListByFilter("");
-                                  }
+                              else{
+                                helpdeskViewModel!
+                                    .postHelpdeskListByFilter("");
+                              }
 
-                                }
+                            }
 
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ]),
-        ),
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }
@@ -334,7 +331,7 @@ Widget signWidget(HelpDeskListItems docModel, RxList<HelpdeskFilterModel> rxList
           const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
           Text(
             status,
-            style: TextStyle(color: kGreenSign),
+            style: const TextStyle(color: kGreenSign),
           )
         ],
       );
@@ -350,7 +347,7 @@ Widget signWidget(HelpDeskListItems docModel, RxList<HelpdeskFilterModel> rxList
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         Text(
           status,
-          style: TextStyle(color: kGreenSign),
+          style: const TextStyle(color: kGreenSign),
         )
       ],
     );
@@ -367,7 +364,7 @@ Widget signWidget(HelpDeskListItems docModel, RxList<HelpdeskFilterModel> rxList
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         Text(
           status,
-          style: TextStyle(color: kOrangeSign),
+          style: const TextStyle(color: kOrangeSign),
         )
       ],
     );
@@ -383,7 +380,7 @@ Widget signWidget(HelpDeskListItems docModel, RxList<HelpdeskFilterModel> rxList
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         Text(
           status,
-          style: TextStyle(color: kRedChart),
+          style: const TextStyle(color: kRedChart),
         )
       ],
     );

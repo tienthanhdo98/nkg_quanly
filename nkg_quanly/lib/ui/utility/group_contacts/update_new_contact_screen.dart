@@ -9,7 +9,7 @@ import 'contact_organization_viewmodel.dart';
 
 class UpdateNewContactScreen extends StatefulWidget {
 
-  UpdateNewContactScreen(this.contactListItems) ;
+  UpdateNewContactScreen(this.contactListItems, {Key? key}) : super(key: key) ;
 
   ContactListItems contactListItems;
 
@@ -67,20 +67,7 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                           style: Theme.of(context).textTheme.headline1,
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          contactOrganizationViewModel
-                              .deleteWorkBookItem( widget.contactListItems.id!);
-                          Get.back();
-                        },
-                        child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Image.asset(
-                              'assets/icons/ic_trash_del.png',
-                              width: 20,
-                              height: 20,
-                            )),
-                      )
+
                     ],
                   ),
                 ),

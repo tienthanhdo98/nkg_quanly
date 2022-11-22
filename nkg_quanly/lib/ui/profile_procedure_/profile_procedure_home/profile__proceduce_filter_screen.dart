@@ -8,13 +8,10 @@ import '../../theme/theme_data.dart';
 import '../profiles_procedure_viewmodel.dart';
 
 class ProfileProceduceFilterScreen extends GetView {
-  ProfileProceduceFilterScreen(this.profilesProcedureViewModel, {Key? key})
+  const ProfileProceduceFilterScreen(this.profilesProcedureViewModel, {Key? key})
       : super(key: key);
   final ProfilesProcedureViewModel? profilesProcedureViewModel;
 
-  String? department;
-  String? level;
-  String? status;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +120,7 @@ class ProfileProceduceFilterScreen extends GetView {
                               builder: (BuildContext context) {
                                 return SizedBox(
                                     height: MediaQuery.of(context).size.height *
-                                        0.85,
+                                        0.80,
                                     child: FilterStatusBottomSheet(
                                         profilesProcedureViewModel));
                               },
@@ -158,7 +155,7 @@ class ProfileProceduceFilterScreen extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: 340,
+                                    height: 320,
                                     child: FilterProceduceBottomSheet(
                                         profilesProcedureViewModel));
                               },
@@ -284,102 +281,99 @@ class FilterAgenciesBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tat ca don vi
-            FilterAllItem(
-                "Tất cả cơ quan", 1, profilesProcedureViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount:
-                      profilesProcedureViewModel!.rxListAgenciesList.length,
-                  itemBuilder: (context, index) {
-                    var item =
-                        profilesProcedureViewModel!.rxListAgenciesList[index];
-                    return FilterItem(item.ten!, item.id!, index,
-                        profilesProcedureViewModel!.mapAgenciesFilter);
-                  }),
-            ),
-            //bottom button
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            if (profilesProcedureViewModel!.mapAllFilter
-                                .containsKey(1)) {
-                              profilesProcedureViewModel!
-                                  .changeValueSelectedFilter(
-                                      profilesProcedureViewModel!
-                                          .rxSelectedAgencies,
-                                      "Tất cả cơ quan");
-                            } else {
-                              var agencies = "";
-                              var agenciesName = "";
-                              profilesProcedureViewModel!.mapAgenciesFilter
-                                  .forEach((key, value) {
-                                agencies += value;
-                              });
-                              var listId = agencies.split(";");
-                              for (var id in listId) {
-                                for (var item in profilesProcedureViewModel!
-                                    .rxListAgenciesList) {
-                                  if (item.id == id) {
-                                    agenciesName += "${item.ten!};";
-                                  }
-                                }
-                              }
-                              if (agenciesName != "") {
-                                profilesProcedureViewModel!
-                                    .changeValueSelectedFilter(
-                                        profilesProcedureViewModel!
-                                            .rxSelectedAgencies,
-                                        agenciesName.substring(
-                                            0, agenciesName.length - 1));
-                              } else {
-                                profilesProcedureViewModel!
-                                    .changeValueSelectedFilter(
-                                        profilesProcedureViewModel!
-                                            .rxSelectedAgencies,
-                                        "");
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+        child: Column(children: [
+          //tat ca don vi
+          FilterAllItem(
+              "Tất cả cơ quan", 1, profilesProcedureViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            height: 120,
+            child: ListView.builder(
+
+                physics: const BouncingScrollPhysics(),
+                itemCount:
+                    profilesProcedureViewModel!.rxListAgenciesList.length,
+                itemBuilder: (context, index) {
+                  var item =
+                      profilesProcedureViewModel!.rxListAgenciesList[index];
+                  return FilterItem(item.ten!, item.id!, index,
+                      profilesProcedureViewModel!.mapAgenciesFilter);
+                }),
+          ),
+          //bottom button
+          const Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (profilesProcedureViewModel!.mapAllFilter
+                            .containsKey(1)) {
+                          profilesProcedureViewModel!
+                              .changeValueSelectedFilter(
+                                  profilesProcedureViewModel!
+                                      .rxSelectedAgencies,
+                                  "Tất cả cơ quan");
+                        } else {
+                          var agencies = "";
+                          var agenciesName = "";
+                          profilesProcedureViewModel!.mapAgenciesFilter
+                              .forEach((key, value) {
+                            agencies += value;
+                          });
+                          var listId = agencies.split(";");
+                          for (var id in listId) {
+                            for (var item in profilesProcedureViewModel!
+                                .rxListAgenciesList) {
+                              if (item.id == id) {
+                                agenciesName += "${item.ten!};";
                               }
                             }
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ]),
-        ),
+                          }
+                          if (agenciesName != "") {
+                            profilesProcedureViewModel!
+                                .changeValueSelectedFilter(
+                                    profilesProcedureViewModel!
+                                        .rxSelectedAgencies,
+                                    agenciesName.substring(
+                                        0, agenciesName.length - 1));
+                          } else {
+                            profilesProcedureViewModel!
+                                .changeValueSelectedFilter(
+                                    profilesProcedureViewModel!
+                                        .rxSelectedAgencies,
+                                    "");
+                          }
+                        }
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }
@@ -609,8 +603,8 @@ class FilterProceduceBottomSheet extends StatelessWidget {
               )),
           //list van de trinh
           SizedBox(
+            height: 120,
             child: ListView.builder(
-                shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 itemCount: profilesProcedureViewModel!.rxListProcedure.length,
                 itemBuilder: (context, index) {
@@ -712,8 +706,8 @@ class FilterGroupProceduceBottomSheet extends StatelessWidget {
               )),
           //list van de trinh
           SizedBox(
+            height: 120,
             child: ListView.builder(
-                shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
                 itemCount:
                     profilesProcedureViewModel!.rxListGroupProcedure.length,

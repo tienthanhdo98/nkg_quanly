@@ -266,10 +266,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           fontSize: 16),
                     ),
                   ),
-                  Obx(() => (menuController!.listPriorityStatus.containsKey(0))
+                  Obx(() => (menuController.listPriorityStatus.containsKey(0))
                       ? InkWell(
                           onTap: () {
-                            menuController!.checkboxPriorityState(false, 0, "");
+                            menuController.checkboxPriorityState(false, 0, "");
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_active.png',
@@ -278,7 +278,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            menuController!.checkboxPriorityState(true, 0, "");
+                            menuController.checkboxPriorityState(true, 0, "");
                           },
                           child: Image.asset(
                             'assets/icons/ic_checkbox_unactive.png',
@@ -439,7 +439,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            menuController!
+                            menuController
                                 .checkboxPriorityState(true, 4, "Thấp;");
                           },
                           child: Image.asset(
@@ -468,10 +468,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto700TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController!.listStateStatus.containsKey(0))
+                  Obx(() => (menuController.listStateStatus.containsKey(0))
                       ? InkWell(
                           onTap: () {
-                            menuController!.checkboxStatusState(
+                            menuController.checkboxStatusState(
                                 false, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
                           },
                           child: Image.asset(
@@ -481,7 +481,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            menuController!.checkboxStatusState(
+                            menuController.checkboxStatusState(
                                 true, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
                           },
                           child: Image.asset(
@@ -509,10 +509,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController!.listStateStatus.containsKey(1))
+                  Obx(() => (menuController.listStateStatus.containsKey(1))
                       ? InkWell(
                           onTap: () {
-                            menuController!
+                            menuController
                                 .checkboxStatusState(false, 1, "Chưa bút phê;");
                           },
                           child: Image.asset(
@@ -522,7 +522,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            menuController!
+                            menuController
                                 .checkboxStatusState(true, 1, "Chưa bút phê;");
                           },
                           child: Image.asset(
@@ -550,10 +550,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                       style: CustomTextStyle.roboto400s16TextStyle,
                     ),
                   ),
-                  Obx(() => (menuController!.listStateStatus.containsKey(2))
+                  Obx(() => (menuController.listStateStatus.containsKey(2))
                       ? InkWell(
                           onTap: () {
-                            menuController!
+                            menuController
                                 .checkboxStatusState(false, 2, "Đã bút phê;");
                           },
                           child: Image.asset(
@@ -563,7 +563,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                           ))
                       : InkWell(
                           onTap: () {
-                            menuController!
+                            menuController
                                 .checkboxStatusState(true, 2, "Đã bút phê;");
                           },
                           child: Image.asset(
@@ -592,10 +592,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Obx(() =>
-                      (menuController!.listDepartmentStatus.containsKey(0))
+                      (menuController.listDepartmentStatus.containsKey(0))
                           ? InkWell(
                               onTap: () {
-                                menuController!.checkboxDepartmentState(
+                                menuController.checkboxDepartmentState(
                                     false, 0, "Bộ;Sở;");
                               },
                               child: Image.asset(
@@ -605,7 +605,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                               ))
                           : InkWell(
                               onTap: () {
-                                menuController!.checkboxDepartmentState(
+                                menuController.checkboxDepartmentState(
                                     true, 0, "Chưa xử lý;Đang xử lý;Đã xử lý;");
                               },
                               child: Image.asset(
@@ -634,10 +634,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Obx(() =>
-                      (menuController!.listDepartmentStatus.containsKey(1))
+                      (menuController.listDepartmentStatus.containsKey(1))
                           ? InkWell(
                               onTap: () {
-                                menuController!
+                                menuController
                                     .checkboxDepartmentState(false, 1, "Bộ;");
                               },
                               child: Image.asset(
@@ -647,7 +647,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                               ))
                           : InkWell(
                               onTap: () {
-                                menuController!
+                                menuController
                                     .checkboxDepartmentState(true, 1, "Bộ;");
                               },
                               child: Image.asset(
@@ -676,10 +676,10 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Obx(() =>
-                      (menuController!.listDepartmentStatus.containsKey(2))
+                      (menuController.listDepartmentStatus.containsKey(2))
                           ? InkWell(
                               onTap: () {
-                                menuController!
+                                menuController
                                     .checkboxDepartmentState(false, 2, "Sở;");
                               },
                               child: Image.asset(
@@ -689,7 +689,7 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                               ))
                           : InkWell(
                               onTap: () {
-                                menuController!
+                                menuController
                                     .checkboxDepartmentState(true, 2, "Sở");
                               },
                               child: Image.asset(
@@ -730,20 +730,20 @@ class FilterDocNonprocessBottomSheet extends StatelessWidget {
                             var status = "";
                             var level = "";
                             var department = "";
-                            if (menuController!.listPriorityStatus
+                            if (menuController.listPriorityStatus
                                 .containsKey(0)) {
                               reportViewModel!.getDocumentByFilter(
                                   status, level, department);
                             } else {
-                              menuController!.listPriorityStatus
+                              menuController.listPriorityStatus
                                   .forEach((key, value) {
                                 level += value;
                               });
-                              menuController!.listStateStatus
+                              menuController.listStateStatus
                                   .forEach((key, value) {
                                 status += value;
                               });
-                              menuController!.listDepartmentStatus
+                              menuController.listDepartmentStatus
                                   .forEach((key, value) {
                                 department += value;
                               });

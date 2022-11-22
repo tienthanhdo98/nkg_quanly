@@ -248,7 +248,7 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca don vi
           FilterAllItem( "Tất cả đơn vị", 1,reportViewModel!.mapAllFilter),
@@ -327,7 +327,7 @@ class FilterStatusBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca don vi
           FilterAllItem( "Tất cả trạng thái", 2,reportViewModel!.mapAllFilter),

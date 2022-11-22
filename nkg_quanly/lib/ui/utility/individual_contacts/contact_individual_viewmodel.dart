@@ -101,7 +101,6 @@ class ContactIndividualViewModel extends GetxController {
     final url = Uri.parse("$apiActionIndividualContact/$id");
     print('loading');
     http.Response response = await http.delete(url, headers: headers);
-    print(id);
   
     if (response.statusCode == 200) {
       getContactList();
@@ -128,7 +127,6 @@ class ContactIndividualViewModel extends GetxController {
       String address,
       String email) async {
     final url = Uri.parse(apiActionIndividualContact);
-    print('loading');
     String json = """{
       "employeeName": "$employeeName",
       "departmentId": "$organizationId",
@@ -165,7 +163,6 @@ class ContactIndividualViewModel extends GetxController {
       String address,
       String email) async {
     final url = Uri.parse(apiActionIndividualContact);
-    print('loading');
     String json = """{
       "id" : "$id",
       "employeeName": "$employeeName",

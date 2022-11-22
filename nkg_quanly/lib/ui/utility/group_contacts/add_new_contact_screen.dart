@@ -20,7 +20,7 @@ class AddNewContactScreen extends GetView {
   String? position;
   @override
   Widget build(BuildContext context) {
-
+  checkAllValueNull();
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -29,7 +29,6 @@ class AddNewContactScreen extends GetView {
               headerWidget("Tạo mới liên hệ", context),
               Expanded(
                 child: SingleChildScrollView(
-
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: Padding(
@@ -60,10 +59,9 @@ class AddNewContactScreen extends GetView {
                             style: Theme.of(context).textTheme.headline4,
                             onChanged: (value) {
                               employeeName = value;
+                            checkAllValueNull();
                             },
-                            onSubmitted: (value) {
-                              employeeName = value;
-                            },
+
                           ),
                           //Nhập tên chuc vu
                           const Padding(
@@ -88,12 +86,10 @@ class AddNewContactScreen extends GetView {
                             maxLines: 1,
                             style: Theme.of(context).textTheme.headline4,
                             onChanged: (value) {
-                              print(value);
                               position = value;
+                            checkAllValueNull();
                             },
-                            onSubmitted: (value) {
-                              position = value;
-                            },
+
                           ),
                           //Chọn to chuc
                           const Padding(
@@ -136,6 +132,7 @@ class AddNewContactScreen extends GetView {
                                             organizationId = element.id;
                                           }
                                         }
+                                      checkAllValueNull();
                                       },
                                       isExpanded: false,
                                       hint: const Text(
@@ -183,10 +180,9 @@ class AddNewContactScreen extends GetView {
                             style: Theme.of(context).textTheme.headline4,
                             onChanged: (value) {
                               phoneNumber = value;
+                            checkAllValueNull();
                             },
-                            onSubmitted: (value) {
-                              phoneNumber = value;
-                            },
+
                           ),
                           //Nhập email
                           const Padding(
@@ -212,10 +208,9 @@ class AddNewContactScreen extends GetView {
                             style: Theme.of(context).textTheme.headline4,
                             onChanged: (value) {
                               email = value;
+                            checkAllValueNull();
                             },
-                            onSubmitted: (value) {
-                              email = value;
-                            },
+
                           ),
                           //Nhập địa chỉ
                           const Padding(
@@ -241,10 +236,9 @@ class AddNewContactScreen extends GetView {
                             style: Theme.of(context).textTheme.headline4,
                             onChanged: (value) {
                               address = value;
+                            checkAllValueNull();
                             },
-                            onSubmitted: (value) {
-                              address = value;
-                            },
+
                           ),
                           const SizedBox(height: 50,),
                           Container(
@@ -263,9 +257,7 @@ class AddNewContactScreen extends GetView {
                                           Get.back();
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          primary: kWhite,
-                                          //change background color of button
-                                          onPrimary: kBlueButton,
+                                          foregroundColor: kBlueButton, backgroundColor: kWhite,
                                           //change text color of button
                                           shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(25),
@@ -275,22 +267,14 @@ class AddNewContactScreen extends GetView {
                                         child: const Text('Đóng')),
                                   ),
                                 ),
+                                Obx(() =>
+                                (contactOrganizationViewModel.isValueNull.value == false) ?
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                     child: ElevatedButton(
                                         onPressed: () {
-                                          print(employeeName);
-                                          print(organizationId);
-                                          print(organizationName);
-                                          print(phoneNumber);
-                                          print(email);
-                                          print(address);
-                                          print(position);
-                                          if (employeeName?.isNotEmpty == true ||
-                                              organizationName?.isNotEmpty== true ||
-                                              phoneNumber?.isNotEmpty == true||
-                                              email?.isNotEmpty == true||address?.isNotEmpty== true ||  position?.isNotEmpty== true) {
+
                                             contactOrganizationViewModel.addContact(
                                                 employeeName!,
                                                 position!,
@@ -299,7 +283,7 @@ class AddNewContactScreen extends GetView {
                                                 address!,
                                                 email!);
                                             Get.back();
-                                          }
+
                                         },
                                         style: ButtonStyle(
                                             backgroundColor: MaterialStateProperty
@@ -320,7 +304,33 @@ class AddNewContactScreen extends GetView {
                                             ))),
                                         child: const Text('Lưu')),
                                   ),
-                                )
+                                ) :  Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                        checkAllValueNull();
+                                        },
+                                        style: ButtonStyle(
+                                            backgroundColor: MaterialStateProperty
+                                                .resolveWith<Color>(
+                                                  (Set<MaterialState> states) {
+                                                if (states
+                                                    .contains(MaterialState.pressed)) {
+                                                  return kBlueLineChart2;
+                                                } else {
+                                                  return kBlueLineChart2;
+                                                } // Use the component's default.
+                                              },
+                                            ),
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(18.0),
+                                                ))),
+                                        child: const Text('Lưu')),
+                                  ),
+                                ))
                               ],
                             ),
                           )
@@ -334,5 +344,19 @@ class AddNewContactScreen extends GetView {
             ],
           )),
     );
+  }
+
+  void checkAllValueNull()
+  {
+    if((employeeName?.isNotEmpty == true &&
+        organizationName?.isNotEmpty== true &&
+        phoneNumber?.isNotEmpty == true&&
+        email?.isNotEmpty == true&&address?.isNotEmpty== true &&  position?.isNotEmpty== true) ){
+      contactOrganizationViewModel.changeValidateValue(false,contactOrganizationViewModel.isValueNull);
+    }
+    else
+    {
+      contactOrganizationViewModel.changeValidateValue(true,contactOrganizationViewModel.isValueNull);
+    }
   }
 }

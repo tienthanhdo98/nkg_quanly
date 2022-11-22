@@ -47,7 +47,6 @@ class GuildlineViewModel extends GetxController {
   Future<String> getLinkDowloadGuilde(String id)
   async {
     var url = Uri.parse("$getGuidelineDownload$id");
-    print('loading');
     http.Response response = await http.get(url,headers: headers);
     
     return response.body;

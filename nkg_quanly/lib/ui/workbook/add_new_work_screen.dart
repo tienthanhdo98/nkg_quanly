@@ -17,6 +17,8 @@ class AddNewWorkScreen extends GetView {
   bool important = false;
   String? groupWorkId;
 
+  AddNewWorkScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,7 +147,6 @@ class AddNewWorkScreen extends GetView {
                         fillColor: kWhite),
                     style: Theme.of(context).textTheme.headline4,
                     onChanged: (value) {
-                      print(value);
                       description = value;
                     },
                     onSubmitted: (value) {

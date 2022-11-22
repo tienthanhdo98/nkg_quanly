@@ -163,7 +163,7 @@ class WorkBookViewModel extends GetxController {
   }
 
   Future<WorkBookListItems> getWorkbookModelDetail(String id) async {
-    final url = Uri.parse("${apiWorkBookDetail}$id");
+    final url = Uri.parse("$apiWorkBookDetail$id");
     http.Response response = await http.get(url);
     return WorkBookListItems.fromJson(jsonDecode(response.body));
   }

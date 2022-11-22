@@ -124,7 +124,7 @@ class IndividualContactsList extends GetView {
 }
 
 class IndividualContactsItem extends StatelessWidget {
-  IndividualContactsItem(this.index, this.docModel, this.contactIndividualViewModel);
+  const IndividualContactsItem(this.index, this.docModel, this.contactIndividualViewModel, {Key? key}) : super(key: key);
 
   final int? index;
   final ContactListItems? docModel;
@@ -458,7 +458,7 @@ class FilterContactIndividualBottomSheet extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
         child: Column(children: [
           buttonLineInBottonSheet(),
           Padding(
@@ -505,6 +505,7 @@ class FilterContactIndividualBottomSheet extends StatelessWidget {
               )),
           //list van de trinh
           SizedBox(
+            height: 180,
             child: Obx(() => ListView.builder(
                 shrinkWrap: true,
                 physics: const BouncingScrollPhysics(),
@@ -551,7 +552,6 @@ class FilterContactIndividualBottomSheet extends StatelessWidget {
                           });
                         }
 
-                        print(departmentId);
                         contactIndividualViewModel!.getContactListByFilter(
                           departmentId,
                         );

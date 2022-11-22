@@ -307,12 +307,10 @@ Widget headerTableDatePicker(BuildContext context, GetxController viewModel) {
               return isSameDay(menuController.rxSelectedDay.value, day);
             },
             onPageChanged: (value) {
-              print("onPageChanged");
               menuController.changeMonthInDateTable(value.month);
               menuController.changeYearInDateTable(value.year);
             },
             onDaySelected: (selectedDay, focusedDay) async {
-              print("onDaySelected");
               if (!isSameDay(menuController.rxSelectedDay.value, selectedDay)) {
                 menuController.changeSelectedDayInDateTable(selectedDay);
                 loadDataByDayNoBack(viewModel);

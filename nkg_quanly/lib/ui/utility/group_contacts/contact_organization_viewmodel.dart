@@ -19,11 +19,18 @@ class ContactOrganizationViewModel extends GetxController {
   RxList<String> rxListOrganFilter = <String>[].obs;
   final RxMap<int, String> rxMapOrganFilter = <int, String>{}.obs;
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
+  Rx<bool> isValueNull = true.obs;
+  Rx<bool> isValidateEmail = false.obs;
+  Rx<bool> isValidatePhoneNumber = false.obs;
   @override
   void onInit() {
     getOrganList();
     getContactList();
     super.onInit();
+  }
+  void changeValidateValue(bool isNull,Rx<bool> rxIsValidate)
+  {
+    rxIsValidate.value = isNull;
   }
   void checkboxFilterAll(bool value, int key) {
     if (value == true) {
@@ -33,14 +40,6 @@ class ContactOrganizationViewModel extends GetxController {
       mapAllFilter.remove(key);
     }
   }
-  // void checkboxOrgan(bool value, int key, String filterValue) {
-  //   if (value == true) {
-  //     var map = {key: filterValue};
-  //     rxMapOrganFilter.addAll(map);
-  //   } else {
-  //     rxMapOrganFilter.remove(key);
-  //   }
-  // }
 
   Future<void> getOrganList() async {
     var url = Uri.parse(apiOrganList);

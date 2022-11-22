@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
@@ -82,7 +80,7 @@ class FilterDocInScreen extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: 400,
+                                    height: 350,
                                     child: FilterLevelmentBottomSheet(
                                         documentUnprocessViewModel));
                               },
@@ -111,7 +109,7 @@ class FilterDocInScreen extends GetView {
                               context: context,
                               builder: (BuildContext context) {
                                 return SizedBox(
-                                    height: 500,
+                                    height: 430,
                                     child: FilterStatusBottomSheet(
                                         documentUnprocessViewModel));
                               },
@@ -170,9 +168,6 @@ class FilterDocInScreen extends GetView {
                                     });
                                   }
                                 }
-                                print(department);
-                                print(level);
-                                print(status);
                                 documentUnprocessViewModel!.getDocumentByFilter(
                                     status, level, department);
                               },
@@ -201,63 +196,60 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            //tat ca don vi
-            FilterAllItem( "Tất cả đơn vị ban hành", 1,documentUnprocessViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount:
-                      documentUnprocessViewModel!.rxListDepartmentFilter.length,
-                  itemBuilder: (context, index) {
-                    var item = documentUnprocessViewModel!
-                        .rxListDepartmentFilter[index];
-                    return
-                      FilterItem(item,item,index,
-                          documentUnprocessViewModel!.mapDepartmentFilter);
-                  }),
-            ),
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+        child: Column(children: [
+          //tat ca don vi
+          FilterAllItem( "Tất cả đơn vị ban hành", 1,documentUnprocessViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            height: 120,
+            child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount:
+                    documentUnprocessViewModel!.rxListDepartmentFilter.length,
+                itemBuilder: (context, index) {
+                  var item = documentUnprocessViewModel!
+                      .rxListDepartmentFilter[index];
+                  return
+                    FilterItem(item,item,index,
+                        documentUnprocessViewModel!.mapDepartmentFilter);
+                }),
+          ),
+          //bottom button
+          Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }
@@ -272,63 +264,60 @@ class FilterLevelmentBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+        child: Column(children: [
 
-            FilterAllItem( "Tất cả mức độ", 2,documentUnprocessViewModel!.mapAllFilter),
+          FilterAllItem( "Tất cả mức độ", 2,documentUnprocessViewModel!.mapAllFilter),
 
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            //list van de trinh
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: listLevel.length,
-                  itemBuilder: (context, index) {
-                    var item = listLevel[index];
-                    return
-                      FilterItem(item,item,index,
-                          documentUnprocessViewModel!.mapLevelFilter);
-                  }),
-            ),
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          //list van de trinh
+          SizedBox(
+            height: 160,
+            child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: listLevel.length,
+                itemBuilder: (context, index) {
+                  var item = listLevel[index];
+                  return
+                    FilterItem(item,item,index,
+                        documentUnprocessViewModel!.mapLevelFilter);
+                }),
+          ),
+          //bottom button
+          Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }
@@ -343,60 +332,57 @@ class FilterStatusBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: Column(children: [
-            FilterAllItem( "Tất cả trạng thái", 3,documentUnprocessViewModel!.mapAllFilter),
-            const Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Divider(
-                  thickness: 1,
-                  color: kgray,
-                )),
-            SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: listDocInStatus.length,
-                  itemBuilder: (context, index) {
-                    var item = listDocInStatus[index];
-                    return
-                      FilterItem(item,item,index,
-                          documentUnprocessViewModel!.mapStatusFilter);
-                  }),
-            ),
-            //bottom button
-            Align(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterWhite,
-                          child: const Text('Đóng')),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Get.back();
-                          },
-                          style: buttonFilterBlue,
-                          child: const Text('Áp dụng')),
-                    ),
-                  )
-                ],
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
+        child: Column(children: [
+          FilterAllItem( "Tất cả trạng thái", 3,documentUnprocessViewModel!.mapAllFilter),
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Divider(
+                thickness: 1,
+                color: kgray,
+              )),
+          SizedBox(
+            height: 250,
+            child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: listDocInStatus.length,
+                itemBuilder: (context, index) {
+                  var item = listDocInStatus[index];
+                  return
+                    FilterItem(item,item,index,
+                        documentUnprocessViewModel!.mapStatusFilter);
+                }),
+          ),
+          //bottom button
+          Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterWhite,
+                      child: const Text('Đóng')),
+                ),
               ),
-            )
-          ]),
-        ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      style: buttonFilterBlue,
+                      child: const Text('Áp dụng')),
+                ),
+              )
+            ],
+          )
+        ]),
       ),
     );
   }
