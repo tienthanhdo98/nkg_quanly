@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeClass.lightTheme,
-            home: const LoginScreen(),
+            home: const MainScreen(),
             initialRoute: '/',
             routes: {
               '/PMisScreen': (context) => PMisScreen(),
