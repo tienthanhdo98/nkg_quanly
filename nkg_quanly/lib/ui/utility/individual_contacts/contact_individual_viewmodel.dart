@@ -20,6 +20,24 @@ class ContactIndividualViewModel extends GetxController {
   final RxMap<int, String> rxMapDepartmentFilter = <int, String>{}.obs;
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
 
+
+  Rx<bool> showErrorTextEmployeeName = false.obs;
+  Rx<bool> showErrorTextPosition = false.obs;
+  Rx<bool> showErrorTextPhoneNumber = false.obs;
+  Rx<String> rxPhoneNumber = "".obs;
+  Rx<bool> showErrorTextEmail = false.obs;
+  Rx<String> rxEmail = "".obs;
+  Rx<bool> showErrorTextAddress = false.obs;
+
+  clearTextField(){
+    showErrorTextEmployeeName.value = false;
+    showErrorTextPosition.value = false;
+    showErrorTextPhoneNumber.value = false;
+    rxPhoneNumber.value = "";
+    showErrorTextEmail.value = false;
+    showErrorTextAddress.value = false;
+  }
+
   @override
   void onInit() {
     getDepartmentList();

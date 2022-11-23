@@ -18,16 +18,53 @@ class AddNewContactScreen extends GetView {
   String? position;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Column(
-            children: [
-              //header
-              headerWidget("Tạo mới liên hệ", context),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
+    return WillPopScope(
+      onWillPop: () async {
+        contactIndividualViewModel.clearTextField();
+        return true;
+      },
+      child: Scaffold(
+        body: SafeArea(
+            child: Column(
+              children: [
+                //header
+                Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color: Theme.of(context).dividerColor,
+                          ))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: InkWell(
+                      onTap: () {
+                        menuController.clearAllDateData();
+                        contactIndividualViewModel.clearTextField();
+                        Get.back();
+                      },
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            'assets/icons/ic_arrow_back.png',
+                            width: 18,
+                            height: 18,
+                          ),
+                          const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                          Flexible(
+                            child: Text(
+                              "Tạo mới liên hệ",
+                              style: Theme.of(context).textTheme.headline1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                       child: Column(
@@ -41,26 +78,30 @@ class AddNewContactScreen extends GetView {
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          TextField(
-                            decoration: InputDecoration(
-                                enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: kDarkGray, width: 1),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                hintStyle: const TextStyle(color: Colors.black),
-                                hintText: "Nhập tên cán bộ",
-                                fillColor: kWhite),
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.headline4,
-                            onChanged: (value) {
-                              employeeName = value;
-                            },
-                            onSubmitted: (value) {
-                              employeeName = value;
-                            },
+                          Obx(() => TextField(
+                              decoration: buildInputDecorationAdd(
+                                  contactIndividualViewModel.showErrorTextEmployeeName.value ? "Trường dữ liệu không được để trống" : null,
+                                  contactIndividualViewModel.showErrorTextEmployeeName.value ? kRedChart : kDarkGray,
+                                  contactIndividualViewModel.showErrorTextEmployeeName.value ? kRedChart : Colors.black,
+                                  "Nhập tên cán bộ"
+                              ),
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.headline4,
+                              onSubmitted: (value) {
+                                employeeName = value;
+                              },
+                              onChanged: (value) {
+                                employeeName = value;
+                                contactIndividualViewModel.showErrorTextEmployeeName.value = value.isEmpty;
+                              },
+                              onTap: (){
+                                if(employeeName != null && employeeName!.isNotEmpty){
+                                  contactIndividualViewModel.showErrorTextEmployeeName.value = false;
+                                } else {
+                                  contactIndividualViewModel.showErrorTextEmployeeName.value = true;
+                                }
+                              },
+                            ),
                           ),
                           //Nhập tên chuc vu
                           const Padding(
@@ -70,27 +111,27 @@ class AddNewContactScreen extends GetView {
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          TextField(
-                            decoration: InputDecoration(
-                                enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: kDarkGray, width: 1),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                hintStyle: const TextStyle(color: Colors.black),
-                                hintText: "Nhập chức vụ",
-                                fillColor: kWhite),
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.headline4,
-                            onChanged: (value) {
-                              print(value);
-                              position = value;
-                            },
-                            onSubmitted: (value) {
-                              position = value;
-                            },
+                          Obx(()=> TextField(
+                            decoration: buildInputDecorationAdd(
+                                contactIndividualViewModel.showErrorTextPosition.value ? "Trường dữ liệu không được để trống" : null,
+                                contactIndividualViewModel.showErrorTextPosition.value ? kRedChart : kDarkGray,
+                                contactIndividualViewModel.showErrorTextPosition.value ? kRedChart : Colors.black,
+                                "Nhập chức vụ"
+                            ),
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.headline4,
+                              onChanged: (value) {
+                                position = value;
+                                contactIndividualViewModel.showErrorTextPosition.value = value.isEmpty;
+                              },
+                              onTap: (){
+                                if(position != null && position!.isNotEmpty){
+                                  contactIndividualViewModel.showErrorTextPosition.value = false;
+                                } else {
+                                  contactIndividualViewModel.showErrorTextPosition.value = true;
+                                }
+                              },
+                            ),
                           ),
                           //Chọn to chuc
                           const Padding(
@@ -164,26 +205,27 @@ class AddNewContactScreen extends GetView {
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          TextField(
-                            decoration: InputDecoration(
-                                enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: kDarkGray, width: 1),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                hintStyle: const TextStyle(color: Colors.black),
-                                hintText: "Nhập số điện thoại",
-                                fillColor: kWhite),
-                            keyboardType: TextInputType.number,
-                            style: Theme.of(context).textTheme.headline4,
-                            onChanged: (value) {
-                              phoneNumber = value;
-                            },
-                            onSubmitted: (value) {
-                              phoneNumber = value;
-                            },
+                          Obx(()=> TextField(
+                              decoration: buildInputDecorationAdd(
+                                  contactIndividualViewModel.showErrorTextPhoneNumber.value ? "Trường dữ liệu không được để trống" : contactIndividualViewModel.rxPhoneNumber.value.isNotEmpty ? contactIndividualViewModel.rxPhoneNumber.value.isPhoneNumber ? null : "Số điện thoại không đúng định dạng" : null,
+                                  contactIndividualViewModel.showErrorTextPhoneNumber.value ? kRedChart : contactIndividualViewModel.rxPhoneNumber.value.isNotEmpty ? contactIndividualViewModel.rxPhoneNumber.value.isPhoneNumber ? kDarkGray : kRedChart : kDarkGray,
+                                  contactIndividualViewModel.showErrorTextPhoneNumber.value ? kRedChart : Colors.black,
+                                  "Nhập số điện thoại"
+                              ),
+                              // keyboardType: TextInputType.number,
+                              style: Theme.of(context).textTheme.headline4,
+                              onChanged: (value) {
+                                phoneNumber = value;
+                                contactIndividualViewModel.showErrorTextPhoneNumber.value = value.isEmpty;
+                              },
+                              onTap: (){
+                                if(phoneNumber != null && phoneNumber!.isNotEmpty){
+                                  contactIndividualViewModel.showErrorTextPhoneNumber.value = false;
+                                } else {
+                                  contactIndividualViewModel.showErrorTextPhoneNumber.value = true;
+                                }
+                              },
+                            ),
                           ),
                           //Nhập email
                           const Padding(
@@ -193,26 +235,31 @@ class AddNewContactScreen extends GetView {
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          TextField(
-                            decoration: InputDecoration(
-                                enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: kDarkGray, width: 1),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                hintStyle: const TextStyle(color: Colors.black),
-                                hintText: "Nhập email",
-                                fillColor: kWhite),
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.headline4,
-                            onChanged: (value) {
-                              email = value;
-                            },
-                            onSubmitted: (value) {
-                              email = value;
-                            },
+                          Obx(()=> TextField(
+                            decoration: buildInputDecorationAdd(
+                                contactIndividualViewModel.showErrorTextEmail.value ? "Trường dữ liệu không được để trống" : contactIndividualViewModel.rxEmail.value.isNotEmpty ? contactIndividualViewModel.rxEmail.value.isEmail ? null : "Email không đúng định dạng" : null,
+                                contactIndividualViewModel.showErrorTextEmail.value ? kRedChart : contactIndividualViewModel.rxEmail.value.isNotEmpty ? contactIndividualViewModel.rxEmail.value.isEmail ? kDarkGray : kRedChart : kDarkGray,
+                                contactIndividualViewModel.showErrorTextEmail.value ? kRedChart : Colors.black,
+                                "Nhập email"
+                            ),
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.headline4,
+                              onChanged: (value) {
+                                email = value;
+                                contactIndividualViewModel.showErrorTextEmail.value = value.isEmpty;
+                              },
+                              onTap: (){
+                                if(email != null && email!.isNotEmpty){
+                                  contactIndividualViewModel.showErrorTextEmail.value = false;
+                                } else {
+                                  contactIndividualViewModel.showErrorTextEmail.value = true;
+                                }
+                              },
+                              onSubmitted: (value) {
+                                email = value;
+                                contactIndividualViewModel.rxEmail.value = value;
+                              },
+                            ),
                           ),
                           //Nhập địa chỉ
                           const Padding(
@@ -222,26 +269,30 @@ class AddNewContactScreen extends GetView {
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          TextField(
-                            decoration: InputDecoration(
-                                enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: kDarkGray, width: 1),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                hintStyle: const TextStyle(color: Colors.black),
-                                hintText: "Nhập địa chỉ",
-                                fillColor: kWhite),
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.headline4,
-                            onChanged: (value) {
-                              address = value;
-                            },
-                            onSubmitted: (value) {
-                              address = value;
-                            },
+                          Obx(()=> TextField(
+                              decoration: buildInputDecorationAdd(
+                                  contactIndividualViewModel.showErrorTextEmployeeName.value ? "Trường dữ liệu không được để trống" : null,
+                                  contactIndividualViewModel.showErrorTextEmployeeName.value ? kRedChart : kDarkGray,
+                                  contactIndividualViewModel.showErrorTextEmployeeName.value ? kRedChart : Colors.black,
+                                  "Nhập địa chỉ"
+                              ),
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.headline4,
+                              onChanged: (value) {
+                                address = value;
+                                contactIndividualViewModel.showErrorTextEmployeeName.value = value.isEmpty;
+                              },
+                              onTap: (){
+                                if(address != null && address!.isNotEmpty){
+                                  contactIndividualViewModel.showErrorTextEmployeeName.value = false;
+                                } else {
+                                  contactIndividualViewModel.showErrorTextEmployeeName.value = true;
+                                }
+                              },
+                              onSubmitted: (value) {
+                                address = value;
+                              },
+                            ),
                           ),
                           const SizedBox(height: 50,),
                           Container(
@@ -337,11 +388,28 @@ class AddNewContactScreen extends GetView {
                       ),
                     ),
                   ),
-                ),
-              )
-              //date table
-            ],
-          )),
+                )
+                //date table
+              ],
+            )),
+      ),
+    );
+  }
+
+  InputDecoration buildInputDecorationAdd(String? errorText, Color colorBorder, Color colorHintText, String hintText) {
+    return InputDecoration(
+        errorText: errorText,
+        errorStyle: const TextStyle(color: kRedChart, fontSize: 12),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: colorBorder, width: 1),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        filled: true,
+        hintStyle: TextStyle(color: colorHintText),
+        hintText: hintText,
+        fillColor: kWhite
     );
   }
 }

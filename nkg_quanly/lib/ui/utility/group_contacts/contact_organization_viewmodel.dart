@@ -22,6 +22,25 @@ class ContactOrganizationViewModel extends GetxController {
   Rx<bool> isValueNull = true.obs;
   Rx<bool> isValidateEmail = false.obs;
   Rx<bool> isValidatePhoneNumber = false.obs;
+
+  Rx<bool> showErrorTextEmployeeName = false.obs;
+  Rx<bool> showErrorTextPosition = false.obs;
+  Rx<bool> showErrorTextPhoneNumber = false.obs;
+  Rx<String> rxPhoneNumber = "".obs;
+  Rx<bool> showErrorTextEmail = false.obs;
+  Rx<String> rxEmail = "".obs;
+  Rx<bool> showErrorTextAddress = false.obs;
+
+  clearTextField(){
+    showErrorTextEmployeeName.value = false;
+    showErrorTextPosition.value = false;
+    showErrorTextPhoneNumber.value = false;
+    rxPhoneNumber.value = "";
+    showErrorTextEmail.value = false;
+    rxEmail.value = "";
+    showErrorTextAddress.value = false;
+  }
+
   @override
   void onInit() {
     getOrganList();

@@ -35,7 +35,9 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
     organizationName = findNameOfOrganById(
         contactOrganizationViewModel.rxOrganList, organizationId!);
     phoneNumber =  widget.contactListItems.phoneNumber;
+    contactOrganizationViewModel.rxPhoneNumber.value = phoneNumber!;
     email =  widget.contactListItems.email;
+    contactOrganizationViewModel.rxEmail.value = email!;
     address =  widget.contactListItems.address;
     position =  widget.contactListItems.position;
     super.initState();
@@ -45,37 +47,41 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                color: Theme.of(context).cardColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: const Icon(Icons.arrow_back_ios_outlined),
-                      ),
-                      const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                      Expanded(
-                        child: Text(
-                          "Chỉnh sửa liên hệ",
-                          style: Theme.of(context).textTheme.headline1,
+      body: WillPopScope(
+        onWillPop: () async {
+          contactOrganizationViewModel.clearTextField();
+          return true;
+        },
+        child: SafeArea(
+            child: Column(
+              children: [
+                Container(
+                  color: Theme.of(context).cardColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            contactOrganizationViewModel.clearTextField();
+                            Get.back();
+                          },
+                          child: const Icon(Icons.arrow_back_ios_outlined),
                         ),
-                      ),
+                        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        Expanded(
+                          child: Text(
+                            "Chỉnh sửa liên hệ",
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
+                        ),
 
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
+                Expanded(
+                  child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                       child: Column(
@@ -89,17 +95,28 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          TextField(
-                            controller: TextEditingController()
-                              ..text = checkingStringNull(employeeName),
-                            decoration: decoTextField,
-                            style: Theme.of(context).textTheme.headline4,
-                            onChanged: (value) {
-                              employeeName = value;
-                            },
-                            onSubmitted: (value) {
-                              employeeName = value;
-                            },
+                          Obx(() => TextField(
+                              controller: TextEditingController()
+                                ..text = checkingStringNull(employeeName),
+                              decoration: buildInputDecorationUpdate(
+                                  contactOrganizationViewModel.showErrorTextEmployeeName.value ? "Trường dữ liệu không được để trống" : null,
+                                  contactOrganizationViewModel.showErrorTextEmployeeName.value ? kRedChart : kDarkGray),
+                              style: Theme.of(context).textTheme.headline4,
+                              onChanged: (value) {
+                                employeeName = value;
+                                contactOrganizationViewModel.showErrorTextEmployeeName.value = value.isEmpty;
+                              },
+                              onTap: (){
+                                if(employeeName != null && employeeName!.isNotEmpty){
+                                  contactOrganizationViewModel.showErrorTextEmployeeName.value = false;
+                                } else {
+                                  contactOrganizationViewModel.showErrorTextEmployeeName.value = true;
+                                }
+                              },
+                              onSubmitted: (value) {
+                                employeeName = value;
+                              },
+                            ),
                           ),
                           //Nhập tên tổ chức
                           const Padding(
@@ -109,16 +126,28 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          TextField(
-                            controller: TextEditingController()..text = checkingStringNull(position),
-                            decoration: decoTextField,
-                            style: Theme.of(context).textTheme.headline4,
-                            onChanged: (value) {
-                              position = value;
-                            },
-                            onSubmitted: (value) {
-                              position = value;
-                            },
+                          Obx(() => TextField(
+                              controller: TextEditingController()..text = checkingStringNull(position),
+                              decoration: buildInputDecorationUpdate(
+                                  contactOrganizationViewModel.showErrorTextPosition.value ? "Trường dữ liệu không được để trống" : null,
+                                  contactOrganizationViewModel.showErrorTextPosition.value ? kRedChart : kDarkGray
+                              ),
+                              style: Theme.of(context).textTheme.headline4,
+                              onChanged: (value) {
+                                position = value;
+                                contactOrganizationViewModel.showErrorTextPosition.value = value.isEmpty;
+                              },
+                              onTap: (){
+                                if(position != null && position!.isNotEmpty){
+                                  contactOrganizationViewModel.showErrorTextPosition.value = false;
+                                } else {
+                                  contactOrganizationViewModel.showErrorTextPosition.value = true;
+                                }
+                              },
+                              onSubmitted: (value) {
+                                position = value;
+                              },
+                            ),
                           ),
                           //Chọn to chuc
                           const Padding(
@@ -197,18 +226,30 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          TextField(
-                            controller: TextEditingController()
-                              ..text = checkingStringNull(phoneNumber),
-                            decoration: decoTextField,
-                            style: Theme.of(context).textTheme.headline4,
-                            keyboardType: TextInputType.number,
-                            onChanged: (value) {
-                              phoneNumber = value;
-                            },
-                            onSubmitted: (value) {
-                              phoneNumber = value;
-                            },
+                          Obx(() => TextField(
+                              controller: TextEditingController()..text = checkingStringNull(phoneNumber),
+                              decoration: buildInputDecorationUpdate(
+                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value ? "Trường dữ liệu không được để trống" : contactOrganizationViewModel.rxPhoneNumber.value.isPhoneNumber ? null : "Số điện thoại không hợp lệ",
+                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value ? kRedChart : contactOrganizationViewModel.rxPhoneNumber.value.isPhoneNumber ? kDarkGray : kRedChart
+                              ),
+                              // keyboardType: TextInputType.number,
+                              style: Theme.of(context).textTheme.headline4,
+                              onChanged: (value) {
+                                phoneNumber = value;
+                                contactOrganizationViewModel.showErrorTextPhoneNumber.value = value.isEmpty;
+                              },
+                              onTap: (){
+                                if(phoneNumber != null && phoneNumber!.isNotEmpty){
+                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value = false;
+                                } else {
+                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value = true;
+                                }
+                              },
+                              onSubmitted: (value) {
+                                phoneNumber = value;
+                                contactOrganizationViewModel.rxPhoneNumber.value = value;
+                              },
+                            ),
                           ),
                           //Nhập email
                           const Padding(
@@ -218,28 +259,30 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          TextField(
-                            controller: TextEditingController()..text = checkingStringNull(email),
-                            decoration: InputDecoration(
-                                enabledBorder: const OutlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: kDarkGray, width: 1),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                hintStyle: const TextStyle(color: Colors.black),
-                                hintText: "Nhập địa chỉ",
-                                fillColor: kWhite),
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.headline4,
-                            onChanged: (value) {
-                              email = value;
-                            },
-                            onSubmitted: (value) {
-                              email = value;
-                            },
+                          Obx(() => TextField(
+                              controller: TextEditingController()..text = checkingStringNull(email),
+                              decoration: buildInputDecorationUpdate(
+                                  contactOrganizationViewModel.showErrorTextEmail.value ? "Trường dữ liệu không được để trống" : contactOrganizationViewModel.rxEmail.value.isEmail ? null : "Email không đúng định dạng",
+                                  contactOrganizationViewModel.showErrorTextEmail.value ? kRedChart : contactOrganizationViewModel.rxEmail.value.isEmail ? kDarkGray: kRedChart
+                              ),
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.headline4,
+                              onChanged: (value) {
+                                email = value;
+                                contactOrganizationViewModel.showErrorTextEmail.value = value.isEmpty;
+                              },
+                              onTap: (){
+                                if(email != null && email!.isNotEmpty){
+                                  contactOrganizationViewModel.showErrorTextEmail.value = false;
+                                } else {
+                                  contactOrganizationViewModel.showErrorTextEmail.value = true;
+                                }
+                              },
+                              onSubmitted: (value) {
+                                email = value;
+                                contactOrganizationViewModel.rxEmail.value = value;
+                              },
+                            ),
                           ),
                           //Nhập địa chỉ
                           const Padding(
@@ -249,17 +292,30 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                               style: CustomTextStyle.grayColorTextStyle,
                             ),
                           ),
-                          TextField(
-                            controller: TextEditingController()..text = checkingStringNull(address),
-                            decoration: decoTextField,
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.headline4,
-                            onChanged: (value) {
-                              address = value;
-                            },
-                            onSubmitted: (value) {
-                              address = value;
-                            },
+                          Obx(() => TextField(
+                              controller: TextEditingController()..text = checkingStringNull(address),
+                              decoration: buildInputDecorationUpdate(
+                                  contactOrganizationViewModel.showErrorTextAddress.value ? "Trường dữ liệu không được để trống" : null,
+                                  contactOrganizationViewModel.showErrorTextAddress.value ? kRedChart : kDarkGray
+                              ),
+
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.headline4,
+                              onChanged: (value) {
+                                address = value;
+                                contactOrganizationViewModel.showErrorTextAddress.value = value.isEmpty;
+                              },
+                              onTap: (){
+                                if(address != null && address!.isNotEmpty){
+                                  contactOrganizationViewModel.showErrorTextAddress.value = false;
+                                } else {
+                                  contactOrganizationViewModel.showErrorTextAddress.value = true;
+                                }
+                              },
+                              onSubmitted: (value) {
+                                address = value;
+                              },
+                            ),
                           ),
                           const SizedBox(
                             height: 50,
@@ -351,11 +407,38 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
-          )),
+                )
+              ],
+            )),
+      ),
     );
+  }
+
+  InputDecoration buildInputDecorationUpdate(String? errorText, Color colorBorderSide) {
+    return InputDecoration(
+      errorText: errorText,
+      errorStyle: const TextStyle(color: kRedChart, fontSize: 12),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: colorBorderSide, width: 1),
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      filled: true,
+      fillColor: kWhite);
+  }
+
+
+  bool validateMobile(String value) {
+    String pattern = r'(^(?:[+0]9)?[0-9]{10,11}$)';
+    RegExp regExp = RegExp(pattern);
+    if (value.length != 10) {
+      return false;
+    }
+    else if (!regExp.hasMatch(value)) {
+      return false;
+    }
+    return true;
   }
 }
 
