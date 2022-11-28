@@ -215,8 +215,8 @@ class AddNewContactScreen extends GetView {
                           ),
                           Obx(() => TextField(
                               decoration: buildInputDecorationAdd(
-                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value ? "Trường dữ liệu không được để trống" : contactOrganizationViewModel.rxPhoneNumber.value.isNotEmpty ? contactOrganizationViewModel.rxPhoneNumber.value.isPhoneNumber ? null : "Số điện thoại không đúng định dạng" : null,
-                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value ? kRedChart : contactOrganizationViewModel.rxPhoneNumber.value.isNotEmpty ? contactOrganizationViewModel.rxPhoneNumber.value.isPhoneNumber ? kDarkGray : kRedChart : kDarkGray,
+                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value ? "Trường dữ liệu không được để trống" : contactOrganizationViewModel.rxPhoneNumber.value.isNotEmpty ? contactOrganizationViewModel.phoneNumberValidator() ? null : "Số điện thoại không đúng định dạng" : null,
+                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value ? kRedChart : contactOrganizationViewModel.rxPhoneNumber.value.isNotEmpty ? contactOrganizationViewModel.phoneNumberValidator() ? kDarkGray : kRedChart : kDarkGray,
                                   contactOrganizationViewModel.showErrorTextPhoneNumber.value ? kRedChart : Colors.black,
                                   "Nhập số điện thoại"
                               ),
@@ -437,7 +437,7 @@ class AddNewContactScreen extends GetView {
         organizationName?.isNotEmpty== true &&
         phoneNumber?.isNotEmpty == true&&
         email?.isNotEmpty == true&&address?.isNotEmpty== true &&  position?.isNotEmpty== true &&
-        contactOrganizationViewModel.rxPhoneNumber.value.isPhoneNumber &&
+        contactOrganizationViewModel.phoneNumberValidator() &&
         contactOrganizationViewModel.rxEmail.value.isEmail) ){
       contactOrganizationViewModel.changeValidateValue(false,contactOrganizationViewModel.isValueNull);
     }

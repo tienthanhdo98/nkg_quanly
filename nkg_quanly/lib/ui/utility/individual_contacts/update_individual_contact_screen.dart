@@ -259,15 +259,14 @@ class UpdateIndividualContactState
                               contactIndividualViewModel
                                       .showErrorTextPhoneNumber.value
                                   ? "Trường dữ liệu không được để trống"
-                                  : contactIndividualViewModel
-                                          .rxPhoneNumber.value.isPhoneNumber
+                                  : contactIndividualViewModel.phoneNumberValidator()
                                       ? null
-                                      : "Số điện thoại không hợp lệ",
+                                      : "Số điện thoại không đúng định dạng",
                               contactIndividualViewModel
                                       .showErrorTextPhoneNumber.value
                                   ? kRedChart
                                   : contactIndividualViewModel
-                                          .rxPhoneNumber.value.isPhoneNumber
+                                  .phoneNumberValidator()
                                       ? kDarkGray
                                       : kRedChart),
                           // keyboardType: TextInputType.number,
@@ -533,7 +532,7 @@ class UpdateIndividualContactState
         email?.isNotEmpty == true &&
         address?.isNotEmpty == true &&
         position?.isNotEmpty == true &&
-        contactIndividualViewModel.rxPhoneNumber.value.isPhoneNumber &&
+        contactIndividualViewModel.phoneNumberValidator() &&
         contactIndividualViewModel.rxEmail.value.isEmail) {
       contactIndividualViewModel.changeValidateValue(
           false, contactIndividualViewModel.isValueNull);

@@ -229,8 +229,8 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                           Obx(() => TextField(
                               controller: TextEditingController()..text = checkingStringNull(phoneNumber),
                               decoration: buildInputDecorationUpdate(
-                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value ? "Trường dữ liệu không được để trống" : contactOrganizationViewModel.rxPhoneNumber.value.isPhoneNumber ? null : "Số điện thoại không hợp lệ",
-                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value ? kRedChart : contactOrganizationViewModel.rxPhoneNumber.value.isPhoneNumber ? kDarkGray : kRedChart
+                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value ? "Trường dữ liệu không được để trống" : contactOrganizationViewModel.phoneNumberValidator() ? null : "Số điện thoại không đúng định dạng",
+                                  contactOrganizationViewModel.showErrorTextPhoneNumber.value ? kRedChart : contactOrganizationViewModel.phoneNumberValidator() ? kDarkGray : kRedChart
                               ),
                               // keyboardType: TextInputType.number,
                               style: Theme.of(context).textTheme.headline4,
@@ -238,6 +238,7 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                                 phoneNumber = value;
                                 checkAllValueNull();
                                 contactOrganizationViewModel.rxPhoneNumber.value = value;
+                                // contactOrganizationViewModel.phoneNumberValidator();
                                 contactOrganizationViewModel.showErrorTextPhoneNumber.value = value.isEmpty;
                               },
                               onTap: (){
@@ -451,7 +452,7 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
         organizationName?.isNotEmpty== true &&
         phoneNumber?.isNotEmpty == true&&
         email?.isNotEmpty == true&&address?.isNotEmpty== true &&  position?.isNotEmpty== true &&
-        contactOrganizationViewModel.rxPhoneNumber.value.isPhoneNumber &&
+        contactOrganizationViewModel.phoneNumberValidator() &&
         contactOrganizationViewModel.rxEmail.value.isEmail) ){
       contactOrganizationViewModel.changeValidateValue(false,contactOrganizationViewModel.isValueNull);
     }
@@ -460,6 +461,7 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
       contactOrganizationViewModel.changeValidateValue(true,contactOrganizationViewModel.isValueNull);
     }
   }
+
 }
 
 

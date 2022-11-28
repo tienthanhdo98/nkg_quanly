@@ -210,8 +210,8 @@ class AddNewContactScreen extends GetView {
                           ),
                           Obx(()=> TextField(
                               decoration: buildInputDecorationAdd(
-                                  contactIndividualViewModel.showErrorTextPhoneNumber.value ? "Trường dữ liệu không được để trống" : contactIndividualViewModel.rxPhoneNumber.value.isNotEmpty ? contactIndividualViewModel.rxPhoneNumber.value.isPhoneNumber ? null : "Số điện thoại không đúng định dạng" : null,
-                                  contactIndividualViewModel.showErrorTextPhoneNumber.value ? kRedChart : contactIndividualViewModel.rxPhoneNumber.value.isNotEmpty ? contactIndividualViewModel.rxPhoneNumber.value.isPhoneNumber ? kDarkGray : kRedChart : kDarkGray,
+                                  contactIndividualViewModel.showErrorTextPhoneNumber.value ? "Trường dữ liệu không được để trống" : contactIndividualViewModel.rxPhoneNumber.value.isNotEmpty ? contactIndividualViewModel.phoneNumberValidator() ? null : "Số điện thoại không đúng định dạng" : null,
+                                  contactIndividualViewModel.showErrorTextPhoneNumber.value ? kRedChart : contactIndividualViewModel.rxPhoneNumber.value.isNotEmpty ? contactIndividualViewModel.phoneNumberValidator() ? kDarkGray : kRedChart : kDarkGray,
                                   contactIndividualViewModel.showErrorTextPhoneNumber.value ? kRedChart : Colors.black,
                                   "Nhập số điện thoại"
                               ),
@@ -434,7 +434,7 @@ class AddNewContactScreen extends GetView {
         address?.isNotEmpty== true &&
         position?.isNotEmpty == true &&
         contactIndividualViewModel.rxEmail.value.isEmail &&
-        contactIndividualViewModel.rxPhoneNumber.value.isPhoneNumber){
+        contactIndividualViewModel.phoneNumberValidator()){
       contactIndividualViewModel.changeValidateValue(false,contactIndividualViewModel.isValueNull);
     }
     else

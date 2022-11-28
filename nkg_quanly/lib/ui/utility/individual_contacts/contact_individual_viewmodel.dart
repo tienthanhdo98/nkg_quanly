@@ -52,6 +52,17 @@ class ContactIndividualViewModel extends GetxController {
     rxIsValidate.value = isNull;
   }
 
+  phoneNumberValidator(){
+    if(rxPhoneNumber.value.length > 11 || rxPhoneNumber.value.length < 10) {
+      return false;
+    }
+    if(!rxPhoneNumber.value.isPhoneNumber) {
+      return false;
+    }
+    return true;
+  }
+
+
   Future<void> getDepartmentList() async {
     var url = Uri.parse(apiGetDepartmentList);
     http.Response response = await http.get(url);
