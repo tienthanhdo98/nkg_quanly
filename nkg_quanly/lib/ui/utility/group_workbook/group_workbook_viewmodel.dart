@@ -17,6 +17,17 @@ class GroupWorkBookViewModel extends GetxController {
   RxList<GroupWorkBookItems> rxListGroupWorkBookItems= <GroupWorkBookItems>[].obs;
   GroupWorkBookModel groupWorkBookModel = GroupWorkBookModel();
   Rx<bool> rxSwitchState = false.obs;
+  Rx<bool> isValueNull = true.obs;
+
+  Rx<bool> showErrorTextNameWB = false.obs;
+  Rx<bool> showErrorTextDesNameWB = false.obs;
+
+
+  clearTextField(){
+    showErrorTextNameWB.value = false;
+    showErrorTextDesNameWB.value = false;
+    isValueNull.value = true;
+  }
 
   @override
   void onInit() {
@@ -28,6 +39,11 @@ class GroupWorkBookViewModel extends GetxController {
 
   void switchChangeState(bool value) {
     rxSwitchState.value = value;
+  }
+
+  void changeValidateValue(bool isNull,Rx<bool> rxIsValidate)
+  {
+    rxIsValidate.value = isNull;
   }
 
   Future<void> postGroupWorkBookAll() async {
@@ -91,6 +107,7 @@ class GroupWorkBookViewModel extends GetxController {
         backgroundColor: kWhite,
       );
     } else {
+      clearTextField();
       Get.snackbar(
         "Thông báo",
         "Thêm nhóm công việc thất bại",

@@ -45,7 +45,7 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
 
   @override
   Widget build(BuildContext context) {
-
+    checkAllValueNull();
     return Scaffold(
       body: WillPopScope(
         onWillPop: () async {
@@ -96,8 +96,8 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                             ),
                           ),
                           Obx(() => TextField(
-                              controller: TextEditingController()
-                                ..text = checkingStringNull(employeeName),
+                              controller: TextEditingController(text: checkingStringNull(employeeName)),
+                                // ..text = checkingStringNull(employeeName),
                               decoration: buildInputDecorationUpdate(
                                   contactOrganizationViewModel.showErrorTextEmployeeName.value ? "Trường dữ liệu không được để trống" : null,
                                   contactOrganizationViewModel.showErrorTextEmployeeName.value ? kRedChart : kDarkGray),
@@ -236,6 +236,8 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                               style: Theme.of(context).textTheme.headline4,
                               onChanged: (value) {
                                 phoneNumber = value;
+                                checkAllValueNull();
+                                contactOrganizationViewModel.rxPhoneNumber.value = value;
                                 contactOrganizationViewModel.showErrorTextPhoneNumber.value = value.isEmpty;
                               },
                               onTap: (){
@@ -269,6 +271,8 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                               style: Theme.of(context).textTheme.headline4,
                               onChanged: (value) {
                                 email = value;
+                                checkAllValueNull();
+                                contactOrganizationViewModel.rxEmail.value = value;
                                 contactOrganizationViewModel.showErrorTextEmail.value = value.isEmpty;
                               },
                               onTap: (){
@@ -348,43 +352,30 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                                         child: const Text('Đóng')),
                                   ),
                                 ),
+                                Obx(() =>
+                                (contactOrganizationViewModel.isValueNull.value == false) ?
                                 Expanded(
                                   child: Padding(
-                                    padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                     child: ElevatedButton(
                                         onPressed: () {
-                                          print(employeeName);
-                                          print(organizationId);
-                                          print(organizationName);
-                                          print(phoneNumber);
-                                          print(email);
-                                          print(address);
-                                          print(position);
-                                          if (employeeName!.isNotEmpty ||
-                                              organizationName!.isNotEmpty ||
-                                              phoneNumber!.isNotEmpty ||
-                                              email!.isNotEmpty ||
-                                              address!.isNotEmpty ||
-                                              position!.isNotEmpty) {
-                                            contactOrganizationViewModel
-                                                .updateContact(
-                                                widget.contactListItems.id!,
-                                                employeeName!,
-                                                position!,
-                                                organizationId!,
-                                                phoneNumber!,
-                                                address!,
-                                                email!);
-                                            Get.back();
-                                          }
+                                          contactOrganizationViewModel
+                                              .updateContact(
+                                              widget.contactListItems.id!,
+                                              employeeName!,
+                                              position!,
+                                              organizationId!,
+                                              phoneNumber!,
+                                              address!,
+                                              email!);
+                                          Get.back();
                                         },
                                         style: ButtonStyle(
                                             backgroundColor: MaterialStateProperty
                                                 .resolveWith<Color>(
                                                   (Set<MaterialState> states) {
-                                                if (states.contains(
-                                                    MaterialState.pressed)) {
+                                                if (states
+                                                    .contains(MaterialState.pressed)) {
                                                   return kBlueButton;
                                                 } else {
                                                   return kBlueButton;
@@ -394,12 +385,37 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
                                             shape: MaterialStateProperty.all<
                                                 RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
-                                                  borderRadius:
-                                                  BorderRadius.circular(18.0),
+                                                  borderRadius: BorderRadius.circular(18.0),
                                                 ))),
-                                        child: Text('Lưu')),
+                                        child: const Text('Lưu')),
                                   ),
-                                )
+                                ) :  Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          checkAllValueNull();
+                                        },
+                                        style: ButtonStyle(
+                                            backgroundColor: MaterialStateProperty
+                                                .resolveWith<Color>(
+                                                  (Set<MaterialState> states) {
+                                                if (states
+                                                    .contains(MaterialState.pressed)) {
+                                                  return kBlueLineChart2;
+                                                } else {
+                                                  return kBlueLineChart2;
+                                                } // Use the component's default.
+                                              },
+                                            ),
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(18.0),
+                                                ))),
+                                        child: const Text('Lưu')),
+                                  ),
+                                ))
                               ],
                             ),
                           )
@@ -429,16 +445,20 @@ class UpdateOrganContactState extends State<UpdateNewContactScreen>
   }
 
 
-  bool validateMobile(String value) {
-    String pattern = r'(^(?:[+0]9)?[0-9]{10,11}$)';
-    RegExp regExp = RegExp(pattern);
-    if (value.length != 10) {
-      return false;
+  void checkAllValueNull()
+  {
+    if((employeeName?.isNotEmpty == true &&
+        organizationName?.isNotEmpty== true &&
+        phoneNumber?.isNotEmpty == true&&
+        email?.isNotEmpty == true&&address?.isNotEmpty== true &&  position?.isNotEmpty== true &&
+        contactOrganizationViewModel.rxPhoneNumber.value.isPhoneNumber &&
+        contactOrganizationViewModel.rxEmail.value.isEmail) ){
+      contactOrganizationViewModel.changeValidateValue(false,contactOrganizationViewModel.isValueNull);
     }
-    else if (!regExp.hasMatch(value)) {
-      return false;
+    else
+    {
+      contactOrganizationViewModel.changeValidateValue(true,contactOrganizationViewModel.isValueNull);
     }
-    return true;
   }
 }
 

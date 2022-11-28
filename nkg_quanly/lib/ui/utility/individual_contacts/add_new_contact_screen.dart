@@ -92,6 +92,7 @@ class AddNewContactScreen extends GetView {
                               },
                               onChanged: (value) {
                                 employeeName = value;
+                                checkAllValueNull();
                                 contactIndividualViewModel.showErrorTextEmployeeName.value = value.isEmpty;
                               },
                               onTap: (){
@@ -122,6 +123,7 @@ class AddNewContactScreen extends GetView {
                               style: Theme.of(context).textTheme.headline4,
                               onChanged: (value) {
                                 position = value;
+                                checkAllValueNull();
                                 contactIndividualViewModel.showErrorTextPosition.value = value.isEmpty;
                               },
                               onTap: (){
@@ -174,6 +176,7 @@ class AddNewContactScreen extends GetView {
                                             departmentId = element.id;
                                           }
                                         }
+                                        checkAllValueNull();
                                       },
                                       isExpanded: false,
                                       hint: const Text(
@@ -216,7 +219,9 @@ class AddNewContactScreen extends GetView {
                               style: Theme.of(context).textTheme.headline4,
                               onChanged: (value) {
                                 phoneNumber = value;
+                                checkAllValueNull();
                                 contactIndividualViewModel.showErrorTextPhoneNumber.value = value.isEmpty;
+                                contactIndividualViewModel.rxPhoneNumber.value = value;
                               },
                               onTap: (){
                                 if(phoneNumber != null && phoneNumber!.isNotEmpty){
@@ -246,7 +251,9 @@ class AddNewContactScreen extends GetView {
                               style: Theme.of(context).textTheme.headline4,
                               onChanged: (value) {
                                 email = value;
+                                checkAllValueNull();
                                 contactIndividualViewModel.showErrorTextEmail.value = value.isEmpty;
+                                contactIndividualViewModel.rxEmail.value = value;
                               },
                               onTap: (){
                                 if(email != null && email!.isNotEmpty){
@@ -271,22 +278,23 @@ class AddNewContactScreen extends GetView {
                           ),
                           Obx(()=> TextField(
                               decoration: buildInputDecorationAdd(
-                                  contactIndividualViewModel.showErrorTextEmployeeName.value ? "Trường dữ liệu không được để trống" : null,
-                                  contactIndividualViewModel.showErrorTextEmployeeName.value ? kRedChart : kDarkGray,
-                                  contactIndividualViewModel.showErrorTextEmployeeName.value ? kRedChart : Colors.black,
+                                  contactIndividualViewModel.showErrorTextAddress.value ? "Trường dữ liệu không được để trống" : null,
+                                  contactIndividualViewModel.showErrorTextAddress.value ? kRedChart : kDarkGray,
+                                  contactIndividualViewModel.showErrorTextAddress.value ? kRedChart : Colors.black,
                                   "Nhập địa chỉ"
                               ),
                               maxLines: 1,
                               style: Theme.of(context).textTheme.headline4,
                               onChanged: (value) {
                                 address = value;
-                                contactIndividualViewModel.showErrorTextEmployeeName.value = value.isEmpty;
+                                checkAllValueNull();
+                                contactIndividualViewModel.showErrorTextAddress.value = value.isEmpty;
                               },
                               onTap: (){
                                 if(address != null && address!.isNotEmpty){
-                                  contactIndividualViewModel.showErrorTextEmployeeName.value = false;
+                                  contactIndividualViewModel.showErrorTextAddress.value = false;
                                 } else {
-                                  contactIndividualViewModel.showErrorTextEmployeeName.value = true;
+                                  contactIndividualViewModel.showErrorTextAddress.value = true;
                                 }
                               },
                               onSubmitted: (value) {
@@ -323,48 +331,52 @@ class AddNewContactScreen extends GetView {
                                         child: const Text('Đóng')),
                                   ),
                                 ),
+                                Obx(() =>
+                                (contactIndividualViewModel.isValueNull.value) ?
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                     child: ElevatedButton(
                                         onPressed: () {
-                                          print(employeeName);
-                                          print(departmentId);
-                                          print(departmentName);
-                                          print(phoneNumber);
-                                          print(email);
-                                          print(address);
-                                          print(position);
-
-                                          if (employeeName?.isNotEmpty == true ||
-                                              departmentName?.isNotEmpty == true||
-                                              phoneNumber?.isNotEmpty == true||
-                                              email?.isNotEmpty == true||address?.isNotEmpty == true||  position?.isNotEmpty == true) {
-                                            if(GetUtils.isEmail("abc@gmail.com")) {
-                                              contactIndividualViewModel.addContact(
-                                                  employeeName!,
-                                                  position!,
-                                                  departmentId!,
-                                                  phoneNumber!,
-                                                  address!,
-                                                  email!);
-                                              Get.back();
-                                            }
-                                            else
-                                              {
-                                                Get.snackbar(
-                                                  "Thông báo",
-                                                  "Thêm danh bạ thất bại, email không đúng định dạng",
-                                                  snackPosition: SnackPosition.BOTTOM,
-                                                  backgroundColor: kWhite,
-                                                );
-                                              }
-                                          }
+                                          checkAllValueNull();
                                         },
                                         style: ButtonStyle(
                                             backgroundColor: MaterialStateProperty
                                                 .resolveWith<Color>(
-                                              (Set<MaterialState> states) {
+                                                  (Set<MaterialState> states) {
+                                                if (states
+                                                    .contains(MaterialState.pressed)) {
+                                                  return kLightBlueButton;
+                                                } else {
+                                                  return kLightBlueButton;
+                                                } // Use the component's default.
+                                              },
+                                            ),
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(18.0),
+                                                ))),
+                                        child: const Text('Lưu')),
+                                  ),
+                                ) :  Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                            contactIndividualViewModel.addContact(
+                                                employeeName!,
+                                                position!,
+                                                departmentId!,
+                                                phoneNumber!,
+                                                address!,
+                                                email!);
+                                            Get.back();
+                                        },
+                                        style: ButtonStyle(
+                                            backgroundColor: MaterialStateProperty
+                                                .resolveWith<Color>(
+                                                  (Set<MaterialState> states) {
                                                 if (states
                                                     .contains(MaterialState.pressed)) {
                                                   return kBlueButton;
@@ -374,13 +386,14 @@ class AddNewContactScreen extends GetView {
                                               },
                                             ),
                                             shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(18.0),
-                                            ))),
+                                                  borderRadius: BorderRadius.circular(18.0),
+                                                ))),
                                         child: const Text('Lưu')),
                                   ),
                                 )
+                                ),
                               ],
                             ),
                           )
@@ -411,5 +424,22 @@ class AddNewContactScreen extends GetView {
         hintText: hintText,
         fillColor: kWhite
     );
+  }
+  void checkAllValueNull() {
+    if(employeeName?.isNotEmpty == true &&
+        departmentId?.isNotEmpty== true &&
+        departmentName?.isNotEmpty == true &&
+        phoneNumber?.isNotEmpty== true &&
+        email?.isNotEmpty == true &&
+        address?.isNotEmpty== true &&
+        position?.isNotEmpty == true &&
+        contactIndividualViewModel.rxEmail.value.isEmail &&
+        contactIndividualViewModel.rxPhoneNumber.value.isPhoneNumber){
+      contactIndividualViewModel.changeValidateValue(false,contactIndividualViewModel.isValueNull);
+    }
+    else
+    {
+      contactIndividualViewModel.changeValidateValue(true,contactIndividualViewModel.isValueNull);
+    }
   }
 }

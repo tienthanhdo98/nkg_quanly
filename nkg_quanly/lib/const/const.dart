@@ -1020,6 +1020,40 @@ Widget headerWidget(String header, BuildContext context) {
   );
 }
 
+Widget headerWidgetClearTextField(String header, BuildContext context, VoidCallback press) {
+  return Container(
+    decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        border: Border(
+            bottom: BorderSide(
+              width: 1,
+              color: Theme.of(context).dividerColor,
+            ))),
+    child: Padding(
+      padding: const EdgeInsets.all(15),
+      child: InkWell(
+        onTap: press,
+        child: Row(
+          children: [
+            Image.asset(
+              'assets/icons/ic_arrow_back.png',
+              width: 18,
+              height: 18,
+            ),
+            const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+            Flexible(
+              child: Text(
+                header,
+                style: Theme.of(context).textTheme.headline1,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 void loadDataByDay(GetxController viewModel) {
   if (viewModel is MissionViewModel) {
     // viewModel.onSelectDay(menuController.rxSelectedDay.value);

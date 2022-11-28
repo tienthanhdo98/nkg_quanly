@@ -225,6 +225,7 @@ class AddNewContactScreen extends GetView {
                               onChanged: (value) {
                                 phoneNumber = value;
                                 checkAllValueNull();
+                                contactOrganizationViewModel.rxPhoneNumber.value = value;
                                 contactOrganizationViewModel.showErrorTextPhoneNumber.value = value.isEmpty;
                               },
                               onTap: (){
@@ -261,6 +262,7 @@ class AddNewContactScreen extends GetView {
                               onChanged: (value) {
                                 email = value;
                                 checkAllValueNull();
+                                contactOrganizationViewModel.rxEmail.value = value;
                                 contactOrganizationViewModel.showErrorTextEmail.value = value.isEmpty;
                               },
                               onTap: (){
@@ -375,7 +377,7 @@ class AddNewContactScreen extends GetView {
                                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                     child: ElevatedButton(
                                         onPressed: () {
-                                        checkAllValueNull();
+                                          checkAllValueNull();
                                         },
                                         style: ButtonStyle(
                                             backgroundColor: MaterialStateProperty
@@ -434,7 +436,9 @@ class AddNewContactScreen extends GetView {
     if((employeeName?.isNotEmpty == true &&
         organizationName?.isNotEmpty== true &&
         phoneNumber?.isNotEmpty == true&&
-        email?.isNotEmpty == true&&address?.isNotEmpty== true &&  position?.isNotEmpty== true) ){
+        email?.isNotEmpty == true&&address?.isNotEmpty== true &&  position?.isNotEmpty== true &&
+        contactOrganizationViewModel.rxPhoneNumber.value.isPhoneNumber &&
+        contactOrganizationViewModel.rxEmail.value.isEmail) ){
       contactOrganizationViewModel.changeValidateValue(false,contactOrganizationViewModel.isValueNull);
     }
     else

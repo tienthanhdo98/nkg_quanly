@@ -39,6 +39,7 @@ class ContactOrganizationViewModel extends GetxController {
     showErrorTextEmail.value = false;
     rxEmail.value = "";
     showErrorTextAddress.value = false;
+    isValueNull.value = true;
   }
 
   @override
@@ -51,6 +52,8 @@ class ContactOrganizationViewModel extends GetxController {
   {
     rxIsValidate.value = isNull;
   }
+
+
   void checkboxFilterAll(bool value, int key) {
     if (value == true) {
       var map = {key: ""};
@@ -188,6 +191,7 @@ class ContactOrganizationViewModel extends GetxController {
         backgroundColor: kWhite,
       );
     } else {
+      clearTextField();
       Get.snackbar(
         "Thông báo",
         "Thêm danh bạ thất bại",

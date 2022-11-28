@@ -8,8 +8,6 @@ import '../../theme/theme_data.dart';
 import 'contact_individual_viewmodel.dart';
 
 class UpdateIndividualContactScreen extends StatefulWidget {
-
-
   UpdateIndividualContactScreen(this.contactListItems);
 
   ContactListItems contactListItems;
@@ -21,7 +19,6 @@ class UpdateIndividualContactScreen extends StatefulWidget {
 class UpdateIndividualContactState
     extends State<UpdateIndividualContactScreen> {
   final contactIndividualViewModel = Get.put(ContactIndividualViewModel());
-
 
   String? employeeName;
 
@@ -36,14 +33,14 @@ class UpdateIndividualContactState
 
   @override
   void initState() {
-    employeeName =  widget.contactListItems.employeeName;
-    departmentId =  widget.contactListItems.departmentId;
+    employeeName = widget.contactListItems.employeeName;
+    departmentId = widget.contactListItems.departmentId;
     departmentName = findNameOfDepartById(
         contactIndividualViewModel.rxDepartmentList, departmentId!);
-    phoneNumber =  widget.contactListItems.phoneNumber;
-    email =  widget.contactListItems.email;
-    address =  widget.contactListItems.address;
-    position =  widget.contactListItems.position;
+    phoneNumber = widget.contactListItems.phoneNumber;
+    email = widget.contactListItems.email;
+    address = widget.contactListItems.address;
+    position = widget.contactListItems.position;
 
     contactIndividualViewModel.rxPhoneNumber.value = phoneNumber!;
     contactIndividualViewModel.rxEmail.value = email!;
@@ -52,6 +49,7 @@ class UpdateIndividualContactState
 
   @override
   Widget build(BuildContext context) {
+    checkAllValueNull();
     return Scaffold(
       body: WillPopScope(
         onWillPop: () async {
@@ -82,7 +80,6 @@ class UpdateIndividualContactState
                         style: Theme.of(context).textTheme.headline1,
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -102,28 +99,39 @@ class UpdateIndividualContactState
                           style: CustomTextStyle.grayColorTextStyle,
                         ),
                       ),
-                      Obx(() => TextField(
-                        controller: TextEditingController()
-                          ..text = checkingStringNull(employeeName),
-                        decoration: buildInputDecorationUpdate(
-                            contactIndividualViewModel.showErrorTextEmployeeName.value ? "Trường dữ liệu không được để trống" : null,
-                            contactIndividualViewModel.showErrorTextEmployeeName.value ? kRedChart : kDarkGray),
-                        style: Theme.of(context).textTheme.headline4,
-                        onChanged: (value) {
-                          employeeName = value;
-                          contactIndividualViewModel.showErrorTextEmployeeName.value = value.isEmpty;
-                        },
-                        onTap: (){
-                          if(employeeName != null && employeeName!.isNotEmpty){
-                            contactIndividualViewModel.showErrorTextEmployeeName.value = false;
-                          } else {
-                            contactIndividualViewModel.showErrorTextEmployeeName.value = true;
-                          }
-                        },
-                        onSubmitted: (value) {
-                          employeeName = value;
-                        },
-                      ),
+                      Obx(
+                        () => TextField(
+                          controller: TextEditingController()
+                            ..text = checkingStringNull(employeeName),
+                          decoration: buildInputDecorationUpdate(
+                              contactIndividualViewModel
+                                      .showErrorTextEmployeeName.value
+                                  ? "Trường dữ liệu không được để trống"
+                                  : null,
+                              contactIndividualViewModel
+                                      .showErrorTextEmployeeName.value
+                                  ? kRedChart
+                                  : kDarkGray),
+                          style: Theme.of(context).textTheme.headline4,
+                          onChanged: (value) {
+                            employeeName = value;
+                            contactIndividualViewModel.showErrorTextEmployeeName
+                                .value = value.isEmpty;
+                          },
+                          onTap: () {
+                            if (employeeName != null &&
+                                employeeName!.isNotEmpty) {
+                              contactIndividualViewModel
+                                  .showErrorTextEmployeeName.value = false;
+                            } else {
+                              contactIndividualViewModel
+                                  .showErrorTextEmployeeName.value = true;
+                            }
+                          },
+                          onSubmitted: (value) {
+                            employeeName = value;
+                          },
+                        ),
                       ),
                       //Nhập tên tổ chức
                       const Padding(
@@ -133,28 +141,38 @@ class UpdateIndividualContactState
                           style: CustomTextStyle.grayColorTextStyle,
                         ),
                       ),
-                      Obx(() => TextField(
-                        controller: TextEditingController()..text = checkingStringNull(position),
-                        decoration: buildInputDecorationUpdate(
-                            contactIndividualViewModel.showErrorTextPosition.value ? "Trường dữ liệu không được để trống" : null,
-                            contactIndividualViewModel.showErrorTextPosition.value ? kRedChart : kDarkGray
+                      Obx(
+                        () => TextField(
+                          controller: TextEditingController()
+                            ..text = checkingStringNull(position),
+                          decoration: buildInputDecorationUpdate(
+                              contactIndividualViewModel
+                                      .showErrorTextPosition.value
+                                  ? "Trường dữ liệu không được để trống"
+                                  : null,
+                              contactIndividualViewModel
+                                      .showErrorTextPosition.value
+                                  ? kRedChart
+                                  : kDarkGray),
+                          style: Theme.of(context).textTheme.headline4,
+                          onChanged: (value) {
+                            position = value;
+                            contactIndividualViewModel
+                                .showErrorTextPosition.value = value.isEmpty;
+                          },
+                          onTap: () {
+                            if (position != null && position!.isNotEmpty) {
+                              contactIndividualViewModel
+                                  .showErrorTextPosition.value = false;
+                            } else {
+                              contactIndividualViewModel
+                                  .showErrorTextPosition.value = true;
+                            }
+                          },
+                          onSubmitted: (value) {
+                            position = value;
+                          },
                         ),
-                        style: Theme.of(context).textTheme.headline4,
-                        onChanged: (value) {
-                          position = value;
-                          contactIndividualViewModel.showErrorTextPosition.value = value.isEmpty;
-                        },
-                        onTap: (){
-                          if(position != null && position!.isNotEmpty){
-                            contactIndividualViewModel.showErrorTextPosition.value = false;
-                          } else {
-                            contactIndividualViewModel.showErrorTextPosition.value = true;
-                          }
-                        },
-                        onSubmitted: (value) {
-                          position = value;
-                        },
-                      ),
                       ),
                       //Chọn to chuc
                       const Padding(
@@ -233,30 +251,51 @@ class UpdateIndividualContactState
                           style: CustomTextStyle.grayColorTextStyle,
                         ),
                       ),
-                      Obx(() => TextField(
-                        controller: TextEditingController()..text = checkingStringNull(phoneNumber),
-                        decoration: buildInputDecorationUpdate(
-                            contactIndividualViewModel.showErrorTextPhoneNumber.value ? "Trường dữ liệu không được để trống" : contactIndividualViewModel.rxPhoneNumber.value.isPhoneNumber ? null : "Số điện thoại không hợp lệ",
-                            contactIndividualViewModel.showErrorTextPhoneNumber.value ? kRedChart : contactIndividualViewModel.rxPhoneNumber.value.isPhoneNumber ? kDarkGray : kRedChart
+                      Obx(
+                        () => TextField(
+                          controller: TextEditingController()
+                            ..text = checkingStringNull(phoneNumber),
+                          decoration: buildInputDecorationUpdate(
+                              contactIndividualViewModel
+                                      .showErrorTextPhoneNumber.value
+                                  ? "Trường dữ liệu không được để trống"
+                                  : contactIndividualViewModel
+                                          .rxPhoneNumber.value.isPhoneNumber
+                                      ? null
+                                      : "Số điện thoại không hợp lệ",
+                              contactIndividualViewModel
+                                      .showErrorTextPhoneNumber.value
+                                  ? kRedChart
+                                  : contactIndividualViewModel
+                                          .rxPhoneNumber.value.isPhoneNumber
+                                      ? kDarkGray
+                                      : kRedChart),
+                          // keyboardType: TextInputType.number,
+                          style: Theme.of(context).textTheme.headline4,
+                          onChanged: (value) {
+                            phoneNumber = value;
+                            checkAllValueNull();
+                            contactIndividualViewModel
+                                .rxPhoneNumber.value = value;
+                            contactIndividualViewModel
+                                .showErrorTextPhoneNumber.value = value.isEmpty;
+                          },
+                          onTap: () {
+                            if (phoneNumber != null &&
+                                phoneNumber!.isNotEmpty) {
+                              contactIndividualViewModel
+                                  .showErrorTextPhoneNumber.value = false;
+                            } else {
+                              contactIndividualViewModel
+                                  .showErrorTextPhoneNumber.value = true;
+                            }
+                          },
+                          onSubmitted: (value) {
+                            phoneNumber = value;
+                            contactIndividualViewModel.rxPhoneNumber.value =
+                                value;
+                          },
                         ),
-                        // keyboardType: TextInputType.number,
-                        style: Theme.of(context).textTheme.headline4,
-                        onChanged: (value) {
-                          phoneNumber = value;
-                          contactIndividualViewModel.showErrorTextPhoneNumber.value = value.isEmpty;
-                        },
-                        onTap: (){
-                          if(phoneNumber != null && phoneNumber!.isNotEmpty){
-                            contactIndividualViewModel.showErrorTextPhoneNumber.value = false;
-                          } else {
-                            contactIndividualViewModel.showErrorTextPhoneNumber.value = true;
-                          }
-                        },
-                        onSubmitted: (value) {
-                          phoneNumber = value;
-                          contactIndividualViewModel.rxPhoneNumber.value = value;
-                        },
-                      ),
                       ),
                       //Nhập email
                       const Padding(
@@ -266,30 +305,49 @@ class UpdateIndividualContactState
                           style: CustomTextStyle.grayColorTextStyle,
                         ),
                       ),
-                      Obx(() => TextField(
-                        controller: TextEditingController()..text = checkingStringNull(email),
-                        decoration: buildInputDecorationUpdate(
-                            contactIndividualViewModel.showErrorTextEmail.value ? "Trường dữ liệu không được để trống" : contactIndividualViewModel.rxEmail.value.isEmail ? null : "Email không đúng định dạng",
-                            contactIndividualViewModel.showErrorTextEmail.value ? kRedChart : contactIndividualViewModel.rxEmail.value.isEmail ? kDarkGray: kRedChart
+                      Obx(
+                        () => TextField(
+                          controller: TextEditingController()
+                            ..text = checkingStringNull(email),
+                          decoration: buildInputDecorationUpdate(
+                              contactIndividualViewModel
+                                      .showErrorTextEmail.value
+                                  ? "Trường dữ liệu không được để trống"
+                                  : contactIndividualViewModel
+                                          .rxEmail.value.isEmail
+                                      ? null
+                                      : "Email không đúng định dạng",
+                              contactIndividualViewModel
+                                      .showErrorTextEmail.value
+                                  ? kRedChart
+                                  : contactIndividualViewModel
+                                          .rxEmail.value.isEmail
+                                      ? kDarkGray
+                                      : kRedChart),
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.headline4,
+                          onChanged: (value) {
+                            email = value;
+                            checkAllValueNull();
+                            contactIndividualViewModel
+                                .showErrorTextEmail.value = value.isEmpty;
+                            contactIndividualViewModel
+                                .rxEmail.value = value;
+                          },
+                          onTap: () {
+                            if (email != null && email!.isNotEmpty) {
+                              contactIndividualViewModel
+                                  .showErrorTextEmail.value = false;
+                            } else {
+                              contactIndividualViewModel
+                                  .showErrorTextEmail.value = true;
+                            }
+                          },
+                          onSubmitted: (value) {
+                            email = value;
+                            contactIndividualViewModel.rxEmail.value = value;
+                          },
                         ),
-                        maxLines: 1,
-                        style: Theme.of(context).textTheme.headline4,
-                        onChanged: (value) {
-                          email = value;
-                          contactIndividualViewModel.showErrorTextEmail.value = value.isEmpty;
-                        },
-                        onTap: (){
-                          if(email != null && email!.isNotEmpty){
-                            contactIndividualViewModel.showErrorTextEmail.value = false;
-                          } else {
-                            contactIndividualViewModel.showErrorTextEmail.value = true;
-                          }
-                        },
-                        onSubmitted: (value) {
-                          email = value;
-                          contactIndividualViewModel.rxEmail.value = value;
-                        },
-                      ),
                       ),
                       //Nhập địa chỉ
                       const Padding(
@@ -299,30 +357,39 @@ class UpdateIndividualContactState
                           style: CustomTextStyle.grayColorTextStyle,
                         ),
                       ),
-                      Obx(() => TextField(
-                        controller: TextEditingController()..text = checkingStringNull(address),
-                        decoration: buildInputDecorationUpdate(
-                            contactIndividualViewModel.showErrorTextAddress.value ? "Trường dữ liệu không được để trống" : null,
-                            contactIndividualViewModel.showErrorTextAddress.value ? kRedChart : kDarkGray
+                      Obx(
+                        () => TextField(
+                          controller: TextEditingController()
+                            ..text = checkingStringNull(address),
+                          decoration: buildInputDecorationUpdate(
+                              contactIndividualViewModel
+                                      .showErrorTextAddress.value
+                                  ? "Trường dữ liệu không được để trống"
+                                  : null,
+                              contactIndividualViewModel
+                                      .showErrorTextAddress.value
+                                  ? kRedChart
+                                  : kDarkGray),
+                          maxLines: 1,
+                          style: Theme.of(context).textTheme.headline4,
+                          onChanged: (value) {
+                            address = value;
+                            contactIndividualViewModel
+                                .showErrorTextAddress.value = value.isEmpty;
+                          },
+                          onTap: () {
+                            if (address != null && address!.isNotEmpty) {
+                              contactIndividualViewModel
+                                  .showErrorTextAddress.value = false;
+                            } else {
+                              contactIndividualViewModel
+                                  .showErrorTextAddress.value = true;
+                            }
+                          },
+                          onSubmitted: (value) {
+                            address = value;
+                          },
                         ),
-
-                        maxLines: 1,
-                        style: Theme.of(context).textTheme.headline4,
-                        onChanged: (value) {
-                          address = value;
-                          contactIndividualViewModel.showErrorTextAddress.value = value.isEmpty;
-                        },
-                        onTap: (){
-                          if(address != null && address!.isNotEmpty){
-                            contactIndividualViewModel.showErrorTextAddress.value = false;
-                          } else {
-                            contactIndividualViewModel.showErrorTextAddress.value = true;
-                          }
-                        },
-                        onSubmitted: (value) {
-                          address = value;
-                        },
-                      ),
                       ),
                       const SizedBox(
                         height: 50,
@@ -344,7 +411,8 @@ class UpdateIndividualContactState
                                       Get.back();
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      foregroundColor: kBlueButton, backgroundColor: kWhite,
+                                      foregroundColor: kBlueButton,
+                                      backgroundColor: kWhite,
                                       //change text color of button
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -355,58 +423,78 @@ class UpdateIndividualContactState
                                     child: const Text('Đóng')),
                               ),
                             ),
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                child: ElevatedButton(
-                                    onPressed: () {
-                                      print(employeeName);
-                                      print(departmentId);
-                                      print(departmentName);
-                                      print(phoneNumber);
-                                      print(email);
-                                      print(address);
-                                      print(position);
-                                      if (employeeName!.isNotEmpty ||
-                                          departmentName!.isNotEmpty ||
-                                          phoneNumber!.isNotEmpty ||
-                                          email!.isNotEmpty ||
-                                          address!.isNotEmpty ||
-                                          position!.isNotEmpty) {
-                                        contactIndividualViewModel
-                                            .updateContact(
-                                            widget.contactListItems.id!,
-                                                employeeName!,
-                                                position!,
-                                                departmentId!,
-                                                phoneNumber!,
-                                                address!,
-                                                email!);
-                                        Get.back();
-                                      }
-                                    },
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty
-                                            .resolveWith<Color>(
-                                          (Set<MaterialState> states) {
-                                            if (states.contains(
-                                                MaterialState.pressed)) {
-                                              return kBlueButton;
-                                            } else {
-                                              return kBlueButton;
-                                            } // Use the component's default.
+                            Obx(() => (contactIndividualViewModel
+                                    .isValueNull.value)
+                                ? Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 10, 0),
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            checkAllValueNull();
                                           },
-                                        ),
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(18.0),
-                                        ))),
-                                    child: const Text('Lưu')),
-                              ),
-                            )
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty
+                                                      .resolveWith<Color>(
+                                                (Set<MaterialState> states) {
+                                                  if (states.contains(
+                                                      MaterialState.pressed)) {
+                                                    return kLightBlueButton;
+                                                  } else {
+                                                    return kLightBlueButton;
+                                                  } // Use the component's default.
+                                                },
+                                              ),
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(18.0),
+                                              ))),
+                                          child: const Text('Lưu')),
+                                    ),
+                                  )
+                                : Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 10, 0),
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                                contactIndividualViewModel
+                                                    .updateContact(
+                                                        widget.contactListItems
+                                                            .id!,
+                                                        employeeName!,
+                                                        position!,
+                                                        departmentId!,
+                                                        phoneNumber!,
+                                                        address!,
+                                                        email!);
+                                                Get.back();
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty
+                                                      .resolveWith<Color>(
+                                                (Set<MaterialState> states) {
+                                                  if (states.contains(
+                                                      MaterialState.pressed)) {
+                                                    return kBlueButton;
+                                                  } else {
+                                                    return kBlueButton;
+                                                  } // Use the component's default.
+                                                },
+                                              ),
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(18.0),
+                                              ))),
+                                          child: const Text('Lưu')),
+                                    ),
+                                  ))
                           ],
                         ),
                       )
@@ -422,7 +510,8 @@ class UpdateIndividualContactState
     );
   }
 
-  InputDecoration buildInputDecorationUpdate(String? errorText, Color colorBorderSide) {
+  InputDecoration buildInputDecorationUpdate(
+      String? errorText, Color colorBorderSide) {
     return InputDecoration(
         errorText: errorText,
         errorStyle: const TextStyle(color: kRedChart, fontSize: 12),
@@ -436,4 +525,21 @@ class UpdateIndividualContactState
         fillColor: kWhite);
   }
 
+  void checkAllValueNull() {
+    if (employeeName?.isNotEmpty == true &&
+        departmentId?.isNotEmpty == true &&
+        departmentName?.isNotEmpty == true &&
+        phoneNumber?.isNotEmpty == true &&
+        email?.isNotEmpty == true &&
+        address?.isNotEmpty == true &&
+        position?.isNotEmpty == true &&
+        contactIndividualViewModel.rxPhoneNumber.value.isPhoneNumber &&
+        contactIndividualViewModel.rxEmail.value.isEmail) {
+      contactIndividualViewModel.changeValidateValue(
+          false, contactIndividualViewModel.isValueNull);
+    } else {
+      contactIndividualViewModel.changeValidateValue(
+          true, contactIndividualViewModel.isValueNull);
+    }
+  }
 }

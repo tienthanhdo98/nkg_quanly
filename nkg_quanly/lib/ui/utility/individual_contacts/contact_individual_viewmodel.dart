@@ -20,6 +20,7 @@ class ContactIndividualViewModel extends GetxController {
   final RxMap<int, String> rxMapDepartmentFilter = <int, String>{}.obs;
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
 
+  Rx<bool> isValueNull = true.obs;
 
   Rx<bool> showErrorTextEmployeeName = false.obs;
   Rx<bool> showErrorTextPosition = false.obs;
@@ -32,10 +33,12 @@ class ContactIndividualViewModel extends GetxController {
   clearTextField(){
     showErrorTextEmployeeName.value = false;
     showErrorTextPosition.value = false;
+    rxEmail.value = "";
     showErrorTextPhoneNumber.value = false;
     rxPhoneNumber.value = "";
     showErrorTextEmail.value = false;
     showErrorTextAddress.value = false;
+    isValueNull.value = true;
   }
 
   @override
@@ -43,6 +46,10 @@ class ContactIndividualViewModel extends GetxController {
     getDepartmentList();
     getContactList();
     super.onInit();
+  }
+  void changeValidateValue(bool isNull,Rx<bool> rxIsValidate)
+  {
+    rxIsValidate.value = isNull;
   }
 
   Future<void> getDepartmentList() async {
@@ -164,6 +171,7 @@ class ContactIndividualViewModel extends GetxController {
         backgroundColor: kWhite,
       );
     } else {
+      clearTextField();
       Get.snackbar(
         "Thông báo",
         "Thêm danh bạ thất bại",

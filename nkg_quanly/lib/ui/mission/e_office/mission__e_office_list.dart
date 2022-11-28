@@ -19,7 +19,7 @@ class MissionEOfficeList extends GetView {
 
   @override
   Widget build(BuildContext context) {
-    missionViewModel.getMissionDefault(true);
+    missionViewModel.getDataInScreen();
     return Scaffold(
       body: SafeArea(
           child: Column(

@@ -24,6 +24,17 @@ class WorkBookViewModel extends GetxController {
       <WorkerModel>[].obs;
   Rx<bool> rxSwitchState = false.obs;
   ScrollController controller = ScrollController();
+  Rx<bool> isValueNull = true.obs;
+
+  Rx<bool> showErrorTextWorkName = false.obs;
+  Rx<bool> showErrorTextDescription = false.obs;
+
+
+  clearTextField(){
+    showErrorTextWorkName.value = false;
+    showErrorTextDescription.value = false;
+    isValueNull.value = true;
+  }
 
   @override
   void onInit() {
@@ -39,6 +50,11 @@ class WorkBookViewModel extends GetxController {
 
   void swtichBottomButton(int button) {
     selectedBottomButton.value = button;
+  }
+
+  void changeValidateValue(bool isNull,Rx<bool> rxIsValidate)
+  {
+    rxIsValidate.value = isNull;
   }
 
   //calendar work
@@ -121,6 +137,7 @@ class WorkBookViewModel extends GetxController {
         backgroundColor: kWhite,
       );
     } else {
+      clearTextField();
       Get.snackbar(
         "Thông báo",
         "Thêm công việc thất bại",
@@ -242,5 +259,6 @@ class WorkBookViewModel extends GetxController {
     List listRes = json.decode(response.body) as List;
     listWorkerModel = listRes.map((e) => WorkerModel.fromJson(e)).toList();
     rxListWorkerModel.value = listWorkerModel;
+    print("length: ${rxListWorkerModel.length}");
   }
 }
