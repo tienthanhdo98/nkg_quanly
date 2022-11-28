@@ -46,10 +46,8 @@ class ThemeClass {
       colorScheme: const ColorScheme.light(),
       cardColor: kWhite,
       primaryColor: kBackGround,
-
       splashColor: kWhite,
       dividerColor: kBackGround,
-
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: kBlueButton,
         unselectedItemColor: Colors.black,
@@ -207,3 +205,18 @@ const blueTextStyle = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
     fontFamily: 'Roboto');
+
+final styleEleveButtonWidget = ButtonStyle(
+    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.pressed)) {
+          return kPink;
+        } else {
+          return kPink;
+        } // Use the component's default.
+      },
+    ),
+    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    )));

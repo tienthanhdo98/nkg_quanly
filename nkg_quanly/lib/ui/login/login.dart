@@ -86,7 +86,7 @@ class LoginScreenState extends State<LoginScreen> {
                                 loginViewModel.rxUserInfoModel.value.email!);
                             loginViewModel.changeValueLoading(false);
                             //webViewController!.stopLoading();
-                            print("AAA: login witk token");
+                            print("AAA: login with token");
                             Get.off(() => const MainScreen());
                           }
                           else

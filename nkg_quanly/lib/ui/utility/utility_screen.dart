@@ -95,5 +95,5 @@ List<MenuListItem> listUtility = [
   MenuListItem(
       'Quản lý sổ tay công việc', 'assets/icons/ic_ql_sotay.png', "", 5),
   MenuListItem(
-      'Quản lý sổ tay nhóm CV', 'assets/icons/ic_ql_nhomcv.png', "", 6),
+      'Quản lý nhóm sổ tay CV', 'assets/icons/ic_ql_nhomcv.png', "", 6),
 ];
