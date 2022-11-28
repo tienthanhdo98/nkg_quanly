@@ -58,15 +58,15 @@ const apiPostProfileProcedureDetail =
     "http://123.31.31.237:6002/api/procedureprofiles/get-by-id?maSoBienNhan=";
 const apiPostChartStatusResolve =
     "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-status-resolve";
-const apiPostChartByBranch=
+const apiPostChartByBranch =
     "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-branch";
-const apiPostChartByAgencies=
+const apiPostChartByAgencies =
     "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-agencies";
-  const apiPostChartByReceptionform=
+const apiPostChartByReceptionform =
     "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-receptionform";
-  const apiPostChartByProceduce=
+const apiPostChartByProceduce =
     "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-procedure";
-  const apiPostChartByDate =
+const apiPostChartByDate =
     "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-bydate";
 
 //doc out
@@ -107,81 +107,123 @@ const apiGroupBookList = "http://123.31.31.237:6002/api/groupworkbook/search";
 const apiAddWorkBook = "http://123.31.31.237:6002/api/workbook";
 const apiWorkBookDetail = "http://123.31.31.237:6002/api/workbook/"; //id
 const apiWorkBookDelete = "http://123.31.31.237:6002/api/workbook/";
-const apiGroupWorkBookDetail = "http://123.31.31.237:6002/api/groupworkbook/"; //id
+const apiGroupWorkBookDetail =
+    "http://123.31.31.237:6002/api/groupworkbook/"; //id
 const apiGetListWorkerWorkBook = "http://123.31.31.237:6002/api/users";
 //contact organization
-const apiPostSearchListContactOrganization = "http://123.31.31.237:6002/api/contact/organization/search";
+const apiPostSearchListContactOrganization =
+    "http://123.31.31.237:6002/api/contact/organization/search";
 const apiContactOrgan = "http://123.31.31.237:6002/api/contact/organization/";
-const apiContactOrganDetail = "http://123.31.31.237:6002/api/contact/organization/"; //id
-const apiOrganList= "http://123.31.31.237:6002/api/organizations/get-unpaging";
+const apiContactOrganDetail =
+    "http://123.31.31.237:6002/api/contact/organization/"; //id
+const apiOrganList = "http://123.31.31.237:6002/api/organizations/get-unpaging";
 
 //contact individual
-const apiActionIndividualContact = "http://123.31.31.237:6002/api/contact/individual";
-const apiSearhIndividualContact = "http://123.31.31.237:6002/api/contact/individual/search";
-const apiGetDepartmentList = "http://123.31.31.237:6002/api/departments/get-unpaging";
-const apiIndividualContactDetail = "http://123.31.31.237:6002/api/contact/individual/";
+const apiActionIndividualContact =
+    "http://123.31.31.237:6002/api/contact/individual";
+const apiSearhIndividualContact =
+    "http://123.31.31.237:6002/api/contact/individual/search";
+const apiGetDepartmentList =
+    "http://123.31.31.237:6002/api/departments/get-unpaging";
+const apiIndividualContactDetail =
+    "http://123.31.31.237:6002/api/contact/individual/";
 
 //helpdesk
 const apiPostHelpDesk = "http://123.31.31.237:6002/api/helpdesks";
-const apiGetChartRecentlyHelpDesk = "http://123.31.31.237:6002/api/helpdesks/get-recently";
-const apiGetHelpdeskFilter= "http://123.31.31.237:6002/api/helpdesks";
+const apiGetChartRecentlyHelpDesk =
+    "http://123.31.31.237:6002/api/helpdesks/get-recently";
+const apiGetHelpdeskFilter = "http://123.31.31.237:6002/api/helpdesks";
 
 //pmis
 const apiPmisGetUnit = "http://123.31.31.237:6002/api/reportpmis/get-unit";
-const apiStatisticTotal = "http://123.31.31.237:6002/api/reportpmis/get-statistic-total";
-const apiPmisPieChart= "http://123.31.31.237:6002/api/reportpmis/get-statistic-chartpie";
-const apiPmisPieChartByYear= "http://123.31.31.237:6002/api/reportpmis/get-statistic-by-year";
-const apiPmisPieChartByUnit= "http://123.31.31.237:6002/api/reportpmis/get-statistic-by-unit";
+const apiStatisticTotal =
+    "http://123.31.31.237:6002/api/reportpmis/get-statistic-total";
+const apiPmisPieChart =
+    "http://123.31.31.237:6002/api/reportpmis/get-statistic-chartpie";
+const apiPmisPieChartByYear =
+    "http://123.31.31.237:6002/api/reportpmis/get-statistic-by-year";
+const apiPmisPieChartByUnit =
+    "http://123.31.31.237:6002/api/reportpmis/get-statistic-by-unit";
 
 //guideline
-const getGuideline = "http://123.31.31.237:6002/api/guidelines/search?Keyword=%20";
-const getGuidelineDownload = "http://123.31.31.237:6002/api/guidelines/download-file/";
+const getGuideline =
+    "http://123.31.31.237:6002/api/guidelines/search?Keyword=%20";
+const getGuidelineDownload =
+    "http://123.31.31.237:6002/api/guidelines/download-file/";
 
 //group work book
-const apiSearchGroupWorkBook = "http://123.31.31.237:6002/api/groupworkbook/search";
-const apiActionSearchGroupWorkBook = "http://123.31.31.237:6002/api/groupworkbook";
+const apiSearchGroupWorkBook =
+    "http://123.31.31.237:6002/api/groupworkbook/search";
+const apiActionSearchGroupWorkBook =
+    "http://123.31.31.237:6002/api/groupworkbook";
 
 //analysis report
-const  getAnalysisReportProvince = "http://123.31.31.237:6002/api/analysisreport/get-province";
-const  getAnalysisReportRegion = "http://123.31.31.237:6002/api/analysisreport/get-region";
-const  getAnalysisReportSemester = "http://123.31.31.237:6002/api/analysisreport/get-semester";
-const  getAnalysisReportSchoolYear = "http://123.31.31.237:6002/api/analysisreport/get-schoolyear";
-const  getAnalysisReportSchoolLevel = "http://123.31.31.237:6002/api/analysisreport/get-schoollevel";
-const  getClass = "http://123.31.31.237:6002/api/analysisreport/get-class";
-const  getSubject = "http://123.31.31.237:6002/api/analysisreport/get-subject";
-const  getClassification = "http://123.31.31.237:6002/api/analysisreport/get-classification";
-const  getPoint = "http://123.31.31.237:6002/api/analysisreport/get-point";
+const getAnalysisReportProvince =
+    "http://123.31.31.237:6002/api/analysisreport/get-province";
+const getAnalysisReportRegion =
+    "http://123.31.31.237:6002/api/analysisreport/get-region";
+const getAnalysisReportSemester =
+    "http://123.31.31.237:6002/api/analysisreport/get-semester";
+const getAnalysisReportSchoolYear =
+    "http://123.31.31.237:6002/api/analysisreport/get-schoolyear";
+const getAnalysisReportSchoolLevel =
+    "http://123.31.31.237:6002/api/analysisreport/get-schoollevel";
+const getClass = "http://123.31.31.237:6002/api/analysisreport/get-class";
+const getSubject = "http://123.31.31.237:6002/api/analysisreport/get-subject";
+const getClassification =
+    "http://123.31.31.237:6002/api/analysisreport/get-classification";
+const getPoint = "http://123.31.31.237:6002/api/analysisreport/get-point";
 
-const  postEducationChart = "http://123.31.31.237:6002/api/statisticuniversaleducation/get-statistic-chart";
-const postChartDsabilityEducation = "http://123.31.31.237:6002/api/analysisreportdisabilityeducation";
-const postChartInfrastructure = "http://123.31.31.237:6002/api/analysisreportinfrastructure";
-const postChartBeneficiary = "http://123.31.31.237:6002/api/analysisticbeneficiary/get-statistic-chart";
-const postContinuingEducation = "http://123.31.31.237:6002/api/statisticcontinuingeducation/get-statistic-chart";
-const postPreSchool = "http://123.31.31.237:6002/api/statisticpreschool/get-statistic-chart";
-const postPrimarySchool = "http://123.31.31.237:6002/api/analysisreportprimaryschool";
-const postSecondarySchool = "http://123.31.31.237:6002/api/statisticsecondaryschool/get-statistic-chart";
+const postEducationChart =
+    "http://123.31.31.237:6002/api/statisticuniversaleducation/get-statistic-chart";
+const postChartDsabilityEducation =
+    "http://123.31.31.237:6002/api/analysisreportdisabilityeducation";
+const postChartInfrastructure =
+    "http://123.31.31.237:6002/api/analysisreportinfrastructure";
+const postChartBeneficiary =
+    "http://123.31.31.237:6002/api/analysisticbeneficiary/get-statistic-chart";
+const postContinuingEducation =
+    "http://123.31.31.237:6002/api/statisticcontinuingeducation/get-statistic-chart";
+const postPreSchool =
+    "http://123.31.31.237:6002/api/statisticpreschool/get-statistic-chart";
+const postPrimarySchool =
+    "http://123.31.31.237:6002/api/analysisreportprimaryschool";
+const postSecondarySchool =
+    "http://123.31.31.237:6002/api/statisticsecondaryschool/get-statistic-chart";
 const postHighSchool = "http://123.31.31.237:6002/api/analysisreporthighschool";
-const postChartQuality1 = "http://123.31.31.237:6002/api/analysisreportqualityeducation";
-const postChartQuality2 = "http://123.31.31.237:6002/api/analysisreportqualityeducation/multi";
-const postChartQualityAbility = "http://123.31.31.237:6002/api/analysisreportqualityeducation/ability";
-const postChartQualityReward = "http://123.31.31.237:6002/api/analysisreportqualityeducation/detail-quality-reward";
+const postChartQuality1 =
+    "http://123.31.31.237:6002/api/analysisreportqualityeducation";
+const postChartQuality2 =
+    "http://123.31.31.237:6002/api/analysisreportqualityeducation/multi";
+const postChartQualityAbility =
+    "http://123.31.31.237:6002/api/analysisreportqualityeducation/ability";
+const postChartQualityReward =
+    "http://123.31.31.237:6002/api/analysisreportqualityeducation/detail-quality-reward";
 
 //login
 const apiGetAccessToken = "https://dangnhap.moet.gov.vn/oauth2/token";
 
 const apiRevokeAccessToken = "https://dangnhap.moet.gov.vn/oauth2/revoke";
-const apiRevokeAccessTokenIoc = "http://123.31.31.237:6002/api/authentications/access-tokens/revoke";
+const apiRevokeAccessTokenIoc =
+    "http://123.31.31.237:6002/api/authentications/access-tokens/revoke";
 const apiGetUserInfo = "https://dangnhap.moet.gov.vn/oauth2/userinfo";
 const apiGetSignup = "http://123.31.31.237:6002/api/authentications/sign-up";
-const apiRefreshIocToken= "http://123.31.31.237:6002/api/authentications/refresh-access-tokens";
-const apiLoginConfig= "http://123.31.31.237:6002/api/configssos/8e3a49cd-5015-41fb-aace-d243cc591465";
+const apiRefreshIocToken =
+    "http://123.31.31.237:6002/api/authentications/refresh-access-tokens";
+const apiLoginConfig =
+    "http://123.31.31.237:6002/api/configssos/8e3a49cd-5015-41fb-aace-d243cc591465";
 const apiLogoutSSO = "https://dangnhap.moet.gov.vn/oidc/logout";
 
 //event
 const apiGetLatestEvent = "http://123.31.31.237:6002/api/events/event-latest";
-
+//list widget by user
+const apiGetListWidget = "http://123.31.31.237:6002/api/widget/get-by-user";
 //notification
-const apiPostGetNotificationList = 'http://123.31.31.237:6002/api/notifications/search';
-const apiPostDeleteNotification = 'http://123.31.31.237:6002/api/notifications/deletes';
-const apiGetChangeAllNotificationStatus = 'http://123.31.31.237:6002/api/notifications/update-all-status';
-const apiGetChangeNotificationStatus = 'http://123.31.31.237:6002/api/notifications/update-status?id=';
+const apiPostGetNotificationList =
+    'http://123.31.31.237:6002/api/notifications/search';
+const apiPostDeleteNotification =
+    'http://123.31.31.237:6002/api/notifications/deletes';
+const apiGetChangeAllNotificationStatus =
+    'http://123.31.31.237:6002/api/notifications/update-all-status';
+const apiGetChangeNotificationStatus =
+    'http://123.31.31.237:6002/api/notifications/update-status?id=';
