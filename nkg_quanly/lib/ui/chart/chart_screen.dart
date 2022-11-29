@@ -18,6 +18,7 @@ import 'document_nonapproved _widget.dart';
 import 'document_out_widget.dart';
 import 'document_unprocess _widget.dart';
 import 'mission _widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ChartScreen extends StatefulWidget {
   ChartScreen({Key? key}) : super(key: key);
@@ -188,12 +189,14 @@ class _ChartScreenState extends State<ChartScreen> {
                                                     crossAxisCount: 3,
                                                     childAspectRatio: 0.9,
                                                     children: List.generate(chartViewModel.rxListWidgetItem.length, (index) {
-                                                      listClose.add(chartViewModel.getCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id!));
+                                                      listClose.add(chartViewModel.getCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!));
+                                                      print("id ${chartViewModel.rxListWidgetItem[index].name!}");
                                                       return Column(
                                                         children: [
                                                           InkWell(
                                                             onTap: (){
                                                               setStateDialog((){
+                                                                print(chartViewModel.rxListWidgetItem[index].id! + " - " + chartViewModel.rxListWidgetItem[index].code! + " - " + chartViewModel.rxListWidgetItem[index].name!);
                                                                 if(chartViewModel.getCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!)){
                                                                   chartViewModel.setCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!, false);
                                                                 } else {
@@ -205,10 +208,19 @@ class _ChartScreenState extends State<ChartScreen> {
                                                                 children: [
                                                                   Padding(
                                                                     padding: const EdgeInsets.only(top: 4, right: 4),
-                                                                    child: Image.asset(
-                                                                      list[index].img!,
+                                                                    child: CachedNetworkImage(
                                                                       width: 50,
                                                                       height: 50,
+                                                                      imageUrl: "http://123.31.31.237:8001/${chartViewModel.rxListWidgetItem[index].image ?? ""}",
+                                                                      imageBuilder: (context, imageProvider) => Container(
+                                                                        decoration: BoxDecoration(
+                                                                          image: DecorationImage(
+                                                                              image: imageProvider,
+                                                                              fit: BoxFit.cover),
+                                                                        ),
+                                                                      ),
+                                                                      placeholder: (context, url) => const CircularProgressIndicator(),
+                                                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                                                     ),
                                                                   ),
                                                                   if(chartViewModel.getCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!)) Positioned(
@@ -232,7 +244,7 @@ class _ChartScreenState extends State<ChartScreen> {
                                                           ),
                                                           Flexible(
                                                             child: Text(
-                                                              list[index].title!,
+                                                              chartViewModel.rxListWidgetItem[index].name!,
                                                               style: const TextStyle(fontSize: 12),
                                                               textAlign: TextAlign.center,
                                                             ),
@@ -352,7 +364,6 @@ List<Widget> listWidgetByUser(ChartViewModel chartViewModel) {
       var widget = getWidgetByName(element.code!);
       listWidget.add(widget);
     }
-
   }
   return listWidget;
 }

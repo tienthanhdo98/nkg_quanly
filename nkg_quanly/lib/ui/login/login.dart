@@ -37,7 +37,6 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     print("pref token: ${prefToken}");
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(

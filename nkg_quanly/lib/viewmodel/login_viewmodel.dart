@@ -35,6 +35,7 @@ class LoginViewModel extends GetxController {
     pref ??= await SharedPreferences.getInstance();
   }
   loadFromShareFrefs(String key) async {
+    print("key: ${key}");
     await initPrefs();
     String res =  pref?.getString(key) ?? "";
     return  res;

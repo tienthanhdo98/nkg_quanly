@@ -63,8 +63,10 @@ class ChartViewModel extends GetxController {
     List a = json.decode(response.body) as List;
     listSearch = a.map((e) => WidgetItemModel.fromJson(e)).toList();
     rxListWidgetItem.value = listSearch;
-    print("listWidget : ${rxListWidgetItem.length}");
+    int  index = 0;
     for (var element in listSearch) {
+      print("index : $index");
+      print(element.id! + "\n" + element.code! + " - " + element.name! + "\n" + element.description! + "\n" + element.status!.toString());
       if(!getCheckedWidgetItem(element.id! + element.code!)) {
         continue;
       }
