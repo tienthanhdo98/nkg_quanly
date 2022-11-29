@@ -44,7 +44,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
-  //runApp(const MyApp());
+  // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

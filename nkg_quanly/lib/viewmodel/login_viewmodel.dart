@@ -31,17 +31,17 @@ class LoginViewModel extends GetxController {
     getInfoLoginConfig();
     super.onInit();
   }
-  _initPrefs() async {
+  initPrefs() async {
     pref ??= await SharedPreferences.getInstance();
   }
   loadFromShareFrefs(String key) async {
-    await _initPrefs();
+    await initPrefs();
     String res =  pref?.getString(key) ?? "";
     return  res;
   }
 
   saveToShareFrefs(String value,String key) async {
-    await _initPrefs();
+    await initPrefs();
    await pref?.setString(key, value);
   }
 

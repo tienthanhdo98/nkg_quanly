@@ -19,8 +19,14 @@ import 'document_out_widget.dart';
 import 'document_unprocess _widget.dart';
 import 'mission _widget.dart';
 
-class ChartScreen extends StatelessWidget {
+class ChartScreen extends StatefulWidget {
   ChartScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ChartScreen> createState() => _ChartScreenState();
+}
+
+class _ChartScreenState extends State<ChartScreen> {
   final chartViewModel = Get.put(ChartViewModel());
 
   @override
@@ -162,97 +168,135 @@ class ChartScreen extends StatelessWidget {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
+                                  List<bool> listClose = [];
                                   showDialog<void>(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         content: SizedBox(
-                                          height: 470,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text("Thêm khối thông tin",style: Theme.of(context).textTheme.headline3),
-                                              const Padding(padding: EdgeInsets.only(top: 15)),
-                                              GridView.count(
+                                          width: double.maxFinite,
+                                          child: StatefulBuilder(
+                                            builder: (context, setStateDialog) {
+                                              return ListView(
                                                 shrinkWrap: true,
-                                                physics: const NeverScrollableScrollPhysics(),
-                                                // Create a grid with 2 columns. If you change the scrollDirection to
-                                                // horizontal, this produces 2 rows.
-                                                crossAxisCount: 3,
-                                                childAspectRatio: 0.9,
-                                                // Generate 100 widgets that display their index in the List.
-                                                children: List.generate(list.length, (index) {
-                                                  return InkWell(
-                                                    onTap: () {
-
-                                                    },
-                                                    child: Column(
-                                                      children: [
-                                                        Image.asset(
-                                                          list[index].img!,
-                                                          width: 50,
-                                                          height: 50,
-                                                        ),
-                                                        Flexible(
-                                                          child: Text(
-                                                            list[index].title!,
-                                                            style: const TextStyle(fontSize: 12),
-                                                            textAlign: TextAlign.center,
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  );
-                                                }),
-                                              ),
-                                              const Padding(
-                                                padding: EdgeInsets.only(top: 10,bottom: 10),
-                                                child: Divider(thickness: 1,),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
                                                 children: [
-                                                ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                                            (Set<MaterialState> states) {
-                                                          if (states.contains(MaterialState.pressed)) {
-                                                            return kLightBlueButton;
-                                                          } else {
-                                                            return kLightBlueButton;
-                                                          } // Use the component's default.
-                                                        },
-                                                      ),
-                                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                            RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(10),
-                                                            ))
-                                                    ),
-                                                    onPressed: (){}, child: const Text("Lưu")),
-                                                const Padding(padding: EdgeInsets.only(left: 15)),
-                                                ElevatedButton(
-                                                  style: ButtonStyle(
-                                                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                                            (Set<MaterialState> states) {
-                                                          if (states.contains(MaterialState.pressed)) {
-                                                            return kVioletBg;
-                                                          } else {
-                                                            return kWhite;
-                                                          } // Use the component's default.
-                                                        },
-
-                                                      ),
-                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                          RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(10),
-                                                          ))
-
+                                                  Text("Thêm khối thông tin",style: Theme.of(context).textTheme.headline3),
+                                                  const Padding(padding: EdgeInsets.only(top: 15)),
+                                                  Obx(()=> GridView.count(
+                                                    shrinkWrap: true,
+                                                    physics: const NeverScrollableScrollPhysics(),
+                                                    crossAxisCount: 3,
+                                                    childAspectRatio: 0.9,
+                                                    children: List.generate(chartViewModel.rxListWidgetItem.length, (index) {
+                                                      listClose.add(chartViewModel.getCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id!));
+                                                      return Column(
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: (){
+                                                              setStateDialog((){
+                                                                if(chartViewModel.getCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!)){
+                                                                  chartViewModel.setCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!, false);
+                                                                } else {
+                                                                  chartViewModel.setCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!, true);
+                                                                }
+                                                              });
+                                                            },
+                                                            child: Stack(
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: const EdgeInsets.only(top: 4, right: 4),
+                                                                    child: Image.asset(
+                                                                      list[index].img!,
+                                                                      width: 50,
+                                                                      height: 50,
+                                                                    ),
+                                                                  ),
+                                                                  if(chartViewModel.getCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!)) Positioned(
+                                                                    top: 0,
+                                                                    right: 0,
+                                                                    width: 20,
+                                                                    height: 20,
+                                                                    child: Checkbox(
+                                                                      checkColor: Colors.white,
+                                                                      // fillColor: kWhite,
+                                                                      value: true,
+                                                                      onChanged: (bool? value) {
+                                                                        setStateDialog((){
+                                                                          chartViewModel.setCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id!, false);
+                                                                        });
+                                                                      },
+                                                                    ),
+                                                                  )
+                                                                ]
+                                                            ),
+                                                          ),
+                                                          Flexible(
+                                                            child: Text(
+                                                              list[index].title!,
+                                                              style: const TextStyle(fontSize: 12),
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      );
+                                                    }),
                                                   ),
-                                                    onPressed: (){
-                                                  Get.back();
-                                                }, child: const Text("Đóng",style: TextStyle(color: Colors.black),)),
-                                              ],)
-                                            ],
+                                                  ),
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(top: 10,bottom: 10),
+                                                    child: Divider(thickness: 1,),
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    children: [
+                                                      ElevatedButton(
+                                                          style: ButtonStyle(
+                                                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                                                    (Set<MaterialState> states) {
+                                                                  if (states.contains(MaterialState.pressed)) {
+                                                                    return kBlueButton;
+                                                                  } else {
+                                                                    return kBlueButton;
+                                                                  } // Use the component's default.
+                                                                },
+                                                              ),
+                                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                  RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                  ))
+                                                          ),
+                                                          onPressed: (){
+                                                            setState(() {
+                                                              Get.back();
+                                                            });
+                                                          }, child: const Text("Lưu")),
+                                                      const Padding(padding: EdgeInsets.only(left: 15)),
+                                                      ElevatedButton(
+                                                          style: ButtonStyle(
+                                                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                                                    (Set<MaterialState> states) {
+                                                                  if (states.contains(MaterialState.pressed)) {
+                                                                    return kVioletBg;
+                                                                  } else {
+                                                                    return kWhite;
+                                                                  } // Use the component's default.
+                                                                },
+                                                              ),
+                                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                  RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(10),
+                                                                  ))
+                                                          ),
+                                                          onPressed: (){
+                                                            Get.back();
+                                                            for (int i = 0; i < listClose.length; i++) {
+                                                              chartViewModel.setCheckedWidgetItem(chartViewModel.rxListWidgetItem[i].id!, listClose[i]);
+                                                            }
+                                                          }, child: const Text("Đóng",style: TextStyle(color: Colors.black),)),
+                                                    ],)
+                                                ],
+                                              );
+                                            },
                                           ),
                                         ),
                                       );
@@ -270,10 +314,17 @@ class ChartScreen extends StatelessWidget {
                                       await chartViewModel.getListWidget(
                                           loginViewModel
                                               .rxAccessTokenIoc.value);
+                                      setState(() {
+                                        chartViewModel.restoreCheckedWidget();
+                                      });
                                     },
                                     child: const Text("Khôi phục mặc định"))),
                             ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  setState(() {
+                                    chartViewModel.clearCheckedWidgetItem();
+                                  });
+                                },
                                 style:  styleEleveButtonWidget,
                                 child: const Text("Gỡ toàn bộ")),
                           ],
@@ -297,8 +348,11 @@ class ChartScreen extends StatelessWidget {
 List<Widget> listWidgetByUser(ChartViewModel chartViewModel) {
   List<Widget> listWidget = [];
   for (var element in chartViewModel.rxListWidgetItem) {
-    var widget = getWidgetByName(element.code!);
-    listWidget.add(widget);
+    if(chartViewModel.getCheckedWidgetItem(element.id! + element.code!)){
+      var widget = getWidgetByName(element.code!);
+      listWidget.add(widget);
+    }
+
   }
   return listWidget;
 }

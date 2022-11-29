@@ -22,7 +22,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   InAppWebViewController? webViewController;
   double progress = 0;
-  String? prefToken;
+  String? prefToken ="";
   @override
   void initState() {
     getPrefToken();
@@ -32,7 +32,9 @@ class LoginScreenState extends State<LoginScreen> {
   void getPrefToken() async
   {
    var token = await loginViewModel.loadFromShareFrefs(keyTokebSSO);
+
    prefToken = token;
+   print("token123: " + prefToken.toString());
   }
 
   @override
