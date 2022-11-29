@@ -21,9 +21,6 @@ class ChartViewModel extends GetxController {
     super.onInit();
   }
 
-  // _initPrefs() async {
-  //   pref ??= await SharedPreferences.getInstance();
-  // }
   setCheckedWidgetItem(String key, bool value) async {
     await loginViewModel.initPrefs();
     loginViewModel.pref!.setBool(key, value);

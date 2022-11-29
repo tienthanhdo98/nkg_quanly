@@ -40,14 +40,15 @@ class LoginViewModel extends GetxController {
     return  res;
   }
 
-  saveToShareFrefs(String value,String key) async {
+  saveToShareFrefs(String value, String key) async {
     await initPrefs();
-   await pref?.setString(key, value);
+    await pref?.setString(key, value);
   }
 
   void changeValueLoading(bool value) {
     isLoginLoading.value = value;
   }
+
   Rx<AccessTokenModel> rxAccessTokenModel = AccessTokenModel().obs;
   Future<void> geAccessTokenSSO(String authCode) async {
     Map<String, dynamic> formMap = {
