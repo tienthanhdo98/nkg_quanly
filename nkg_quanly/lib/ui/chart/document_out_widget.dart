@@ -30,7 +30,7 @@ class DocumentOutWidget extends GetView {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Văn bản đến chờ phát hành",
+                      "Văn bản đi chờ phát hành",
                       style: Theme.of(context).textTheme.headline1,
                     ),
                   ],

@@ -62,10 +62,10 @@ class SettingScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      const Expanded(
-                          child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Icon(Icons.more_horiz)))
+                      // const Expanded(
+                      //     child: Align(
+                      //         alignment: Alignment.centerRight,
+                      //         child: Icon(Icons.more_horiz)))
                     ],
                   ),
                   Padding(

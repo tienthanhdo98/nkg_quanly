@@ -38,6 +38,7 @@ class LoginViewModel extends GetxController {
     print("key: ${key}");
     await initPrefs();
     String res =  pref?.getString(key) ?? "";
+    print("res: $res");
     return  res;
   }
 

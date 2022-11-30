@@ -204,7 +204,10 @@ class ProfileProceduceFilterScreen extends GetView {
                                   .rxSelectedGroupProcedure.value
                                   : "Chọn nhóm thủ tục",
                               context))),
-                      const Spacer(),
+                      // const Spacer(),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                      ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: SizedBox(

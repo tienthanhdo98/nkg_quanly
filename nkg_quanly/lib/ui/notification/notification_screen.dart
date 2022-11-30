@@ -189,7 +189,7 @@ class NotificationWidgetItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${docModel!.action}",
+                  "${docModel!.workName}${docModel!.action}",
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(

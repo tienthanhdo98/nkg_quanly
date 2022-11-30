@@ -117,7 +117,10 @@ class FilterDocInScreen extends GetView {
                           },
                           child: borderTextFilterEOffice(
                               "Chọn trạng thái", context)),
-                      const Spacer(),
+                      // const Spacer(),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                      ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: SizedBox(

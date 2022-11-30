@@ -161,11 +161,11 @@ class DocumentNonApprovedScreen extends GetView {
           ),
           Expanded(
             child: Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.topCenter,
               child: SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 20),
+                  padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
                   child: ElevatedButton(
                     onPressed: () {
                       Get.to(() => DocumentInEOfficeList(

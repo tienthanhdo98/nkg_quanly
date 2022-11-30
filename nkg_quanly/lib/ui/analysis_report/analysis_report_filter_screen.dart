@@ -219,7 +219,9 @@ class AnalysisReportFilterScreen extends GetView {
                                   : "Chọn năm học",
                               context))),
 
-                      const Spacer(),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                      ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: SizedBox(
@@ -382,7 +384,10 @@ class ReportUniversalEducationFilterScreen extends GetView {
                                       .rxSelectedSchoolYear.value
                                   : "Chọn năm học",
                               context))),
-                      const Spacer(),
+                      // const Spacer(),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                      ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: SizedBox(
@@ -1858,7 +1863,9 @@ class FilterSemesterBottomSheet extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-        child: Column(children: [
+        child: ListView(
+          shrinkWrap: true,
+            children: [
           FilterAllItem(
               "Tất cả học kì", 1, analysisReportViewModel!.mapAllFilter),
           const Padding(
