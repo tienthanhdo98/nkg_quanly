@@ -18,15 +18,13 @@ class ChartViewModel extends GetxController {
   RxList<WidgetItemModel> rxListWidgetItem = <WidgetItemModel>[].obs;
   LoginViewModel loginViewModel = Get.find();
   Rx<bool> isShowCase = false.obs;
-  Rx<double> positionKeyWidth = 0.0.obs;
-  Rx<double> positionKeyHeight = 0.0.obs;
 
   @override
   void onInit() {
     super.onInit();
   }
 
-  getWidgetInfo(GlobalKey key) {
+  double getWidgetInfo(GlobalKey key) {
     final RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
 
     final Size size = renderBox.size; // or _widgetKey.currentContext?.size
@@ -35,8 +33,7 @@ class ChartViewModel extends GetxController {
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     print('Offset: ${offset.dx}, ${offset.dy}');
     print('Position: ${(offset.dx + size.width) / 2}, ${(offset.dy + size.height) / 2}');
-    positionKeyWidth.value = (offset.dx + size.width) / 2;
-    positionKeyHeight.value = (offset.dy + size.height) / 2;
+    return (offset.dx + size.width) / 2;
   }
 
   setCheckedWidgetItem(String key, bool value) async {

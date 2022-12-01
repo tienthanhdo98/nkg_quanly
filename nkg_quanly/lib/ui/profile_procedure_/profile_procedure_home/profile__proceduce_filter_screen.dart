@@ -699,7 +699,7 @@ class FilterGroupProceduceBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca don vi
-          FilterAllItem("Tất cả nhóm cơ quan", 5,
+          FilterAllItem("Tất cả nhóm thủ tục", 5,
               profilesProcedureViewModel!.mapAllFilter),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),

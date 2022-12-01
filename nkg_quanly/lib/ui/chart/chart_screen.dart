@@ -29,7 +29,7 @@ class ChartScreen extends StatefulWidget {
 
 class _ChartScreenState extends State<ChartScreen> {
   final chartViewModel = Get.put(ChartViewModel());
-
+  final GlobalKey _globalKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     chartViewModel.getLatestEvent(loginViewModel.rxAccessTokenIoc.value);
@@ -168,8 +168,11 @@ class _ChartScreenState extends State<ChartScreen> {
                           scrollDirection: Axis.horizontal,
                           children: [
                             ElevatedButton(
+                              key: _globalKey,
                                 onPressed: () {
                                   List<bool> listClose = [];
+                                  chartViewModel.isShowCase.value = !chartViewModel.isShowCase.value;
+                                  chartViewModel.getWidgetInfo(_globalKey);
                                   showDialog<void>(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -343,8 +346,39 @@ class _ChartScreenState extends State<ChartScreen> {
                         ),
                       ),
                       Obx(() => Column(
-                            children: listWidgetByUser(chartViewModel),
-                          ))
+                        children: [
+                          // if(chartViewModel.isShowCase.value) Stack(
+                          //   children: [
+                          //     Positioned(
+                          //       left: chartViewModel.getWidgetInfo(_globalKey),
+                          //       child: CustomPaint(
+                          //         painter: TrianglePainter(
+                          //           strokeColor: Colors.white,
+                          //           strokeWidth: 10,
+                          //           paintingStyle: PaintingStyle.fill,
+                          //         ),
+                          //         child: const SizedBox(
+                          //           height: 16,
+                          //           width: 32,
+                          //         ),
+                          //       ),
+                          //     ),
+                          //     Container(
+                          //       margin: const EdgeInsets.only(top: 16),
+                          //       width: MediaQuery.of(context).size.width - 30,
+                          //       height: 200,
+                          //       decoration: BoxDecoration(
+                          //         color: Colors.white,
+                          //         borderRadius: BorderRadius.circular(6)
+                          //       ),
+                          //     )
+                          //   ],
+                          // ),
+                          Column(
+                                children: listWidgetByUser(chartViewModel),
+                              ),
+                        ],
+                      ))
                     ],
                   ),
                 ),
@@ -356,6 +390,39 @@ class _ChartScreenState extends State<ChartScreen> {
     );
   }
 }
+class TrianglePainter extends CustomPainter {
+  final Color strokeColor;
+  final PaintingStyle paintingStyle;
+  final double strokeWidth;
+
+  TrianglePainter({this.strokeColor = Colors.black, this.strokeWidth = 3, this.paintingStyle = PaintingStyle.stroke});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = strokeColor
+      ..strokeWidth = strokeWidth
+      ..style = paintingStyle;
+
+    canvas.drawPath(getTrianglePath(size.width, size.height), paint);
+  }
+
+  Path getTrianglePath(double x, double y) {
+    return Path()
+      ..moveTo(0, y)
+      ..lineTo(x / 2, 0)
+      ..lineTo(x, y)
+      ..lineTo(0, y);
+  }
+
+  @override
+  bool shouldRepaint(TrianglePainter oldDelegate) {
+    return oldDelegate.strokeColor != strokeColor ||
+        oldDelegate.paintingStyle != paintingStyle ||
+        oldDelegate.strokeWidth != strokeWidth;
+  }
+}
+
 
 List<Widget> listWidgetByUser(ChartViewModel chartViewModel) {
   List<Widget> listWidget = [];
