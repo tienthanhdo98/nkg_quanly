@@ -9,7 +9,6 @@ import 'package:nkg_quanly/const/const.dart';
 import '../../../model/contact_model/contact_model.dart';
 import '../../../model/contact_model/organ_model.dart';
 
-
 class ContactOrganizationViewModel extends GetxController {
   Rx<int> selectedButton = 0.obs;
   ScrollController controller = ScrollController();
@@ -31,7 +30,7 @@ class ContactOrganizationViewModel extends GetxController {
   Rx<String> rxEmail = "".obs;
   Rx<bool> showErrorTextAddress = false.obs;
 
-  clearTextField(){
+  clearTextField() {
     showErrorTextEmployeeName.value = false;
     showErrorTextPosition.value = false;
     showErrorTextPhoneNumber.value = false;
@@ -48,21 +47,20 @@ class ContactOrganizationViewModel extends GetxController {
     getContactList();
     super.onInit();
   }
-  void changeValidateValue(bool isNull,Rx<bool> rxIsValidate)
-  {
+
+  void changeValidateValue(bool isNull, Rx<bool> rxIsValidate) {
     rxIsValidate.value = isNull;
   }
 
-  phoneNumberValidator(){
-    if(rxPhoneNumber.value.length > 11 || rxPhoneNumber.value.length < 10) {
+  phoneNumberValidator() {
+    if (rxPhoneNumber.value.length > 11 || rxPhoneNumber.value.length < 10) {
       return false;
     }
-    if(!rxPhoneNumber.value.isPhoneNumber) {
+    if (!rxPhoneNumber.value.isPhoneNumber) {
       return false;
     }
     return true;
   }
-
 
   void checkboxFilterAll(bool value, int key) {
     if (value == true) {
@@ -80,82 +78,87 @@ class ContactOrganizationViewModel extends GetxController {
       var listEpg = <OrganModel>[];
       List a = json.decode(response.body) as List;
       listEpg = a.map((e) => OrganModel.fromJson(e)).toList();
-       rxOrganList.value = listEpg;
+      rxOrganList.value = listEpg;
     }
   }
-  void searchInOrganList(String keySearch) async {
-    if(keySearch != "") {
-      var list = rxOrganList.toList().where((element) =>
-          element.name!.contains(keySearch)).toList();
-      rxOrganList.value = list;
-    }
-    else
-      {
-        getOrganList();
-      }
 
+  void searchInOrganList(String keySearch) async {
+    if (keySearch != "") {
+      var list = rxOrganList
+          .toList()
+          .where((element) => element.name!.contains(keySearch))
+          .toList();
+      print("length list : ${list.length}");
+      rxOrganList.value = list;
+      print("length organ list : ${list.length}");
+
+    } else {
+      getOrganList();
+    }
   }
 
   Future<void> getContactList() async {
-
-      var url = Uri.parse(apiPostSearchListContactOrganization);
-      print('loading');
-      String json = '{"pageIndex":1,"pageSize":10}';
-      http.Response response = await http.post(
-          url, headers: headers, body: json);
-    
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        contactModel = ContactModel.fromJson(jsonDecode(response.body));
-        rxContactListItems.value = contactModel.items!;
-        //loadmore
-        var page = 1;
-        controller.addListener(() async {
-          if (controller.position.maxScrollExtent ==
-              controller.position.pixels) {
-            print("loadmore day");
-            page++;
-            String json = '{"pageIndex":$page,"pageSize":10}';
-            http.Response response =
-            await http.post(url, headers: headers, body: json);
-            contactModel = ContactModel.fromJson(jsonDecode(response.body));
-            rxContactListItems.addAll(contactModel.items!);
-            print("loadmore day at $page");
-          }
-        });
-      }
-
-  }
-  Future<void> getContactListByFilter(String organizationId ) async {
     var url = Uri.parse(apiPostSearchListContactOrganization);
     print('loading');
-    String json = '{"pageIndex":1,"pageSize":10, "organizationId": "$organizationId"}';
-    http.Response response = await http.post(url,headers: headers,body : json);
-  
-    contactModel =  ContactModel.fromJson(jsonDecode(response.body));
+    String json = '{"pageIndex":1,"pageSize":10}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      contactModel = ContactModel.fromJson(jsonDecode(response.body));
+      rxContactListItems.value = contactModel.items!;
+      //loadmore
+      var page = 1;
+      controller.addListener(() async {
+        if (controller.position.maxScrollExtent == controller.position.pixels) {
+          print("loadmore day");
+          page++;
+          String json = '{"pageIndex":$page,"pageSize":10}';
+          http.Response response =
+              await http.post(url, headers: headers, body: json);
+          contactModel = ContactModel.fromJson(jsonDecode(response.body));
+          rxContactListItems.addAll(contactModel.items!);
+          print("loadmore day at $page");
+        }
+      });
+    }
+  }
+
+  Future<void> getContactListByFilter(String organizationId) async {
+    var url = Uri.parse(apiPostSearchListContactOrganization);
+    print('loading search: id = $organizationId');
+    String json =
+        '{"pageIndex":1,"pageSize":10, "organizationId": "$organizationId"}';
+    http.Response response = await http.post(url, headers: headers, body: json);
+
+    contactModel = ContactModel.fromJson(jsonDecode(response.body));
     rxContactListItems.value = contactModel.items!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore day");
         page++;
-        String json = '{"pageIndex":$page,"pageSize":10}';
+        String json = '{"pageIndex":$page,"pageSize":10, "organizationId": "$organizationId"}';
         http.Response response =
-        await http.post(url, headers: headers, body: json);
-        contactModel =  ContactModel.fromJson(jsonDecode(response.body));
+            await http.post(url, headers: headers, body: json);
+        contactModel = ContactModel.fromJson(jsonDecode(response.body));
         rxContactListItems.addAll(contactModel.items!);
         print("loadmore day at $page");
       }
     });
   }
 
+
+
   Future<void> deleteWorkBookItem(String id) async {
     final url = Uri.parse("$apiContactOrgan$id");
     print('loading');
     http.Response response = await http.delete(url, headers: headers);
     print(id);
-  
+
     if (response.statusCode == 200) {
       getContactList();
       Get.snackbar(
@@ -191,7 +194,7 @@ class ContactOrganizationViewModel extends GetxController {
       "position": "$position"
     }""";
     http.Response response = await http.post(url, headers: headers, body: json);
-  
+
     if (response.statusCode == 200) {
       getContactList();
       Get.snackbar(
@@ -210,6 +213,7 @@ class ContactOrganizationViewModel extends GetxController {
       );
     }
   }
+
   Future<void> updateContact(
       String id,
       String employeeName,
@@ -230,7 +234,7 @@ class ContactOrganizationViewModel extends GetxController {
       "position": "$position"
     }""";
     http.Response response = await http.put(url, headers: headers, body: json);
-  
+
     if (response.statusCode == 200) {
       getContactList();
       Get.snackbar(
@@ -248,8 +252,4 @@ class ContactOrganizationViewModel extends GetxController {
       );
     }
   }
-
-
-
-
 }

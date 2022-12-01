@@ -516,7 +516,6 @@ class FilterContactOrganBottomSheet extends StatelessWidget {
                           contactOrganizationViewModel!
                               .searchInOrganList(value);
                         },
-
                       ),
                     )
                   ],

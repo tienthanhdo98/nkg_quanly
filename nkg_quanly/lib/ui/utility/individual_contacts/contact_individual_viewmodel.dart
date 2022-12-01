@@ -119,14 +119,17 @@ class ContactIndividualViewModel extends GetxController {
     rxContactListItems.value = contactModel.items!;
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore day");
         page++;
-        String json = '{"pageIndex":$page,"pageSize":10}';
+        String json = '{"pageIndex":$page,"pageSize":10, "departmentId": "$departmentId"}';
         http.Response response =
         await http.post(url, headers: headers, body: json);
         contactModel =  ContactModel.fromJson(jsonDecode(response.body));
+        contactModel.items!.removeWhere((element) => element.departmentId != departmentId);
         rxContactListItems.addAll(contactModel.items!);
         print("loadmore day at $page");
       }

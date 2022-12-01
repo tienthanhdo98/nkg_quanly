@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
@@ -16,9 +17,26 @@ class ChartViewModel extends GetxController {
   Rx<EventModel> rxEventDes = EventModel().obs;
   RxList<WidgetItemModel> rxListWidgetItem = <WidgetItemModel>[].obs;
   LoginViewModel loginViewModel = Get.find();
+  Rx<bool> isShowCase = false.obs;
+  Rx<double> positionKeyWidth = 0.0.obs;
+  Rx<double> positionKeyHeight = 0.0.obs;
+
   @override
   void onInit() {
     super.onInit();
+  }
+
+  getWidgetInfo(GlobalKey key) {
+    final RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
+
+    final Size size = renderBox.size; // or _widgetKey.currentContext?.size
+    print('Size: ${size.width}, ${size.height}');
+
+    final Offset offset = renderBox.localToGlobal(Offset.zero);
+    print('Offset: ${offset.dx}, ${offset.dy}');
+    print('Position: ${(offset.dx + size.width) / 2}, ${(offset.dy + size.height) / 2}');
+    positionKeyWidth.value = (offset.dx + size.width) / 2;
+    positionKeyHeight.value = (offset.dy + size.height) / 2;
   }
 
   setCheckedWidgetItem(String key, bool value) async {

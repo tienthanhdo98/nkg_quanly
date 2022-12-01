@@ -93,8 +93,7 @@ class MissionViewModel extends GetxController {
     print(rxListDepartmentFilter.value);
   }
 
-  Future<void> postMissionByFilter(
-      String status, String level, String department) async {
+  Future<void> postMissionByFilter(String status, String level, String department) async {
     final url = Uri.parse(apiGetMission);
     print('loading');
     String json =
@@ -112,8 +111,7 @@ class MissionViewModel extends GetxController {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");
         page++;
-        String json =
-            '{"pageIndex":$page,"pageSize":10,"state":"$status","level":"$level","organizationName":"$department"}';
+        String json = '{"pageIndex":$page,"pageSize":10,"state":"$status","level":"$level","organizationName":"$department"}';
         http.Response response =
             await http.post(url, headers: headers, body: json);
         missionModel = MissionModel.fromJson(jsonDecode(response.body));
@@ -147,13 +145,12 @@ class MissionViewModel extends GetxController {
   }
 
   Future<void> getMissionDefault(bool isInScreen) async {
-
     final url = Uri.parse(apiGetMission);
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
 
     missionModel = MissionModel.fromJson(jsonDecode(response.body));
-    if(isInScreen) {
+    if (isInScreen) {
       rxMissionItem.value = missionModel.items!;
       rxMissionStatisticTotal.value = missionModel.statistic!;
       rxMissionStatistic.value = missionModel.statistic!;
@@ -166,16 +163,14 @@ class MissionViewModel extends GetxController {
           page++;
           String json = '{"pageIndex":$page,"pageSize":10}';
           http.Response response =
-          await http.post(url, headers: headers, body: json);
+              await http.post(url, headers: headers, body: json);
           missionModel = MissionModel.fromJson(jsonDecode(response.body));
           rxMissionItem.addAll(missionModel.items!);
         }
       });
+    } else {
+      rxMissionStatisticTotal.value = missionModel.statistic!;
     }
-    else
-      {
-        rxMissionStatisticTotal.value = missionModel.statistic!;
-      }
   }
 
   Future<void> getMissionByFromAndToDate(String datefrom, String dateTo) async {
@@ -211,8 +206,6 @@ class MissionViewModel extends GetxController {
       });
     }
   }
-
-
 
   Future<MissionItem> getMissionDetail(int id) async {
     final url = Uri.parse("$apiGetMissionDetail$id");
