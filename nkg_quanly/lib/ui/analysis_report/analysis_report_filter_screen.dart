@@ -623,7 +623,9 @@ class AnalysisReportInfrastructureFilterScreen extends GetView {
                                   : "Chọn năm học",
                               context))),
 
-                      const Spacer(),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(15, 20, 15, 10),
+                      ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: SizedBox(

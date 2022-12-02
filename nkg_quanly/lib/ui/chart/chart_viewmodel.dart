@@ -18,22 +18,23 @@ class ChartViewModel extends GetxController {
   RxList<WidgetItemModel> rxListWidgetItem = <WidgetItemModel>[].obs;
   LoginViewModel loginViewModel = Get.find();
   Rx<bool> isShowCase = false.obs;
+  RxList listBeforeClose = [].obs;
+
 
   @override
   void onInit() {
     super.onInit();
   }
 
-  double getWidgetInfo(GlobalKey key) {
+  double getPositionWidget(GlobalKey key) {
     final RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
-
     final Size size = renderBox.size; // or _widgetKey.currentContext?.size
     print('Size: ${size.width}, ${size.height}');
 
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     print('Offset: ${offset.dx}, ${offset.dy}');
-    print('Position: ${(offset.dx + size.width) / 2}, ${(offset.dy + size.height) / 2}');
-    return (offset.dx + size.width) / 2;
+    print('Position: ${(offset.dx + size.width + 15) / 2}, ${(offset.dy + size.height) / 2}');
+    return (offset.dx + size.width + 15) / 2;
   }
 
   setCheckedWidgetItem(String key, bool value) async {
@@ -86,9 +87,12 @@ class ChartViewModel extends GetxController {
     rxListWidgetItem.value = listSearch;
     for (var element in listSearch) {
       if(!getCheckedWidgetItem(element.id! + element.code!)) {
+        listBeforeClose.add(getCheckedWidgetItem(element.id! + element.code!));
         continue;
+      } else {
+        setCheckedWidgetItem(element.id! + element.code!, true);
+        listBeforeClose.add(getCheckedWidgetItem(element.id! + element.code!));
       }
-      setCheckedWidgetItem(element.id! + element.code!, true);
     }
   }
 }
