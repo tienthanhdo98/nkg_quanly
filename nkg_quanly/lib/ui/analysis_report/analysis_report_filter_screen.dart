@@ -1925,8 +1925,7 @@ class FilterSemesterBottomSheet extends StatelessWidget {
                           });
                           var listId = semester.split(";");
                           for (var id in listId) {
-                            for (var item
-                                in analysisReportViewModel!.rxListSemester) {
+                            for (var item in analysisReportViewModel!.rxListSemester) {
                               if (item.id == id) {
                                 semesterName += "${item.name!};";
                                 semesterID += "${item.id!};";

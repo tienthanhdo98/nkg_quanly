@@ -7,6 +7,7 @@ import 'package:nkg_quanly/const/const.dart';
 
 import '../../const/utils.dart';
 import '../../model/document_unprocess/document_filter.dart';
+import '../../model/misstion/MissionFilterModel.dart';
 import '../../model/misstion/mission_detail.dart';
 import '../../model/misstion/mission_model.dart';
 
@@ -21,11 +22,23 @@ class MissionViewModel extends GetxController {
   ScrollController controller = ScrollController();
   MissionModel missionModel = MissionModel();
 
+  RxList<MissionFilterModel> rxListIssuer = <MissionFilterModel>[].obs;
+
+  final RxMap<int, String> mapIssuerFilter = <int, String>{}.obs;
+
+  Rx<String> rxSelectIssuer = "".obs;
+  Rx<String> rxSelectIssuerId = "".obs;
+
+
   @override
   void onInit() {
     getDataInWidget();
 
     super.onInit();
+  }
+
+  void changeValueSelectedFilter(Rx<String> rxSelected, String value) {
+    rxSelected.value = value;
   }
 
   void getDataInScreen() {

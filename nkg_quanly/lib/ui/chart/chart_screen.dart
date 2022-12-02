@@ -33,8 +33,6 @@ class _ChartScreenState extends State<ChartScreen> {
   @override
   Widget build(BuildContext context) {
     chartViewModel.getLatestEvent(loginViewModel.rxAccessTokenIoc.value);
-    List<bool> listClose = [];
-
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -172,6 +170,7 @@ class _ChartScreenState extends State<ChartScreen> {
                               key: _globalKey,
                                 onPressed: () {
                                   chartViewModel.isShowCase.value = !chartViewModel.isShowCase.value;
+                                  chartViewModel.setPositionWidget(_globalKey);
                                 },
                                 style: styleEleveButtonWidget,
                                 child: const Text("Thêm khối thông tin")),
@@ -181,6 +180,7 @@ class _ChartScreenState extends State<ChartScreen> {
                                 child: ElevatedButton(
                                   style: styleEleveButtonWidget,
                                     onPressed: () async {
+                                      chartViewModel.isShowCase.value = false;
                                       await chartViewModel.getListWidget(
                                           loginViewModel
                                               .rxAccessTokenIoc.value);
@@ -192,6 +192,7 @@ class _ChartScreenState extends State<ChartScreen> {
                             ElevatedButton(
                                 onPressed: () {
                                   setState(() {
+                                    chartViewModel.isShowCase.value = false;
                                     chartViewModel.clearCheckedWidgetItem();
                                   });
                                 },
@@ -207,7 +208,7 @@ class _ChartScreenState extends State<ChartScreen> {
                           if(chartViewModel.isShowCase.value) Stack(
                             children: [
                               Positioned(
-                                left: chartViewModel.getPositionWidget(_globalKey) - 15,
+                                left: chartViewModel.positionWidget.value - 15,
                                 child: CustomPaint(
                                   painter: TrianglePainter(
                                     strokeColor: Colors.white,
@@ -270,7 +271,7 @@ class _ChartScreenState extends State<ChartScreen> {
                                                                       fit: BoxFit.cover),
                                                                 ),
                                                               ),
-                                                              placeholder: (context, url) => const CircularProgressIndicator(),
+                                                              // placeholder: (context, url) => const CircularProgressIndicator(),
                                                               errorWidget: (context, url, error) => const Icon(Icons.error),
                                                             ),
                                                           ),

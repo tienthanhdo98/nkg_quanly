@@ -18,6 +18,7 @@ class ChartViewModel extends GetxController {
   RxList<WidgetItemModel> rxListWidgetItem = <WidgetItemModel>[].obs;
   LoginViewModel loginViewModel = Get.find();
   Rx<bool> isShowCase = false.obs;
+  Rx<double> positionWidget = 0.0.obs;
   RxList listBeforeClose = [].obs;
 
 
@@ -26,7 +27,7 @@ class ChartViewModel extends GetxController {
     super.onInit();
   }
 
-  double getPositionWidget(GlobalKey key) {
+  setPositionWidget(GlobalKey key) {
     final RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
     final Size size = renderBox.size; // or _widgetKey.currentContext?.size
     print('Size: ${size.width}, ${size.height}');
@@ -34,7 +35,7 @@ class ChartViewModel extends GetxController {
     final Offset offset = renderBox.localToGlobal(Offset.zero);
     print('Offset: ${offset.dx}, ${offset.dy}');
     print('Position: ${(offset.dx + size.width + 15) / 2}, ${(offset.dy + size.height) / 2}');
-    return (offset.dx + size.width + 15) / 2;
+    positionWidget.value = (offset.dx + size.width + 15) / 2;
   }
 
   setCheckedWidgetItem(String key, bool value) async {
@@ -85,6 +86,7 @@ class ChartViewModel extends GetxController {
     List a = json.decode(response.body) as List;
     listSearch = a.map((e) => WidgetItemModel.fromJson(e)).toList();
     rxListWidgetItem.value = listSearch;
+    listBeforeClose.clear();
     for (var element in listSearch) {
       if(!getCheckedWidgetItem(element.id! + element.code!)) {
         listBeforeClose.add(getCheckedWidgetItem(element.id! + element.code!));

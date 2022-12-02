@@ -19,7 +19,39 @@ class ProfileFilterScreen extends GetView {
           child: Column(
             children: [
               //header
-              headerWidget("Bộ lọc", context),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/icons/ic_arrow_back.png',
+                        width: 18,
+                        height: 18,
+                      ),
+                      const Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                      Text(
+                        "Bộ lọc",
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () {
+                          // analysisReportViewModel!.clearSelectedFilter();
+                        },
+                        child: const Text(
+                          "Xóa bộ lọc",
+                          style: TextStyle(color: kBlueButton),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
