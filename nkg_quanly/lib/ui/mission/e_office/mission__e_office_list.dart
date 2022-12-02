@@ -36,7 +36,6 @@ class MissionEOfficeList extends GetView {
           Padding(
             padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
             child: Container(
-
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),

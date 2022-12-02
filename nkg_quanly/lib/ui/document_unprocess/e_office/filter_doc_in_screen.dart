@@ -89,8 +89,14 @@ class FilterDocInScreen extends GetView {
                               },
                             );
                           },
-                          child: borderTextFilterEOffice(
-                              "Chọn đơn vị ban hành", context)),
+                          child:  Obx(() => borderTextFilterEOffice(
+                              (documentUnprocessViewModel!
+                                  .rxDepartmentSelected.value !=
+                                  "")
+                                  ? documentUnprocessViewModel!
+                                  .rxDepartmentSelected.value
+                                  : "Chọn đơn vị ban hành",
+                              context))),
                       //muc do
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -119,7 +125,14 @@ class FilterDocInScreen extends GetView {
                             );
                           },
                           child:
-                              borderTextFilterEOffice("Chọn mức độ", context)),
+                          Obx(() => borderTextFilterEOffice(
+                              (documentUnprocessViewModel!
+                                  .rxLevelSelected.value !=
+                                  "")
+                                  ? documentUnprocessViewModel!
+                                  .rxLevelSelected.value
+                                  : "Chọn mức độ",
+                              context))),
                       //nhom trang thai
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -147,8 +160,14 @@ class FilterDocInScreen extends GetView {
                               },
                             );
                           },
-                          child: borderTextFilterEOffice(
-                              "Chọn trạng thái", context)),
+                          child: Obx(() => borderTextFilterEOffice(
+                              (documentUnprocessViewModel!
+                                  .rxStatusSelected.value !=
+                                  "")
+                                  ? documentUnprocessViewModel!
+                                  .rxDepartmentSelected.value
+                                  : "Chọn trạng thái",
+                              context))),
                       // const Spacer(),
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -276,6 +295,36 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
+                        if (documentUnprocessViewModel!.mapAllFilter
+                            .containsKey(1)) {
+                          changeValueSelectedFilter(
+                              documentUnprocessViewModel!.rxDepartmentSelected,
+                              "Tất cả đơn vị");
+                        } else {
+                          var department = "";
+                          var departmentName = "";
+                          documentUnprocessViewModel!.mapDepartmentFilter
+                              .forEach((key, value) {
+                            department += value;
+                          });
+                          var listId = department.split(";");
+                          for (var id in listId) {
+                            for (var item
+                            in documentUnprocessViewModel!.rxListDepartmentFilter) {
+                              if (item == id) {
+                                departmentName += "$item;";
+                              }
+                            }
+                          }
+                          if (departmentName != "") {
+                            changeValueSelectedFilter(
+                                documentUnprocessViewModel!.rxDepartmentSelected,
+                                departmentName.substring(0, departmentName.length - 1));
+                          } else {
+                            changeValueSelectedFilter(
+                                documentUnprocessViewModel!.rxDepartmentSelected, "");
+                          }
+                        }
                         Get.back();
                       },
                       style: buttonFilterBlue,
@@ -344,6 +393,36 @@ class FilterLevelmentBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
+                        if (documentUnprocessViewModel!.mapAllFilter
+                            .containsKey(2)) {
+                          changeValueSelectedFilter(
+                              documentUnprocessViewModel!.rxLevelSelected,
+                              "Tất cả mức độ");
+                        } else {
+                          var level = "";
+                          var levelName = "";
+                          documentUnprocessViewModel!.mapLevelFilter
+                              .forEach((key, value) {
+                            level += value;
+                          });
+                          var listId = level.split(";");
+                          for (var id in listId) {
+                            for (var item
+                            in listLevel) {
+                              if (item == id) {
+                                levelName += "$item;";
+                              }
+                            }
+                          }
+                          if (levelName != "") {
+                            changeValueSelectedFilter(
+                                documentUnprocessViewModel!.rxLevelSelected,
+                                levelName.substring(0, levelName.length - 1));
+                          } else {
+                            changeValueSelectedFilter(
+                                documentUnprocessViewModel!.rxLevelSelected, "");
+                          }
+                        }
                         Get.back();
                       },
                       style: buttonFilterBlue,
@@ -409,6 +488,36 @@ class FilterStatusBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
+                        if (documentUnprocessViewModel!.mapAllFilter
+                            .containsKey(3)) {
+                          changeValueSelectedFilter(
+                              documentUnprocessViewModel!.rxStatusSelected,
+                              "Tất cả trạng thái");
+                        } else {
+                          var status = "";
+                          var statusName = "";
+                          documentUnprocessViewModel!.mapStatusFilter
+                              .forEach((key, value) {
+                            status += value;
+                          });
+                          var listId = status.split(";");
+                          for (var id in listId) {
+                            for (var item
+                            in listDocInStatus) {
+                              if (item == id) {
+                                statusName += "$item;";
+                              }
+                            }
+                          }
+                          if (statusName != "") {
+                            changeValueSelectedFilter(
+                                documentUnprocessViewModel!.rxStatusSelected,
+                                statusName.substring(0, statusName.length - 1));
+                          } else {
+                            changeValueSelectedFilter(
+                                documentUnprocessViewModel!.rxStatusSelected, "");
+                          }
+                        }
                         Get.back();
                       },
                       style: buttonFilterBlue,

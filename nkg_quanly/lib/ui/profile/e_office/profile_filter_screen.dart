@@ -85,8 +85,14 @@ class ProfileFilterScreen extends GetView {
                               },
                             );
                           },
-                          child: borderTextFilterEOffice(
-                              "Chọn đơn vị soạn thảo", context)),
+                          child: Obx(() => borderTextFilterEOffice(
+                              (profileViewModel!
+                                  .rxUnitEditorSelected.value !=
+                                  "")
+                                  ? profileViewModel!
+                                  .rxUnitEditorSelected.value
+                                  : "Chọn đơn vị soạn thảo",
+                              context))),
                       //muc do
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -114,8 +120,14 @@ class ProfileFilterScreen extends GetView {
                               },
                             );
                           },
-                          child: borderTextFilterEOffice(
-                              "Chọn vấn đề trình", context)),
+                          child: Obx(() => borderTextFilterEOffice(
+                              (profileViewModel!
+                                  .rxSubmissProblemSelected.value !=
+                                  "")
+                                  ? profileViewModel!
+                                  .rxSubmissProblemSelected.value
+                                  : "Chọn vấn đề trình",
+                              context))),
                       //loai phieu trinh
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -143,8 +155,14 @@ class ProfileFilterScreen extends GetView {
                               },
                             );
                           },
-                          child: borderTextFilterEOffice(
-                              "Chọn loại phiếu trình", context)),
+                          child: Obx(() => borderTextFilterEOffice(
+                              (profileViewModel!
+                                  .rxTypeSubmissSelected.value !=
+                                  "")
+                                  ? profileViewModel!
+                                  .rxTypeSubmissSelected.value
+                                  : "Chọn loại phiếu trình",
+                              context))),
                       //trang thai
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -172,8 +190,14 @@ class ProfileFilterScreen extends GetView {
                               },
                             );
                           },
-                          child: borderTextFilterEOffice(
-                              "Chọn trạng thái", context)),
+                          child: Obx(() => borderTextFilterEOffice(
+                              (profileViewModel!
+                                  .rxStateSelected.value !=
+                                  "")
+                                  ? profileViewModel!
+                                  .rxStateSelected.value
+                                  : "Chọn trạng thái",
+                              context))),
                       const Padding(
                         padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
                       ),
@@ -214,10 +238,7 @@ class ProfileFilterScreen extends GetView {
                                       profileViewModel!.mapTypeSubmission,
                                       4);
 
-                                  print(state);
-                                  print(unitEditor);
-                                  print(submissionProblem);
-                                  print(typeSubmission);
+
                                   profileViewModel!.postProfileByFilter(
                                       state,
                                       unitEditor,
@@ -295,6 +316,36 @@ class FilterUnitBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
+                        if (profileViewModel!.mapAllFilter
+                            .containsKey(2)) {
+                          changeValueSelectedFilter(
+                              profileViewModel!.rxUnitEditorSelected,
+                              "Tất cả đơn vị");
+                        } else {
+                          var unitEdit = "";
+                          var unitEditName = "";
+                          profileViewModel!.mapUnitEditorFilter
+                              .forEach((key, value) {
+                            unitEdit += value;
+                          });
+                          var listId = unitEdit.split(";");
+                          for (var id in listId) {
+                            for (var item
+                            in profileViewModel!.rxListUnitEditor) {
+                              if (item == id) {
+                                unitEditName += "$item;";
+                              }
+                            }
+                          }
+                          if (unitEditName != "") {
+                            changeValueSelectedFilter(
+                                profileViewModel!.rxUnitEditorSelected,
+                                unitEditName.substring(0, unitEditName.length - 1));
+                          } else {
+                            changeValueSelectedFilter(
+                                profileViewModel!.rxUnitEditorSelected, "");
+                          }
+                        }
                         Get.back();
                       },
                       style: buttonFilterBlue,
@@ -323,7 +374,7 @@ class FilterSubmitProblemBottomSheet extends StatelessWidget {
         child: Column(children: [
           //tat ca van de trinh
           FilterAllItem(
-              "Tất cả trạng thái", 3, profileViewModel!.mapAllFilter),
+              "Tất cả vấn đề trình", 3, profileViewModel!.mapAllFilter),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -361,6 +412,36 @@ class FilterSubmitProblemBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
+                        if (profileViewModel!.mapAllFilter
+                            .containsKey(3)) {
+                          changeValueSelectedFilter(
+                              profileViewModel!.rxSubmissProblemSelected,
+                              "Tất cả vấn đề trình");
+                        } else {
+                          var submissProb = "";
+                          var submissprobName = "";
+                          profileViewModel!.mapSubmissProblem
+                              .forEach((key, value) {
+                            submissProb += value;
+                          });
+                          var listId = submissProb.split(";");
+                          for (var id in listId) {
+                            for (var item
+                            in profileViewModel!.rxListSubmissProblem) {
+                              if (item == id) {
+                                submissprobName += "$item;";
+                              }
+                            }
+                          }
+                          if (submissprobName != "") {
+                            changeValueSelectedFilter(
+                                profileViewModel!.rxSubmissProblemSelected,
+                                submissprobName.substring(0, submissprobName.length - 1));
+                          } else {
+                            changeValueSelectedFilter(
+                                profileViewModel!.rxSubmissProblemSelected, "");
+                          }
+                        }
                         Get.back();
                       },
                       style: buttonFilterBlue,
@@ -428,6 +509,36 @@ class FilterSubmitTypeBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
+                        if (profileViewModel!.mapAllFilter
+                            .containsKey(4)) {
+                          changeValueSelectedFilter(
+                              profileViewModel!.rxTypeSubmissSelected,
+                              "Tất cả loại phiếu trình");
+                        } else {
+                          var typeSubmiss = "";
+                          var typeSubmissName = "";
+                          profileViewModel!.mapTypeSubmission
+                              .forEach((key, value) {
+                            typeSubmiss += value;
+                          });
+                          var listId = typeSubmiss.split(";");
+                          for (var id in listId) {
+                            for (var item
+                            in profileViewModel!.rxListTypeSubmission) {
+                              if (item == id) {
+                                typeSubmissName += "$item;";
+                              }
+                            }
+                          }
+                          if (typeSubmissName != "") {
+                            changeValueSelectedFilter(
+                                profileViewModel!.rxTypeSubmissSelected,
+                                typeSubmissName.substring(0, typeSubmissName.length - 1));
+                          } else {
+                            changeValueSelectedFilter(
+                                profileViewModel!.rxTypeSubmissSelected, "");
+                          }
+                        }
                         Get.back();
                       },
                       style: buttonFilterBlue,
@@ -495,6 +606,36 @@ class FilterStateBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
+                        if (profileViewModel!.mapAllFilter
+                            .containsKey(1)) {
+                          changeValueSelectedFilter(
+                              profileViewModel!.rxStateSelected,
+                              "Tất cả trạng thái");
+                        } else {
+                          var status = "";
+                          var statusName = "";
+                          profileViewModel!.mapState
+                              .forEach((key, value) {
+                            status += value;
+                          });
+                          var listId = status.split(";");
+                          for (var id in listId) {
+                            for (var item
+                            in listProfileState) {
+                              if (item == id) {
+                                statusName += "$item;";
+                              }
+                            }
+                          }
+                          if (statusName != "") {
+                            changeValueSelectedFilter(
+                                profileViewModel!.rxStateSelected,
+                                statusName.substring(0, statusName.length - 1));
+                          } else {
+                            changeValueSelectedFilter(
+                                profileViewModel!.rxStateSelected, "");
+                          }
+                        }
                         Get.back();
                       },
                       style: buttonFilterBlue,

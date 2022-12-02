@@ -68,6 +68,11 @@ class ProfileViewModel extends GetxController {
   RxList<String> rxListSubmissProblem = <String>[].obs;
   RxList<String> rxListState = <String>[].obs;
 
+  Rx<String> rxUnitEditorSelected = "".obs;
+  Rx<String> rxSubmissProblemSelected = "".obs;
+  Rx<String> rxTypeSubmissSelected = "".obs;
+  Rx<String> rxStateSelected = "".obs;
+
   Future<void> getFilterUnitEditor() async {
     print('loading');
     http.Response response = await http
@@ -109,28 +114,7 @@ class ProfileViewModel extends GetxController {
 
   //by ui
   //filter
-  final RxMap<int, String> mapLevelFilter = <int, String>{}.obs;
-  final RxMap<int, String> mapStatusFilter = <int, String>{}.obs;
-  RxList<String> rxListLevelFilter = <String>[].obs;
-  RxList<String> rxListStatusFilter = <String>[].obs;
 
-  void checkboxStatus(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapStatusFilter.addAll(map);
-    } else {
-      mapStatusFilter.remove(key);
-    }
-  }
-
-  void checkboxLevel(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapLevelFilter.addAll(map);
-    } else {
-      mapLevelFilter.remove(key);
-    }
-  }
 
   //end filter
 

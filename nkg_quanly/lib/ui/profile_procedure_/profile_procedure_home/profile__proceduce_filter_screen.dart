@@ -505,7 +505,7 @@ class FilterStatusBottomSheet extends StatelessWidget {
                 color: kgray,
               )),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6,
+            height: MediaQuery.of(context).size.height * 0.55,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemCount: profilesProcedureViewModel!.rxListStatus.length,

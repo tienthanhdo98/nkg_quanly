@@ -26,7 +26,125 @@ class ProfileEOfficeList extends GetView {
               headerWidgetSearch(
                   "Hồ sơ trình", SearchScreen(hintText:'Nhập mã hồ sơ, tên hồ sơ', typeScreen:type_profile), context),
               //date table
-              headerTableDatePicker(context, profileViewModel),
+              Padding(
+                padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                        color: kDarkGray, style: BorderStyle.solid, width: 1),
+                  ),
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Text(
+                                "Thống kê",
+                                style: Theme.of(context).textTheme.headline2,
+                              )),
+                          Align(
+                              alignment: Alignment.centerRight,
+                              child: ElevatedButton(
+                                style: elevetedButtonWhite,
+                                onPressed: () {
+                                  Get.to(() =>
+                                      ProfileFilterScreen(profileViewModel));
+                                },
+                                child: const Text(
+                                  'Bộ lọc',
+                                  style: TextStyle(color: kVioletButton),
+                                ),
+                              ))
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                      child: SizedBox(
+                        height: 140,
+                        child: GridView.count(
+                          physics: const NeverScrollableScrollPhysics(),
+                          childAspectRatio: 3/2,
+                          crossAxisCount: 3,
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Đơn vị soạn thảo',
+                                    style: CustomTextStyle.grayColorTextStyle),
+                                Padding(
+                                    padding:
+                                    const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                    child: Obx(() => Text(
+                                        profileViewModel.rxUnitEditorSelected.value,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5)))
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Vấn đề trình',
+                                    style: CustomTextStyle.grayColorTextStyle),
+                                Padding(
+                                    padding:
+                                    const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                    child: Obx(() => Text(
+                                        profileViewModel.rxSubmissProblemSelected.value,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5)))
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Loại phiếu trình',
+                                    style: CustomTextStyle.grayColorTextStyle),
+                                Padding(
+                                    padding:
+                                    const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                    child:  Obx(() => Text(
+                                        profileViewModel.rxTypeSubmissSelected.value,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5)))
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Trạng thái',
+                                    style: CustomTextStyle.grayColorTextStyle),
+                                Padding(
+                                    padding:
+                                    const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                    child:  Obx(() => Text(
+                                        profileViewModel.rxStateSelected.value,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5)))
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
               //list
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -79,21 +197,7 @@ class ProfileEOfficeList extends GetView {
                             ),
                           ],
                         ),
-                        const Spacer(),
-                        Align(
-                            alignment: Alignment.centerRight,
-                            child: ElevatedButton(
-                              style: elevetedButtonWhite,
-                              onPressed: () {
-                                Get.to(() =>
-                                    ProfileFilterScreen(profileViewModel));
-                              },
-                              child: const Text(
-                                'Bộ lọc',
-                                style:
-                                TextStyle(color: kVioletButton, fontSize: 14),
-                              ),
-                            ))
+
                       ],
                     ),
                     Obx(() =>

@@ -228,6 +228,10 @@ class DocumentUnprocessViewModel extends GetxController {
   RxList<String> rxListLevelFilter = <String>[].obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
 
+  Rx<String> rxDepartmentSelected = "".obs;
+  Rx<String> rxLevelSelected = "".obs;
+  Rx<String> rxStatusSelected = "".obs;
+
 
 
   Future<void> getFilterDepartment() async {
