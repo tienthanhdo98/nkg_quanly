@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/ui/chart/calendar_work_widget.dart';
@@ -8,7 +9,6 @@ import 'package:nkg_quanly/ui/chart/workbook_widget.dart';
 
 import '../../const/utils.dart';
 import '../../const/widget.dart';
-import '../home/home_screen.dart';
 import '../home/home_search.dart';
 import '../theme/theme_data.dart';
 import 'birthday_widget.dart';
@@ -18,7 +18,6 @@ import 'document_nonapproved _widget.dart';
 import 'document_out_widget.dart';
 import 'document_unprocess _widget.dart';
 import 'mission _widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class ChartScreen extends StatefulWidget {
   ChartScreen({Key? key}) : super(key: key);
@@ -181,131 +180,256 @@ class _ChartScreenState extends State<ChartScreen> {
                                               return ListView(
                                                 shrinkWrap: true,
                                                 children: [
-                                                  Text("Thêm khối thông tin",style: Theme.of(context).textTheme.headline3),
-                                                  const Padding(padding: EdgeInsets.only(top: 15)),
-                                                  Obx(()=> GridView.count(
-                                                    shrinkWrap: true,
-                                                    physics: const NeverScrollableScrollPhysics(),
-                                                    crossAxisCount: 3,
-                                                    childAspectRatio: 0.9,
-                                                    children: List.generate(chartViewModel.rxListWidgetItem.length, (index) {
-                                                      listClose.add(chartViewModel.getCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!));
-                                                      print("id ${chartViewModel.rxListWidgetItem[index].name!}");
-                                                      return Column(
-                                                        children: [
-                                                          InkWell(
-                                                            onTap: (){
-                                                              setStateDialog((){
-                                                                print(chartViewModel.rxListWidgetItem[index].id! + " - " + chartViewModel.rxListWidgetItem[index].code! + " - " + chartViewModel.rxListWidgetItem[index].name!);
-                                                                if(chartViewModel.getCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!)){
-                                                                  chartViewModel.setCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!, false);
-                                                                } else {
-                                                                  chartViewModel.setCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!, true);
-                                                                }
-                                                              });
-                                                            },
-                                                            child: Stack(
-                                                                children: [
-                                                                  Padding(
-                                                                    padding: const EdgeInsets.only(top: 4, right: 4),
-                                                                    child: CachedNetworkImage(
-                                                                      width: 50,
-                                                                      height: 50,
-                                                                      imageUrl: "http://123.31.31.237:8001/${chartViewModel.rxListWidgetItem[index].image ?? ""}",
-                                                                      imageBuilder: (context, imageProvider) => Container(
-                                                                        decoration: BoxDecoration(
-                                                                          image: DecorationImage(
-                                                                              image: imageProvider,
-                                                                              fit: BoxFit.cover),
+                                                  Text("Thêm khối thông tin",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline3),
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 15)),
+                                                  Obx(
+                                                    () => GridView.count(
+                                                      shrinkWrap: true,
+                                                      physics:
+                                                          const NeverScrollableScrollPhysics(),
+                                                      crossAxisCount: 3,
+                                                      childAspectRatio: 0.9,
+                                                      children: List.generate(
+                                                          chartViewModel
+                                                              .rxListWidgetItem
+                                                              .length, (index) {
+                                                        listClose.add(chartViewModel
+                                                            .getCheckedWidgetItem(chartViewModel
+                                                                    .rxListWidgetItem[
+                                                                        index]
+                                                                    .id! +
+                                                                chartViewModel
+                                                                    .rxListWidgetItem[
+                                                                        index]
+                                                                    .code!));
+                                                        print(
+                                                            "id ${chartViewModel.rxListWidgetItem[index].name!}");
+                                                        return Column(
+                                                          children: [
+                                                            InkWell(
+                                                              onTap: () {
+                                                                setStateDialog(
+                                                                    () {
+                                                                  print(chartViewModel.rxListWidgetItem[index].id! +
+                                                                      " - " +
+                                                                      chartViewModel
+                                                                          .rxListWidgetItem[
+                                                                              index]
+                                                                          .code! +
+                                                                      " - " +
+                                                                      chartViewModel
+                                                                          .rxListWidgetItem[
+                                                                              index]
+                                                                          .name!);
+                                                                  if (chartViewModel.getCheckedWidgetItem(chartViewModel
+                                                                          .rxListWidgetItem[
+                                                                              index]
+                                                                          .id! +
+                                                                      chartViewModel
+                                                                          .rxListWidgetItem[
+                                                                              index]
+                                                                          .code!)) {
+                                                                    chartViewModel.setCheckedWidgetItem(
+                                                                        chartViewModel.rxListWidgetItem[index].id! +
+                                                                            chartViewModel.rxListWidgetItem[index].code!,
+                                                                        false);
+                                                                  } else {
+                                                                    chartViewModel.setCheckedWidgetItem(
+                                                                        chartViewModel.rxListWidgetItem[index].id! +
+                                                                            chartViewModel.rxListWidgetItem[index].code!,
+                                                                        true);
+                                                                  }
+                                                                });
+                                                              },
+                                                              child: Stack(
+                                                                  children: [
+                                                                    Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          top:
+                                                                              4,
+                                                                          right:
+                                                                              4),
+                                                                      child:
+                                                                          CachedNetworkImage(
+                                                                        width:
+                                                                            50,
+                                                                        height:
+                                                                            50,
+                                                                        imageUrl:
+                                                                            "http://123.31.31.237:8001/${chartViewModel.rxListWidgetItem[index].image ?? ""}",
+                                                                        imageBuilder:
+                                                                            (context, imageProvider) =>
+                                                                                Container(
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            image:
+                                                                                DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                                                          ),
                                                                         ),
+                                                                        placeholder:
+                                                                            (context, url) =>
+                                                                                const CircularProgressIndicator(),
+                                                                        errorWidget: (context,
+                                                                                url,
+                                                                                error) =>
+                                                                            const Icon(Icons.error),
                                                                       ),
-                                                                      placeholder: (context, url) => const CircularProgressIndicator(),
-                                                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                                                     ),
-                                                                  ),
-                                                                  if(chartViewModel.getCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id! + chartViewModel.rxListWidgetItem[index].code!)) Positioned(
-                                                                    top: 0,
-                                                                    right: 0,
-                                                                    width: 20,
-                                                                    height: 20,
-                                                                    child: Checkbox(
-                                                                      checkColor: Colors.white,
-                                                                      // fillColor: kWhite,
-                                                                      value: true,
-                                                                      onChanged: (bool? value) {
-                                                                        setStateDialog((){
-                                                                          chartViewModel.setCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id!, false);
-                                                                        });
-                                                                      },
-                                                                    ),
-                                                                  )
-                                                                ]
+                                                                    if (chartViewModel.getCheckedWidgetItem(chartViewModel
+                                                                            .rxListWidgetItem[
+                                                                                index]
+                                                                            .id! +
+                                                                        chartViewModel
+                                                                            .rxListWidgetItem[index]
+                                                                            .code!))
+                                                                      Positioned(
+                                                                        top: 0,
+                                                                        right:
+                                                                            0,
+                                                                        width:
+                                                                            20,
+                                                                        height:
+                                                                            20,
+                                                                        child:
+                                                                            Checkbox(
+                                                                          checkColor:
+                                                                              Colors.white,
+                                                                          // fillColor: kWhite,
+                                                                          value:
+                                                                              true,
+                                                                          onChanged:
+                                                                              (bool? value) {
+                                                                            setStateDialog(() {
+                                                                              chartViewModel.setCheckedWidgetItem(chartViewModel.rxListWidgetItem[index].id!, false);
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                      )
+                                                                  ]),
                                                             ),
-                                                          ),
-                                                          Flexible(
-                                                            child: Text(
-                                                              chartViewModel.rxListWidgetItem[index].name!,
-                                                              style: const TextStyle(fontSize: 12),
-                                                              textAlign: TextAlign.center,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      );
-                                                    }),
-                                                  ),
+                                                            Flexible(
+                                                              child: Text(
+                                                                chartViewModel
+                                                                    .rxListWidgetItem[
+                                                                        index]
+                                                                    .name!,
+                                                                style:
+                                                                    const TextStyle(
+                                                                        fontSize:
+                                                                            12),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        );
+                                                      }),
+                                                    ),
                                                   ),
                                                   const Padding(
-                                                    padding: EdgeInsets.only(top: 10,bottom: 10),
-                                                    child: Divider(thickness: 1,),
+                                                    padding: EdgeInsets.only(
+                                                        top: 10, bottom: 10),
+                                                    child: Divider(
+                                                      thickness: 1,
+                                                    ),
                                                   ),
                                                   Row(
-                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
                                                     children: [
                                                       ElevatedButton(
                                                           style: ButtonStyle(
-                                                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                                                    (Set<MaterialState> states) {
-                                                                  if (states.contains(MaterialState.pressed)) {
+                                                              backgroundColor:
+                                                                  MaterialStateProperty
+                                                                      .resolveWith<
+                                                                          Color>(
+                                                                (Set<MaterialState>
+                                                                    states) {
+                                                                  if (states.contains(
+                                                                      MaterialState
+                                                                          .pressed)) {
                                                                     return kBlueButton;
                                                                   } else {
                                                                     return kBlueButton;
                                                                   } // Use the component's default.
                                                                 },
                                                               ),
-                                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                              shape: MaterialStateProperty.all<
+                                                                      RoundedRectangleBorder>(
                                                                   RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(10),
-                                                                  ))
-                                                          ),
-                                                          onPressed: (){
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ))),
+                                                          onPressed: () {
                                                             setState(() {
                                                               Get.back();
                                                             });
-                                                          }, child: const Text("Lưu")),
-                                                      const Padding(padding: EdgeInsets.only(left: 15)),
+                                                          },
+                                                          child: const Text(
+                                                              "Lưu")),
+                                                      const Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 15)),
                                                       ElevatedButton(
                                                           style: ButtonStyle(
-                                                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                                                    (Set<MaterialState> states) {
-                                                                  if (states.contains(MaterialState.pressed)) {
+                                                              backgroundColor:
+                                                                  MaterialStateProperty
+                                                                      .resolveWith<
+                                                                          Color>(
+                                                                (Set<MaterialState>
+                                                                    states) {
+                                                                  if (states.contains(
+                                                                      MaterialState
+                                                                          .pressed)) {
                                                                     return kVioletBg;
                                                                   } else {
                                                                     return kWhite;
                                                                   } // Use the component's default.
                                                                 },
                                                               ),
-                                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                              shape: MaterialStateProperty.all<
+                                                                      RoundedRectangleBorder>(
                                                                   RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(10),
-                                                                  ))
-                                                          ),
-                                                          onPressed: (){
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ))),
+                                                          onPressed: () {
                                                             Get.back();
-                                                            for (int i = 0; i < listClose.length; i++) {
-                                                              chartViewModel.setCheckedWidgetItem(chartViewModel.rxListWidgetItem[i].id!, listClose[i]);
+                                                            for (int i = 0;
+                                                                i <
+                                                                    listClose
+                                                                        .length;
+                                                                i++) {
+                                                              chartViewModel
+                                                                  .setCheckedWidgetItem(
+                                                                      chartViewModel
+                                                                          .rxListWidgetItem[
+                                                                              i]
+                                                                          .id!,
+                                                                      listClose[
+                                                                          i]);
                                                             }
-                                                          }, child: const Text("Đóng",style: TextStyle(color: Colors.black),)),
-                                                    ],)
+                                                          },
+                                                          child: const Text(
+                                                            "Đóng",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black),
+                                                          )),
+                                                    ],
+                                                  )
                                                 ],
                                               );
                                             },
@@ -321,7 +445,7 @@ class _ChartScreenState extends State<ChartScreen> {
                                 padding:
                                     const EdgeInsets.only(right: 10, left: 10),
                                 child: ElevatedButton(
-                                  style: styleEleveButtonWidget,
+                                    style: styleEleveButtonWidget,
                                     onPressed: () async {
                                       await chartViewModel.getListWidget(
                                           loginViewModel
@@ -337,7 +461,7 @@ class _ChartScreenState extends State<ChartScreen> {
                                     chartViewModel.clearCheckedWidgetItem();
                                   });
                                 },
-                                style:  styleEleveButtonWidget,
+                                style: styleEleveButtonWidget,
                                 child: const Text("Gỡ toàn bộ")),
                           ],
                         ),
@@ -360,7 +484,7 @@ class _ChartScreenState extends State<ChartScreen> {
 List<Widget> listWidgetByUser(ChartViewModel chartViewModel) {
   List<Widget> listWidget = [];
   for (var element in chartViewModel.rxListWidgetItem) {
-    if(chartViewModel.getCheckedWidgetItem(element.id! + element.code!)){
+    if (chartViewModel.getCheckedWidgetItem(element.id! + element.code!)) {
       var widget = getWidgetByName(element.code!);
       listWidget.add(widget);
     }
@@ -429,5 +553,3 @@ Widget getWidgetByName(String widgetName) {
   }
   return resWidget;
 }
-
-
