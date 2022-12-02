@@ -436,8 +436,19 @@ class ReportInMenuHomeList extends GetView {
                           var item = reportViewModel.rxReportListItems[index];
                           return InkWell(
                               onTap: () async {
-                                await launchUrl(Uri.parse(
-                                    "http://123.31.31.237:6002/api/reportapiclient/download-report?id=1"));
+                                var urlFile =
+                                    "http://123.31.31.237:6002/api/reportapiclient/download-report?id=${item.id}";
+                                if(await canLaunchUrl(Uri.parse(urlFile))) {
+                                  launchUrl(
+                                    Uri.parse(urlFile),
+                                    webViewConfiguration: const WebViewConfiguration(
+                                        enableJavaScript: true,
+                                        enableDomStorage: true
+                                    ),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                }
+
                               },
                               child: ReportItemInMenu(index, item));
                         })

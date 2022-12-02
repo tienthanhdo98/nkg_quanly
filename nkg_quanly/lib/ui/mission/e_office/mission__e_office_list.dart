@@ -33,66 +33,152 @@ class MissionEOfficeList extends GetView {
               ),
               context),
           //date table
-          headerTableDatePicker(context, missionViewModel),
+          Padding(
+            padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
+            child: Container(
+
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                    color: kDarkGray, style: BorderStyle.solid, width: 1),
+              ),
+              child: Column(children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Text(
+                            "Thống kê",
+                            style: Theme.of(context).textTheme.headline2,
+                          )),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            style: elevetedButtonWhite,
+                            onPressed: () {
+                                Get.to(() => FilterMissionScreen(missionViewModel));
+                            },
+                            child: const Text(
+                              'Bộ lọc',
+                              style: TextStyle(color: kVioletButton),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                  child: SizedBox(
+                    height: 60,
+                    child: GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
+                      primary: false,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 0,
+                      crossAxisCount: 3,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Đơn vị ban hành',
+                                style: CustomTextStyle.grayColorTextStyle),
+                            Padding(
+                                padding:
+                                const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                child: Obx(() => Text(
+                                    missionViewModel.rxDepartmentSelected.value,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5)))
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Mức độ',
+                                style: CustomTextStyle.grayColorTextStyle),
+                            Padding(
+                                padding:
+                                const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                child: Obx(() => Text(
+                                    missionViewModel.rxLevelSelected.value,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5)))
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Trạng thái',
+                                style: CustomTextStyle.grayColorTextStyle),
+                            Padding(
+                                padding:
+                                const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                child:  Obx(() => Text(
+                                    missionViewModel.rxStatusSelected.value,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5)))
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ]),
+            ),
+          ),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Column(
               children: [
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Tất cả nhiệm vụ',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (menuController.rxShowStatistic.value == true) {
-                              menuController.changeStateShowStatistic(false);
-                            } else {
-                              menuController.changeStateShowStatistic(true);
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                            child: Row(children: [
-                              Obx(() => (missionViewModel
-                                          .rxMissionStatistic.value.tong !=
-                                      null)
-                                  ? Text(
-                                      missionViewModel
-                                          .rxMissionStatistic.value.tong
-                                          .toString(),
-                                      style: textBlueCountTotalStyle)
-                                  : const Text("0",
-                                      style: textBlueCountTotalStyle)),
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                  child: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: kBlueButton,
-                                  ))
-                            ]),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      'Tất cả nhiệm vụ',
+                      style: Theme.of(context).textTheme.headline5,
                     ),
-                    const Spacer(),
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          style: elevetedButtonWhite,
-                          onPressed: () {
-                            Get.to(() => FilterMissionScreen(missionViewModel));
-                          },
-                          child: const Text(
-                            'Bộ lọc',
-                            style: TextStyle(color: kVioletButton),
-                          ),
-                        ))
+                    InkWell(
+                      onTap: () {
+                        if (menuController.rxShowStatistic.value == true) {
+                          menuController.changeStateShowStatistic(false);
+                        } else {
+                          menuController.changeStateShowStatistic(true);
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                        child: Row(children: [
+                          Obx(() => (missionViewModel
+                                      .rxMissionStatistic.value.tong !=
+                                  null)
+                              ? Text(
+                                  missionViewModel
+                                      .rxMissionStatistic.value.tong
+                                      .toString(),
+                                  style: textBlueCountTotalStyle)
+                              : const Text("0",
+                                  style: textBlueCountTotalStyle)),
+                          const Padding(
+                              padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: kBlueButton,
+                              ))
+                        ]),
+                      ),
+                    ),
                   ],
                 ),
                 Obx(() => (menuController.rxShowStatistic.value == true)

@@ -21,6 +21,8 @@ class MissionViewModel extends GetxController {
   ScrollController controller = ScrollController();
   MissionModel missionModel = MissionModel();
 
+
+
   @override
   void onInit() {
     getDataInWidget();
@@ -46,6 +48,10 @@ class MissionViewModel extends GetxController {
   RxList<String> rxListDepartmentFilter = <String>[].obs;
   RxList<String> rxListLevelFilter = <String>[].obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
+
+  Rx<String> rxDepartmentSelected = "".obs;
+  Rx<String> rxLevelSelected = "".obs;
+  Rx<String> rxStatusSelected = "".obs;
 
   void checkboxFilterAll(bool value, int key) {
     if (value == true) {

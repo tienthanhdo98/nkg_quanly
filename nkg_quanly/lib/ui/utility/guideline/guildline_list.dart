@@ -48,7 +48,6 @@ class GuidelineList extends GetView {
                     return InkWell(
                       onTap: ()async {
                         var urlFile = "http://123.31.31.237:6002/api/guidelines/download-file/${item.id}";
-                        print(urlFile);
                         if(await canLaunchUrl(Uri.parse(urlFile))) {
                           launchUrl(
                             Uri.parse(urlFile),
