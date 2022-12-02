@@ -27,6 +27,8 @@ class ProfileWorkViewModel extends GetxController {
   final RxMap<int, String> mapStatus = <int, String>{}.obs;
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
 
+  Rx<String> rxStatusSelected = "".obs;
+
   void checkboxStatus(bool value, int key, String filterValue) {
     if (value == true) {
       var map = {key: filterValue};

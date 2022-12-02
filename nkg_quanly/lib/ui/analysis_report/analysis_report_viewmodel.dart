@@ -129,9 +129,7 @@ class AnalysisReportViewModel extends GetxController {
     }
   }
 
-  void changeValueSelectedFilter(Rx<String> rxSelected, String value) {
-    rxSelected.value = value;
-  }
+
 
   void changeValueIndexRegion(int value) {
     rxIndexItemRegion.value = value;

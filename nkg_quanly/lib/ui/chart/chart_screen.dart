@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/ui/chart/calendar_work_widget.dart';
@@ -8,7 +9,6 @@ import 'package:nkg_quanly/ui/chart/workbook_widget.dart';
 
 import '../../const/utils.dart';
 import '../../const/widget.dart';
-import '../home/home_screen.dart';
 import '../home/home_search.dart';
 import '../theme/theme_data.dart';
 import 'birthday_widget.dart';
@@ -18,7 +18,6 @@ import 'document_nonapproved _widget.dart';
 import 'document_out_widget.dart';
 import 'document_unprocess _widget.dart';
 import 'mission _widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class ChartScreen extends StatefulWidget {
   ChartScreen({Key? key}) : super(key: key);
@@ -178,7 +177,7 @@ class _ChartScreenState extends State<ChartScreen> {
                                 padding:
                                     const EdgeInsets.only(right: 10, left: 10),
                                 child: ElevatedButton(
-                                  style: styleEleveButtonWidget,
+                                    style: styleEleveButtonWidget,
                                     onPressed: () async {
                                       chartViewModel.isShowCase.value = false;
                                       await chartViewModel.getListWidget(
@@ -196,7 +195,7 @@ class _ChartScreenState extends State<ChartScreen> {
                                     chartViewModel.clearCheckedWidgetItem();
                                   });
                                 },
-                                style:  styleEleveButtonWidget,
+                                style: styleEleveButtonWidget,
                                 child: const Text("Gỡ toàn bộ")),
                           ],
                         ),
@@ -409,7 +408,7 @@ class TrianglePainter extends CustomPainter {
 List<Widget> listWidgetByUser(ChartViewModel chartViewModel) {
   List<Widget> listWidget = [];
   for (var element in chartViewModel.rxListWidgetItem) {
-    if(chartViewModel.getCheckedWidgetItem(element.id! + element.code!)){
+    if (chartViewModel.getCheckedWidgetItem(element.id! + element.code!)) {
       var widget = getWidgetByName(element.code!);
       listWidget.add(widget);
     }
@@ -478,5 +477,3 @@ Widget getWidgetByName(String widgetName) {
   }
   return resWidget;
 }
-
-

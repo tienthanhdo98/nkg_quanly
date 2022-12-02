@@ -1865,9 +1865,7 @@ class FilterSemesterBottomSheet extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-        child: ListView(
-          shrinkWrap: true,
-            children: [
+        child: ListView(shrinkWrap: true, children: [
           FilterAllItem(
               "Tất cả học kì", 1, analysisReportViewModel!.mapAllFilter),
           const Padding(
@@ -1909,10 +1907,10 @@ class FilterSemesterBottomSheet extends StatelessWidget {
                       onPressed: () {
                         if (analysisReportViewModel!.mapAllFilter
                             .containsKey(1)) {
-                          analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                               analysisReportViewModel!.rxSelectedSemester,
                               "Tất cả học kỳ");
-                          analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                               analysisReportViewModel!.rxSelectedSemesterId,
                               "");
                         } else {
@@ -1933,18 +1931,18 @@ class FilterSemesterBottomSheet extends StatelessWidget {
                             }
                           }
                           if (semesterName != "") {
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                            changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedSemester,
                                 semesterName.substring(
                                     0, semesterName.length - 1));
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                            changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedSemesterId,
                                 semesterID.substring(0, semesterID.length - 1));
                           } else {
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                            changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedSemester,
                                 "");
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                            changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedSemesterId,
                                 "");
                           }
@@ -2065,8 +2063,7 @@ class FilterProvinceBottomSheet extends StatelessWidget {
                               changeValueSelectedFilter(
                                   analysisReportViewModel!.rxSelectedProvince,
                                   "Tất cả lĩnh vực");
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
+                             changeValueSelectedFilter(
                                       analysisReportViewModel!
                                           .rxSelectedProvinceId,
                                       "");
@@ -2093,8 +2090,7 @@ class FilterProvinceBottomSheet extends StatelessWidget {
                                     analysisReportViewModel!.rxSelectedProvince,
                                     provinceName.substring(
                                         0, provinceName.length - 1));
-                                analysisReportViewModel!
-                                    .changeValueSelectedFilter(
+                               changeValueSelectedFilter(
                                         analysisReportViewModel!
                                             .rxSelectedProvinceId,
                                         provinceId.substring(
@@ -2103,8 +2099,7 @@ class FilterProvinceBottomSheet extends StatelessWidget {
                                 changeValueSelectedFilter(
                                     analysisReportViewModel!.rxSelectedProvince,
                                     "");
-                                analysisReportViewModel!
-                                    .changeValueSelectedFilter(
+                               changeValueSelectedFilter(
                                         analysisReportViewModel!
                                             .rxSelectedProvinceId,
                                         "");
@@ -2256,8 +2251,7 @@ class FilterRegionBottomSheet extends StatelessWidget {
                                     .rxIndexItemRegion.value) {
                               region = value.name!;
                               regionID = value.id!;
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
+                             changeValueSelectedFilter(
                                       analysisReportViewModel!
                                           .rxSelectedRegionID,
                                       regionID);
@@ -2401,8 +2395,7 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                               changeValueSelectedFilter(
                                   analysisReportViewModel!.rxSelectedSchoolYear,
                                   "Tất cả năm học");
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
+                             changeValueSelectedFilter(
                                       analysisReportViewModel!
                                           .rxSelectedSchoolYearID,
                                       "");
@@ -2427,8 +2420,7 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                                         .rxSelectedSchoolYear,
                                     schoolYearName.substring(
                                         0, schoolYearName.length - 1));
-                                analysisReportViewModel!
-                                    .changeValueSelectedFilter(
+                                changeValueSelectedFilter(
                                         analysisReportViewModel!
                                             .rxSelectedSchoolYearID,
                                         schoolYearId.substring(
@@ -2438,11 +2430,10 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
                                     analysisReportViewModel!
                                         .rxSelectedSchoolYear,
                                     "");
-                                analysisReportViewModel!
-                                    .changeValueSelectedFilter(
-                                        analysisReportViewModel!
-                                            .rxSelectedSchoolYearID,
-                                        "");
+                                changeValueSelectedFilter(
+                                    analysisReportViewModel!
+                                        .rxSelectedSchoolYearID,
+                                    "");
                               }
                             }
                             Get.back();
@@ -2568,7 +2559,7 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                             changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedSchoolLevel,
                                 "Tất cả cấp học");
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!
                                     .rxSelectedSchoolLevelID,
                                 "");
@@ -2593,8 +2584,7 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                                 if (item.id == id) {
                                   schoolLevelName += "${item.name!};";
                                   schoolLevelId += "${item.id!};";
-                                  analysisReportViewModel!
-                                      .changeValueSelectedFilter(
+                                  changeValueSelectedFilter(
                                           analysisReportViewModel!
                                               .rxSelectedSchoolLevelID,
                                           schoolLevelId.substring(
@@ -2621,8 +2611,7 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
                                   analysisReportViewModel!
                                       .rxSelectedSchoolLevel,
                                   "");
-                              analysisReportViewModel!
-                                  .changeValueSelectedFilter(
+                             changeValueSelectedFilter(
                                       analysisReportViewModel!
                                           .rxSelectedSchoolLevelID,
                                       "");
@@ -2708,10 +2697,10 @@ class FilterPointBottomSheet extends StatelessWidget {
                       onPressed: () {
                         if (analysisReportViewModel!.mapAllFilter
                             .containsKey(6)) {
-                          analysisReportViewModel!.changeValueSelectedFilter(
+                         changeValueSelectedFilter(
                               analysisReportViewModel!.rxSelectedPoint,
                               "Tất cả điểm");
-                          analysisReportViewModel!.changeValueSelectedFilter(
+                         changeValueSelectedFilter(
                               analysisReportViewModel!.rxSelectedPointId, "");
                         } else {
                           var point = "";
@@ -2732,16 +2721,16 @@ class FilterPointBottomSheet extends StatelessWidget {
                             }
                           }
                           if (pointName != "") {
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedPoint,
                                 pointName.substring(0, pointName.length - 1));
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedPointId,
                                 pointId.substring(0, pointId.length - 1));
                           } else {
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedPoint, "");
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedPointId, "");
                           }
                         }
@@ -2814,10 +2803,10 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                       onPressed: () {
                         if (analysisReportViewModel!.mapAllFilter
                             .containsKey(7)) {
-                          analysisReportViewModel!.changeValueSelectedFilter(
+                        changeValueSelectedFilter(
                               analysisReportViewModel!.rxSelectedSubject,
                               "Tất cả môn học");
-                          analysisReportViewModel!.changeValueSelectedFilter(
+                        changeValueSelectedFilter(
                               analysisReportViewModel!.rxSelectedSubjectID, "");
                         } else {
                           var agencies = "";
@@ -2838,17 +2827,17 @@ class FilterSubjectBottomSheet extends StatelessWidget {
                             }
                           }
                           if (agenciesName != "") {
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedSubject,
                                 agenciesName.substring(
                                     0, agenciesName.length - 1));
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedSubjectID,
                                 agenciesID.substring(0, agenciesID.length - 1));
                           } else {
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedSubject, "");
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedSubjectID,
                                 "");
                           }
@@ -2921,10 +2910,10 @@ class FilterClassBottomSheet extends StatelessWidget {
                       onPressed: () {
                         if (analysisReportViewModel!.mapAllFilter
                             .containsKey(8)) {
-                          analysisReportViewModel!.changeValueSelectedFilter(
+                        changeValueSelectedFilter(
                               analysisReportViewModel!.rxSelectedClass,
                               "Tất cả lớp");
-                          analysisReportViewModel!.changeValueSelectedFilter(
+                        changeValueSelectedFilter(
                               analysisReportViewModel!.rxSelectedClassId, "");
                         } else {
                           var agencies = "";
@@ -2945,16 +2934,16 @@ class FilterClassBottomSheet extends StatelessWidget {
                             }
                           }
                           if (className != "") {
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedClass,
                                 className.substring(0, className.length - 1));
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedClassId,
                                 classId.substring(0, classId.length - 1));
                           } else {
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedClass, "");
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!.rxSelectedClassId, "");
                           }
                         }
@@ -3029,10 +3018,10 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                       onPressed: () {
                         if (analysisReportViewModel!.mapAllFilter
                             .containsKey(9)) {
-                          analysisReportViewModel!.changeValueSelectedFilter(
+                        changeValueSelectedFilter(
                               analysisReportViewModel!.rxSelectedClassification,
                               "Tất cả học lực");
-                          analysisReportViewModel!.changeValueSelectedFilter(
+                        changeValueSelectedFilter(
                               analysisReportViewModel!
                                   .rxSelectedClassificationID,
                               "");
@@ -3055,23 +3044,23 @@ class FilterClassificationBottomSheet extends StatelessWidget {
                             }
                           }
                           if (classificationName != "") {
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!
                                     .rxSelectedClassification,
                                 classificationName.substring(
                                     0, classificationName.length - 1));
 
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!
                                     .rxSelectedClassificationID,
                                 classificationId.substring(
                                     0, classificationId.length - 1));
                           } else {
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!
                                     .rxSelectedClassification,
                                 "");
-                            analysisReportViewModel!.changeValueSelectedFilter(
+                          changeValueSelectedFilter(
                                 analysisReportViewModel!
                                     .rxSelectedClassificationID,
                                 "");
