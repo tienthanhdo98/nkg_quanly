@@ -28,18 +28,14 @@ class BookingCarViewModel extends GetxController {
     getFilterForChart(apiGetReportChart0);
 
     postBookingCarStatistic();
-    // postBookingCarByDay(formatDateToString(dateNow));
+
     super.onInit();
   }
 
-  void swtichBottomButton(int button) {
+  void switchBottomButton(int button) {
     selectedBottomButton.value = button;
   }
 
-  void onSelectDay(DateTime selectedDay) {
-    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
-    postBookingCarByDay(strSelectedDay);
-  }
 
   Future<void> getFilterForChart(String url) async {
     rxDocumentFilterModel.refresh();
@@ -54,31 +50,6 @@ class BookingCarViewModel extends GetxController {
     });
   }
 
-  //book car
-  Future<void> postBookingCarByDay(String day) async {
-    final url = Uri.parse(apiGetBookingCarListItems);
-   
-    String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
-    http.Response response = await http.post(url, headers: headers, body: json);
-    
-    BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
-    rxBookingCarItems.value = res.items!;
-    rxBookingCarStatistic.value = res.statistic!;
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        page++;
-        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
-        http.Response response =
-        await http.post(url, headers: headers, body: json);
-        res = BookingCarModel.fromJson(jsonDecode(response.body));
-        rxBookingCarItems.addAll(res.items!);
-      }
-    });
-  }
 
   Future<void> postBookingCarStatistic() async {
     final url = Uri.parse(apiGetBookingCarListItems);
@@ -89,6 +60,7 @@ class BookingCarViewModel extends GetxController {
     BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
     rxBookingCarStatistic.value = res.statistic!;
     rxBookingCarItems.value = res.items!;
+    switchBottomButton(4);
     //loadmore
     var page = 1;
     controller.dispose();
@@ -105,7 +77,7 @@ class BookingCarViewModel extends GetxController {
     });
   }
 
-  Future<void> postookingCarByWeek(String datefrom, String dateTo) async {
+  Future<void> getBookingCarListByDiffDate(String datefrom, String dateTo) async {
     final url = Uri.parse(apiGetBookingCarListItems);
    
     String json =
@@ -132,30 +104,6 @@ class BookingCarViewModel extends GetxController {
     });
   }
 
-  Future<void> postBookingCarByMonth() async {
-    final url = Uri.parse(apiGetBookingCarListItems);
-    http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-    
-    BookingCarModel res = BookingCarModel.fromJson(jsonDecode(response.body));
-    rxBookingCarItems.value = res.items!;
-    rxBookingCarStatistic.value = res.statistic!;
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        page++;
-        String jsonGetByMonth =
-            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
-        http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-        res = BookingCarModel.fromJson(jsonDecode(response.body));
-        rxBookingCarItems.addAll(res.items!);
-      }
-    });
-  }
 
   Future<MeetingRoomItems> getRoomMeetingDetail(int id) async {
     final url = Uri.parse("${apiGetMeetingDetail}id=$id");
@@ -170,32 +118,6 @@ class BookingCarViewModel extends GetxController {
   RxList<String> rxListLevelFilter = <String>[].obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
 
-  void checkboxFilterAll(bool value, int key) {
-    if (value == true) {
-      var map = {key: ""};
-      mapAllFilter.addAll(map);
-    } else {
-      mapAllFilter.remove(key);
-    }
-  }
-
-  void checkboxStatus(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapStatusFilter.addAll(map);
-    } else {
-      mapStatusFilter.remove(key);
-    }
-  }
-
-  void checkboxLevel(bool value, int key, String filterValue) {
-    if (value == true) {
-      var map = {key: filterValue};
-      mapLevelFilter.addAll(map);
-    } else {
-      mapLevelFilter.remove(key);
-    }
-  }
 
   Future<void> getBookingCarByFilter(String status) async {
     final url = Uri.parse(apiGetBookingCarListItems);

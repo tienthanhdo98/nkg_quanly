@@ -342,7 +342,23 @@ class ProfileEOfficeList extends GetView {
                         ),
                       ),
                     )
-                        : const SizedBox.shrink())
+                        : const SizedBox.shrink()),
+                    //select Date box
+                    fromDateToDateWidget(profileViewModel,(){
+                      String strdateFrom =
+                          menuController.rxFromDateWithoutWeekDayToApi.value;
+                      String strdateTo =
+                          menuController.rxToDateWithoutWeekDayToApi.value;
+                      if(strdateFrom != "" && strdateTo != "") {
+                        profileViewModel.getProfileByDiffDate(
+                            strdateFrom, strdateTo);
+                      }
+                      else
+                      {
+                        profileViewModel.postProfileStatistic();
+                      }
+                    })
+                    //end select Date box
                   ],
                 ),
               ),
@@ -400,10 +416,13 @@ class ProfileEOfficeList extends GetView {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              menuController.rxSelectedDay.value = DateTime
-                                  .now();
-                              profileViewModel.onSelectDay(DateTime.now());
-                              profileViewModel.swtichBottomButton(0);
+                              String strDateFrom = formatDateToString(dateNow);
+                              String strDateTo = formatDateToString(dateNow);
+                              profileViewModel.getProfileByDiffDate(
+                                  strDateFrom, strDateTo);
+                              menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                              menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
+                              profileViewModel.switchBottomButton(0);
                             },
                             child: bottomDateButton("Ngày",
                                 profileViewModel.selectedBottomButton.value, 0),
@@ -412,13 +431,15 @@ class ProfileEOfficeList extends GetView {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              DateTime dateTo =
-                              dateNow.add(const Duration(days: 7));
-                              String strdateFrom = formatDateToString(dateNow);
-                              String strdateTo = formatDateToString(dateTo);
-                              profileViewModel.postProfileByWeek(
-                                  strdateFrom, strdateTo);
-                              profileViewModel.swtichBottomButton(1);
+                              String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                              String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                              profileViewModel.getProfileByDiffDate(
+                                  strDateFrom, strDateTo);
+                              menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                              menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
+                              
+                              profileViewModel.switchBottomButton(1);
                             },
                             child: bottomDateButton("Tuần",
                                 profileViewModel.selectedBottomButton.value, 1),
@@ -427,8 +448,14 @@ class ProfileEOfficeList extends GetView {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              profileViewModel.postProfileByMonth();
-                              profileViewModel.swtichBottomButton(2);
+                              String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                              String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                              profileViewModel.getProfileByDiffDate(
+                                  strDateFrom, strDateTo);
+                              menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                              menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
+                              profileViewModel.switchBottomButton(2);
                             },
                             child: bottomDateButton("Tháng",
                                 profileViewModel.selectedBottomButton.value, 2),

@@ -114,14 +114,14 @@ class ProcedureProfileWidget extends GetView {
                                   .getFilterForChart(
                                   apiGetProfileProcedureChart1);
                               profilesProcedureViewModel
-                                  .swtichChartButton(1);
+                                  .switchChartButton(1);
                             },
                             child: const Text("Trạng thái"),
                           ),
                         )))
               ],
             ),
-            Obx(() =>ProfileProcChart(profilesProcedureViewModel.selectedBottomButton.value,profilesProcedureViewModel)),
+            Obx(() =>ProfileProcChart(profilesProcedureViewModel.selectedChartButton.value,profilesProcedureViewModel)),
           ]),
           context),
     );

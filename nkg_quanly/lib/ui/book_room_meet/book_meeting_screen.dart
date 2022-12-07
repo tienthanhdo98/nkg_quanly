@@ -7,6 +7,7 @@ import '../../const/const.dart';
 import '../../const/widget.dart';
 import '../theme/theme_data.dart';
 import 'book_room_list.dart';
+import 'e_office/book_room_e_office_list.dart';
 
 class BookMeetingScreen extends GetView {
   final String? header;
@@ -123,7 +124,7 @@ class BookMeetingScreen extends GetView {
                   padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.to(() => BookRoomList());
+                      Get.to(() => BookRoomEOfficeList());
                     },
                     child: buttonShowListScreen("Xem danh sách Phòng họp"),
                     style: bottomButtonStyle,

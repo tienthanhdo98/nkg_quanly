@@ -22,6 +22,8 @@ class HelpdeskViewModel extends GetxController {
   HelpdeskModel helpdeskModel = HelpdeskModel();
   Rx<bool> rxIsLoadingScreen = true.obs;
 
+  Rx<String> rxStatusSelected = "".obs;
+
   void changeLoadingState(bool value)
   {
     rxIsLoadingScreen.value = value;
@@ -41,19 +43,9 @@ class HelpdeskViewModel extends GetxController {
     super.onInit();
   }
 
-  void checkboxFilterAll(bool value, int key) {
-    if (value == true) {
-      var map = {key: ""};
-      mapAllFilter.addAll(map);
-    } else {
-      mapAllFilter.remove(key);
-    }
-  }
-
   //filter
   final RxMap<int, String> mapStatusFilter = <int, String>{}.obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
-
 
   RxList<HelpdeskFilterModel> rxHelpdeskFilterList =
       <HelpdeskFilterModel>[].obs;
@@ -104,7 +96,7 @@ class HelpdeskViewModel extends GetxController {
     });
   }
 
-  Future<void> posHelpdeskListByWeek(String dateFrom, String dateTo) async {
+  Future<void> getHelpdeskListByDiffDate(String dateFrom, String dateTo) async {
     final url = Uri.parse(apiPostHelpDesk);
     print('loading');
     print(dateFrom);
@@ -139,6 +131,7 @@ class HelpdeskViewModel extends GetxController {
     final url = Uri.parse(apiPostHelpDesk);
     print('loading');
     String json = "";
+    print(status);
     if (status != "") {
       json = '{"currentPage":1,"pageSize":10,"status":"$status"}';
     } else {

@@ -21,7 +21,7 @@ class ProfileViewModel extends GetxController {
 
 
   Future<void> getFilterForChart(String url) async {
-    print('loading');
+
     http.Response response = await http.get(Uri.parse(url));
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
@@ -36,7 +36,7 @@ class ProfileViewModel extends GetxController {
 
   Map<String, String> headers = {"Content-type": "application/json"};
 
-  Rx<int> selectedBottomButton = 0.obs;
+  Rx<int> selectedBottomButton = 4.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;
 
   RxList<ProfileItems> rxProfileItems = <ProfileItems>[].obs;
@@ -49,8 +49,6 @@ class ProfileViewModel extends GetxController {
     getFilterUnitEditor();
     getFilterTypeSubmission();
     getFilterSubmissProblem();
-
-
     postProfileStatistic();
 
 
@@ -73,8 +71,20 @@ class ProfileViewModel extends GetxController {
   Rx<String> rxTypeSubmissSelected = "".obs;
   Rx<String> rxStateSelected = "".obs;
 
+  void clearSelectedFilter()
+  {
+    mapUnitEditorFilter.clear();
+    mapSubmissProblem.clear();
+    mapTypeSubmission.clear();
+    mapState.clear();
+    mapAllFilter.clear();
+    rxUnitEditorSelected.value = "";
+    rxSubmissProblemSelected.value = "";
+    rxTypeSubmissSelected.value = "";
+    rxStateSelected.value = "";
+  }
+
   Future<void> getFilterUnitEditor() async {
-    print('loading');
     http.Response response = await http
         .get(Uri.parse("http://123.31.31.237:6002/api/profiles/unit-editor"));
 
@@ -84,7 +94,6 @@ class ProfileViewModel extends GetxController {
   }
 
   Future<void> getFilterSubmissProblem() async {
-    print('loading');
     http.Response response = await http.get(
         Uri.parse("http://123.31.31.237:6002/api/profiles/submission-problem"));
 
@@ -94,7 +103,6 @@ class ProfileViewModel extends GetxController {
   }
 
   Future<void> getFilterTypeSubmission() async {
-    print('loading');
     http.Response response = await http.get(
         Uri.parse("http://123.31.31.237:6002/api/profiles/type-submission"));
 
@@ -112,24 +120,16 @@ class ProfileViewModel extends GetxController {
     }
   }
 
-  //by ui
-  //filter
 
-
-  //end filter
-
-  void swtichBottomButton(int button) {
+  void switchBottomButton(int button) {
     selectedBottomButton.value = button;
   }
 
-  void onSelectDay(DateTime selectedDay) {
-    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
-    postProfileByDay(strSelectedDay);
-  }
+ 
 
   // profile ho so trinh data
   Future<DocumentFilterModel> getQuantityDocumentBuUrl(String url) async {
-    print('loading');
+
     http.Response response = await http.get(Uri.parse(url));
     
     return DocumentFilterModel.fromJson(jsonDecode(response.body));
@@ -137,7 +137,7 @@ class ProfileViewModel extends GetxController {
 
   Future<void> postProfileStatistic() async {
     final url = Uri.parse(apiGetProfile);
-    print('loading');
+
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response = await http.post(url, headers: headers, body: json);
     
@@ -145,6 +145,7 @@ class ProfileViewModel extends GetxController {
     rxProfileStatisticTotal.value = profileModel.statistic!;
     rxProfileStatistic.value = profileModel.statistic!;
     rxProfileItems.value = profileModel.items!;
+    switchBottomButton(4);
     //loadmore
     var page = 1;
     controller.dispose();
@@ -162,40 +163,10 @@ class ProfileViewModel extends GetxController {
       }
     });
   }
-
-  Future<void> postProfileByDay(String day) async {
+  
+  Future<void> getProfileByDiffDate(String datefrom, String dateTo) async {
     final url = Uri.parse(apiGetProfile);
-    print('loading');
-    String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
-    http.Response response = await http.post(url, headers: headers, body: json);
-    
-    ProfileModel res = ProfileModel.fromJson(jsonDecode(response.body));
-    rxProfileItems.value = res.items!;
-    profileModel = ProfileModel.fromJson(jsonDecode(response.body));
-    rxProfileStatisticTotal.value = profileModel.statistic!;
-    rxProfileStatistic.value = profileModel.statistic!;
-    rxProfileItems.value = profileModel.items!;
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore week");
-        page++;
-        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
-        http.Response response =
-        await http.post(url, headers: headers, body: json);
-        profileModel = ProfileModel.fromJson(jsonDecode(response.body));
-        rxProfileItems.addAll(profileModel.items!);
-        print("loadmore w at $page");
-      }
-    });
-  }
 
-  Future<void> postProfileByWeek(String datefrom, String dateTo) async {
-    final url = Uri.parse(apiGetProfile);
-    print('loading');
     String json =
         '{"pageIndex":1,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
     http.Response response = await http.post(url, headers: headers, body: json);
@@ -224,38 +195,11 @@ class ProfileViewModel extends GetxController {
 
   }
 
-  Future<void> postProfileByMonth() async {
-    final url = Uri.parse(apiGetProfile);
-    print('loading');
-    http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-    
-    profileModel= ProfileModel.fromJson(jsonDecode(response.body));
-    rxProfileStatistic.value = profileModel.statistic!;
-    rxProfileItems.value = profileModel.items!;
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore week");
-        page++;
-        String jsonGetByMonth =
-            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
-        http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-        profileModel = ProfileModel.fromJson(jsonDecode(response.body));
-        rxProfileItems.addAll(profileModel.items!);
-        print("loadmore w at $page");
-      }
-    });
-  }
-
+  
   Future<void> postProfileByFilter(String state, String unitEditor,
       String submissionProblem, String typeSubmission) async {
     final url = Uri.parse(apiGetProfile);
-    print('loading');
+
     String json =
         '{"pageIndex":1,"pageSize":10,"typeSubmission":"$typeSubmission","submissionProblem":"$submissionProblem","unitEditor":"$unitEditor","state":"$state"}';
     http.Response response = await http.post(url, headers: headers, body: json);

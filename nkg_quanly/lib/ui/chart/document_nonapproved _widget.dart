@@ -9,6 +9,7 @@ import '../../const/widget.dart';
 import '../document_nonapproved/document_nonapproved_list.dart';
 import '../document_nonapproved/document_nonapproved_screen.dart';
 import '../document_nonapproved/document_nonapproved_viewmodel.dart';
+import '../document_unprocess/e_office/document_in_e_office_list.dart';
 import '../theme/theme_data.dart';
 
 class DocumentNonapprovedWidget extends GetView {
@@ -45,7 +46,7 @@ class DocumentNonapprovedWidget extends GetView {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            DocumentNonapprovedList()));
+                                            DocumentInEOfficeList(header: "Văn bản đến chưa bút phê",)));
                               },
                               child: const Align(
                                   alignment: Alignment.topRight,

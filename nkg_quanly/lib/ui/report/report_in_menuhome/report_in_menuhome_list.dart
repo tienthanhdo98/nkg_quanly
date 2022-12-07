@@ -20,8 +20,8 @@ class ReportInMenuHomeList extends GetView {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        menuController.rxFromDateWithoutWeekDay.value = "";
-        menuController.rxToDateWithoutWeekDay.value = "";
+        menuController.rxFromDateWithoutWeekDayToApi.value = "";
+        menuController.rxToDateWithoutWeekDayToApi.value = "";
         return true;
       },
       child: Scaffold(
@@ -64,7 +64,7 @@ class ReportInMenuHomeList extends GetView {
                                 Obx(() => Text(
                                     checkingNullNumberAndConvertToString(
                                         reportViewModel
-                                            .rxReportStatisticTotal.value.tong),
+                                            .rxReportStatistic.value.tong),
                                     style: textBlueCountTotalStyle)),
                                 const Padding(
                                     padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -115,7 +115,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatisticTotal
+                                            reportViewModel.rxReportStatistic
                                                 .value.daTiepNhan),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -131,7 +131,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatisticTotal
+                                            reportViewModel.rxReportStatistic
                                                 .value.dungHan),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -147,7 +147,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatisticTotal
+                                            reportViewModel.rxReportStatistic
                                                 .value.chuaDenHan),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -163,7 +163,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatisticTotal
+                                            reportViewModel.rxReportStatistic
                                                 .value.daGiao),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -179,7 +179,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatisticTotal
+                                            reportViewModel.rxReportStatistic
                                                 .value.somHan),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -195,7 +195,7 @@ class ReportInMenuHomeList extends GetView {
                                     ),
                                     Text(
                                         checkingNullNumberAndConvertToString(
-                                            reportViewModel.rxReportStatisticTotal
+                                            reportViewModel.rxReportStatistic
                                                 .value.quaHan),
                                         style: textBlackCountEofficeStyle)
                                   ],
@@ -204,221 +204,20 @@ class ReportInMenuHomeList extends GetView {
                             ),
                           ),
                         )
-                      : const SizedBox.shrink())
-                ],
-              ),
-            ),
-            //
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-                            child: Text("Từ ngày")),
-                        InkWell(
-                          onTap: () {
-                            showModalBottomSheet<void>(
-                              isScrollControlled: true,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                              ),
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SizedBox(
-                                    height: 300,
-                                    child: DayPickerBottomSheet(
-                                        reportViewModel, FROM_DATE));
-                              },
-                            );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: kDarkGray,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                    5) // use instead of BorderRadius.all(Radius.circular(20))
-                                ),
-                            child: Row(children: [
-                              Obx(() => Expanded(
-                                    child: Text(
-                                      menuController
-                                          .rxFromDateWithoutWeekDay.value,
-                                    ),
-                                  )),
-                              Obx(() => (menuController
-                                          .rxFromDateWithoutWeekDay.value !=
-                                      "")
-                                  ? IconButton(
-                                      padding: EdgeInsets.zero,
-                                      icon: Image.asset(
-                                        "assets/icons/ic_close_2.png",
-                                        width: 15,
-                                        height: 15,
-                                      ),
-                                      onPressed: () {
-                                        menuController.clearDataDateFrom();
-                                      },
-                                    )
-                                  : IconButton(
-                                      padding: EdgeInsets.zero,
-                                      icon: Image.asset(
-                                        "assets/icons/ic_date.png",
-                                        width: 20,
-                                        height: 20,
-                                      ),
-                                      onPressed: () {
-                                        showModalBottomSheet<void>(
-                                          isScrollControlled: true,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(20),
-                                            ),
-                                          ),
-                                          clipBehavior:
-                                              Clip.antiAliasWithSaveLayer,
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return SizedBox(
-                                                height: 300,
-                                                child: DayPickerBottomSheet(
-                                                    reportViewModel,
-                                                    FROM_DATE));
-                                          },
-                                        );
-                                      },
-                                    ))
-                            ]),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                //den ngay
-                const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-                            child: Text("Đến ngày")),
-                        InkWell(
-                          onTap: () {
-                            showModalBottomSheet<void>(
-                              isScrollControlled: true,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                              ),
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SizedBox(
-                                    height: 300,
-                                    child: DayPickerBottomSheet(
-                                        reportViewModel, TO_DATE));
-                              },
-                            );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: kDarkGray,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                    5) // use instead of BorderRadius.all(Radius.circular(20))
-                                ),
-                            child: Row(children: [
-                              Obx(
-                                () => Expanded(
-                                  child: Text(
-                                    menuController.rxToDateWithoutWeekDay.value,
-                                  ),
-                                ),
-                              ),
-                              Obx(() => (menuController
-                                          .rxToDateWithoutWeekDay.value !=
-                                      "")
-                                  ? IconButton(
-                                      padding: EdgeInsets.zero,
-                                      icon: Image.asset(
-                                        "assets/icons/ic_close_2.png",
-                                        width: 15,
-                                        height: 15,
-                                      ),
-                                      onPressed: () {
-                                        menuController.clearDataDateTo();
-                                      },
-                                    )
-                                  : IconButton(
-                                      padding: EdgeInsets.zero,
-                                      icon: Image.asset(
-                                        "assets/icons/ic_date.png",
-                                        width: 20,
-                                        height: 20,
-                                      ),
-                                      onPressed: () {
-                                        showModalBottomSheet<void>(
-                                          isScrollControlled: true,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(20),
-                                            ),
-                                          ),
-                                          clipBehavior:
-                                              Clip.antiAliasWithSaveLayer,
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return SizedBox(
-                                                height: 300,
-                                                child: DayPickerBottomSheet(
-                                                    reportViewModel, TO_DATE));
-                                          },
-                                        );
-                                      },
-                                    ))
-                            ]),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    String strdateFrom =
+                      : const SizedBox.shrink()),
+                  fromDateToDateWidget(reportViewModel, () {
+                    String strDateFrom =
                         menuController.rxFromDateWithoutWeekDayToApi.value;
-                    String strdateTo =
+                    String strDateTo =
                         menuController.rxToDateWithoutWeekDayToApi.value;
-                    print(strdateFrom);
-                    print(strdateTo);
-                    reportViewModel.postReportByWeek(strdateFrom, strdateTo);
-                  },
-                  child: buttonShowListScreen("Tìm"),
-                  style: bottomButtonStyle,
-                ),
+                    if (strDateFrom != "" && strDateTo != "") {
+                      reportViewModel.getReportListByDiffDate(
+                          strDateFrom, strDateTo);
+                    } else {
+                      reportViewModel.getReportStatisticTotal();
+                    }
+                  })
+                ],
               ),
             ),
             //list
@@ -466,8 +265,12 @@ class ReportInMenuHomeList extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            menuController.rxSelectedDay.value = DateTime.now();
-                            reportViewModel.onSelectDay(DateTime.now());
+                            String strDateFrom = formatDateToString(dateNow);
+                            String strDateTo = formatDateToString(dateNow);
+                            reportViewModel.getReportListByDiffDate(
+                                strDateFrom, strDateTo);
+                            menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                            menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                             reportViewModel.selectedBottomButton(0);
                           },
                           child: bottomDateButton("Ngày",
@@ -477,12 +280,13 @@ class ReportInMenuHomeList extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            DateTime dateTo =
-                                dateNow.add(const Duration(days: 7));
-                            String strdateFrom = formatDateToString(dateNow);
-                            String strdateTo = formatDateToString(dateTo);
-                            reportViewModel.postReportByWeek(
-                                strdateFrom, strdateTo);
+                            String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                            String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                            reportViewModel.getReportListByDiffDate(
+                                strDateFrom, strDateTo);
+                            menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                            menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                             reportViewModel.selectedBottomButton(1);
                           },
                           child: bottomDateButton("Tuần",
@@ -492,7 +296,13 @@ class ReportInMenuHomeList extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            reportViewModel.postReportByMonth();
+                            String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                            String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                            reportViewModel.getReportListByDiffDate(
+                                strDateFrom, strDateTo);
+                            menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                            menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                             reportViewModel.selectedBottomButton(2);
                           },
                           child: bottomDateButton("Tháng",
@@ -967,7 +777,7 @@ class FilterReportBottomSheet extends StatelessWidget {
                             if (menuController.listPriorityStatus
                                 .containsKey(0)) {
                               reportViewModel!
-                                  .postReportByFilter(status, level);
+                                  .getReportListByFilter(status, level);
                             } else {
                               menuController.listPriorityStatus
                                   .forEach((key, value) {
@@ -978,7 +788,7 @@ class FilterReportBottomSheet extends StatelessWidget {
                                 status += value;
                               });
                               reportViewModel!
-                                  .postReportByFilter(status, level);
+                                  .getReportListByFilter(status, level);
                             }
                           },
                           style: buttonFilterBlue,

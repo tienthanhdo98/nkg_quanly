@@ -45,7 +45,7 @@ class FilterDocInScreen extends GetView {
                       const Spacer(),
                       InkWell(
                         onTap: () {
-                          // analysisReportViewModel!.clearSelectedFilter();
+                           documentUnprocessViewModel!.clearSelectedFilter();
                         },
                         child: const Text(
                           "Xóa bộ lọc",
@@ -165,7 +165,7 @@ class FilterDocInScreen extends GetView {
                                   .rxStatusSelected.value !=
                                   "")
                                   ? documentUnprocessViewModel!
-                                  .rxDepartmentSelected.value
+                                  .rxStatusSelected.value
                                   : "Chọn trạng thái",
                               context))),
                       // const Spacer(),

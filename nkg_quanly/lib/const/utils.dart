@@ -28,6 +28,17 @@ String formatDate(String value) {
     return "";
   }
 }
+String formatStrDateToStrDate(String value) {
+  try {
+    var format = DateFormat("yyyy-MM-DD");
+    var format2 = DateFormat("dd/MM/yyyy");
+    var str = format.parse(value);
+    var str2 = format2.format(str);
+    return str2;
+  } catch (_) {
+    return "";
+  }
+}
 
 String formatDateToString(DateTime value) {
   try {
@@ -572,4 +583,18 @@ class FilterAllItem extends StatelessWidget {
 
 void changeValueSelectedFilter(Rx<String> rxSelected, String value) {
   rxSelected.value = value;
+}
+
+DateTime findFirstDateOfTheWeek(DateTime dateTime) {
+  return dateTime.subtract(Duration(days: dateTime.weekday));
+}
+DateTime findLastDateOfTheWeek(DateTime dateTime) {
+  return dateTime
+      .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday - 1));
+}
+DateTime findLastDateOfTheMonth(DateTime dateTime) {
+  return DateTime(dateTime.year, dateTime.month + 1, 0);
+}
+DateTime findFirstDateOfTheMonth(DateTime dateTime) {
+  return DateTime(dateTime.year, dateTime.month, 1);
 }

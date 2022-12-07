@@ -29,7 +29,40 @@ class FilterReportScreen extends GetView {
             child: Column(
               children: [
                 //header
-                headerWidget("Bộ lọc", context),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/icons/ic_arrow_back.png',
+                          width: 18,
+                          height: 18,
+                        ),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                        Text(
+                          "Bộ lọc",
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            reportViewModel!.clearSelectedFilter();
+                            menuController.clearEndDate();
+                          },
+                          child: const Text(
+                            "Xóa bộ lọc",
+                            style: TextStyle(color: kBlueButton),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
@@ -129,7 +162,7 @@ class FilterReportScreen extends GetView {
                             );
                           },
                           child: Container(
-                            padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                             width: double.infinity,
                             decoration: BoxDecoration(
                                 border: Border.all(

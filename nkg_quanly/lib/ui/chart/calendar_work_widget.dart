@@ -4,6 +4,7 @@ import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
 
 import '../../const/widget.dart';
 import '../calendarwork/calendar_work_viewmodel.dart';
+import '../calendarwork/e_office/calendar_work_e_office_screen.dart';
 
 class CalendarWorkWidget extends StatelessWidget {
   CalendarWorkWidget({
@@ -42,7 +43,7 @@ class CalendarWorkWidget extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    CalendarWorkScreen()));
+                                    CalendarWorkEOfficeScreen()));
                       },
                       child: const Align(
                           alignment: Alignment.topRight,

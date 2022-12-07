@@ -437,7 +437,23 @@ class DocumentInEOfficeList extends GetView {
                         ),
                       ),
                     )
-                        : const SizedBox.shrink())
+                        : const SizedBox.shrink()),
+                    //select Date box
+                    fromDateToDateWidget(documentUnprocessViewModel,(){
+                      String strdateFrom =
+                          menuController.rxFromDateWithoutWeekDayToApi.value;
+                      String strdateTo =
+                          menuController.rxToDateWithoutWeekDayToApi.value;
+                      if(strdateFrom != "" && strdateTo != "") {
+                        documentUnprocessViewModel.getDocumentByDiffDate(
+                            strdateFrom, strdateTo);
+                      }
+                      else
+                      {
+                        documentUnprocessViewModel.getDocumentDefault();
+                      }
+                    })
+                    //end select Date box
                   ],
                 ),
               ),
@@ -497,10 +513,12 @@ class DocumentInEOfficeList extends GetView {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              menuController.rxSelectedDay.value = DateTime
-                                  .now();
-                              documentUnprocessViewModel
-                                  .onSelectDay(DateTime.now());
+                              String strDateFrom = formatDateToString(dateNow);
+                              String strDateTo = formatDateToString(dateNow);
+                              documentUnprocessViewModel.getDocumentByDiffDate(
+                                  strDateFrom, strDateTo);
+                              menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                              menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                               documentUnprocessViewModel.swtichBottomButton(0);
                             },
                             child: bottomDateButton(
@@ -513,12 +531,13 @@ class DocumentInEOfficeList extends GetView {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              DateTime dateTo =
-                              dateNow.add(const Duration(days: 7));
-                              String strdateFrom = formatDateToString(dateNow);
-                              String strdateTo = formatDateToString(dateTo);
-                              documentUnprocessViewModel.getDocumentByWeek(
-                                  strdateFrom, strdateTo);
+                              String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                              String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                              documentUnprocessViewModel.getDocumentByDiffDate(
+                                  strDateFrom, strDateTo);
+                              menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                              menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                               documentUnprocessViewModel.swtichBottomButton(1);
                             },
                             child: bottomDateButton(
@@ -531,7 +550,13 @@ class DocumentInEOfficeList extends GetView {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              documentUnprocessViewModel.getDocumentByMonth();
+                              String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                              String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                              documentUnprocessViewModel.getDocumentByDiffDate(
+                                  strDateFrom, strDateTo);
+                              menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                              menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                               documentUnprocessViewModel.swtichBottomButton(2);
                             },
                             child: bottomDateButton(

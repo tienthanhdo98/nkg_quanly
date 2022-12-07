@@ -9,7 +9,6 @@ import '../../search_screen.dart';
 import '../../theme/theme_data.dart';
 import '../mission_detail.dart';
 import '../mission_viewmodel.dart';
-import '../misstion_search.dart';
 import 'filter_mission_screen.dart';
 
 class MissionEOfficeList extends GetView {
@@ -279,10 +278,27 @@ class MissionEOfficeList extends GetView {
                           ),
                         ),
                       )
-                    : const SizedBox.shrink())
+                    : const SizedBox.shrink()),
+                //select Date box
+                fromDateToDateWidget(missionViewModel,(){
+                  String strDateFrom =
+                      menuController.rxFromDateWithoutWeekDayToApi.value;
+                  String strDateTo =
+                      menuController.rxToDateWithoutWeekDayToApi.value;
+                  if(strDateFrom != "" && strDateTo != "") {
+                    missionViewModel.getMissionByFromAndToDate(
+                        strDateFrom, strDateTo);
+                  }
+                  else
+                  {
+                    missionViewModel.getMissionDefault(true);
+                  }
+                })
+                //end select Date box
               ],
             ),
           ),
+
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
               child: Divider(
@@ -331,11 +347,12 @@ class MissionEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          menuController.rxSelectedDay.value = DateTime.now();
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateNow);
+                          String strDateFrom = formatDateToString(dateNow);
+                          String strDateTo = formatDateToString(dateNow);
                           missionViewModel.getMissionByFromAndToDate(
-                              strdateFrom, strdateTo);
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           missionViewModel.swtichBottomButton(0);
                         },
                         child: bottomDateButton("Ngày",
@@ -345,12 +362,14 @@ class MissionEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime dateTo =
-                              dateNow.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateTo);
+
+                          String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
                           missionViewModel.getMissionByFromAndToDate(
-                              strdateFrom, strdateTo);
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           missionViewModel.swtichBottomButton(1);
                         },
                         child: bottomDateButton("Tuần",
@@ -360,12 +379,15 @@ class MissionEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime dateTo =
-                          dateNow.subtract(const Duration(days: 30));
-                          String strdateFrom = formatDateToString(dateTo);
-                          String strdateTo = formatDateToString(dateNow);
+
+                          String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
                           missionViewModel.getMissionByFromAndToDate(
-                              strdateFrom, strdateTo);
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
+
                           missionViewModel.swtichBottomButton(2);
                         },
                         child: bottomDateButton("Tháng",

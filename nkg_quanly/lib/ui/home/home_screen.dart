@@ -233,7 +233,7 @@ List<MenuListItem> listEOffice = [
 void toScreen(int type, String? header, String? icon) {
   switch (type) {
     case 1:
-      Get.to(() => CalendarWorkScreen());
+      Get.to(() => CalendarWorkEOfficeScreen());
       break;
     case 2:
       Get.to(() => ReportScreen(

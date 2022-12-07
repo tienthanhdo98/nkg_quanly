@@ -448,7 +448,7 @@ class ProfilesProcedureScreen extends GetView {
                                             .getFilterForChart(
                                             apiGetProfileProcedureChart1);
                                         profilesProcedureViewModel
-                                            .swtichChartButton(1);
+                                            .switchChartButton(1);
                                       },
                                       child: const Text("Trạng thái"),
                                     ),
@@ -456,7 +456,7 @@ class ProfilesProcedureScreen extends GetView {
                         ],
                       ),
                     ),
-                    Obx(() =>ProfileProcChart(profilesProcedureViewModel.selectedBottomButton.value,profilesProcedureViewModel)),
+                    Obx(() =>ProfileProcChart(profilesProcedureViewModel.selectedChartButton.value,profilesProcedureViewModel)),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: SizedBox(

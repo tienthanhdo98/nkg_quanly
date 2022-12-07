@@ -183,7 +183,7 @@ class LoginViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(apiLoginConfig));
     
     InfoLoginConfig infoLoginConfig =
-        await InfoLoginConfig.fromJson(jsonDecode(response.body));
+        InfoLoginConfig.fromJson(jsonDecode(response.body));
     
     rxInfoLoginConfig.value = infoLoginConfig;
     urlLogin =

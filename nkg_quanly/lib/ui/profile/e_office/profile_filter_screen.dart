@@ -41,7 +41,7 @@ class ProfileFilterScreen extends GetView {
                       const Spacer(),
                       InkWell(
                         onTap: () {
-                          // analysisReportViewModel!.clearSelectedFilter();
+                         profileViewModel!.clearSelectedFilter();
                         },
                         child: const Text(
                           "Xóa bộ lọc",

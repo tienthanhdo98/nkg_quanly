@@ -16,10 +16,9 @@ class DatePickerController extends GetxController {
   Rx<String> rxToDateWithWeekDay = "".obs;
   Rx<String> rxFromDateWithWeekDay = "".obs;
 
-  //31 thang 10,2020
-  Rx<String> rxToDateWithoutWeekDay = "".obs;
+
   Rx<String> rxToDateWithoutWeekDayToApi = "".obs;
-  Rx<String> rxFromDateWithoutWeekDay = "".obs;
+
   Rx<String> rxFromDateWithoutWeekDayToApi = "".obs;
 
   //han xu ly
@@ -36,30 +35,26 @@ class DatePickerController extends GetxController {
 
   void clearDataDateFrom() {
     rxFromDateWithWeekDay.value = "";
-    rxFromDateWithoutWeekDay.value = "";
+
     rxFromDate.value = "";
-    rxFromDateWithoutWeekDay.value = "";
+
     rxFromDateWithoutWeekDayToApi.value = "";
   }
 
   void clearDataDateTo() {
     rxToDateWithWeekDay.value = "";
-    rxToDateWithoutWeekDay.value = "";
+
     rxToDate.value = "";
-    rxToDateWithoutWeekDay.value = "";
+
     rxToDateWithoutWeekDayToApi.value = "";
   }
 
   void clearAllDateData() {
     rxToDateWithWeekDay.value = "";
     rxFromDateWithWeekDay.value = "";
-    rxFromDateWithoutWeekDay.value = "";
-    rxToDateWithoutWeekDay.value = "";
     rxFromDate.value = "";
     rxToDate.value = "";
-    rxToDateWithoutWeekDay.value = "";
     rxToDateWithoutWeekDayToApi.value = "";
-    rxFromDateWithoutWeekDay.value = "";
     rxFromDateWithoutWeekDayToApi.value = "";
   }
 
@@ -131,8 +126,7 @@ class DatePickerController extends GetxController {
       String? valueWeekDay, String valueWithoutWeekDay, DateTime date) {
     rxToDateWithWeekDay.value = valueWeekDay!;
     rxToDate.value = valueWithoutWeekDay;
-    rxToDateWithoutWeekDay.value =
-        convertDateToWeekDayFormatWithoutWeeked(date);
+
     rxToDateWithoutWeekDayToApi.value = formatDateToString(date);
   }
 
@@ -140,8 +134,7 @@ class DatePickerController extends GetxController {
       String? valueWeekDay, String valueWithoutWeekDay, DateTime date) {
     rxFromDateWithWeekDay.value = valueWeekDay!;
     rxFromDate.value = valueWithoutWeekDay;
-    rxFromDateWithoutWeekDay.value =
-        convertDateToWeekDayFormatWithoutWeeked(date);
+
     rxFromDateWithoutWeekDayToApi.value = formatDateToString(date);
   }
 }

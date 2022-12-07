@@ -14,6 +14,7 @@ import '../ui/profile/profile_search.dart';
 import '../ui/profile_procedure_/profile_proc_search.dart';
 import '../ui/profile_work/profile_work_search.dart';
 import '../ui/report/report_search.dart';
+import '../ui/theme/theme_data.dart';
 import '../ui/utility/guideline/guideline_search.dart';
 import 'const.dart';
 
@@ -523,4 +524,213 @@ Widget getListSearchResWidgetByType(
       break;
   }
   return widget!;
+}
+Widget fromDateToDateWidget(GetxController viewModel,VoidCallback clickButtonFind)
+{
+  return Column(children: [
+    Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                    child: Text("Từ ngày")),
+                InkWell(
+                  onTap: () {
+                    showModalBottomSheet<void>(
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      context: Get.context!,
+                      builder: (BuildContext context) {
+                        return SizedBox(
+                            height: 300,
+                            child: DayPickerBottomSheet(
+                                viewModel, FROM_DATE));
+                      },
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: kDarkGray,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                            5) // use instead of BorderRadius.all(Radius.circular(20))
+                    ),
+                    child: Row(children: [
+                      Obx(() => Expanded(
+                        child: Text(
+                          formatStrDateToStrDate(menuController
+                              .rxFromDateWithoutWeekDayToApi.value),
+                        ),
+                      )),
+                      Obx(() => (menuController
+                          .rxFromDateWithoutWeekDayToApi.value !=
+                          "")
+                          ? IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Image.asset(
+                          "assets/icons/ic_close_2.png",
+                          width: 15,
+                          height: 15,
+                        ),
+                        onPressed: () {
+                          menuController.clearDataDateFrom();
+                        },
+                      )
+                          : IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Image.asset(
+                          "assets/icons/ic_date.png",
+                          width: 20,
+                          height: 20,
+                        ),
+                        onPressed: () {
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            clipBehavior:
+                            Clip.antiAliasWithSaveLayer,
+                            context: Get.context!,
+                            builder: (BuildContext context) {
+                              return SizedBox(
+                                  height: 300,
+                                  child: DayPickerBottomSheet(
+                                      viewModel,
+                                      FROM_DATE));
+                            },
+                          );
+                        },
+                      ))
+                    ]),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        //den ngay
+        const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
+                    child: Text("Đến ngày")),
+                InkWell(
+                  onTap: () {
+                    showModalBottomSheet<void>(
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      context: Get.context!,
+                      builder: (BuildContext context) {
+                        return SizedBox(
+                            height: 300,
+                            child: DayPickerBottomSheet(
+                                viewModel, TO_DATE));
+                      },
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: kDarkGray,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                            5) // use instead of BorderRadius.all(Radius.circular(20))
+                    ),
+                    child: Row(children: [
+                      Obx(
+                            () => Expanded(
+                          child: Text(
+                            formatStrDateToStrDate(menuController.rxToDateWithoutWeekDayToApi.value),
+                          ),
+                        ),
+                      ),
+                      Obx(() => (menuController
+                          .rxToDateWithoutWeekDayToApi.value !=
+                          "")
+                          ? IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Image.asset(
+                          "assets/icons/ic_close_2.png",
+                          width: 15,
+                          height: 15,
+                        ),
+                        onPressed: () {
+                          menuController.clearDataDateTo();
+                        },
+                      )
+                          : IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Image.asset(
+                          "assets/icons/ic_date.png",
+                          width: 20,
+                          height: 20,
+                        ),
+                        onPressed: () {
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            clipBehavior:
+                            Clip.antiAliasWithSaveLayer,
+                            context: Get.context!,
+                            builder: (BuildContext context) {
+                              return SizedBox(
+                                  height: 300,
+                                  child: DayPickerBottomSheet(
+                                      viewModel, TO_DATE));
+                            },
+                          );
+                        },
+                      ))
+                    ]),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
+    ),
+    Padding(
+      padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: clickButtonFind,
+          child: buttonShowListScreen("Tìm"),
+          style: bottomButtonStyle,
+        ),
+      ),
+    )
+  ],);
 }

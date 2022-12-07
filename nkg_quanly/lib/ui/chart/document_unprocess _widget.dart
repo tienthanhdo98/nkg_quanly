@@ -7,14 +7,14 @@ import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../document_unprocess/document_unprocess _screen.dart';
-import '../document_unprocess/document_unprocess_list.dart';
 import '../document_unprocess/document_unprocess_viewmodel.dart';
+import '../document_unprocess/e_office/document_in_e_office_list.dart';
 import '../theme/theme_data.dart';
 
 class DocumentUnProcessWidget extends GetView {
   final documentUnprocessViewModel = Get.put(DocumentUnprocessViewModel());
 
-  DocumentUnProcessWidget();
+  DocumentUnProcessWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class DocumentUnProcessWidget extends GetView {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            DocumentUnprocessList()));
+                                            DocumentInEOfficeList(header: "Văn bản đến chưa xử lý",)));
                               },
                               child: const Align(
                                   alignment: Alignment.topRight,

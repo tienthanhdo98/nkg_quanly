@@ -5,7 +5,6 @@ import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../../model/booking_car/booking_car_model;.dart';
 import '../../search_screen.dart';
-import '../booking_car_search.dart';
 import '../booking_car_viewmodel.dart';
 
 class BookingEOfficeCarList extends GetView {
@@ -29,8 +28,6 @@ class BookingEOfficeCarList extends GetView {
                  typeScreen: type_cars ,
               ),
               context),
-          //date table
-          headerTableDatePicker(context, bookCarViewModel),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
@@ -108,7 +105,22 @@ class BookingEOfficeCarList extends GetView {
                           ],
                         ),
                       )
-                    : const SizedBox.shrink())
+                    : const SizedBox.shrink()),
+                //date table
+                fromDateToDateWidget(bookCarViewModel,(){
+                  String strDateFrom =
+                      menuController.rxFromDateWithoutWeekDayToApi.value;
+                  String strDateTo =
+                      menuController.rxToDateWithoutWeekDayToApi.value;
+                  if(strDateFrom != "" && strDateTo != "") {
+                    bookCarViewModel.getBookingCarListByDiffDate(
+                        strDateFrom, strDateTo);
+                  }
+                  else
+                  {
+                    bookCarViewModel.postBookingCarStatistic();
+                  }
+                }),
               ],
             ),
           ),
@@ -166,9 +178,13 @@ class BookingEOfficeCarList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          menuController.rxSelectedDay.value = DateTime.now();
-                          bookCarViewModel.onSelectDay(DateTime.now());
-                          bookCarViewModel.swtichBottomButton(0);
+                          String strDateFrom = formatDateToString(dateNow);
+                          String strDateTo = formatDateToString(dateNow);
+                          bookCarViewModel.getBookingCarListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
+                          bookCarViewModel.switchBottomButton(0);
                         },
                         child: bottomDateButton("Ngày",
                             bookCarViewModel.selectedBottomButton.value, 0),
@@ -177,13 +193,14 @@ class BookingEOfficeCarList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime dateTo =
-                              dateNow.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateTo);
-                          bookCarViewModel.postookingCarByWeek(
-                              strdateFrom, strdateTo);
-                          bookCarViewModel.swtichBottomButton(1);
+                          String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                          bookCarViewModel.getBookingCarListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
+                          bookCarViewModel.switchBottomButton(1);
                         },
                         child: bottomDateButton("Tuần",
                             bookCarViewModel.selectedBottomButton.value, 1),
@@ -192,8 +209,14 @@ class BookingEOfficeCarList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          bookCarViewModel.postBookingCarByMonth();
-                          bookCarViewModel.swtichBottomButton(2);
+                          String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                          bookCarViewModel.getBookingCarListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
+                          bookCarViewModel.switchBottomButton(2);
                         },
                         child: bottomDateButton("Tháng",
                             bookCarViewModel.selectedBottomButton.value, 2),

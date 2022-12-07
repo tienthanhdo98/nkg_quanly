@@ -8,10 +8,10 @@ import '../../theme/theme_data.dart';
 import '../profiles_procedure_viewmodel.dart';
 
 class ProfileProceduceFilterScreen extends GetView {
-  const ProfileProceduceFilterScreen(this.profilesProcedureViewModel, {Key? key})
+  const ProfileProceduceFilterScreen(this.profilesProcedureViewModel,
+      {Key? key})
       : super(key: key);
   final ProfilesProcedureViewModel? profilesProcedureViewModel;
-
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,39 @@ class ProfileProceduceFilterScreen extends GetView {
           child: Column(
             children: [
               //header
-              headerWidget("Bộ lọc", context),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/icons/ic_arrow_back.png',
+                        width: 18,
+                        height: 18,
+                      ),
+                      const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                      Text(
+                        "Bộ lọc",
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () {
+                          profilesProcedureViewModel!.clearSelectedFilter();
+
+                        },
+                        child: const Text(
+                          "Xóa bộ lọc",
+                          style: TextStyle(color: kBlueButton),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
@@ -126,12 +158,12 @@ class ProfileProceduceFilterScreen extends GetView {
                               },
                             );
                           },
-                          child:Obx(() => borderTextFilterEOffice(
+                          child: Obx(() => borderTextFilterEOffice(
                               (profilesProcedureViewModel!
-                                  .rxSelectedStatus.value !=
-                                  "")
+                                          .rxSelectedStatus.value !=
+                                      "")
                                   ? profilesProcedureViewModel!
-                                  .rxSelectedStatus.value
+                                      .rxSelectedStatus.value
                                   : "Chọn trạng thái",
                               context))),
                       //thu tuc
@@ -163,10 +195,10 @@ class ProfileProceduceFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (profilesProcedureViewModel!
-                                  .rxSelectedProcedure.value !=
-                                  "")
+                                          .rxSelectedProcedure.value !=
+                                      "")
                                   ? profilesProcedureViewModel!
-                                  .rxSelectedProcedure.value
+                                      .rxSelectedProcedure.value
                                   : "Chọn thủ tục",
                               context))),
                       //nhom thu tuc
@@ -198,10 +230,10 @@ class ProfileProceduceFilterScreen extends GetView {
                           },
                           child: Obx(() => borderTextFilterEOffice(
                               (profilesProcedureViewModel!
-                                  .rxSelectedGroupProcedure.value !=
-                                  "")
+                                          .rxSelectedGroupProcedure.value !=
+                                      "")
                                   ? profilesProcedureViewModel!
-                                  .rxSelectedGroupProcedure.value
+                                      .rxSelectedGroupProcedure.value
                                   : "Chọn nhóm thủ tục",
                               context))),
                       // const Spacer(),
@@ -299,7 +331,6 @@ class FilterAgenciesBottomSheet extends StatelessWidget {
           SizedBox(
             height: 120,
             child: ListView.builder(
-
                 physics: const BouncingScrollPhysics(),
                 itemCount:
                     profilesProcedureViewModel!.rxListAgenciesList.length,
@@ -332,11 +363,9 @@ class FilterAgenciesBottomSheet extends StatelessWidget {
                       onPressed: () {
                         if (profilesProcedureViewModel!.mapAllFilter
                             .containsKey(1)) {
-                          profilesProcedureViewModel!
-                              .changeValueSelectedFilter(
-                                  profilesProcedureViewModel!
-                                      .rxSelectedAgencies,
-                                  "Tất cả cơ quan");
+                          profilesProcedureViewModel!.changeValueSelectedFilter(
+                              profilesProcedureViewModel!.rxSelectedAgencies,
+                              "Tất cả cơ quan");
                         } else {
                           var agencies = "";
                           var agenciesName = "";
@@ -406,7 +435,6 @@ class FilterBranchBottomSheet extends StatelessWidget {
           SizedBox(
             height: 240,
             child: ListView.builder(
-
                 physics: const BouncingScrollPhysics(),
                 itemCount: profilesProcedureViewModel!.rxListBranch.length,
                 itemBuilder: (context, index) {
@@ -449,8 +477,8 @@ class FilterBranchBottomSheet extends StatelessWidget {
                           });
                           var listId = branch.split(";");
                           for (var id in listId) {
-                            for (var item in profilesProcedureViewModel!
-                                .rxListBranch) {
+                            for (var item
+                                in profilesProcedureViewModel!.rxListBranch) {
                               if (item.id == id) {
                                 branchName += "${item.tenLinhVuc!};";
                               }
@@ -458,14 +486,11 @@ class FilterBranchBottomSheet extends StatelessWidget {
                           }
                           if (branchName != "") {
                             changeValueSelectedFilter(
-                                profilesProcedureViewModel!
-                                    .rxSelectedBranch,
-                                branchName.substring(
-                                    0, branchName.length - 1));
+                                profilesProcedureViewModel!.rxSelectedBranch,
+                                branchName.substring(0, branchName.length - 1));
                           } else {
                             changeValueSelectedFilter(
-                                profilesProcedureViewModel!
-                                    .rxSelectedBranch,
+                                profilesProcedureViewModel!.rxSelectedBranch,
                                 "");
                           }
                         }
@@ -496,8 +521,8 @@ class FilterStatusBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca trang thai
-          FilterAllItem("Tất cả trạng thái", 3,
-              profilesProcedureViewModel!.mapAllFilter),
+          FilterAllItem(
+              "Tất cả trạng thái", 3, profilesProcedureViewModel!.mapAllFilter),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -549,8 +574,8 @@ class FilterStatusBottomSheet extends StatelessWidget {
                           });
                           var listId = status.split(";");
                           for (var id in listId) {
-                            for (var item in profilesProcedureViewModel!
-                                .rxListStatus) {
+                            for (var item
+                                in profilesProcedureViewModel!.rxListStatus) {
                               if (item.id == id) {
                                 statusName += "${item.trangThai!};";
                               }
@@ -558,14 +583,11 @@ class FilterStatusBottomSheet extends StatelessWidget {
                           }
                           if (statusName != "") {
                             changeValueSelectedFilter(
-                                profilesProcedureViewModel!
-                                    .rxSelectedStatus,
-                                statusName.substring(
-                                    0, statusName.length - 1));
+                                profilesProcedureViewModel!.rxSelectedStatus,
+                                statusName.substring(0, statusName.length - 1));
                           } else {
                             changeValueSelectedFilter(
-                                profilesProcedureViewModel!
-                                    .rxSelectedStatus,
+                                profilesProcedureViewModel!.rxSelectedStatus,
                                 "");
                           }
                         }
@@ -611,8 +633,7 @@ class FilterProceduceBottomSheet extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 itemCount: profilesProcedureViewModel!.rxListProcedure.length,
                 itemBuilder: (context, index) {
-                  var item =
-                      profilesProcedureViewModel!.rxListProcedure[index];
+                  var item = profilesProcedureViewModel!.rxListProcedure[index];
                   return FilterItem(item.ten!, item.id!, index,
                       profilesProcedureViewModel!.mapProcedureFilter);
                 }),
@@ -660,14 +681,12 @@ class FilterProceduceBottomSheet extends StatelessWidget {
                           }
                           if (procedureName != "") {
                             changeValueSelectedFilter(
-                                profilesProcedureViewModel!
-                                    .rxSelectedProcedure,
+                                profilesProcedureViewModel!.rxSelectedProcedure,
                                 procedureName.substring(
                                     0, procedureName.length - 1));
                           } else {
                             changeValueSelectedFilter(
-                                profilesProcedureViewModel!
-                                    .rxSelectedProcedure,
+                                profilesProcedureViewModel!.rxSelectedProcedure,
                                 "");
                           }
                         }
@@ -744,7 +763,8 @@ class FilterGroupProceduceBottomSheet extends StatelessWidget {
                         if (profilesProcedureViewModel!.mapAllFilter
                             .containsKey(5)) {
                           changeValueSelectedFilter(
-                              profilesProcedureViewModel!.rxSelectedGroupProcedure,
+                              profilesProcedureViewModel!
+                                  .rxSelectedGroupProcedure,
                               "Tất cả nhóm thủ tục");
                         } else {
                           var groupProcId = "";

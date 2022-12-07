@@ -11,7 +11,6 @@ import 'helpdesk_search.dart';
 import 'helpdesk_viewmodel.dart';
 
 class HelpDeskList extends GetView {
-
   final helpdeskViewModel = Get.put(HelpdeskViewModel());
 
   HelpDeskList({Key? key}) : super(key: key);
@@ -21,53 +20,118 @@ class HelpDeskList extends GetView {
     return Scaffold(
       body: SafeArea(
           child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //header
           headerWidgetSearch(
-              "Helpdesk",
-              HelpdeskSearch(
-                  helpdeskViewModel
-              ),
-              context),
+              "Helpdesk", HelpdeskSearch(helpdeskViewModel), context),
           //date table
-          headerTableDatePicker(context, helpdeskViewModel),
+          Padding(
+            padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                    color: kDarkGray, style: BorderStyle.solid, width: 1),
+              ),
+              child: Column(children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Text(
+                        "Thống kê",
+                        style: Theme.of(context).textTheme.headline2,
+                      )),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            style: elevetedButtonWhite,
+                            onPressed: () {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: 400,
+                                      child: FilterHelpDeskBottomSheet(
+                                          helpdeskViewModel));
+                                },
+                              );
+                            },
+                            child: const Text(
+                              'Bộ lọc',
+                              style: TextStyle(color: kVioletButton),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                  child: SizedBox(
+                    height: 60,
+                    child: GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
+                      primary: false,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 0,
+                      crossAxisCount: 3,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Trạng thái',
+                                style: CustomTextStyle.grayColorTextStyle),
+                            Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                child: Obx(() => Text(
+                                    helpdeskViewModel.rxStatusSelected.value,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        Theme.of(context).textTheme.headline5)))
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ]),
+            ),
+          ),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Tổng số câu hỏi',
                   style: Theme.of(context).textTheme.headline3,
                 ),
-                Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton(
-                        style: elevetedButtonWhite,
-                        onPressed: () {
-                          showModalBottomSheet<void>(
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return SizedBox(
-                                  height: 400,
-                                  child: FilterHelpDeskBottomSheet(helpdeskViewModel));
-                            },
-                          );
-                        },
-                        child: const Text(
-                          'Bộ lọc',
-                          style: TextStyle(color: kVioletButton),
-                        ),
-                      )),
-                )
+                fromDateToDateWidget(helpdeskViewModel,(){
+                  String strdateFrom =
+                      menuController.rxFromDateWithoutWeekDayToApi.value;
+                  String strdateTo =
+                      menuController.rxToDateWithoutWeekDayToApi.value;
+                  if(strdateFrom != "" && strdateTo != "") {
+                    helpdeskViewModel.getHelpdeskListByDiffDate(
+                        strdateFrom, strdateTo);
+                  }
+                  else
+                  {
+                    helpdeskViewModel.postHelpdeskListAndStatistic();
+                  }
+                })
               ],
             ),
           ),
@@ -77,7 +141,8 @@ class HelpDeskList extends GetView {
                 thickness: 1,
               )),
           Expanded(
-              child: Obx(() => (helpdeskViewModel.rxHelpdeskListItems.isNotEmpty)
+              child: Obx(() => (helpdeskViewModel
+                      .rxHelpdeskListItems.isNotEmpty)
                   ? ListView.builder(
                       controller: helpdeskViewModel.controller,
                       itemCount: helpdeskViewModel.rxHelpdeskListItems.length,
@@ -89,9 +154,11 @@ class HelpDeskList extends GetView {
                               //         .rxHelpdeskListItems[index].id!));
                             },
                             child: HelpDeskListItem(
-                                index, helpdeskViewModel.rxHelpdeskListItems[index],helpdeskViewModel));
+                                index,
+                                helpdeskViewModel.rxHelpdeskListItems[index],
+                                helpdeskViewModel));
                       })
-                  : noData())),
+                  : Align(alignment: Alignment.topCenter, child: noData()))),
           //bottom
           Obx(() => Container(
                 decoration: BoxDecoration(
@@ -106,11 +173,12 @@ class HelpDeskList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          menuController.rxSelectedDay.value = DateTime.now();
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateNow);
-                          helpdeskViewModel.posHelpdeskListByWeek(
-                              strdateFrom, strdateTo);
+                          String strDateFrom = formatDateToString(dateNow);
+                          String strDateTo = formatDateToString(dateNow);
+                          helpdeskViewModel.getHelpdeskListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           helpdeskViewModel.swtichBottomButton(0);
                         },
                         child: bottomDateButton("Ngày",
@@ -120,12 +188,13 @@ class HelpDeskList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime dateTo =
-                              dateNow.subtract(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateTo);
-                          String strdateTo = formatDateToString(dateNow);
-                          helpdeskViewModel.posHelpdeskListByWeek(
-                              strdateFrom, strdateTo);
+                          String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                          helpdeskViewModel.getHelpdeskListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           helpdeskViewModel.swtichBottomButton(1);
                         },
                         child: bottomDateButton("Tuần",
@@ -135,12 +204,13 @@ class HelpDeskList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime dateTo =
-                          dateNow.subtract(const Duration(days: 30));
-                          String strdateFrom = formatDateToString(dateTo);
-                          String strdateTo = formatDateToString(dateNow);
-                          helpdeskViewModel.posHelpdeskListByWeek(
-                              strdateFrom, strdateTo);
+                          String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                          helpdeskViewModel.getHelpdeskListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           helpdeskViewModel.swtichBottomButton(2);
                         },
                         child: bottomDateButton("Tháng",
@@ -157,7 +227,9 @@ class HelpDeskList extends GetView {
 }
 
 class HelpDeskListItem extends StatelessWidget {
-  HelpDeskListItem(this.index, this.docModel,this.helpdeskViewModel, {Key? key}) : super(key: key);
+  HelpDeskListItem(this.index, this.docModel, this.helpdeskViewModel,
+      {Key? key})
+      : super(key: key);
 
   final int? index;
   final HelpDeskListItems? docModel;
@@ -177,7 +249,7 @@ class HelpDeskListItem extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
               child: textCodeStyle(checkingStringNull(docModel!.code))),
-          signWidget(docModel!,helpdeskViewModel!.rxHelpdeskFilterList),
+          signWidget(docModel!, helpdeskViewModel!.rxHelpdeskFilterList),
           SizedBox(
             height: 80,
             child: GridView.count(
@@ -194,7 +266,11 @@ class HelpDeskListItem extends StatelessWidget {
                   children: [
                     const Text('Người xử lý',
                         style: CustomTextStyle.secondTextStyle),
-                    Text(checkingStringNull(docModel!.organizationUnitName),maxLines: 3,overflow: TextOverflow.ellipsis,)
+                    Text(
+                      checkingStringNull(docModel!.organizationUnitName),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    )
                   ],
                 ),
                 Column(
@@ -219,8 +295,7 @@ class HelpDeskListItem extends StatelessWidget {
 
 //filter by ui
 class FilterHelpDeskBottomSheet extends StatelessWidget {
-  const FilterHelpDeskBottomSheet( this.helpdeskViewModel,
-      {Key? key})
+  const FilterHelpDeskBottomSheet(this.helpdeskViewModel, {Key? key})
       : super(key: key);
   final HelpdeskViewModel? helpdeskViewModel;
 
@@ -232,25 +307,25 @@ class FilterHelpDeskBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           // Tất cả trang thai state
-          FilterAllItem( "Tất cả trạng thái", 1,helpdeskViewModel!.mapAllFilter),
+          FilterAllItem(
+              "Tất cả trạng thái", 1, helpdeskViewModel!.mapAllFilter),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
                 thickness: 1,
                 color: kgray,
               )),
-          Obx(()=>SizedBox(
-            height: 210,
-            child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: helpdeskViewModel!.rxHelpdeskFilterList.length,
-                itemBuilder: (context, index) {
-                  var item = helpdeskViewModel!.rxHelpdeskFilterList[index];
-                  return
-                    FilterItem(item.name!,item.status.toString(),index,
-                        helpdeskViewModel!.mapStatusFilter);
-                }),
-          )),
+          Obx(() => SizedBox(
+                height: 210,
+                child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: helpdeskViewModel!.rxHelpdeskFilterList.length,
+                    itemBuilder: (context, index) {
+                      var item = helpdeskViewModel!.rxHelpdeskFilterList[index];
+                      return FilterItem(item.name!, item.status.toString(),
+                          index, helpdeskViewModel!.mapStatusFilter);
+                    }),
+              )),
 
           //bottom button
           const Spacer(),
@@ -272,31 +347,43 @@ class FilterHelpDeskBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
-                        Get.back();
                         var status = "";
-                          if(helpdeskViewModel!.mapAllFilter.containsKey(1))
-                            {
-                              helpdeskViewModel!
-                                  .postHelpdeskListByFilter(status);
-                            }
-                          else
-                            {
-                              helpdeskViewModel!.mapStatusFilter
-                                  .forEach((key, value) {
-                                status += value;
-                              });
-                              if(status.isNotEmpty)
-                                {
-                                  helpdeskViewModel!
-                                      .postHelpdeskListByFilter(status.substring(0,status.length-1));
-                                }
-                              else{
-                                helpdeskViewModel!
-                                    .postHelpdeskListByFilter("");
+                        var statusName = "";
+                        if (helpdeskViewModel!.mapAllFilter.containsKey(1)) {
+                          changeValueSelectedFilter(
+                              helpdeskViewModel!.rxStatusSelected,
+                              "Tất cả trạng thái");
+                          helpdeskViewModel!.postHelpdeskListByFilter(
+                              "");
+                        } else {
+                          helpdeskViewModel!.mapStatusFilter
+                              .forEach((key, value) {
+                            status += value;
+                          });
+                          var listId = status.split(";");
+                          for (var id in listId) {
+                            for (var item
+                                in helpdeskViewModel!.rxHelpdeskFilterList) {
+                              if (item.status.toString() == id) {
+                                statusName += "${item.name};";
                               }
-
                             }
+                          }
+                          if (statusName != "") {
+                            changeValueSelectedFilter(
+                                helpdeskViewModel!.rxStatusSelected,
+                                statusName.substring(0, statusName.length - 1));
+                          } else {
+                            changeValueSelectedFilter(
+                                helpdeskViewModel!.rxStatusSelected, "");
+                          }
+                          if(status != "") {
+                            helpdeskViewModel!.postHelpdeskListByFilter(
+                                status.substring(0, status.length - 1));
+                          }
 
+                        }
+                        Get.back();
                       },
                       style: buttonFilterBlue,
                       child: const Text('Áp dụng')),
@@ -310,33 +397,15 @@ class FilterHelpDeskBottomSheet extends StatelessWidget {
   }
 }
 
-Widget signWidget(HelpDeskListItems docModel, RxList<HelpdeskFilterModel> rxListStatusFilter) {
-
+Widget signWidget(HelpDeskListItems docModel,
+    RxList<HelpdeskFilterModel> rxListStatusFilter) {
   var status = "";
   for (var element in rxListStatusFilter) {
-      if(docModel.problemStatus == element.status.toString())
-        {
-            status = element.name!;
-        }
-  }
-  if(status == "Hoàn thành")
-    {
-      return Row(
-        children: [
-          Image.asset(
-            'assets/icons/ic_sign.png',
-            height: 14,
-            width: 14,
-          ),
-          const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
-          Text(
-            status,
-            style: const TextStyle(color: kGreenSign),
-          )
-        ],
-      );
+    if (docModel.problemStatus == element.status.toString()) {
+      status = element.name!;
     }
-  else if(status =="Đang xử lý"){
+  }
+  if (status == "Hoàn thành") {
     return Row(
       children: [
         Image.asset(
@@ -351,8 +420,22 @@ Widget signWidget(HelpDeskListItems docModel, RxList<HelpdeskFilterModel> rxList
         )
       ],
     );
-  }
-  else if(status == "Chờ tiếp nhận"){
+  } else if (status == "Đang xử lý") {
+    return Row(
+      children: [
+        Image.asset(
+          'assets/icons/ic_sign.png',
+          height: 14,
+          width: 14,
+        ),
+        const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
+        Text(
+          status,
+          style: const TextStyle(color: kGreenSign),
+        )
+      ],
+    );
+  } else if (status == "Chờ tiếp nhận") {
     return Row(
       children: [
         Image.asset(
@@ -368,8 +451,7 @@ Widget signWidget(HelpDeskListItems docModel, RxList<HelpdeskFilterModel> rxList
         )
       ],
     );
-  }
-  else {
+  } else {
     return Row(
       children: [
         Image.asset(
@@ -385,6 +467,4 @@ Widget signWidget(HelpDeskListItems docModel, RxList<HelpdeskFilterModel> rxList
       ],
     );
   }
-
-  }
-
+}

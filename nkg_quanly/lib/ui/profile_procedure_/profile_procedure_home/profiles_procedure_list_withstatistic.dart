@@ -482,7 +482,21 @@ class ProfilesProcedureListWithStatistic extends GetView {
                     ),
                   ),
                 )
-                    : const SizedBox.shrink())
+                    : const SizedBox.shrink()),
+                fromDateToDateWidget(profilesProcedureViewModel,(){
+                  String strDateFrom =
+                      menuController.rxFromDateWithoutWeekDayToApi.value;
+                  String strDateTo =
+                      menuController.rxToDateWithoutWeekDayToApi.value;
+                  if(strDateFrom != "" && strDateTo != "") {
+                    profilesProcedureViewModel.getProfileProcListByDiffDate(
+                        strDateFrom, strDateTo);
+                  }
+                  else
+                  {
+                    profilesProcedureViewModel.postProfileDefault();
+                  }
+                })
               ],
             ),
           ),
@@ -538,12 +552,13 @@ class ProfilesProcedureListWithStatistic extends GetView {
                     Expanded(
                       child: InkWell(
                           onTap: () {
-                            menuController.rxSelectedDay.value = DateTime.now();
-                            String strdateFrom = formatDateToString(dateNow);
-                            String strdateTo = formatDateToString(dateNow);
-                            profilesProcedureViewModel.postProfileProcByWeek(
-                                strdateFrom, strdateTo);
-                            profilesProcedureViewModel.swtichBottomButton(0);
+                            String strDateFrom = formatDateToString(dateNow);
+                            String strDateTo = formatDateToString(dateNow);
+                            profilesProcedureViewModel.getProfileProcListByDiffDate(
+                                strDateFrom, strDateTo);
+                            menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                            menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
+                            profilesProcedureViewModel.switchBottomButton(0);
                           },
                           child: bottomDateButton(
                               "Ngày",
@@ -554,13 +569,14 @@ class ProfilesProcedureListWithStatistic extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime dateTo =
-                              dateNow.subtract(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateTo);
-                          String strdateTo = formatDateToString(dateNow);
-                          profilesProcedureViewModel.postProfileProcByWeek(
-                              strdateFrom, strdateTo);
-                          profilesProcedureViewModel.swtichBottomButton(1);
+                          String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                          profilesProcedureViewModel.getProfileProcListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
+                          profilesProcedureViewModel.switchBottomButton(1);
                         },
                         child: bottomDateButton(
                             "Tuần",
@@ -572,13 +588,14 @@ class ProfilesProcedureListWithStatistic extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime dateTo =
-                          dateNow.subtract(const Duration(days: 30));
-                          String  strdateFrom = formatDateToString(dateTo);
-                          String strdateTo = formatDateToString(dateNow);
-                          profilesProcedureViewModel.postProfileProcByWeek(
-                              strdateFrom, strdateTo);
-                          profilesProcedureViewModel.swtichBottomButton(2);
+                          String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                          profilesProcedureViewModel.getProfileProcListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
+                          profilesProcedureViewModel.switchBottomButton(2);
                         },
                         child: bottomDateButton(
                             "Tháng",

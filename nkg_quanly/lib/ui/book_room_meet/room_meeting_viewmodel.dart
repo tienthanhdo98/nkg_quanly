@@ -11,7 +11,7 @@ import '../../model/meeting_room/meeting_room_model.dart';
 
 class RoomMeetingViewModel extends GetxController {
   Rx<int> selectedChartButton = 0.obs;
-  Rx<int> selectedBottomButton = 0.obs;
+  Rx<int> selectedBottomButton = 4.obs;
 
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   RxList<MeetingRoomItems> rxMeetingRoomItems = <MeetingRoomItems>[].obs;
@@ -29,10 +29,7 @@ class RoomMeetingViewModel extends GetxController {
     selectedBottomButton.value = button;
   }
 
-  void onSelectDay(DateTime selectedDay) {
-    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
-    getMeetingRoomByDay(strSelectedDay);
-  }
+
 
 
 
@@ -45,14 +42,9 @@ class RoomMeetingViewModel extends GetxController {
 
     MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
 
-    // rxMeetingRoomStatistic.value = res.statistic!;
-    rxMeetingRoomStatistic.update((val) {
-      val!.total = res.statistic!.total;
-      val.vacancy = res.statistic!.vacancy;
-      val.booked = res.statistic!.booked;
-    });
-    rxMeetingRoomStatistic.refresh();
+    rxMeetingRoomStatistic.value = res.statistic!;
     rxMeetingRoomItems.value = res.items!;
+    swtichBottomButton(4);
   }
 
   Future<void> getMeetingRoomByDay(String day) async {
@@ -60,21 +52,16 @@ class RoomMeetingViewModel extends GetxController {
     print('loading');
     String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    
+
     MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
 
     // rxMeetingRoomStatistic.value = res.statistic!;
-    rxMeetingRoomStatistic.update((val) {
-      val!.total = res.statistic!.total;
-      val.vacancy = res.statistic!.vacancy;
-      val.booked = res.statistic!.booked;
-    });
-    rxMeetingRoomStatistic.refresh();
+    rxMeetingRoomStatistic.value = res.statistic!;
     rxMeetingRoomItems.value = res.items!;
   }
 
 
-  Future<void> getMeetingRoomByWeek(String datefrom, String dateTo) async {
+  Future<void> getMeetingRoomListByDiffDate(String datefrom, String dateTo) async {
     final url = Uri.parse(apiPostAllMeetingroomSearch);
     print('loading');
     String json =
@@ -85,6 +72,7 @@ class RoomMeetingViewModel extends GetxController {
 
     rxMeetingRoomStatistic.value = res.statistic!;
     rxMeetingRoomItems.value = res.items!;
+
   }
 
   Future<void> getMeetingRoomByMonth() async {
@@ -92,7 +80,7 @@ class RoomMeetingViewModel extends GetxController {
     print('loading');
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
-    
+
     MeetingRoomModel res = MeetingRoomModel.fromJson(jsonDecode(response.body));
 
     rxMeetingRoomStatistic.value = res.statistic!;

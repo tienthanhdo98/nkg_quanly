@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/const.dart';
@@ -28,6 +27,7 @@ class WorkBookViewModel extends GetxController {
 
   Rx<bool> showErrorTextWorkName = false.obs;
   Rx<bool> showErrorTextDescription = false.obs;
+
 
 
   clearTextField(){
@@ -76,8 +76,11 @@ class WorkBookViewModel extends GetxController {
     }
     WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
     rxWorkBookListItems.value = res.items!;
+
     //loadmore
     var page = 1;
+    controller.dispose();
+    controller = ScrollController();
     controller.addListener(() async {
       if (controller.position.maxScrollExtent == controller.position.pixels) {
         print("loadmore week");
@@ -192,7 +195,12 @@ class WorkBookViewModel extends GetxController {
   RxList<String> rxListLevelFilter = <String>[].obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
 
+
+  Rx<String> rxImportantSelected = "".obs;
+  Rx<String> rxStatusSelected = "".obs;
+
   Future<void> postWorkBookByFilter(String important, String status) async {
+
     final url = Uri.parse(apiPostWorkBookSearch);
     var strImportant = "";
     print(important);
@@ -215,6 +223,8 @@ class WorkBookViewModel extends GetxController {
     
     WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
     rxWorkBookListItems.value = res.items!;
+    // controller.dispose();
+    controller = ScrollController();
   }
 
   Future<void> postGroupWorkBook() async {
@@ -236,14 +246,6 @@ class WorkBookViewModel extends GetxController {
             GroupWorkbookModel.fromJson(jsonDecode(response.body));
         rxGroupWorkBookListItems.addAll(res.items!);
       }
-    // if(res.totalRecords! > 10 )
-    //   {
-    //     String json = '{"pageIndex":2,"pageSize":10}';
-    //     http.Response response = await http.post(url, headers: headers, body: json);
-    //     res =
-    //     GroupWorkbookModel.fromJson(jsonDecode(response.body));
-    //     rxGroupWorkBookListItems.addAll(res.items!);
-    //   }
   }
   Future<void> getListWorkerWorkBook() async {
     var tokenIOC = await loginViewModel.loadFromShareFrefs(keyTokenIOC);

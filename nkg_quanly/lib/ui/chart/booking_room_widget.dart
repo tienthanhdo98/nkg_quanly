@@ -5,6 +5,7 @@ import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../book_room_meet/book_room_list.dart';
+import '../book_room_meet/e_office/book_room_e_office_list.dart';
 
 
 class BookingRoomWidget extends GetView {
@@ -42,7 +43,7 @@ class BookingRoomWidget extends GetView {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  BookRoomList()));
+                                  BookRoomEOfficeList()));
                     },
                     child: const Align(
                         alignment: Alignment.topRight,

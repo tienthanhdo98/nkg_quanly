@@ -18,6 +18,7 @@ import 'package:nkg_quanly/ui/birthday/birthday_screen.dart';
 import 'package:nkg_quanly/ui/book_room_meet/e_office/book_room_e_office_list.dart';
 import 'package:nkg_quanly/ui/booking_car/e_office/booking_car_e_office_list.dart';
 import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
+import 'package:nkg_quanly/ui/calendarwork/e_office/calendar_work_e_office_screen.dart';
 import 'package:nkg_quanly/ui/chart/chart_screen.dart';
 import 'package:nkg_quanly/ui/document_out/document_out_list.dart';
 import 'package:nkg_quanly/ui/document_unprocess/e_office/document_in_e_office_list.dart';
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
               '/ProfilesProcedureListWithStatistic': (context) => ProfilesProcedureListWithStatistic(),
               '/ProfileProcReportScreen': (context) => ProfileProcReportScreen(),
               '/WorkBookList': (context) => WorkBookList(),
-              '/CalendarWorkScreen': (context) => CalendarWorkScreen(),
+              '/CalendarWorkScreen': (context) => CalendarWorkEOfficeScreen(),
               '/DocumentInEOfficeList': (context) => DocumentInEOfficeList(),
               '/ProfileWorkEOfficeList': (context) => ProfileWorkEOfficeList(),
               '/BookRoomEOfficeList': (context) => BookRoomEOfficeList(),

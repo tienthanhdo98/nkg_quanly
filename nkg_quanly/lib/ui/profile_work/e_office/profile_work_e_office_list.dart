@@ -262,7 +262,23 @@ class ProfileWorkEOfficeList extends GetView {
                           ),
                         ),
                       )
-                    : const SizedBox.shrink())
+                    : const SizedBox.shrink()),
+                //select Date box
+                fromDateToDateWidget(profileWorkViewModel,(){
+                  String strdateFrom =
+                      menuController.rxFromDateWithoutWeekDayToApi.value;
+                  String strdateTo =
+                      menuController.rxToDateWithoutWeekDayToApi.value;
+                  if(strdateFrom != "" && strdateTo != "") {
+                    profileWorkViewModel.getProfileWorkByDiffDate(
+                        strdateFrom, strdateTo);
+                  }
+                  else
+                  {
+                    profileWorkViewModel.postProfileWorkByDefault();
+                  }
+                })
+                //end select Date box
               ],
             ),
           ),
@@ -317,8 +333,12 @@ class ProfileWorkEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          menuController.rxSelectedDay.value = DateTime.now();
-                          profileWorkViewModel.onSelectDay(DateTime.now());
+                          String strDateFrom = formatDateToString(dateNow);
+                          String strDateTo = formatDateToString(dateNow);
+                          profileWorkViewModel.getProfileWorkByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           profileWorkViewModel.switchBottomButton(0);
                         },
                         child: bottomDateButton("Ngày",
@@ -328,12 +348,13 @@ class ProfileWorkEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime dateTo =
-                              dateNow.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateTo);
-                          profileWorkViewModel.postProfileWorkByWeek(
-                              strdateFrom, strdateTo);
+                          String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                          profileWorkViewModel.getProfileWorkByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           profileWorkViewModel.switchBottomButton(1);
                         },
                         child: bottomDateButton("Tuần",
@@ -343,7 +364,13 @@ class ProfileWorkEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          profileWorkViewModel.postProfileWorkByMonth();
+                          String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                          profileWorkViewModel.getProfileWorkByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           profileWorkViewModel.switchBottomButton(2);
                         },
                         child: bottomDateButton("Tháng",

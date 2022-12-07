@@ -144,11 +144,11 @@ void loadDataByRangeDay(
     Get.back();
   }
   if (viewModel is CalendarWorkViewModel) {
-    viewModel.postCalendarWorkByWeek(fromDate, toDate);
+    viewModel.getCalendarWorkListByDiffDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is ReportViewModel) {
-    viewModel.postReportByWeek(fromDate, toDate);
+    viewModel.getReportListByDiffDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is DocumentNonApproveViewModel) {
@@ -156,42 +156,42 @@ void loadDataByRangeDay(
     Get.back();
   }
   if (viewModel is BirthDayViewModel) {
-    viewModel.postBirthDayByWeek(fromDate, toDate);
+    viewModel.getBirthDayListByDiffDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is RoomMeetingViewModel) {
-    viewModel.getMeetingRoomByWeek(fromDate, toDate);
+    viewModel.getMeetingRoomListByDiffDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is BookingCarViewModel) {
-    viewModel.postookingCarByWeek(fromDate, toDate);
+    viewModel.getBookingCarListByDiffDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is DocumentOutViewModel) {
-    viewModel.getDocumentOutByWeek(fromDate, toDate);
+    viewModel.getDocumentOutListByDiffDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is DocumentUnprocessViewModel) {
-    viewModel.getDocumentByWeek(fromDate, toDate);
+    viewModel.getDocumentByDiffDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is ProfileViewModel) {
-    viewModel.postProfileByWeek(fromDate, toDate);
+    viewModel.getProfileByDiffDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is ProfilesProcedureViewModel) {
-    viewModel.postProfileProcByWeek(fromDate, toDate);
+    viewModel.getProfileProcListByDiffDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is ProfileWorkViewModel) {
-    viewModel.postProfileWorkByWeek(fromDate, toDate);
+    viewModel.getProfileWorkByDiffDate(fromDate, toDate);
     Get.back();
   }
   if (viewModel is WorkBookViewModel) {
     Get.back();
   }
   if (viewModel is HelpdeskViewModel) {
-    viewModel.posHelpdeskListByWeek(fromDate, toDate);
+    viewModel.getHelpdeskListByDiffDate(fromDate, toDate);
     Get.back();
   }
 }
@@ -1067,54 +1067,30 @@ void loadDataByDay(GetxController viewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
     Get.back();
   }
-  if (viewModel is ReportViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-    Get.back();
-  }
-  if (viewModel is DocumentUnprocessViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-    Get.back();
-  }
-  if (viewModel is BirthDayViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-    Get.back();
-  }
-  if (viewModel is RoomMeetingViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-    Get.back();
-  }
-  if (viewModel is BookingCarViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-    Get.back();
-  }
+
+
+
   if (viewModel is DocumentNonApproveViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
     Get.back();
   }
-  if (viewModel is DocumentOutViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-    Get.back();
-  }
-  if (viewModel is ProfileViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-    Get.back();
-  }
+
   if (viewModel is ProfilesProcedureViewModel) {
-    viewModel.postProfileProcByWeek(
+    viewModel.getProfileProcListByDiffDate(
         formatDateToString(menuController.rxSelectedDay.value),
         formatDateToString(menuController.rxSelectedDay.value));
     Get.back();
   }
   if (viewModel is ProfileWorkViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-    Get.back();
+    // viewModel.onSelectDay(menuController.rxSelectedDay.value);
+    // Get.back();
   }
   if (viewModel is WorkBookViewModel) {
     //  viewModel.onSelectDay(menuController.rxSelectedDay.value);
     Get.back();
   }
   if (viewModel is HelpdeskViewModel) {
-    viewModel.posHelpdeskListByWeek(
+    viewModel.getHelpdeskListByDiffDate(
         formatDateToString(menuController.rxSelectedDay.value),
         formatDateToString(menuController.rxSelectedDay.value));
     Get.back();
@@ -1131,44 +1107,23 @@ void loadDataByDayNoBack(GetxController viewModel) {
   if (viewModel is CalendarWorkViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
   }
-  if (viewModel is ReportViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-  }
-  if (viewModel is DocumentUnprocessViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-  }
-  if (viewModel is BirthDayViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-  }
-  if (viewModel is RoomMeetingViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-  }
-  if (viewModel is BookingCarViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-  }
   if (viewModel is DocumentNonApproveViewModel) {
     viewModel.onSelectDay(menuController.rxSelectedDay.value);
   }
-  if (viewModel is DocumentOutViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-  }
-  if (viewModel is ProfileViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
-  }
   if (viewModel is ProfilesProcedureViewModel) {
-    viewModel.postProfileProcByWeek(
+    viewModel.getProfileProcListByDiffDate(
         formatDateToString(menuController.rxSelectedDay.value),
         formatDateToString(menuController.rxSelectedDay.value));
   }
   if (viewModel is ProfileWorkViewModel) {
-    viewModel.onSelectDay(menuController.rxSelectedDay.value);
+  //  viewModel.onSelectDay(menuController.rxSelectedDay.value);
   }
   if (viewModel is WorkBookViewModel) {
     //viewModel.onSelectDay(menuController.rxSelectedDay.value);
 
   }
   if (viewModel is HelpdeskViewModel) {
-    viewModel.posHelpdeskListByWeek(
+    viewModel.getHelpdeskListByDiffDate(
         formatDateToString(menuController.rxSelectedDay.value),
         formatDateToString(menuController.rxSelectedDay.value));
   }

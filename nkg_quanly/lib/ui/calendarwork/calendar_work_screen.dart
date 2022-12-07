@@ -123,7 +123,7 @@ class CalendarWorkScreen extends GetView {
                                 dateNow.add(const Duration(days: 7));
                             String strdateFrom = formatDateToString(dateNow);
                             String strdateTo = formatDateToString(dateTo);
-                            calendarWorkController.postCalendarWorkByWeek(
+                            calendarWorkController.getCalendarWorkListByDiffDate(
                                 strdateFrom, strdateTo);
                             calendarWorkController.swtichBottomButton(1);
                           },

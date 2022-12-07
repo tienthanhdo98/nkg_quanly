@@ -7,7 +7,6 @@ import 'package:nkg_quanly/ui/search_screen.dart';
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
 import '../calendar_work_detail.dart';
-import '../calendar_work_search.dart';
 import '../calendar_work_viewmodel.dart';
 
 class CalendarWorkEOfficeScreen extends GetView {
@@ -25,7 +24,23 @@ class CalendarWorkEOfficeScreen extends GetView {
             //header
             headerWidgetSearch("Lịch làm việc", SearchScreen(hintText: 'Nhập tên công việc',typeScreen: type_calendar_work), context),
             //date table
-            headerTableDatePicker(context, calendarWorkController),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+              child: fromDateToDateWidget(calendarWorkController,(){
+                String strDateFrom =
+                    menuController.rxFromDateWithoutWeekDayToApi.value;
+                String strDateTo =
+                    menuController.rxToDateWithoutWeekDayToApi.value;
+                if(strDateFrom != "" && strDateTo != "") {
+                  calendarWorkController.getCalendarWorkListByDiffDate(
+                      strDateFrom, strDateTo);
+                }
+                else
+                {
+                  calendarWorkController.postCalendarWorkAll();
+                }
+              }),
+            ),
             //list work
             Container(
               color: Theme.of(context).cardColor,
@@ -104,8 +119,12 @@ class CalendarWorkEOfficeScreen extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            menuController.rxSelectedDay.value = DateTime.now();
-                            calendarWorkController.onSelectDay(DateTime.now());
+                            String strDateFrom = formatDateToString(dateNow);
+                            String strDateTo = formatDateToString(dateNow);
+                            calendarWorkController.getCalendarWorkListByDiffDate(
+                                strDateFrom, strDateTo);
+                            menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                            menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                             calendarWorkController.swtichBottomButton(0);
                           },
                           child: bottomDateButton(
@@ -117,12 +136,13 @@ class CalendarWorkEOfficeScreen extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            DateTime dateTo =
-                                dateNow.add(const Duration(days: 7));
-                            String strdateFrom = formatDateToString(dateNow);
-                            String strdateTo = formatDateToString(dateTo);
-                            calendarWorkController.postCalendarWorkByWeek(
-                                strdateFrom, strdateTo);
+                            String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                            String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                            calendarWorkController.getCalendarWorkListByDiffDate(
+                                strDateFrom, strDateTo);
+                            menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                            menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                             calendarWorkController.swtichBottomButton(1);
                           },
                           child: bottomDateButton(
@@ -134,7 +154,13 @@ class CalendarWorkEOfficeScreen extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            calendarWorkController.postCalendarWorkByMonth();
+                            String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                            String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                            calendarWorkController.getCalendarWorkListByDiffDate(
+                                strDateFrom, strDateTo);
+                            menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                            menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                             calendarWorkController.swtichBottomButton(2);
                           },
                           child: bottomDateButton(

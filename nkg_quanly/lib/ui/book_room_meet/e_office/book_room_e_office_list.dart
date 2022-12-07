@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:nkg_quanly/ui/book_room_meet/room_meeting_viewmodel.dart';
 
 import '../../../const/const.dart';
@@ -8,7 +7,7 @@ import '../../../const/utils.dart';
 import '../../../const/widget.dart';
 import '../../search_screen.dart';
 import '../book_room_list.dart';
-import '../booking_meeting_search.dart';
+
 
 class BookRoomEOfficeList extends GetView {
 
@@ -35,7 +34,6 @@ class BookRoomEOfficeList extends GetView {
               ),
               context),
           //date table
-          headerTableDatePicker(context, roomMeetingViewModel),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -114,7 +112,21 @@ class BookRoomEOfficeList extends GetView {
                           ],
                         ),
                       )
-                    : const SizedBox.shrink())
+                    : const SizedBox.shrink()),
+                fromDateToDateWidget(roomMeetingViewModel,(){
+                  String strDateFrom =
+                      menuController.rxFromDateWithoutWeekDayToApi.value;
+                  String strDateTo =
+                      menuController.rxToDateWithoutWeekDayToApi.value;
+                  if(strDateFrom != "" && strDateTo != "") {
+                    roomMeetingViewModel.getMeetingRoomListByDiffDate(
+                        strDateFrom, strDateTo);
+                  }
+                  else
+                  {
+                    roomMeetingViewModel.getMeetingRoomDefault();
+                  }
+                })
               ],
             ),
           ),
@@ -182,11 +194,7 @@ class BookRoomEOfficeList extends GetView {
                                         .rxMeetingRoomItems[index]));
                           })
                       : noData())),
-              //bottom
-              //MeetingRoomItem(
-              //                                     index,
-              //                                     roomMeetingViewModel
-              //                                         .rxMeetingRoomItems[index])
+
             ]),
           )),
           Obx(() => Container(
@@ -202,8 +210,12 @@ class BookRoomEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          menuController.rxSelectedDay.value = DateTime.now();
-                          roomMeetingViewModel.onSelectDay(DateTime.now());
+                          String strDateFrom = formatDateToString(dateNow);
+                          String strDateTo = formatDateToString(dateNow);
+                          roomMeetingViewModel.getMeetingRoomListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           roomMeetingViewModel.swtichBottomButton(0);
                         },
                         child: bottomDateButton("Ngày",
@@ -213,14 +225,13 @@ class BookRoomEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime dateTo =
-                              dateNow.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(dateNow);
-                          String strdateTo = formatDateToString(dateTo);
-                          print(strdateFrom);
-                          print(strdateTo);
-                          roomMeetingViewModel.getMeetingRoomByWeek(
-                              strdateFrom, strdateTo);
+                          String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                          roomMeetingViewModel.getMeetingRoomListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           roomMeetingViewModel.swtichBottomButton(1);
                         },
                         child: bottomDateButton("Tuần",
@@ -230,7 +241,13 @@ class BookRoomEOfficeList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          roomMeetingViewModel.getMeetingRoomByMonth();
+                          String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                          roomMeetingViewModel.getMeetingRoomListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           roomMeetingViewModel.swtichBottomButton(2);
                         },
                         child: bottomDateButton("Tháng",

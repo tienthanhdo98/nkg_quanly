@@ -57,6 +57,18 @@ class MissionViewModel extends GetxController {
   Rx<String> rxLevelSelected = "".obs;
   Rx<String> rxStatusSelected = "".obs;
 
+
+  void clearSelectedFilter()
+  {
+    mapDepartmentFilter.clear();
+    mapLevelFilter.clear();
+    mapStatusFilter.clear();
+    mapAllFilter.clear();
+    rxLevelSelected.value = "";
+    rxDepartmentSelected.value = "";
+    rxStatusSelected.value = "";
+  }
+
   void checkboxFilterAll(bool value, int key) {
     if (value == true) {
       var map = {key: ""};

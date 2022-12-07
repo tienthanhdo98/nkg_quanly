@@ -14,7 +14,7 @@ class BookRoomList extends GetView {
 
   final roomMeetingViewModel = Get.put(RoomMeetingViewModel());
 
-  BookRoomList();
+
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +125,7 @@ class BookRoomList extends GetView {
                       child: InkWell(
                         onTap: () {
                           menuController.rxSelectedDay.value = DateTime.now();
-                          roomMeetingViewModel.onSelectDay(DateTime.now());
+                          // roomMeetingViewModel.onSelectDay(DateTime.now());
                           roomMeetingViewModel.swtichBottomButton(0);
                         },
                         child: bottomDateButton("Ngày",
@@ -141,7 +141,7 @@ class BookRoomList extends GetView {
                           String strdateTo = formatDateToString(dateTo);
                           print(strdateFrom);
                           print(strdateTo);
-                          roomMeetingViewModel.getMeetingRoomByWeek(
+                          roomMeetingViewModel.getMeetingRoomListByDiffDate(
                               strdateFrom, strdateTo);
                           roomMeetingViewModel.swtichBottomButton(1);
                         },

@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
-import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/model/profile_work/profile_work_model.dart';
 
 class ProfileWorkViewModel extends GetxController {
   Map<String, String> headers = {"Content-type": "application/json"};
 
-  Rx<int> selectedBottomButton = 0.obs;
+  Rx<int> selectedBottomButton = 4.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;
 
   RxList<ProfileWorkListItems> rxProfileWorkList = <ProfileWorkListItems>[].obs;
@@ -19,7 +18,6 @@ class ProfileWorkViewModel extends GetxController {
   @override
   void onInit() {
     postProfileWorkStatistic();
-    postProfileWorkByDay(formatDateToString(dateNow));
     super.onInit();
   }
 
@@ -51,10 +49,6 @@ class ProfileWorkViewModel extends GetxController {
     selectedBottomButton.value = button;
   }
 
-  void onSelectDay(DateTime selectedDay) {
-    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
-    postProfileWorkByDay(strSelectedDay);
-  }
 
   // profile work data
   Future<void> postProfileWorkStatistic() async {
@@ -67,19 +61,8 @@ class ProfileWorkViewModel extends GetxController {
     rxProfileWorkStatistic.value = res.statistic!;
   }
 
-  Future<void> postProfileWorkByDay(String day) async {
-    final url = Uri.parse(apiPostProfile);
-    print('loading');
-    //,"dayInMonth": "$day"
-    String json = '{"pageIndex":1,"pageSize":10}';
-    http.Response response = await http.post(url, headers: headers, body: json);
-    
-    ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
-    rxProfileWorkList.value = res.items!;
-    rxProfileWorkStatistic.value = res.statistic!;
-  }
 
-  Future<void> postProfileWorkByWeek(String datefrom, String dateTo) async {
+  Future<void> getProfileWorkByDiffDate(String datefrom, String dateTo) async {
     final url = Uri.parse(apiPostProfile);
     print('loading');
     String json =
@@ -91,16 +74,19 @@ class ProfileWorkViewModel extends GetxController {
     rxProfileWorkStatistic.value = res.statistic!;
   }
 
-  Future<void> postProfileWorkByMonth() async {
+  Future<void> postProfileWorkByDefault() async {
     final url = Uri.parse(apiPostProfile);
     print('loading');
-    http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-    
-    ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
-    rxProfileWorkList.value = res.items!; rxProfileWorkStatistic.value = res.statistic!;
+    String json =
+        '{"pageIndex":1,"pageSize":10}';
+    http.Response response = await http.post(url, headers: headers, body: json);
 
+    ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
+    rxProfileWorkList.value = res.items!;
+    rxProfileWorkStatistic.value = res.statistic!;
+    switchBottomButton(4);
   }
+
 
   Future<void> postProfileWorkByFilter(String status) async {
     final url = Uri.parse(apiPostProfile);

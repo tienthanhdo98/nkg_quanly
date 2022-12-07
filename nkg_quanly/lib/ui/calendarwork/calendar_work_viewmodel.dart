@@ -12,8 +12,8 @@ import '../../model/calendarwork_model/calendarwork_model.dart';
 class CalendarWorkViewModel extends GetxController {
   Map<String, String> headers = {"Content-type": "application/json"};
   ScrollController controller = ScrollController();
-  Rx<int> selectedBottomButton = 0.obs;
-  Rx<DateTime> rxSelectedDay = dateNow.obs;
+  Rx<int> selectedBottomButton = 4.obs;
+
   CalendarWorkModel calendarWorkModel = CalendarWorkModel();
 
   RxList<CalendarWorkListItems> rxCalendarWorkListItems =
@@ -67,6 +67,7 @@ class CalendarWorkViewModel extends GetxController {
     http.Response response = await http.post(url, headers: headers, body: json);
     calendarWorkModel = CalendarWorkModel.fromJson(jsonDecode(response.body));
     rxCalendarWorkListItems.value = calendarWorkModel.items!;
+    swtichBottomButton(4);
     //loadmore
     var page = 1;
     controller.dispose();
@@ -113,7 +114,7 @@ class CalendarWorkViewModel extends GetxController {
     });
   }
 
-  Future<void> postCalendarWorkByWeek(String datefrom, String dateTo) async {
+  Future<void> getCalendarWorkListByDiffDate(String datefrom, String dateTo) async {
     final url = Uri.parse(apiPostCalendarWork);
     print('loading');
     String json =
@@ -147,7 +148,7 @@ class CalendarWorkViewModel extends GetxController {
     print('loading');
     http.Response response =
         await http.post(url, headers: headers, body: jsonGetByMonth);
-    
+
     calendarWorkModel = CalendarWorkModel.fromJson(jsonDecode(response.body));
     rxCalendarWorkListItems.value = calendarWorkModel.items!;
     //loadmore

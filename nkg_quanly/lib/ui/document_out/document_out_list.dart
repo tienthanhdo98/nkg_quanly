@@ -24,6 +24,7 @@ class DocumentOutList extends GetView {
     return Scaffold(
       body: SafeArea(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //header
           headerWidgetSearch(
@@ -34,45 +35,112 @@ class DocumentOutList extends GetView {
               ),
               context),
           //date table
-          headerTableDatePicker(context, documentOutViewModel),
+          Padding(
+            padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                    color: kDarkGray, style: BorderStyle.solid, width: 1),
+              ),
+              child: Column(children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Text(
+                            "Thống kê",
+                            style: Theme.of(context).textTheme.headline2,
+                          )),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton(
+                            style: elevetedButtonWhite,
+                            onPressed: () {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: 350,
+                                      child: FilterDocumentOutBottomSheet(
+                                          documentOutViewModel));
+                                },
+                              );
+                            },
+                            child: const Text(
+                              'Bộ lọc',
+                              style: TextStyle(color: kVioletButton),
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                  child: SizedBox(
+                    height: 60,
+                    child: GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
+                      primary: false,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 0,
+                      crossAxisCount: 3,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Đơn vị ban hành',
+                                style: CustomTextStyle.grayColorTextStyle),
+                            Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                child: Obx(() => Text(
+                                    documentOutViewModel.rxDepartmentSelected.value,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                    Theme.of(context).textTheme.headline5)))
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ]),
+            ),
+          ),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Tất cả văn bản đi chờ phát hành',
                   style: Theme.of(context).textTheme.headline5,
                 ),
-                Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton(
-                        style: elevetedButtonWhite,
-                        onPressed: () {
-                          showModalBottomSheet<void>(
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return SizedBox(
-                                  height: 350,
-                                  child: FilterDocumentOutBottomSheet(
-                                      documentOutViewModel));
-                            },
-                          );
-                        },
-                        child: const Text(
-                          'Bộ lọc',
-                          style: TextStyle(color: kVioletButton),
-                        ),
-                      )),
-                )
+                fromDateToDateWidget(documentOutViewModel,(){
+                  String strDateFrom =
+                      menuController.rxFromDateWithoutWeekDayToApi.value;
+                  String strDateTo =
+                      menuController.rxToDateWithoutWeekDayToApi.value;
+                  if(strDateFrom != "" && strDateTo != "") {
+                    documentOutViewModel.getDocumentOutListByDiffDate(
+                        strDateFrom, strDateTo);
+                  }
+                  else
+                  {
+                    documentOutViewModel.getDocumentOutDefault();
+                  }
+                })
               ],
             ),
           ),
@@ -98,7 +166,9 @@ class DocumentOutList extends GetView {
                                 index,
                                 documentOutViewModel.rxDocumentOutItems[index]));
                       })
-                  : noData())),
+                  : Align(
+                  alignment: Alignment.topCenter,
+                  child: noData()))),
           //bottom
           Obx(() => Container(
                 decoration: BoxDecoration(
@@ -113,8 +183,12 @@ class DocumentOutList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          menuController.rxSelectedDay.value = DateTime.now();
-                          documentOutViewModel.onSelectDay(DateTime.now());
+                          String strDateFrom = formatDateToString(dateNow);
+                          String strDateTo = formatDateToString(dateNow);
+                          documentOutViewModel.getDocumentOutListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           documentOutViewModel.swtichBottomButton(0);
                         },
                         child: bottomDateButton("Ngày",
@@ -124,15 +198,13 @@ class DocumentOutList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          DateTime datefrom = DateTime.now();
-                          DateTime dateTo =
-                              datefrom.add(const Duration(days: 7));
-                          String strdateFrom = formatDateToString(datefrom);
-                          String strdateTo = formatDateToString(dateTo);
-                          print(strdateFrom);
-                          print(strdateTo);
-                          documentOutViewModel.getDocumentOutByWeek(
-                              strdateFrom, strdateTo);
+                          String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                          documentOutViewModel.getDocumentOutListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           documentOutViewModel.swtichBottomButton(1);
                         },
                         child: bottomDateButton("Tuần",
@@ -142,7 +214,13 @@ class DocumentOutList extends GetView {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          documentOutViewModel.getDocumentOutByMonth();
+                          String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                          String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                          documentOutViewModel.getDocumentOutListByDiffDate(
+                              strDateFrom, strDateTo);
+                          menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                          menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                           documentOutViewModel.swtichBottomButton(2);
                         },
                         child: bottomDateButton("Tháng",
@@ -297,7 +375,7 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
           ),
           // Tất cả trang thai
           FilterAllItem(
-              'Tất cả trạng thái', 3, documentOutViewModel!.mapAllFilter),
+              'Tất cả đơn vị ban hành', 3, documentOutViewModel!.mapAllFilter),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -308,11 +386,11 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
             height: 120,
             child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: lisStatus.length,
+                itemCount: documentOutViewModel!.rxListDepartmentFilter.length,
                 itemBuilder: (context, index) {
-                  var item = lisStatus[index];
+                  var item = documentOutViewModel!.rxListDepartmentFilter[index];
                   return FilterItem(item, item.toString(), index,
-                      documentOutViewModel!.mapStatusFilter);
+                      documentOutViewModel!.mapDepartmentFilter);
                 }),
           ),
 
@@ -336,26 +414,37 @@ class FilterDocumentOutBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
-                        var status = "";
+                        var department = "";
                         if (documentOutViewModel!.mapAllFilter
                             .containsKey(0)) {
                           documentOutViewModel!.postDocOutByFilter(
-                            status,
+                            department,
                           );
+                          changeValueSelectedFilter(
+                              documentOutViewModel!.rxDepartmentSelected,
+                              "Tất cả đơn vị ban hành");
                         } else {
                           if (documentOutViewModel!.mapAllFilter
                               .containsKey(3)) {
-                            status = "";
+                            department = "";
+                            changeValueSelectedFilter(
+                                documentOutViewModel!.rxDepartmentSelected,
+                                "Tất cả đơn vị ban hành");
                           } else {
-                            documentOutViewModel!.mapStatusFilter
+                            documentOutViewModel!.mapDepartmentFilter
                                 .forEach((key, value) {
-                              status += value;
+                              department += value;
                             });
+                            if(department != "")
+                              {
+                                changeValueSelectedFilter(
+                                    documentOutViewModel!.rxDepartmentSelected,
+                                    department.substring(0, department.length - 1));
+                              }
                           }
                         }
-                        print(status);
                         documentOutViewModel!.postDocOutByFilter(
-                          status,
+                          department,
                         );
                         Get.back();
                       },

@@ -204,7 +204,7 @@ class LunarCalendarScreen extends GetView {
                               child: InkWell(
                                 onTap: () {
 
-                                  profileViewModel.swtichBottomButton(0);
+                                  profileViewModel.switchBottomButton(0);
                                 },
                                 child: bottomDateButton(
                                     "Ngày",
@@ -215,7 +215,7 @@ class LunarCalendarScreen extends GetView {
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  profileViewModel.swtichBottomButton(1);
+                                  profileViewModel.switchBottomButton(1);
                                 },
                                 child: bottomDateButton(
                                     "Tuần",
@@ -226,7 +226,7 @@ class LunarCalendarScreen extends GetView {
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  profileViewModel.swtichBottomButton(2);
+                                  profileViewModel.switchBottomButton(2);
                                 },
                                 child: bottomDateButton(
                                     "Tháng",

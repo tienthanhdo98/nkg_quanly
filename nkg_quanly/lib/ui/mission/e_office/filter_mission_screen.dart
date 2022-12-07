@@ -8,11 +8,8 @@ import '../../theme/theme_data.dart';
 import '../mission_viewmodel.dart';
 
 class FilterMissionScreen extends GetView {
-  FilterMissionScreen(this.missionViewModel, {Key? key}) : super(key: key);
+  const FilterMissionScreen(this.missionViewModel, {Key? key}) : super(key: key);
   final MissionViewModel? missionViewModel;
-  String? department;
-  String? level;
-  String? status;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +42,8 @@ class FilterMissionScreen extends GetView {
                       const Spacer(),
                       InkWell(
                         onTap: () {
-                          // analysisReportViewModel!.clearSelectedFilter();
+                          missionViewModel!.clearSelectedFilter();
+                          // Get.back();
                         },
                         child: const Text(
                           "Xóa bộ lọc",

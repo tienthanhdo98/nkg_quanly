@@ -47,11 +47,11 @@ class ProfileScreen extends GetView {
                                       CrossAxisAlignment.start,
                                       children: [
                                         const Text('Tổng văn bản'),
-                                        Text(
+                                        Obx(() => Text(
                                         checkingNullNumberAndConvertToString(profileViewModel.rxProfileStatisticTotal.value.hoSoTrinh),
                                           style: const TextStyle(
                                               color: kBlueButton, fontSize: 40),
-                                        )
+                                        ))
                                       ],
                                     ),
                                     Expanded(
@@ -72,7 +72,7 @@ class ProfileScreen extends GetView {
                                     thickness: 1,
                                   ),
                                 ),
-                                SizedBox(
+                                Obx(() => SizedBox(
                                   child: GridView.count(
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
@@ -200,7 +200,7 @@ class ProfileScreen extends GetView {
                                         ),
 
                                       ]),
-                                )
+                                ))
                               ]),
                             ),
                             context),

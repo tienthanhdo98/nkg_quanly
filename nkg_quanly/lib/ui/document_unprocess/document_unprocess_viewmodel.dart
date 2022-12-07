@@ -16,7 +16,7 @@ class DocumentUnprocessViewModel extends GetxController {
     selectedChartButton.value = button;
   }
 
-  Rx<int> selectedBottomButton = 0.obs;
+  Rx<int> selectedBottomButton = 4.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;
 
   RxList<DocumentInListItems> rxItems = <DocumentInListItems>[].obs;
@@ -53,10 +53,7 @@ class DocumentUnprocessViewModel extends GetxController {
     selectedBottomButton.value = button;
   }
 
-  void onSelectDay(DateTime selectedDay) {
-    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
-    getDocumentByDay(strSelectedDay);
-  }
+
 
   //document unprocess
   Future<DocumentInListItems> getDocumentDetail(int id) async {
@@ -85,6 +82,7 @@ class DocumentUnprocessViewModel extends GetxController {
     documentInModel = DocumentInModel.fromJson(jsonDecode(response.body));
     rxItems.value = documentInModel.items!;
     rxDocumentInStatistic.value = documentInModel.statistic!;
+    swtichBottomButton(4);
     //loadmore
     var page = 1;
     controller.dispose();
@@ -102,35 +100,9 @@ class DocumentUnprocessViewModel extends GetxController {
     });
   }
 
-  Future<void> getDocumentByDay(String day) async {
-    final url = Uri.parse(apiGetDocument);
-    String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
-    print('loading');
-    http.Response response = await http.post(url, headers: headers, body: json);
-    
-    documentInModel = DocumentInModel.fromJson(jsonDecode(response.body));
-    rxItems.value = documentInModel.items!;
-    rxDocumentInStatistic.value = documentInModel.statistic!;
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
-        page++;
-        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
-        http.Response response =
-        await http.post(url, headers: headers, body: json);
-        documentInModel =
-            DocumentInModel.fromJson(jsonDecode(response.body));
-        rxItems.addAll(documentInModel.items!);
-        print("loadmore day at $page");
-      }
-    });
-  }
 
-  Future<void> getDocumentByWeek(String datefrom, String dateTo) async {
+
+  Future<void> getDocumentByDiffDate(String datefrom, String dateTo) async {
     final url = Uri.parse(apiGetDocument);
     print(datefrom);
     print(dateTo);
@@ -160,33 +132,7 @@ class DocumentUnprocessViewModel extends GetxController {
     });
   }
 
-  Future<void> getDocumentByMonth() async {
-    final url = Uri.parse(apiGetDocument);
-    print('loading');
-    http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-    documentInModel = DocumentInModel.fromJson(jsonDecode(response.body));
-    rxItems.value = documentInModel.items!;
-    rxDocumentInStatistic.value = documentInModel.statistic!;
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore m");
-        page++;
-        String jsonGetByMonth =
-            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dateFrom":"${formatDateToString(dateNow)}"}';
-        http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-        documentInModel =
-            DocumentInModel.fromJson(jsonDecode(response.body));
-        rxItems.addAll(documentInModel.items!);
-        print("loadmore m at $page");
-      }
-    });
-  }
+
 
   Future<void> getDocumentByFilter(
       String status, String level, String department) async {
@@ -231,6 +177,17 @@ class DocumentUnprocessViewModel extends GetxController {
   Rx<String> rxDepartmentSelected = "".obs;
   Rx<String> rxLevelSelected = "".obs;
   Rx<String> rxStatusSelected = "".obs;
+
+  void clearSelectedFilter()
+  {
+    mapDepartmentFilter.clear();
+    mapLevelFilter.clear();
+    mapStatusFilter.clear();
+    mapAllFilter.clear();
+    rxDepartmentSelected.value = "";
+    rxLevelSelected.value = "";
+    rxStatusSelected.value = "";
+  }
 
 
 

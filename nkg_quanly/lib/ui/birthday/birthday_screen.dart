@@ -27,11 +27,8 @@ class BirthDayScreen extends GetView {
           children: [
             //header
             headerWidgetSearch('Sinh nhật', SearchScreen(hintText: 'Nhập tên cán bộ, chức vụ',typeScreen: type_birthDay,), context),
-            //date table
-            headerTableDatePicker(context, birthDayViewModel),
-            //
             Padding(
-              padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
+              padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
               child: Obx(() => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -51,6 +48,20 @@ class BirthDayScreen extends GetView {
                               "0",
                               style: Theme.of(context).textTheme.headline1,
                             ),
+                      fromDateToDateWidget(birthDayViewModel,(){
+                        String strDateFrom =
+                            menuController.rxFromDateWithoutWeekDayToApi.value;
+                        String strDateTo =
+                            menuController.rxToDateWithoutWeekDayToApi.value;
+                        if(strDateFrom != "" && strDateTo != "") {
+                          birthDayViewModel.getBirthDayListByDiffDate(
+                              strDateFrom, strDateTo);
+                        }
+                        else
+                        {
+                          birthDayViewModel.postBirthDayDefault();
+                        }
+                      })
                     ],
                   )),
             ),
@@ -86,8 +97,12 @@ class BirthDayScreen extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            menuController.rxSelectedDay.value = DateTime.now();
-                            birthDayViewModel.onSelectDay(DateTime.now());
+                            String strDateFrom = formatDateToString(dateNow);
+                            String strDateTo = formatDateToString(dateNow);
+                            birthDayViewModel.getBirthDayListByDiffDate(
+                                strDateFrom, strDateTo);
+                            menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                            menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                             birthDayViewModel.swtichBottomButton(0);
                           },
                           child: bottomDateButton("Ngày",
@@ -97,14 +112,13 @@ class BirthDayScreen extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            DateTime dateTo =
-                                dateNow.add(const Duration(days: 7));
-                            String strdateFrom = formatDateToString(dateNow);
-                            String strdateTo = formatDateToString(dateTo);
-                            print(strdateFrom);
-                            print(strdateTo);
-                            birthDayViewModel.postBirthDayByWeek(
-                                strdateFrom, strdateTo);
+                            String strDateFrom = formatDateToString(findFirstDateOfTheWeek(dateNow));
+                            String strDateTo = formatDateToString(findLastDateOfTheWeek(dateNow));
+
+                            birthDayViewModel.getBirthDayListByDiffDate(
+                                strDateFrom, strDateTo);
+                            menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                            menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                             birthDayViewModel.swtichBottomButton(1);
                           },
                           child: bottomDateButton("Tuần",
@@ -114,7 +128,13 @@ class BirthDayScreen extends GetView {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            birthDayViewModel.postBirthDayByMonth();
+                            String strDateFrom = formatDateToString(findFirstDateOfTheMonth(dateNow));
+                            String strDateTo = formatDateToString(findLastDateOfTheMonth(dateNow));
+
+                            birthDayViewModel.getBirthDayListByDiffDate(
+                                strDateFrom, strDateTo);
+                            menuController.rxFromDateWithoutWeekDayToApi.value = strDateFrom;
+                            menuController.rxToDateWithoutWeekDayToApi.value = strDateTo;
                             birthDayViewModel.swtichBottomButton(2);
                           },
                           child: bottomDateButton("Tháng",

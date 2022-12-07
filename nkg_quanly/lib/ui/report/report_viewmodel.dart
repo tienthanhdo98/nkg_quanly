@@ -12,7 +12,7 @@ import '../../model/report_model/report_model.dart';
 
 class ReportViewModel extends GetxController {
   Rx<int> selectedChartButton = 0.obs;
-  Rx<int> selectedBottomButton = 0.obs;
+  Rx<int> selectedBottomButton = 4.obs;
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;
 
@@ -37,11 +37,6 @@ class ReportViewModel extends GetxController {
     selectedBottomButton.value = button;
   }
 
-  void onSelectDay(DateTime selectedDay) {
-    var strSelectedDay = DateFormat('yyyy-MM-dd').format(selectedDay);
-    postReportByDay(strSelectedDay);
-  }
-
   Future<void> getFilterForChart(String url) async {
     rxDocumentFilterModel.refresh();
     print('loading');
@@ -63,7 +58,9 @@ class ReportViewModel extends GetxController {
     
     reportMode = ReportModel.fromJson(jsonDecode(response.body));
     rxReportStatisticTotal.value = reportMode.statistic!;
+    rxReportStatistic.value = reportMode.statistic!;
     rxReportListItems.value = reportMode.items!;
+    swtichBottomButton(4);
     //loadmore
     var page = 1;
     controller.dispose();
@@ -83,35 +80,9 @@ class ReportViewModel extends GetxController {
     });
   }
 
-  Future<void> postReportByDay(String day) async {
-    final url = Uri.parse(apiGetReportModel);
-    String json = '{"pageIndex":1,"pageSize":10,"dayInMonth": "$day"}';
-    print('loading');
-    http.Response response = await http.post(url, headers: headers, body: json);
-    
-    reportMode = ReportModel.fromJson(jsonDecode(response.body));
-    rxReportListItems.value = reportMode.items!;
-    rxReportStatistic.value = reportMode.statistic!;
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
-        page++;
-        String json = '{"pageIndex":$page,"pageSize":10,"dayInMonth": "$day"}';
-        response = await http.post(url, headers: headers, body: json);
-        
-        reportMode =
-            ReportModel.fromJson(jsonDecode(response.body));
-        rxReportListItems.addAll(reportMode.items!);
-        print("loadmore day at $page");
-      }
-    });
-  }
 
-  Future<void> postReportByWeek(String datefrom, String dateTo) async {
+
+  Future<void> getReportListByDiffDate(String datefrom, String dateTo) async {
     if(datefrom != "" || dateTo != "" ) {
       final url = Uri.parse(apiGetReportModel);
       String json =
@@ -145,37 +116,7 @@ class ReportViewModel extends GetxController {
     }
   }
 
-  Future<void> postReportByMonth() async {
-    final url = Uri.parse(apiGetReportModel);
-    print('loading');
-    http.Response response =
-        await http.post(url, headers: headers, body: jsonGetByMonth);
-    
-    reportMode = ReportModel.fromJson(jsonDecode(response.body));
-    rxReportListItems.value = reportMode.items!;
-    rxReportStatistic.value = reportMode.statistic!;
-    print(reportMode.statistic!.tong!);
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore day");
-        page++;
-        String jsonGetByMonth =
-            '{"pageIndex":$page,"pageSize":10,"isMonth": true,"dateFrom":"${formatDateToString(dateNow)}"}';
-        response = await http.post(url, headers: headers, body: jsonGetByMonth);
-        
-        reportMode =
-            ReportModel.fromJson(jsonDecode(response.body));
-        rxReportListItems.addAll(reportMode.items!);
-        print("loadmore day at $page");
-      }
-    });
-  }
-
-  Future<void> postReportByFilter(String status, String level) async {
+  Future<void> getReportListByFilter(String status, String level) async {
     final url = Uri.parse(apiGetReportModel);
     String json =
         '{"pageIndex":1,"pageSize":10,"level":"$level","status": "$status"}';
@@ -218,6 +159,16 @@ class ReportViewModel extends GetxController {
   RxList<String> rxListStatusFilter = <String>[].obs;
   Rx<String> rxSelectedDeparment = "".obs;
   Rx<String> rxSelectedStatus= "".obs;
+
+  void clearSelectedFilter()
+  {
+    mapDepartmentFilter.clear();
+    mapStatusFilter.clear();
+    mapAllFilter.clear();
+    rxSelectedDeparment.value = "";
+    rxSelectedStatus.value = "";
+  }
+
 
 
   void changeValueSelectedDepartment(String value)
