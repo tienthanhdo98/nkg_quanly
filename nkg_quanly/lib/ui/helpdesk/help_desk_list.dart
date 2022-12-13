@@ -26,56 +26,16 @@ class HelpDeskList extends GetView {
           headerWidgetSearch(
               "Helpdesk", HelpdeskSearch(helpdeskViewModel), context),
           //date table
-          Padding(
-            padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                    color: kDarkGray, style: BorderStyle.solid, width: 1),
-              ),
-              child: Column(children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Text(
-                        "Thống kê",
-                        style: Theme.of(context).textTheme.headline2,
-                      )),
-                      Align(
-                          alignment: Alignment.centerRight,
-                          child: ElevatedButton(
-                            style: elevetedButtonWhite,
-                            onPressed: () {
-                              showModalBottomSheet<void>(
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
-                                  ),
-                                ),
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SizedBox(
-                                      height: 400,
-                                      child: FilterHelpDeskBottomSheet(
-                                          helpdeskViewModel));
-                                },
-                              );
-                            },
-                            child: const Text(
-                              'Bộ lọc',
-                              style: TextStyle(color: kVioletButton),
-                            ),
-                          ))
-                    ],
-                  ),
+          Obx(() => (helpdeskViewModel.rxStatusSelected.value != "") ?  Padding(
+              padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                      color: kDarkGray, style: BorderStyle.solid, width: 1),
                 ),
-                Padding(
+                child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
                   child: SizedBox(
                     height: 60,
@@ -105,8 +65,8 @@ class HelpDeskList extends GetView {
                     ),
                   ),
                 ),
-              ]),
-            ),
+              ),
+            ) : SizedBox.shrink(),
           ),
           //list
           Padding(
@@ -114,9 +74,42 @@ class HelpDeskList extends GetView {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Tổng số câu hỏi',
-                  style: Theme.of(context).textTheme.headline3,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Tổng số câu hỏi',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          style: elevetedButtonWhite,
+                          onPressed: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: 400,
+                                    child: FilterHelpDeskBottomSheet(
+                                        helpdeskViewModel));
+                              },
+                            );
+                          },
+                          child: const Text(
+                            'Bộ lọc',
+                            style: TextStyle(color: kVioletButton),
+                          ),
+                        ))
+                  ],
                 ),
                 fromDateToDateWidget(helpdeskViewModel,(){
                   String strdateFrom =
@@ -308,7 +301,12 @@ class FilterHelpDeskBottomSheet extends StatelessWidget {
         child: Column(children: [
           // Tất cả trang thai state
           FilterAllItem(
-              "Tất cả trạng thái", 1, helpdeskViewModel!.mapAllFilter),
+              "Tất cả trạng thái",
+              1,
+              helpdeskViewModel!.mapAllFilter,
+              helpdeskViewModel!.mapStatusFilter,
+              helpdeskViewModel!.rxHelpdeskFilterList,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(

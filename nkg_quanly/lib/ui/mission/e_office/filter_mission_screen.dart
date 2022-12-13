@@ -8,7 +8,8 @@ import '../../theme/theme_data.dart';
 import '../mission_viewmodel.dart';
 
 class FilterMissionScreen extends GetView {
-  const FilterMissionScreen(this.missionViewModel, {Key? key}) : super(key: key);
+  const FilterMissionScreen(this.missionViewModel, {Key? key})
+      : super(key: key);
   final MissionViewModel? missionViewModel;
 
   @override
@@ -33,8 +34,7 @@ class FilterMissionScreen extends GetView {
                         width: 18,
                         height: 18,
                       ),
-                      const Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                      const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                       Text(
                         "Bộ lọc",
                         style: Theme.of(context).textTheme.headline1,
@@ -89,11 +89,9 @@ class FilterMissionScreen extends GetView {
                             );
                           },
                           child: Obx(() => borderTextFilterEOffice(
-                              (missionViewModel!
-                                  .rxDepartmentSelected.value !=
-                                  "")
-                                  ? missionViewModel!
-                                  .rxDepartmentSelected.value
+                              (missionViewModel!.rxDepartmentSelected.value !=
+                                      "")
+                                  ? missionViewModel!.rxDepartmentSelected.value
                                   : "Chọn đơn vị ban hành",
                               context))),
                       //muc do
@@ -123,13 +121,9 @@ class FilterMissionScreen extends GetView {
                               },
                             );
                           },
-                          child:
-                          Obx(() => borderTextFilterEOffice(
-                              (missionViewModel!
-                                  .rxLevelSelected.value !=
-                                  "")
-                                  ? missionViewModel!
-                                  .rxLevelSelected.value
+                          child: Obx(() => borderTextFilterEOffice(
+                              (missionViewModel!.rxLevelSelected.value != "")
+                                  ? missionViewModel!.rxLevelSelected.value
                                   : "Chọn mức độ",
                               context))),
                       //nhom trang thai
@@ -160,11 +154,8 @@ class FilterMissionScreen extends GetView {
                             );
                           },
                           child: Obx(() => borderTextFilterEOffice(
-                              (missionViewModel!
-                                  .rxStatusSelected.value !=
-                                  "")
-                                  ? missionViewModel!
-                                  .rxStatusSelected.value
+                              (missionViewModel!.rxStatusSelected.value != "")
+                                  ? missionViewModel!.rxStatusSelected.value
                                   : "Chọn trạng thái",
                               context))),
                       // const Spacer(),
@@ -255,7 +246,13 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca don vi
-          FilterAllItem( 'Tất cả đơn vị ban hành', 1,missionViewModel!.mapAllFilter),
+          FilterAllItem(
+              "Tất cả đơn vị ban hành",
+              1,
+              missionViewModel!.mapAllFilter,
+              missionViewModel!.mapDepartmentFilter,
+              missionViewModel!.rxListDepartmentFilter
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -270,9 +267,8 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
                 itemCount: missionViewModel!.rxListDepartmentFilter.length,
                 itemBuilder: (context, index) {
                   var item = missionViewModel!.rxListDepartmentFilter[index];
-                  return
-                    FilterItem(item,item.toString(),index,
-                        missionViewModel!.mapDepartmentFilter);
+                  return FilterItem(item, item.toString(), index,
+                      missionViewModel!.mapDepartmentFilter);
                 }),
           ),
           //bottom button
@@ -295,8 +291,7 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
-                        if (missionViewModel!.mapAllFilter
-                            .containsKey(1)) {
+                        if (missionViewModel!.mapAllFilter.containsKey(1)) {
                           changeValueSelectedFilter(
                               missionViewModel!.rxDepartmentSelected,
                               "Tất cả đơn vị");
@@ -310,7 +305,7 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
                           var listId = department.split(";");
                           for (var id in listId) {
                             for (var item
-                            in missionViewModel!.rxListDepartmentFilter) {
+                                in missionViewModel!.rxListDepartmentFilter) {
                               if (item == id) {
                                 departmentName += "$item;";
                               }
@@ -319,7 +314,8 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
                           if (departmentName != "") {
                             changeValueSelectedFilter(
                                 missionViewModel!.rxDepartmentSelected,
-                                departmentName.substring(0, departmentName.length - 1));
+                                departmentName.substring(
+                                    0, departmentName.length - 1));
                           } else {
                             changeValueSelectedFilter(
                                 missionViewModel!.rxDepartmentSelected, "");
@@ -352,7 +348,13 @@ class FilterLevelmentBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca muc do
-          FilterAllItem( "Tất cả mức độ'", 2,missionViewModel!.mapAllFilter),
+          FilterAllItem(
+              "Tất cả mức độ",
+              2,
+              missionViewModel!.mapAllFilter,
+              missionViewModel!.mapLevelFilter,
+              listLevel
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -368,9 +370,8 @@ class FilterLevelmentBottomSheet extends StatelessWidget {
                 itemCount: listLevel.length,
                 itemBuilder: (context, index) {
                   var item = listLevel[index];
-                  return
-                    FilterItem(item,item,index,
-                        missionViewModel!.mapLevelFilter);
+                  return FilterItem(
+                      item, item, index, missionViewModel!.mapLevelFilter);
                 }),
           ),
           //bottom button
@@ -393,8 +394,7 @@ class FilterLevelmentBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
-                        if (missionViewModel!.mapAllFilter
-                            .containsKey(2)) {
+                        if (missionViewModel!.mapAllFilter.containsKey(2)) {
                           changeValueSelectedFilter(
                               missionViewModel!.rxLevelSelected,
                               "Tất cả mức độ");
@@ -407,8 +407,7 @@ class FilterLevelmentBottomSheet extends StatelessWidget {
                           });
                           var listId = level.split(";");
                           for (var id in listId) {
-                            for (var item
-                            in listLevel) {
+                            for (var item in listLevel) {
                               if (item == id) {
                                 levelName += "$item;";
                               }
@@ -450,7 +449,13 @@ class FilterStatusBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca trang thai
-          FilterAllItem( "Tất cả trạng thái", 3,missionViewModel!.mapAllFilter),
+          FilterAllItem(
+              "Tất cả trạng thái",
+              3,
+              missionViewModel!.mapAllFilter,
+              missionViewModel!.mapStatusFilter,
+              listMissionState
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -465,9 +470,8 @@ class FilterStatusBottomSheet extends StatelessWidget {
                 itemCount: listMissionState.length,
                 itemBuilder: (context, index) {
                   var item = listMissionState[index];
-                  return
-                    FilterItem(item,item,index,
-                        missionViewModel!.mapStatusFilter);
+                  return FilterItem(
+                      item, item, index, missionViewModel!.mapStatusFilter);
                 }),
           ),
           //bottom button
@@ -490,8 +494,7 @@ class FilterStatusBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                       onPressed: () {
-                        if (missionViewModel!.mapAllFilter
-                            .containsKey(3)) {
+                        if (missionViewModel!.mapAllFilter.containsKey(3)) {
                           changeValueSelectedFilter(
                               missionViewModel!.rxStatusSelected,
                               "Tất cả trạng thái");
@@ -504,8 +507,7 @@ class FilterStatusBottomSheet extends StatelessWidget {
                           });
                           var listId = status.split(";");
                           for (var id in listId) {
-                            for (var item
-                            in listMissionState) {
+                            for (var item in listMissionState) {
                               if (item == id) {
                                 statusName += "$item;";
                               }
@@ -533,3 +535,5 @@ class FilterStatusBottomSheet extends StatelessWidget {
     );
   }
 }
+
+

@@ -1867,7 +1867,12 @@ class FilterSemesterBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
         child: ListView(shrinkWrap: true, children: [
           FilterAllItem(
-              "Tất cả học kì", 1, analysisReportViewModel!.mapAllFilter),
+              "Tất cả học kì",
+              1,
+              analysisReportViewModel!.mapAllFilter,
+              analysisReportViewModel!.mapSemesterFilter,
+              analysisReportViewModel!.rxListSemester
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -2013,8 +2018,13 @@ class FilterProvinceBottomSheet extends StatelessWidget {
               ),
             ),
             //tat ca linh cuc
-            FilterAllItem("Tất cả tỉnh, thành phố", 2,
-                analysisReportViewModel!.mapAllFilter),
+            FilterAllItem(
+                "Tất cả tỉnh, thành phố",
+                2,
+                analysisReportViewModel!.mapAllFilter,
+                analysisReportViewModel!.mapProvinceFilter,
+                analysisReportViewModel!.rxListProvinceByRegion
+            ),
             const Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Divider(
@@ -2343,7 +2353,12 @@ class FilterSchoolYearBottomSheet extends StatelessWidget {
             ),
             //tat ca thu tuc
             FilterAllItem(
-                "Tất cả năm học", 4, analysisReportViewModel!.mapAllFilter),
+                "Tất cả năm học",
+                4,
+                analysisReportViewModel!.mapAllFilter,
+                analysisReportViewModel!.mapSchoolYearFilter,
+                analysisReportViewModel!.rxListSchoolYear
+            ),
             const Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Divider(
@@ -2508,7 +2523,12 @@ class FilterSchoolLevelBottomSheet extends StatelessWidget {
             ),
             //tat ca thu tuc
             FilterAllItem(
-                "Tất cả cấp học", 5, analysisReportViewModel!.mapAllFilter),
+                "Tất cả cấp học",
+                5,
+                analysisReportViewModel!.mapAllFilter,
+                analysisReportViewModel!.mapSchoolLevelFilter,
+                analysisReportViewModel!.rxListSchoolLevel
+            ),
             const Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                 child: Divider(
@@ -2657,7 +2677,12 @@ class FilterPointBottomSheet extends StatelessWidget {
           //search
           //tat ca don vi
           FilterAllItem(
-              "Tất cả điểm", 6, analysisReportViewModel!.mapAllFilter),
+              "Tất cả điểm",
+              6,
+              analysisReportViewModel!.mapAllFilter,
+              analysisReportViewModel!.mapPointFilter,
+              analysisReportViewModel!.rxListPoint
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -2763,7 +2788,12 @@ class FilterSubjectBottomSheet extends StatelessWidget {
           //search
           //tat ca don vi
           FilterAllItem(
-              "Tất cả môn học", 7, analysisReportViewModel!.mapAllFilter),
+              "Tất cả môn học",
+              7,
+              analysisReportViewModel!.mapAllFilter,
+              analysisReportViewModel!.mapSubjectFilter,
+              analysisReportViewModel!.rxListSubject
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -2870,7 +2900,13 @@ class FilterClassBottomSheet extends StatelessWidget {
         child: Column(children: [
           //search
           //tat ca don vi
-          FilterAllItem("Tất cả lớp", 8, analysisReportViewModel!.mapAllFilter),
+          FilterAllItem(
+              "Tất cả lớp",
+              8,
+              analysisReportViewModel!.mapAllFilter,
+              analysisReportViewModel!.mapClassFilter,
+              analysisReportViewModel!.rxListClass
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -2977,7 +3013,12 @@ class FilterClassificationBottomSheet extends StatelessWidget {
           //search
           //tat ca don vi
           FilterAllItem(
-              "Tất cả học lực", 9, analysisReportViewModel!.mapAllFilter),
+              "Tất cả học lực",
+              9,
+              analysisReportViewModel!.mapAllFilter,
+              analysisReportViewModel!.mapClassificationFilter,
+              analysisReportViewModel!.rxListClassification
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(

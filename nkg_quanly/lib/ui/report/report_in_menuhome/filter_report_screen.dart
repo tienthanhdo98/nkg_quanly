@@ -287,7 +287,13 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca don vi
-          FilterAllItem( "Tất cả đơn vị", 1,reportViewModel!.mapAllFilter),
+          FilterAllItem(
+            "Tất cả đơn vị",
+            1,
+            reportViewModel!.mapAllFilter,
+            reportViewModel!.mapDepartmentFilter,
+            reportViewModel!.rxListDepartmentFilter,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -366,7 +372,13 @@ class FilterStatusBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca don vi
-          FilterAllItem( "Tất cả trạng thái", 2,reportViewModel!.mapAllFilter),
+          FilterAllItem(
+            "Tất cả trạng thái",
+            2,
+            reportViewModel!.mapAllFilter,
+            reportViewModel!.mapStatusFilter,
+            listReportState,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(

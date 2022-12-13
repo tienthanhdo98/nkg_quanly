@@ -30,57 +30,17 @@ class ProfileWorkEOfficeList extends GetView {
             typeScreen: type_profile_work,
           ),context),
           //date table
-          Padding(
-            padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
-            child: Container(
+        Obx(() => (profileWorkViewModel.rxStatusSelected.value != "") ? Padding(
+              padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
+              child: Container(
 
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                    color: kDarkGray, style: BorderStyle.solid, width: 1),
-              ),
-              child: Column(children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Text(
-                            "Thống kê",
-                            style: Theme.of(context).textTheme.headline2,
-                          )),
-                      Align(
-                          alignment: Alignment.centerRight,
-                          child: ElevatedButton(
-                            style: elevetedButtonWhite,
-                            onPressed: () {
-                              showModalBottomSheet<void>(
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
-                                  ),
-                                ),
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SizedBox(
-                                      height: 560,
-                                      child: FilterProfileWorkEOfficeBottomSheet(
-                                          profileWorkViewModel));
-                                },
-                              );
-                            },
-                            child: const Text(
-                              'Bộ lọc',
-                              style: TextStyle(color: kVioletButton),
-                            ),
-                          ))
-                    ],
-                  ),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                      color: kDarkGray, style: BorderStyle.solid, width: 1),
                 ),
-                Padding(
+                child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
                   child: SizedBox(
                     height: 60,
@@ -92,35 +52,37 @@ class ProfileWorkEOfficeList extends GetView {
                       crossAxisCount: 3,
                       children: <Widget>[
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Trạng thái',
-                                style: CustomTextStyle.grayColorTextStyle),
-                            Padding(
-                                padding:
-                                const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                child: Obx(() => Text(
-                                    profileWorkViewModel.rxStatusSelected.value,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline5)))
-                          ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Trạng thái',
+                                  style: CustomTextStyle.grayColorTextStyle),
+                              Padding(
+                                  padding:
+                                  const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                  child: Obx(() => Text(
+                                      profileWorkViewModel.rxStatusSelected.value,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline5)))
+                            ],
                         ),
                       ],
                     ),
                   ),
                 ),
-              ]),
-            ),
-          ),
+              ),
+            ) : SizedBox.shrink(),
+        ),
           //list
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Column(
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +122,33 @@ class ProfileWorkEOfficeList extends GetView {
                         ),
                       ],
                     ),
-
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          style: elevetedButtonWhite,
+                          onPressed: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: 560,
+                                    child: FilterProfileWorkEOfficeBottomSheet(
+                                        profileWorkViewModel));
+                              },
+                            );
+                          },
+                          child: const Text(
+                            'Bộ lọc',
+                            style: TextStyle(color: kVioletButton),
+                          ),
+                        ))
                   ],
                 ),
                 Obx(() => (menuController.rxShowStatistic.value == true)
@@ -600,7 +588,12 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
         child: Column(children: [
           // Tất cả trang thai
           FilterAllItem(
-              "Tất cả trạng thái", 3, profileWorkViewModel!.mapAllFilter),
+            "Tất cả trạng thái",
+            3,
+            profileWorkViewModel!.mapAllFilter,
+            profileWorkViewModel!.mapStatus,
+            listProfileWorkStatus,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(

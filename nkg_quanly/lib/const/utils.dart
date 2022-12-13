@@ -521,62 +521,73 @@ class FilterItem extends StatelessWidget {
 
 class FilterAllItem extends StatelessWidget {
   const FilterAllItem(
-    this.title,
-    this.index,
-    this.mapAllFilter, {
-    Key? key,
-  }) : super(key: key);
-
+      this.title,
+      this.index,
+      this.mapAllFilter,
+      this.mapItem,
+      this.list, {
+        Key? key,
+      }) : super(key: key);
   final String title;
   final int index;
   final RxMap mapAllFilter;
+  final RxMap mapItem;
+  final List<dynamic> list;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
         child: Obx(
-          () => (mapAllFilter.containsKey(index)
+              () => (mapAllFilter.containsKey(index)
               ? InkWell(
-                  onTap: () {
-                    checkboxFilterValue(false, index, "", mapAllFilter);
-                  },
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: CustomTextStyle.roboto700TextStyle,
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/icons/ic_checkbox_active.png',
-                        width: 30,
-                        height: 30,
-                      )
-                    ],
+            onTap: () {
+              checkboxFilterValue(false, index, "", mapAllFilter);
+              list.asMap().forEach((index,element) {
+                checkboxFilterValue(
+                    false, index, "", mapItem);
+              });
+            },
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: CustomTextStyle.roboto700TextStyle,
                   ),
+                ),
+                Image.asset(
+                  'assets/icons/ic_checkbox_active.png',
+                  width: 30,
+                  height: 30,
                 )
+              ],
+            ),
+          )
               : InkWell(
-                  onTap: () {
-                    checkboxFilterValue(true, index, "", mapAllFilter);
-                  },
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: CustomTextStyle.roboto700TextStyle,
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/icons/ic_checkbox_unactive.png',
-                        width: 30,
-                        height: 30,
-                      )
-                    ],
+            onTap: () {
+              checkboxFilterValue(true, index, "", mapAllFilter);
+              list.asMap().forEach((index,element) {
+                checkboxFilterValue(
+                    true, index, "", mapItem);
+              });
+            },
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: CustomTextStyle.roboto700TextStyle,
                   ),
-                )),
+                ),
+                Image.asset(
+                  'assets/icons/ic_checkbox_unactive.png',
+                  width: 30,
+                  height: 30,
+                )
+              ],
+            ),
+          )),
         ));
   }
 }

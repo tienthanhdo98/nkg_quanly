@@ -22,123 +22,109 @@ class WorkBookList extends GetView {
     return Scaffold(
       body: SafeArea(
           child: Column(
-        children: [
-          //header
-          headerWidgetSearch(
-              "Sổ tay công việc", WorkbookSearch(workBookViewModel), context),
-          //date table
-          Padding(
-            padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                    color: kDarkGray, style: BorderStyle.solid, width: 1),
-              ),
-              child: Column(children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Text(
-                        "Thống kê",
-                        style: Theme.of(context).textTheme.headline2,
-                      )),
-                      Align(
-                          alignment: Alignment.centerRight,
-                          child: ElevatedButton(
-                            style: elevetedButtonWhite,
-                            onPressed: () {
-                              showModalBottomSheet<void>(
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
-                                  ),
-                                ),
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return SizedBox(
-                                      height: 540,
-                                      child: FilterWorkbookFilterBottomSheet(
-                                          workBookViewModel));
-                                },
-                              );
-                            },
-                            child: const Text(
-                              'Bộ lọc',
-                              style: TextStyle(color: kVioletButton),
+            children: [
+              //header
+              headerWidgetSearch(
+                  "Sổ tay công việc", WorkbookSearch(workBookViewModel), context),
+              //date table
+              Obx(() => (workBookViewModel.rxImportantSelected.value != "" || workBookViewModel.rxStatusSelected.value != "") ? Padding(
+                  padding: const EdgeInsets.only(top: 15, right: 15, left: 15),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                          color: kDarkGray, style: BorderStyle.solid, width: 1),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                      child: SizedBox(
+                        height: 60,
+                        child: GridView.count(
+                          physics: const NeverScrollableScrollPhysics(),
+                          primary: false,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 0,
+                          crossAxisCount: 3,
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Độ quan trọng',
+                                    style: CustomTextStyle.grayColorTextStyle),
+                                Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                    child: Obx(() => Text(
+                                        workBookViewModel.rxImportantSelected.value,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style:
+                                        Theme.of(context).textTheme.headline5)))
+                              ],
                             ),
-                          ))
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                  child: SizedBox(
-                    height: 60,
-                    child: GridView.count(
-                      physics: const NeverScrollableScrollPhysics(),
-                      primary: false,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 0,
-                      crossAxisCount: 3,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Độ quan trọng',
-                                style: CustomTextStyle.grayColorTextStyle),
-                            Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                child: Obx(() => Text(
-                                    workBookViewModel.rxImportantSelected.value,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Trạng thái',
+                                    style: CustomTextStyle.grayColorTextStyle),
+                                Padding(
+                                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                    child: Obx(() => Text(
+                                        workBookViewModel.rxStatusSelected.value,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style:
                                         Theme.of(context).textTheme.headline5)))
+                              ],
+                            ),
                           ],
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Trạng thái',
-                                style: CustomTextStyle.grayColorTextStyle),
-                            Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                                child: Obx(() => Text(
-                                    workBookViewModel.rxStatusSelected.value,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
-                                        Theme.of(context).textTheme.headline5)))
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ]),
-            ),
-          ),
-          //list
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
-            child: Row(
-              children: [
-                Align(
-                  alignment: FractionalOffset.centerLeft,
-                  child: Text(
-                    'Tất cả công việc',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ),
-                Expanded(
-                  child:
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                ) : SizedBox.shrink(),
+              ),
+              //list
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                child: Row(
+                  children: [
+                    Align(
+                      alignment: FractionalOffset.centerLeft,
+                      child: Text(
+                        'Tất cả công việc',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ),
+                    Spacer(),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          style: elevetedButtonWhite,
+                          onPressed: () {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return SizedBox(
+                                    height: 540,
+                                    child: FilterWorkbookFilterBottomSheet(
+                                        workBookViewModel));
+                              },
+                            );
+                          },
+                          child: const Text(
+                            'Bộ lọc',
+                            style: TextStyle(color: kVioletButton),
+                          ),
+                        )),
+                    Padding(padding: EdgeInsets.only(right: 10),),
                     ElevatedButton(
                       onPressed: () {
                         Get.to(() => AddNewWorkScreen());
@@ -154,21 +140,19 @@ class WorkBookList extends GetView {
                           Text("Thêm mới", style: TextStyle(fontSize: 14)),
                         ],
                       ),
-                    ),
-                  ]),
-                )
-              ],
-            ),
-          ),
-          const Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: Divider(
-                thickness: 1,
-              )),
-          Expanded(
-              child: Obx(() => (workBookViewModel
+                    )
+                  ],
+                ),
+              ),
+              const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: Divider(
+                    thickness: 1,
+                  )),
+              Expanded(
+                  child: Obx(() => (workBookViewModel
                       .rxWorkBookListItems.isNotEmpty)
-                  ? ListView.builder(
+                      ? ListView.builder(
                       controller: workBookViewModel.controller,
                       itemCount: workBookViewModel.rxWorkBookListItems.length,
                       itemBuilder: (context, index) {
@@ -176,15 +160,15 @@ class WorkBookList extends GetView {
                         return InkWell(
                           onTap: () {
                             Get.to(() => WorkBookDetail(
-                                  id: item.id!,
-                                ));
+                              id: item.id!,
+                            ));
                           },
                           child: WorkBookItem(index, item, workBookViewModel),
                         );
                       })
-                  : loadingIcon())),
-        ],
-      )),
+                      : loadingIcon())),
+            ],
+          )),
     );
   }
 }
@@ -266,7 +250,7 @@ class WorkBookItem extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     (docModel!.worker?.isNotEmpty == true)
                         ? Text(docModel!.worker!,
-                            style: Theme.of(context).textTheme.headline4)
+                        style: Theme.of(context).textTheme.headline4)
                         : const Text("")
                   ],
                 ),
@@ -277,9 +261,9 @@ class WorkBookItem extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     (docModel!.important == true)
                         ? Text("Có",
-                            style: Theme.of(context).textTheme.headline4)
+                        style: Theme.of(context).textTheme.headline4)
                         : Text('Không',
-                            style: Theme.of(context).textTheme.headline4)
+                        style: Theme.of(context).textTheme.headline4)
                   ],
                 ),
               ],
@@ -349,8 +333,8 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
                 onTap: () {
                   Get.back();
                   Get.to(() => WorkBookDetail(
-                        id: docModel!.id!,
-                      ));
+                    id: docModel!.id!,
+                  ));
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
@@ -515,8 +499,8 @@ class DeleteItemWorkBookSheetBottomSheet extends StatelessWidget {
                           },
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
+                              MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
                                   if (states.contains(MaterialState.pressed)) {
                                     return kBlueButton;
                                   } else {
@@ -525,10 +509,10 @@ class DeleteItemWorkBookSheetBottomSheet extends StatelessWidget {
                                 },
                               ),
                               shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                              ))),
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ))),
                           child: const Text('Xác nhận')),
                     ),
                   )
@@ -559,55 +543,75 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
             child: Obx(() => (workBookViewModel!.mapAllFilter.containsKey(0))
                 ? InkWell(
-                    onTap: () {
-                      checkboxFilterValue(
-                          false, 0, "", workBookViewModel!.mapAllFilter);
-                    },
-                    child: Row(
-                      children: [
-                        const Expanded(
-                          child: Text(
-                            'Tất cả công việc',
-                            style: TextStyle(
-                                color: kBlueButton,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Roboto',
-                                fontSize: 16),
-                          ),
-                        ),
-                        Image.asset(
-                          'assets/icons/ic_checkbox_active.png',
-                          width: 30,
-                          height: 30,
-                        )
-                      ],
+              onTap: () {
+                checkboxFilterValue(
+                    false, 0, "", workBookViewModel!.mapAllFilter);
+                listImportant.asMap().forEach((index,element) {
+                  checkboxFilterValue(
+                      false, index, "", workBookViewModel!.mapImportantFilter);
+                });
+                lisStatus.asMap().forEach((index,element) {
+                  checkboxFilterValue(
+                      false, index, "", workBookViewModel!.mapStatusFilter);
+                });
+                checkboxFilterValue(false, 1, "", workBookViewModel!.mapAllFilter);
+                checkboxFilterValue(false, 2, "", workBookViewModel!.mapAllFilter);
+              },
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Tất cả công việc',
+                      style: TextStyle(
+                          color: kBlueButton,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Roboto',
+                          fontSize: 16),
                     ),
+                  ),
+                  Image.asset(
+                    'assets/icons/ic_checkbox_active.png',
+                    width: 30,
+                    height: 30,
                   )
+                ],
+              ),
+            )
                 : InkWell(
-                    onTap: () {
-                      checkboxFilterValue(
-                          true, 0, "", workBookViewModel!.mapAllFilter);
-                    },
-                    child: Row(
-                      children: [
-                        const Expanded(
-                          child: Text(
-                            'Tất cả công việc',
-                            style: TextStyle(
-                                color: kBlueButton,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Roboto',
-                                fontSize: 16),
-                          ),
-                        ),
-                        Image.asset(
-                          'assets/icons/ic_checkbox_unactive.png',
-                          width: 30,
-                          height: 30,
-                        )
-                      ],
+              onTap: () {
+                checkboxFilterValue(
+                    true, 0, "", workBookViewModel!.mapAllFilter);
+                listImportant.asMap().forEach((index,element) {
+                  checkboxFilterValue(
+                      true, index, "", workBookViewModel!.mapImportantFilter);
+                });
+                lisStatus.asMap().forEach((index,element) {
+                  checkboxFilterValue(
+                      true, index, "", workBookViewModel!.mapStatusFilter);
+                });
+                checkboxFilterValue(true, 1, "", workBookViewModel!.mapAllFilter);
+                checkboxFilterValue(true, 2, "", workBookViewModel!.mapAllFilter);
+              },
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Tất cả công việc',
+                      style: TextStyle(
+                          color: kBlueButton,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Roboto',
+                          fontSize: 16),
                     ),
-                  )),
+                  ),
+                  Image.asset(
+                    'assets/icons/ic_checkbox_unactive.png',
+                    width: 30,
+                    height: 30,
+                  )
+                ],
+              ),
+            )),
           ),
           // tat ca muc do
           const Divider(
@@ -616,7 +620,12 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
           ),
           // Tất cả van de trinh
           FilterAllItem(
-              "Tất cả độ quan trọng", 1, workBookViewModel!.mapAllFilter),
+            "Tất cả độ quan trọng",
+            1,
+            workBookViewModel!.mapAllFilter,
+            workBookViewModel!.mapImportantFilter,
+            listImportant,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -638,7 +647,12 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
           ),
           // Tất cả loai phieu trinh
           FilterAllItem(
-              "Tất cả trạng thái", 2, workBookViewModel!.mapAllFilter),
+            "Tất cả trạng thái",
+            2,
+            workBookViewModel!.mapAllFilter,
+            workBookViewModel!.mapStatusFilter,
+            lisStatus,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -742,3 +756,4 @@ class FilterWorkbookFilterBottomSheet extends StatelessWidget {
 var listImportant = ["Không quan trọng", "Quan trọng"];
 var lisStatus = ["Đang xử lý", "Hoàn thành"];
 final List<String> dropdownStatus = ["Đang xử lý", "Hoàn thành"];
+

@@ -26,42 +26,16 @@ class ProfileEOfficeList extends GetView {
               headerWidgetSearch(
                   "Hồ sơ trình", SearchScreen(hintText:'Nhập mã hồ sơ, tên hồ sơ', typeScreen:type_profile), context),
               //date table
-              Padding(
-                padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        color: kDarkGray, style: BorderStyle.solid, width: 1),
-                  ),
-                  child: Column(children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Text(
-                                "Thống kê",
-                                style: Theme.of(context).textTheme.headline2,
-                              )),
-                          Align(
-                              alignment: Alignment.centerRight,
-                              child: ElevatedButton(
-                                style: elevetedButtonWhite,
-                                onPressed: () {
-                                  Get.to(() =>
-                                      ProfileFilterScreen(profileViewModel));
-                                },
-                                child: const Text(
-                                  'Bộ lọc',
-                                  style: TextStyle(color: kVioletButton),
-                                ),
-                              ))
-                        ],
-                      ),
+              Obx(() => (profileViewModel.rxUnitEditorSelected.value != "" || profileViewModel.rxSubmissProblemSelected.value != "" ||  profileViewModel.rxTypeSubmissSelected.value != "") ? Padding(
+                  padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                          color: kDarkGray, style: BorderStyle.solid, width: 1),
                     ),
-                    Padding(
+                    child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
                       child: SizedBox(
                         height: 140,
@@ -70,7 +44,7 @@ class ProfileEOfficeList extends GetView {
                           childAspectRatio: 3/2,
                           crossAxisCount: 3,
                           children: <Widget>[
-                            Column(
+                            if(profileViewModel.rxUnitEditorSelected.value != "")Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text('Đơn vị soạn thảo',
@@ -87,7 +61,7 @@ class ProfileEOfficeList extends GetView {
                                             .headline5)))
                               ],
                             ),
-                            Column(
+                            if(profileViewModel.rxSubmissProblemSelected.value != "")Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text('Vấn đề trình',
@@ -104,7 +78,7 @@ class ProfileEOfficeList extends GetView {
                                             .headline5)))
                               ],
                             ),
-                            Column(
+                            if(profileViewModel.rxTypeSubmissSelected.value != "")Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text('Loại phiếu trình',
@@ -142,8 +116,8 @@ class ProfileEOfficeList extends GetView {
                         ),
                       ),
                     ),
-                  ]),
-                ),
+                  ),
+                ) : const SizedBox.shrink(),
               ),
               //list
               Padding(
@@ -151,6 +125,8 @@ class ProfileEOfficeList extends GetView {
                 child: Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +173,19 @@ class ProfileEOfficeList extends GetView {
                             ),
                           ],
                         ),
-
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: ElevatedButton(
+                              style: elevetedButtonWhite,
+                              onPressed: () {
+                                Get.to(() =>
+                                    ProfileFilterScreen(profileViewModel));
+                              },
+                              child: const Text(
+                                'Bộ lọc',
+                                style: TextStyle(color: kVioletButton),
+                              ),
+                            ))
                       ],
                     ),
                     Obx(() =>

@@ -496,7 +496,13 @@ class FilterContactIndividualBottomSheet extends StatelessWidget {
                 )),
           ),
           // Tất cả van de trinh
-          FilterAllItem( "Tất cả phòng ban", 1,contactIndividualViewModel!.mapAllFilter),
+          FilterAllItem(
+            "Tất cả phòng ban",
+            1,
+            contactIndividualViewModel!.mapAllFilter,
+            contactIndividualViewModel!.rxMapDepartmentFilter,
+            contactIndividualViewModel!.rxDepartmentList,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(

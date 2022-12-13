@@ -273,7 +273,13 @@ class FilterPmisUnitBottomSheet extends StatelessWidget {
             ),
           ),
           // Tất cả do vi
-          FilterAllItem( "Tất cả đơn vị", 1,pmisViewModel!.mapAllFilter),
+          FilterAllItem(
+              "Tất cả đơn vị",
+              1,
+              pmisViewModel!.mapAllFilter,
+              pmisViewModel!.rxMapUnitId,
+              pmisViewModel!.rxListPmisUnitModel
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(

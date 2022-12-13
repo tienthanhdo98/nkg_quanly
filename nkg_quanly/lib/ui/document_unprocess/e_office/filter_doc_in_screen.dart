@@ -254,7 +254,13 @@ class FilterDepartmentBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca don vi
-          FilterAllItem( "Tất cả đơn vị ban hành", 1,documentUnprocessViewModel!.mapAllFilter),
+          FilterAllItem(
+              "Tất cả đơn vị ban hành",
+              1,
+              documentUnprocessViewModel!.mapAllFilter,
+              documentUnprocessViewModel!.mapDepartmentFilter,
+              documentUnprocessViewModel!.rxListDepartmentFilter
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -352,8 +358,13 @@ class FilterLevelmentBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
 
-          FilterAllItem( "Tất cả mức độ", 2,documentUnprocessViewModel!.mapAllFilter),
-
+          FilterAllItem(
+              "Tất cả mức độ",
+              2,
+              documentUnprocessViewModel!.mapAllFilter,
+              documentUnprocessViewModel!.mapLevelFilter,
+              listLevel
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -449,7 +460,13 @@ class FilterStatusBottomSheet extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
-          FilterAllItem( "Tất cả trạng thái", 3,documentUnprocessViewModel!.mapAllFilter),
+          FilterAllItem(
+              "Tất cả trạng thái",
+              3,
+              documentUnprocessViewModel!.mapAllFilter,
+              documentUnprocessViewModel!.mapStatusFilter,
+              listDocInStatus
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
