@@ -34,41 +34,16 @@ class ProfilesProcedureListWithStatistic extends GetView {
               ),
               context),
           //
-          Padding(
-            padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                    color: kDarkGray, style: BorderStyle.solid, width: 1),
-              ),
-              child: Column(children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Text(
-                            "Thống kê",
-                            style: Theme.of(context).textTheme.headline2,
-                          )),
-                      Align(
-                          alignment: Alignment.centerRight,
-                          child: ElevatedButton(
-                            style: elevetedButtonWhite,
-                            onPressed: () {
-                              Get.to(() => ProfileProceduceFilterScreen(profilesProcedureViewModel));
-                            },
-                            child: const Text(
-                              'Bộ lọc',
-                              style: TextStyle(color: kVioletButton),
-                            ),
-                          ))
-                    ],
-                  ),
+          Obx(() =>(profilesProcedureViewModel.rxSelectedAgencies.value != "" || profilesProcedureViewModel.rxSelectedGroupProcedure.value != "" || profilesProcedureViewModel.rxSelectedProcedure.value != "" || profilesProcedureViewModel.rxSelectedStatus.value != "" ||profilesProcedureViewModel.rxSelectedBranch.value != "") ? Padding(
+              padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                      color: kDarkGray, style: BorderStyle.solid, width: 1),
                 ),
-                Padding(
+                child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
                   child: SizedBox(
                     height: 140,
@@ -78,7 +53,7 @@ class ProfilesProcedureListWithStatistic extends GetView {
                       childAspectRatio: 3/2,
                       crossAxisCount: 3,
                       children: <Widget>[
-                        Column(
+                        if(profilesProcedureViewModel.rxSelectedAgencies.value != "")Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text('Cơ quan',
@@ -95,7 +70,7 @@ class ProfilesProcedureListWithStatistic extends GetView {
                                         .headline5)))
                           ],
                         ),
-                        Column(
+                        if(profilesProcedureViewModel.rxSelectedBranch.value != "")Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text('Lĩnh vực',
@@ -112,7 +87,7 @@ class ProfilesProcedureListWithStatistic extends GetView {
                                         .headline5)))
                           ],
                         ),
-                        Column(
+                        if(profilesProcedureViewModel.rxSelectedStatus.value != "")Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text('Trạng thái',
@@ -129,7 +104,7 @@ class ProfilesProcedureListWithStatistic extends GetView {
                                         .headline5)))
                           ],
                         ),
-                        Column(
+                        if(profilesProcedureViewModel.rxSelectedProcedure.value != "")Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text('Thủ tục',
@@ -146,7 +121,7 @@ class ProfilesProcedureListWithStatistic extends GetView {
                                         .headline5)))
                           ],
                         ),
-                        Column(
+                        if(profilesProcedureViewModel.rxSelectedGroupProcedure.value != "")Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text('Nhóm thủ tục',
@@ -167,46 +142,64 @@ class ProfilesProcedureListWithStatistic extends GetView {
                     ),
                   ),
                 ),
-              ]),
-            ),
+              ),
+            ) : SizedBox.shrink(),
           ),
           //
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Column(
               children: [
-                Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Tất cả hồ sơ trình',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (menuController.rxShowStatistic.value == true) {
-                          menuController.changeStateShowStatistic(false);
-                        } else {
-                          menuController.changeStateShowStatistic(true);
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Row(children: [
-                          Obx(() => Text(checkingNullNumberAndConvertToString(
-                              profilesProcedureViewModel
-                                  .rxProfileProcedureStatistic.value.tongSoHoSo),
-                              style: textBlueCountTotalStyle)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Tất cả hồ sơ trình',
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            if (menuController.rxShowStatistic.value == true) {
+                              menuController.changeStateShowStatistic(false);
+                            } else {
+                              menuController.changeStateShowStatistic(true);
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                            child: Row(children: [
+                              Obx(() => Text(checkingNullNumberAndConvertToString(
+                                  profilesProcedureViewModel
+                                      .rxProfileProcedureStatistic.value.tongSoHoSo),
+                                  style: textBlueCountTotalStyle)
+                              ),
+                              const Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                  child: Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: kBlueButton,
+                                  ))
+                            ]),
                           ),
-                          const Padding(
-                              padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                              child: Icon(
-                                Icons.keyboard_arrow_down,
-                                color: kBlueButton,
-                              ))
-                        ]),
-                      ),
+                        ),
+                      ],
                     ),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          style: elevetedButtonWhite,
+                          onPressed: () {
+                            Get.to(() => ProfileProceduceFilterScreen(profilesProcedureViewModel));
+                          },
+                          child: const Text(
+                            'Bộ lọc',
+                            style: TextStyle(color: kVioletButton),
+                          ),
+                        ))
                   ],
                 ),
                 Obx(() => (menuController.rxShowStatistic.value == true)

@@ -161,6 +161,7 @@ class LunarCalendarScreen extends GetView {
                                   ],);
                                 },
                                 selectedBuilder: (context, day, focusedDay) {
+                                  print("selected");
                                   return Column(children: [
                                     Container(
                                       padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
@@ -187,7 +188,6 @@ class LunarCalendarScreen extends GetView {
                                   ],);
                                 },
                               ),
-
                             ),
                           )),
                       Obx(() => Container(

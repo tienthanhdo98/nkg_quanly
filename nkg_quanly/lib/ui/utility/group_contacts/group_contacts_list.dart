@@ -522,7 +522,13 @@ class FilterContactOrganBottomSheet extends StatelessWidget {
                 )),
           ),
           // Tất cả to chuc
-          FilterAllItem( "Tất cả tổ chức", 1,contactOrganizationViewModel!.mapAllFilter),
+          FilterAllItem(
+            "Tất cả tổ chức",
+            1,
+            contactOrganizationViewModel!.mapAllFilter,
+            contactOrganizationViewModel!.rxMapOrganFilter,
+            contactOrganizationViewModel!.rxOrganList,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(

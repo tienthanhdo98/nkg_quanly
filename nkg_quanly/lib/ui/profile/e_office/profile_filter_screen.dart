@@ -278,7 +278,13 @@ class FilterUnitBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca don vi
-          FilterAllItem("Tất cả đơn vị", 2, profileViewModel!.mapAllFilter),
+          FilterAllItem(
+            "Tất cả đơn vị",
+            2,
+            profileViewModel!.mapAllFilter,
+            profileViewModel!.mapUnitEditorFilter,
+            profileViewModel!.rxListUnitEditor,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -374,7 +380,12 @@ class FilterSubmitProblemBottomSheet extends StatelessWidget {
         child: Column(children: [
           //tat ca van de trinh
           FilterAllItem(
-              "Tất cả vấn đề trình", 3, profileViewModel!.mapAllFilter),
+            "Tất cả vấn đề trình",
+            3,
+            profileViewModel!.mapAllFilter,
+            profileViewModel!.mapSubmissProblem,
+            profileViewModel!.rxListSubmissProblem,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -470,7 +481,12 @@ class FilterSubmitTypeBottomSheet extends StatelessWidget {
         child: Column(children: [
           //tat ca loai phieu
           FilterAllItem(
-              "Tất cả loại phiếu trình", 4, profileViewModel!.mapAllFilter),
+            "Tất cả loại phiếu trình",
+            4,
+            profileViewModel!.mapAllFilter,
+            profileViewModel!.mapTypeSubmission,
+            profileViewModel!.rxListTypeSubmission,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -567,7 +583,12 @@ class FilterStateBottomSheet extends StatelessWidget {
         child: Column(children: [
           //tat ca trang thai
           FilterAllItem(
-              "Tất cả trạng thái", 1, profileViewModel!.mapAllFilter),
+            "Tất cả trạng thái",
+            1,
+            profileViewModel!.mapAllFilter,
+            profileViewModel!.mapState,
+            listProfileState,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(

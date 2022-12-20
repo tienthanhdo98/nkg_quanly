@@ -321,7 +321,12 @@ class FilterAgenciesBottomSheet extends StatelessWidget {
         child: Column(children: [
           //tat ca don vi
           FilterAllItem(
-              "Tất cả cơ quan", 1, profilesProcedureViewModel!.mapAllFilter),
+            "Tất cả cơ quan",
+            1,
+            profilesProcedureViewModel!.mapAllFilter,
+            profilesProcedureViewModel!.mapAgenciesFilter,
+            profilesProcedureViewModel!.rxListAgenciesList,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -425,7 +430,12 @@ class FilterBranchBottomSheet extends StatelessWidget {
         child: Column(children: [
           //tat ca linh cuc
           FilterAllItem(
-              "Tất cả lĩnh vực", 2, profilesProcedureViewModel!.mapAllFilter),
+            "Tất cả lĩnh vực",
+            2,
+            profilesProcedureViewModel!.mapAllFilter,
+            profilesProcedureViewModel!.mapBranchFilter,
+            profilesProcedureViewModel!.rxListBranch,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -522,7 +532,12 @@ class FilterStatusBottomSheet extends StatelessWidget {
         child: Column(children: [
           //tat ca trang thai
           FilterAllItem(
-              "Tất cả trạng thái", 3, profilesProcedureViewModel!.mapAllFilter),
+            "Tất cả trạng thái",
+            3,
+            profilesProcedureViewModel!.mapAllFilter,
+            profilesProcedureViewModel!.mapStatusFilter,
+            profilesProcedureViewModel!.rxListStatus,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -619,7 +634,12 @@ class FilterProceduceBottomSheet extends StatelessWidget {
         child: Column(children: [
           //tat ca thu tuc
           FilterAllItem(
-              "Tất cả thủ tục", 4, profilesProcedureViewModel!.mapAllFilter),
+            "Tất cả thủ tục",
+            4,
+            profilesProcedureViewModel!.mapAllFilter,
+            profilesProcedureViewModel!.mapProcedureFilter,
+            profilesProcedureViewModel!.rxListProcedure,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(
@@ -718,8 +738,13 @@ class FilterGroupProceduceBottomSheet extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
         child: Column(children: [
           //tat ca don vi
-          FilterAllItem("Tất cả nhóm thủ tục", 5,
-              profilesProcedureViewModel!.mapAllFilter),
+          FilterAllItem(
+            "Tất cả nhóm thủ tục",
+            5,
+            profilesProcedureViewModel!.mapAllFilter,
+            profilesProcedureViewModel!.mapGroupProcedureFilter,
+            profilesProcedureViewModel!.rxListGroupProcedure,
+          ),
           const Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Divider(

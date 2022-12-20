@@ -31,43 +31,16 @@ class DocumentInEOfficeList extends GetView {
                   ),
                   context),
               //date table
-              Padding(
-                padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                        color: kDarkGray, style: BorderStyle.solid, width: 1),
-                  ),
-                  child: Column(children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Text(
-                                "Thống kê",
-                                style: Theme.of(context).textTheme.headline2,
-                              )),
-                          Align(
-                              alignment: Alignment.centerRight,
-                              child: ElevatedButton(
-                                style: elevetedButtonWhite,
-                                onPressed: () {
-                                  Get.to(() =>
-                                      FilterDocInScreen(
-                                          documentUnprocessViewModel));
-                                },
-                                child: const Text(
-                                  'Bộ lọc',
-                                  style: TextStyle(color: kVioletButton),
-                                ),
-                              ))
-                        ],
-                      ),
+              Obx(() => (documentUnprocessViewModel.rxDepartmentSelected.value != "" || documentUnprocessViewModel.rxLevelSelected.value != "" || documentUnprocessViewModel.rxStatusSelected.value != "") ? Padding(
+                  padding: const EdgeInsets.only(top: 15,right: 15,left: 15),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                          color: kDarkGray, style: BorderStyle.solid, width: 1),
                     ),
-                    Padding(
+                    child: Padding(
                       padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
                       child: SizedBox(
                         height: 60,
@@ -78,7 +51,7 @@ class DocumentInEOfficeList extends GetView {
                           mainAxisSpacing: 0,
                           crossAxisCount: 3,
                           children: <Widget>[
-                            Column(
+                            if(documentUnprocessViewModel.rxDepartmentSelected.value != "")Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text('Đơn vị ban hành',
@@ -95,7 +68,7 @@ class DocumentInEOfficeList extends GetView {
                                             .headline5)))
                               ],
                             ),
-                            Column(
+                            if(documentUnprocessViewModel.rxLevelSelected.value != "") Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text('Mức độ',
@@ -112,7 +85,7 @@ class DocumentInEOfficeList extends GetView {
                                             .headline5)))
                               ],
                             ),
-                            Column(
+                            if(documentUnprocessViewModel.rxStatusSelected.value != "") Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text('Trạng thái',
@@ -133,56 +106,76 @@ class DocumentInEOfficeList extends GetView {
                         ),
                       ),
                     ),
-                  ]),
-                ),
+                  ),
+                ) : const SizedBox.shrink(),
               ),
               //list
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                 child: Column(
                   children: [
-                    Column(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Tất cả văn bản đến',
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .headline5,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Tất cả văn bản đến',
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .headline5,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                if (menuController.rxShowStatistic.value ==
+                                    true) {
+                                  menuController.changeStateShowStatistic(
+                                      false);
+                                } else {
+                                  menuController.changeStateShowStatistic(true);
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                                child: Row(children: [
+                                  Obx(() =>
+                                  (documentUnprocessViewModel
+                                      .rxDocumentInStatistic.value.tong !=
+                                      null)
+                                      ? Text(
+                                      documentUnprocessViewModel
+                                          .rxDocumentInStatistic.value.tong
+                                          .toString(),
+                                      style: textBlueCountTotalStyle)
+                                      : const Text("")),
+                                  const Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                      child: Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: kBlueButton,
+                                      ))
+                                ]),
+                              ),
+                            ),
+                          ],
                         ),
-                        InkWell(
-                          onTap: () {
-                            if (menuController.rxShowStatistic.value ==
-                                true) {
-                              menuController.changeStateShowStatistic(
-                                  false);
-                            } else {
-                              menuController.changeStateShowStatistic(true);
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                            child: Row(children: [
-                              Obx(() =>
-                              (documentUnprocessViewModel
-                                  .rxDocumentInStatistic.value.tong !=
-                                  null)
-                                  ? Text(
-                                  documentUnprocessViewModel
-                                      .rxDocumentInStatistic.value.tong
-                                      .toString(),
-                                  style: textBlueCountTotalStyle)
-                                  : const Text("")),
-                              const Padding(
-                                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                                  child: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: kBlueButton,
-                                  ))
-                            ]),
-                          ),
-                        ),
+                        Align(
+                            alignment: Alignment.centerRight,
+                            child: ElevatedButton(
+                              style: elevetedButtonWhite,
+                              onPressed: () {
+                                Get.to(() =>
+                                    FilterDocInScreen(
+                                        documentUnprocessViewModel));
+                              },
+                              child: const Text(
+                                'Bộ lọc',
+                                style: TextStyle(color: kVioletButton),
+                              ),
+                            ))
                       ],
                     ),
                     Obx(() =>
