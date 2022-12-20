@@ -10,7 +10,7 @@ import '../../const/const.dart';
 import '../../model/calendarwork_model/calendarwork_model.dart';
 
 class CalendarWorkViewModel extends GetxController {
-  Map<String, String> headers = {"Content-type": "application/json"};
+
   ScrollController controller = ScrollController();
   Rx<int> selectedBottomButton = 4.obs;
 

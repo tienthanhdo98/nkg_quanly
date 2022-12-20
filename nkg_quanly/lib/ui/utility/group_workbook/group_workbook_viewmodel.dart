@@ -11,7 +11,7 @@ import '../../../model/group_workbook/group_workbook_model.dart';
 
 
 class GroupWorkBookViewModel extends GetxController {
-  Map<String, String> headers = {"Content-type": "application/json"};
+  
 
   ScrollController controller = ScrollController();
   RxList<GroupWorkBookItems> rxListGroupWorkBookItems= <GroupWorkBookItems>[].obs;

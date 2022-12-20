@@ -6,8 +6,10 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/model/profile_work/profile_work_model.dart';
 
+import '../../const/const.dart';
+
 class ProfileWorkViewModel extends GetxController {
-  Map<String, String> headers = {"Content-type": "application/json"};
+
 
   Rx<int> selectedBottomButton = 4.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;

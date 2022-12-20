@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/model/document/document_statistic_model.dart';
 
+import '../const/const.dart';
 import '../model/document_unprocess/document_filter.dart';
 import '../model/weather_model/weather_model.dart';
 
@@ -49,7 +50,7 @@ class HomeViewModel extends GetxController {
     });
   }
 
-  Map<String, String> headers = {"Content-type": "application/json"};
+
 
   Future<DocumentStatisticModel> getDocumentStatistic() async {
     final url = Uri.parse(apiGetDocumentStatistic);

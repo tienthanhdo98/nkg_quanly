@@ -34,7 +34,7 @@ class ProfileViewModel extends GetxController {
     print('updatedat');
   }
 
-  Map<String, String> headers = {"Content-type": "application/json"};
+
 
   Rx<int> selectedBottomButton = 4.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;

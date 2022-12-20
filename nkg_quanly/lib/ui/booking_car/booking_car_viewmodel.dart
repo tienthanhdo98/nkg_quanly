@@ -21,7 +21,7 @@ class BookingCarViewModel extends GetxController {
   RxList<BookingCarListItems> rxBookingCarItems = <BookingCarListItems>[].obs;
   Rx<BookingStatistic> rxBookingCarStatistic = BookingStatistic().obs;
   ScrollController controller = ScrollController();
-  Map<String, String> headers = {"Content-type": "application/json"};
+
 
   @override
   void onInit() {

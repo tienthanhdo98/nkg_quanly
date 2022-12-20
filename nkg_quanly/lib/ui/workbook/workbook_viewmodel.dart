@@ -11,7 +11,7 @@ import '../../model/workbook/workbook_model.dart';
 import '../../model/workbook/worker_model.dart';
 
 class WorkBookViewModel extends GetxController {
-  Map<String, String> headers = {"Content-type": "application/json"};
+
 
   Rx<int> selectedBottomButton = 0.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;

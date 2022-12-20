@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 
+import '../../../const/const.dart';
 import '../../../model/guildline_model/guildline_model.dart';
 
 
@@ -43,7 +44,6 @@ class GuildlineViewModel extends GetxController {
       }
     });
   }
-  final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
   Future<String> getLinkDowloadGuilde(String id)
   async {
     var url = Uri.parse("$getGuidelineDownload$id");
