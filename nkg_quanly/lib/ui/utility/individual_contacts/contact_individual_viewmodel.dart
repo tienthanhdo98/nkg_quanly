@@ -65,7 +65,7 @@ class ContactIndividualViewModel extends GetxController {
 
   Future<void> getDepartmentList() async {
     var url = Uri.parse(apiGetDepartmentList);
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     if (response.statusCode == 200) {
       var listEpg = <DepartmentModel>[];
       List a = json.decode(response.body) as List;
@@ -154,7 +154,7 @@ class ContactIndividualViewModel extends GetxController {
 
   Future<ContactListItems> getWorkbookModelDetail(String id) async {
     final url = Uri.parse("$apiIndividualContactDetail$id");
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     return ContactListItems.fromJson(jsonDecode(response.body));
   }
 

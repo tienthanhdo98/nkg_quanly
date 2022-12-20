@@ -167,7 +167,7 @@ class HelpdeskViewModel extends GetxController {
 
   Future<void> getChartRecently() async {
     final url = Uri.parse(apiGetChartRecentlyHelpDesk);
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
 
     var listStatistic = <HelpDeskStatistic>[];
     List a = json.decode(response.body) as List;

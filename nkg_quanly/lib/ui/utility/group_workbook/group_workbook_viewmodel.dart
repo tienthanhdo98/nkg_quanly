@@ -143,7 +143,7 @@ class GroupWorkBookViewModel extends GetxController {
 
   Future<GroupWorkBookItems> getGroupWorkbookModelDetail(String id) async {
     final url = Uri.parse("$apiGroupWorkBookDetail$id");
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     return GroupWorkBookItems.fromJson(jsonDecode(response.body));
   }
 

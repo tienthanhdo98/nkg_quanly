@@ -138,7 +138,7 @@ class AnalysisReportViewModel extends GetxController {
   Future<void> getListFilter(
       String urlApi, RxList<AnalysisReportFilterModel> rxlist) async {
     final url = Uri.parse(urlApi);
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     
     var listRes = <AnalysisReportFilterModel>[];
     List a = json.decode(response.body) as List;
@@ -149,7 +149,7 @@ class AnalysisReportViewModel extends GetxController {
   Future<void> getListFilterWithParam(String id, String urlApi,
       RxList<AnalysisReportFilterModel> rxlist) async {
     final url = Uri.parse("$urlApi?typeSchool=$id");
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     
     var listRes = <AnalysisReportFilterModel>[];
     List a = json.decode(response.body) as List;

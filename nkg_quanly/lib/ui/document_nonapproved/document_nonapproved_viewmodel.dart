@@ -37,7 +37,7 @@ class DocumentNonApproveViewModel extends GetxController {
 
   Future<void> getFilterForChart(String url) async {
     print('loading');
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url),headers: headers);
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
     
@@ -71,7 +71,7 @@ class DocumentNonApproveViewModel extends GetxController {
   Future<DocumentInListItems> getDocumentDetail(int id) async {
     final url = Uri.parse("${apiGetDocumentDetail}id=$id");
     print('loading detail');
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     
     return DocumentInListItems.fromJson(jsonDecode(response.body));
   }

@@ -37,7 +37,7 @@ class DocumentUnprocessViewModel extends GetxController {
 
   Future<void> getFilterForChart(String url) async {
     print('loading');
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url),headers: headers);
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
     
@@ -59,7 +59,7 @@ class DocumentUnprocessViewModel extends GetxController {
   Future<DocumentInListItems> getDocumentDetail(int id) async {
     final url = Uri.parse("${apiGetDocumentDetail}id=$id");
     print('loading detail');
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     
     return DocumentInListItems.fromJson(jsonDecode(response.body));
   }
@@ -194,7 +194,7 @@ class DocumentUnprocessViewModel extends GetxController {
   Future<void> getFilterDepartment() async {
     print('loading');
     http.Response response = await http.get(Uri.parse(
-        "http://123.31.31.237:6002/api/documentin/department-public"));
+        "http://123.31.31.237:6002/api/documentin/department-public"),headers: headers);
     List<dynamic> listRes = jsonDecode(response.body);
     List<String> listUnit = listRes.map((e) => e.toString()).toList();
     rxListDepartmentFilter.value = listUnit;

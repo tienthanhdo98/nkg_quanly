@@ -108,7 +108,7 @@ class MissionViewModel extends GetxController {
   Future<void> getFilterDepartment() async {
     print('loading');
     http.Response response = await http.get(
-        Uri.parse("http://123.31.31.237:6002/api/mission/department-public"));
+        Uri.parse("http://123.31.31.237:6002/api/mission/department-public"),headers: headers);
     List<dynamic> listRes = jsonDecode(response.body);
     List<String> listUnit = listRes.map((e) => e.toString()).toList();
     rxListDepartmentFilter.value = listUnit;
@@ -156,7 +156,7 @@ class MissionViewModel extends GetxController {
   Future<void> getFilterForChart(String url) async {
     rxDocumentFilterModel.refresh();
     print('loading');
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url),headers: headers);
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
 
@@ -232,7 +232,7 @@ class MissionViewModel extends GetxController {
   Future<MissionItem> getMissionDetail(int id) async {
     final url = Uri.parse("$apiGetMissionDetail$id");
     print(url);
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
 
     return MissionItem.fromJson(jsonDecode(response.body));
   }

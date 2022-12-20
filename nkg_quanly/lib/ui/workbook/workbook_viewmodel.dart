@@ -184,7 +184,7 @@ class WorkBookViewModel extends GetxController {
 
   Future<WorkBookListItems> getWorkbookModelDetail(String id) async {
     final url = Uri.parse("$apiWorkBookDetail$id");
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     return WorkBookListItems.fromJson(jsonDecode(response.body));
   }
 
@@ -251,11 +251,7 @@ class WorkBookViewModel extends GetxController {
     var tokenIOC = await loginViewModel.loadFromShareFrefs(keyTokenIOC);
     print(tokenIOC);
     http.Response response =
-    await http.get(Uri.parse(apiGetListWorkerWorkBook), headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $tokenIOC',
-    });
+    await http.get(Uri.parse(apiGetListWorkerWorkBook), headers: headers);
     print(response.body);
     var listWorkerModel= <WorkerModel>[];
     List listRes = json.decode(response.body) as List;

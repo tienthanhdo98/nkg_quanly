@@ -40,7 +40,7 @@ class ReportViewModel extends GetxController {
   Future<void> getFilterForChart(String url) async {
     rxDocumentFilterModel.refresh();
     print('loading');
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url),headers: headers);
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
     
@@ -148,7 +148,7 @@ class ReportViewModel extends GetxController {
 
   Future<ReportListItems> getReportDetail(int id) async {
     final url = Uri.parse("${apiGetReportDetail}id=$id");
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     return ReportListItems.fromJson(jsonDecode(response.body));
   }
   //filter
@@ -182,7 +182,7 @@ class ReportViewModel extends GetxController {
 
   Future<void> getReportDeparmentFilter() async {
     final url = Uri.parse(apiGetDepartmentFilter);
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     List<String> listDeparmentFilter = [];
     List listRes = json.decode(response.body) as List;
     listDeparmentFilter= listRes.map((e) => e as String).toList();

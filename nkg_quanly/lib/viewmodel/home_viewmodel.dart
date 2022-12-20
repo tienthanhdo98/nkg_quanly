@@ -28,7 +28,7 @@ class HomeViewModel extends GetxController {
     var url =
         'http://123.31.31.237:6002/api/weather?Lat=21.028511&Lon=105.804817';
     print('loading');
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url),headers: headers);
     
     WeatherModel weatherModel =
         WeatherModel.fromJson(jsonDecode(response.body));
@@ -39,7 +39,7 @@ class HomeViewModel extends GetxController {
   Future<void> getFilterForChart(String url) async {
     rxDocumentFilterModel.refresh();
     print('loading');
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url),headers: headers);
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
     
@@ -54,7 +54,7 @@ class HomeViewModel extends GetxController {
   Future<DocumentStatisticModel> getDocumentStatistic() async {
     final url = Uri.parse(apiGetDocumentStatistic);
     print('loading');
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     
     return DocumentStatisticModel.fromJson(jsonDecode(response.body));
   }
@@ -62,7 +62,7 @@ class HomeViewModel extends GetxController {
   //document unprocess
   Future<DocumentFilterModel> getQuantityDocumentBuUrl(String url) async {
     print('loading');
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url),headers: headers);
     
     return DocumentFilterModel.fromJson(jsonDecode(response.body));
   }

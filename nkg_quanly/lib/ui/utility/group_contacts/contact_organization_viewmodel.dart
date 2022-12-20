@@ -73,7 +73,7 @@ class ContactOrganizationViewModel extends GetxController {
 
   Future<void> getOrganList() async {
     var url = Uri.parse(apiOrganList);
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     if (response.statusCode == 200) {
       var listEpg = <OrganModel>[];
       List a = json.decode(response.body) as List;
@@ -172,7 +172,7 @@ class ContactOrganizationViewModel extends GetxController {
 
   Future<ContactListItems> getWorkbookModelDetail(String id) async {
     final url = Uri.parse("$apiContactOrganDetail$id");
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     return ContactListItems.fromJson(jsonDecode(response.body));
   }
 

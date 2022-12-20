@@ -70,7 +70,14 @@ const kDarkBlueChart = Color(0xFF3701AA);
 const kDarkGreenChart = Color(0xFF005837);
 const kGreenChart = Color(0xFF28a745);
 
-Map<String, String> headers = {"Content-type": "application/json"};
+final loginViewModel = Get.put(LoginViewModel());
+String tokenIOC = loginViewModel.rxAccessTokenIoc.value;
+Map<String,String> headers = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json',
+  'Authorization': 'Bearer $tokenIOC',
+};
+//Map<String, String> headers = {"Content-type": "application/json"};
 //string
 
 //list
@@ -135,7 +142,7 @@ const String keyTokenIOC = "tokenIOC";
 
 //
 final DatePickerController menuController = Get.put(DatePickerController());
-final loginViewModel = Get.put(LoginViewModel());
+
 
 void loadDataByRangeDay(
     GetxController viewModel, String fromDate, String toDate) {

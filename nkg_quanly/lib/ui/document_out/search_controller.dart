@@ -528,7 +528,7 @@ class SearchController extends GetxController {
   Future<void> searchGuideLine(String keyword) async {
     var url = Uri.parse(
         "http://123.31.31.237:6002/api/guidelines/search?Keyword=$keyword&PageIndex=1&PageSize=10");
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     GuidelineModel groupWorkBookModel =
         GuidelineModel.fromJson(jsonDecode(response.body));
     rxListGuideline.value = groupWorkBookModel.items!;
@@ -541,7 +541,7 @@ class SearchController extends GetxController {
         page++;
         url = Uri.parse(
             "http://123.31.31.237:6002/api/guidelines/search?Keyword=$keyword&PageIndex=$page&PageSize=10");
-        http.Response response = await http.get(url);
+        http.Response response = await http.get(url,headers: headers);
         groupWorkBookModel = GuidelineModel.fromJson(jsonDecode(response.body));
         rxListGuideline.addAll(groupWorkBookModel.items!);
       }

@@ -48,7 +48,7 @@ class ProfilesProcedureViewModel extends GetxController {
   Future<void> getFilterForChart(String url) async {
     rxDocumentFilterModel.refresh();
     print('loading');
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url),headers: headers);
     DocumentFilterModel documentFilterModel =
     DocumentFilterModel.fromJson(jsonDecode(response.body));
 
@@ -122,7 +122,7 @@ class ProfilesProcedureViewModel extends GetxController {
 
   Future<ProfileProcedureListItems> getProfileProcDetail(String id) async {
     final url = Uri.parse("$apiPostProfileProcedureDetail$id");
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     return ProfileProcedureListItems.fromJson(jsonDecode(response.body));
   }
 

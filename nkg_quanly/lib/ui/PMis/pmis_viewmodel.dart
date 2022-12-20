@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 
+import '../../const/const.dart';
 import '../../const/utils.dart';
 import '../../model/pmis_model/pmis_chart_model.dart';
 import '../../model/pmis_model/statistic_total.dart';
@@ -35,7 +36,7 @@ class PmisViewModel extends GetxController {
   Future<void> getUnitPmis() async {
     final url = Uri.parse(apiPmisGetUnit);
 
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     var listUnit = <PmisUnitModel>[];
     List a = json.decode(response.body) as List;
     listUnit = a.map((e) => PmisUnitModel.fromJson(e)).toList();
@@ -80,7 +81,7 @@ class PmisViewModel extends GetxController {
        url = Uri.parse("$apiStatisticTotal?unit=$unitId");
     }
 
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
 
     StatisticModel pmisStatisticModel =
         StatisticModel.fromJson(json.decode(response.body));
@@ -103,7 +104,7 @@ class PmisViewModel extends GetxController {
       url = Uri.parse("$apiPmisPieChart?unit=$unitId");
     }
     print('$url');
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
 
     var listUnit = <PmisChartModel>[];
     List a = json.decode(response.body) as List;
@@ -133,7 +134,7 @@ class PmisViewModel extends GetxController {
   Future<void> getPmisPieChartByYear() async {
     final url = Uri.parse(apiPmisPieChartByYear);
     print('loading');
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     var listUnit = <PmisChartModel>[];
     List a = json.decode(response.body) as List;
     listUnit = a.map((e) => PmisChartModel.fromJson(e)).toList();
@@ -142,7 +143,7 @@ class PmisViewModel extends GetxController {
   Future<void> getPmisPieChartByUnit() async {
     final url = Uri.parse(apiPmisPieChartByUnit);
     print('loading');
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     //print(response.body);
     var listUnit = <PmisChartModel>[];
     List a = json.decode(response.body) as List;

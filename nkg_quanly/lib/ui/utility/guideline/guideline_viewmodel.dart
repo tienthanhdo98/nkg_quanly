@@ -25,7 +25,7 @@ class GuildlineViewModel extends GetxController {
   Future<void> getGuidelineList() async {
     var url = Uri.parse(getGuideline);
     print('loading');
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     
     guidelineModel =  GuidelineModel.fromJson(jsonDecode(response.body));
     rxGuideLineListItems.value = guidelineModel.items!;
@@ -36,7 +36,7 @@ class GuildlineViewModel extends GetxController {
         page++;
         var url = Uri.parse("http://123.31.31.237:6002/api/guidelines/search?Keyword=%20&PageIndex=$page");
         http.Response response =
-        await http.get(url);
+        await http.get(url,headers: headers);
         guidelineModel =  GuidelineModel.fromJson(jsonDecode(response.body));
         rxGuideLineListItems.addAll(guidelineModel.items!);
         print("loadmore day at $page");

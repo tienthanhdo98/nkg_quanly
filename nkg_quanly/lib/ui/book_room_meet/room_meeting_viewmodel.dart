@@ -89,7 +89,7 @@ class RoomMeetingViewModel extends GetxController {
 
   Future<MeetingRoomItems> getRoomMeetingDetail(int id) async {
     final url = Uri.parse("${apiGetMeetingDetail}id=$id");
-    http.Response response = await http.get(url);
+    http.Response response = await http.get(url,headers: headers);
     return MeetingRoomItems.fromJson(jsonDecode(response.body));
   }
 

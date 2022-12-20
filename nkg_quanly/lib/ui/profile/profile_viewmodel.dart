@@ -22,7 +22,7 @@ class ProfileViewModel extends GetxController {
 
   Future<void> getFilterForChart(String url) async {
 
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url),headers: headers);
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
     
@@ -95,7 +95,7 @@ class ProfileViewModel extends GetxController {
 
   Future<void> getFilterSubmissProblem() async {
     http.Response response = await http.get(
-        Uri.parse("http://123.31.31.237:6002/api/profiles/submission-problem"));
+        Uri.parse("http://123.31.31.237:6002/api/profiles/submission-problem"),headers: headers);
 
     List<dynamic> listRes = jsonDecode(response.body);
     List<String> listUnit = listRes.map((e) => e.toString()).toList();
@@ -104,7 +104,7 @@ class ProfileViewModel extends GetxController {
 
   Future<void> getFilterTypeSubmission() async {
     http.Response response = await http.get(
-        Uri.parse("http://123.31.31.237:6002/api/profiles/type-submission"));
+        Uri.parse("http://123.31.31.237:6002/api/profiles/type-submission"),headers: headers);
 
     List<dynamic> listRes = jsonDecode(response.body);
     List<String> listUnit = listRes.map((e) => e.toString()).toList();
@@ -130,7 +130,7 @@ class ProfileViewModel extends GetxController {
   // profile ho so trinh data
   Future<DocumentFilterModel> getQuantityDocumentBuUrl(String url) async {
 
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http.get(Uri.parse(url),headers: headers);
     
     return DocumentFilterModel.fromJson(jsonDecode(response.body));
   }
