@@ -86,14 +86,14 @@ void toUitilityScreen(int type, String? header, String? icon) {
 }
 
 List<MenuListItem> listUtility = [
-  MenuListItem('Lịch âm', 'assets/icons/ic_lunar_cal.png', "", 1),
-  MenuListItem('Hướng dẫn sử dụng', 'assets/icons/ic_hdsd.png', "", 2),
+  MenuListItem('Lịch âm', 'assets/icons/ic_lunar_cal.png', "", 1,""),
+  MenuListItem('Hướng dẫn sử dụng', 'assets/icons/ic_hdsd.png', "", 2,""),
   MenuListItem(
-      'Quản lý DBĐT tổ chức', 'assets/icons/ic_dbdt_tochuc.png', "", 3),
+      'Quản lý DBĐT tổ chức', 'assets/icons/ic_dbdt_tochuc.png', "", 3,""),
   MenuListItem(
-      'Quản lý DBĐT cá nhân', 'assets/icons/ic_dbdt_canhan.png', "", 4),
+      'Quản lý DBĐT cá nhân', 'assets/icons/ic_dbdt_canhan.png', "", 4,""),
   MenuListItem(
-      'Quản lý sổ tay công việc', 'assets/icons/ic_ql_sotay.png', "", 5),
+      'Quản lý sổ tay công việc', 'assets/icons/ic_ql_sotay.png', "", 5,""),
   MenuListItem(
-      'Quản lý nhóm sổ tay CV', 'assets/icons/ic_ql_nhomcv.png', "", 6),
+      'Quản lý nhóm sổ tay CV', 'assets/icons/ic_ql_nhomcv.png', "", 6,""),
 ];

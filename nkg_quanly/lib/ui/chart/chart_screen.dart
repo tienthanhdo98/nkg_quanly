@@ -11,6 +11,7 @@ import '../../const/utils.dart';
 import '../../const/widget.dart';
 import '../home/home_screen.dart';
 import '../home/home_search.dart';
+import '../home/list_all_item_kgs.dart';
 import '../theme/theme_data.dart';
 import 'birthday_widget.dart';
 import 'booking_room_widget.dart';
@@ -183,7 +184,7 @@ class _ChartScreenState extends State<ChartScreen> {
                                     style: styleEleveButtonWidget,
                                     onPressed: () async {
                                       chartViewModel.isShowCase.value = false;
-                                      await chartViewModel.getListWidget(
+                                      await chartViewModel.getListWidgetKgs(
                                           loginViewModel
                                               .rxAccessTokenIoc.value);
                                       setState(() {

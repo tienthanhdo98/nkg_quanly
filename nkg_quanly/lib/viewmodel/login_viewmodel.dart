@@ -145,6 +145,8 @@ class LoginViewModel extends GetxController {
 
   Future<void> getAccessTokenIoc(String username, String email) async {
     var json = '{"email" : "$email","userName":"$username"}';
+    print(email);
+    print(username);
     Map<String, String> headers = {"Content-type": "application/json"};
     http.Response response =
         await http.post(Uri.parse(apiGetSignup), headers: headers, body: json);

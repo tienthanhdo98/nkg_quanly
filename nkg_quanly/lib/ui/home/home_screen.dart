@@ -1,30 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/utils.dart';
-import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
 import 'package:nkg_quanly/ui/document_nonapproved/document_nonapproved_screen.dart';
 import 'package:nkg_quanly/ui/profile/profile_screen.dart';
 import 'package:nkg_quanly/ui/report/report_screen.dart';
 
 import '../../const/const.dart';
+import '../../model/MenuByUserModel.dart';
 import '../../viewmodel/home_viewmodel.dart';
 import '../PMis/PMis_screen.dart';
 import '../analysis_report/analysis_report_menu.dart';
 import '../birthday/birthday_screen.dart';
 import '../book_room_meet/book_meeting_screen.dart';
-import '../book_room_meet/e_office/book_room_e_office_list.dart';
-import '../booking_car/e_office/booking_car_e_office_list.dart';
 import '../calendarwork/e_office/calendar_work_e_office_screen.dart';
 import '../document_out/document_out_list.dart';
 import '../document_unprocess/document_unprocess _screen.dart';
-import '../document_unprocess/e_office/document_in_e_office_list.dart';
 import '../helpdesk/help_desk_screen.dart';
-import '../mission/e_office/mission__e_office_list.dart';
 import '../mission/mission_screen.dart';
-import '../profile/e_office/profile_e_office_list.dart';
 import '../profile_procedure_/profile_procedure_home/profile_procedure_menu_screen.dart';
 import '../profile_procedure_/profiles_procedure_screen.dart';
-import '../profile_work/e_office/profile_work_e_office_list.dart';
 import '../report/report_in_menuhome/report_in_menuhome_list.dart';
 import '../utility/utility_screen.dart';
 import '../workbook/workbook_list.dart';
@@ -50,7 +44,6 @@ class HomeScreen extends GetView {
                     ))),
             width: double.infinity,
             height: 80,
-
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Align(
@@ -69,31 +62,29 @@ class HomeScreen extends GetView {
                 style: Theme.of(context).textTheme.headline2),
           ),
           SizedBox(
-            child: GridView.count(
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                childAspectRatio: 0.9,
+              ),
               physics: const BouncingScrollPhysics(),
-              // Create a grid with 2 columns. If you change the scrollDirection to
-              // horizontal, this produces 2 rows.
-              crossAxisCount: 4,
               shrinkWrap: true,
-              mainAxisSpacing: 15,
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               // Generate 100 widgets that display their index in the List.
-              children: List.generate(listMenuHome.length, (index) {
-                var item = listMenuHome[index];
-                return InkWell(
+              itemCount: homeController.rxListMenuByUser.length,
+              itemBuilder: (BuildContext context, int index){
+                var item = homeController.rxListMenuByUser[index];
+                return  InkWell(
                   onTap: () {
-                    menuToScreen(item.type!, item.title, item.img);
+                    print(item.childrens!.length);
+                    toMenuScreenById(item.id!,item.childrens!);
                   },
                   child: Column(
                     children: [
-                      Image.asset(
-                        item.img!,
-                        width: 50,
-                        height: 50,
-                      ),
+                      getIconMenuWidget(item,index),
                       Flexible(
                         child: Text(
-                          item.title!,
+                          item.name!,
                           style: const TextStyle(fontSize: 12),
                           textAlign: TextAlign.center,
                         ),
@@ -101,7 +92,7 @@ class HomeScreen extends GetView {
                     ],
                   ),
                 );
-              }),
+              },
             ),
           ),
           const Spacer(),
@@ -168,7 +159,7 @@ class HomeScreen extends GetView {
                                     ),
                                   ),
                                 ),
-                            ) : SizedBox.shrink()),
+                            ) : const SizedBox.shrink()),
                           ),
 
 
@@ -185,50 +176,83 @@ class HomeScreen extends GetView {
   }
 }
 
+void toMenuScreenById(String id,List<Childrens> listChildren)
+{
+  var type = listMenuHome.firstWhereOrNull((element) => element.id! == id)?.type!;
+  var img =  listMenuHome.firstWhereOrNull((element) => element.id! == id)?.img!;
+  var title =  listMenuHome.firstWhereOrNull((element) => element.id! == id)?.title!;
+  menuToScreen(
+      type!, title, img,listChildren);
+}
 
+Widget getIconMenuWidget(MenuByUserModel menuItem,int index)
+{
+
+  if (listMenuHome.firstWhereOrNull((element) => element.id! == menuItem.id!) != null)
+  {
+    return Image.asset(
+      listMenuHome.firstWhereOrNull((element) => element.id! == menuItem.id!)!.img!,
+      width: 50,
+      height: 50,
+      fit: BoxFit
+          .cover,
+    );
+  }
+  else
+  {
+    return CachedNetworkImage(
+      width: 50,
+      height: 50,
+      imageUrl:
+      "http://123.31.31.237:8001/${menuItem.icon ?? ""}",
+      imageBuilder:
+          (context,
+          imageProvider) =>
+          Container(
+            decoration:
+            BoxDecoration(
+              image: DecorationImage(
+                  image:
+                  imageProvider,
+                  fit: BoxFit
+                      .cover),
+            ),
+          ),
+      // placeholder: (context, url) => const CircularProgressIndicator(),
+      errorWidget: (context,
+          url,
+          error) =>
+      const Icon(
+          Icons
+              .error),
+    );
+  }
+
+}
 
 class MenuListItem {
   String? title;
   String? img;
   String? url;
   int? type;
+  String? id;
 
-  MenuListItem(this.title, this.img, this.url, this.type);
+  MenuListItem(this.title, this.img, this.url, this.type,this.id);
 }
 
 List<MenuListItem> listMenuHome = [
-  MenuListItem('Không gian số', 'assets/icons/ic_kgs.png', "", 1),
-  MenuListItem('Hệ thống E-Office', 'assets/icons/ic_eoffice.png', "", 2),
-  MenuListItem('Dịch vụ công', 'assets/icons/ic_dichvucong.png', "", 5),
-  MenuListItem('Báo cáo bộ', 'assets/icons/ic_report_bo.png', "", 7),
-  MenuListItem('Thông tin nhân sự', 'assets/icons/ic_pmis.png', "", 3),
-  MenuListItem('Phân tích hiển thị chỉ số', 'assets/icons/ic_phantich.png', "", 6),
-  MenuListItem('Tiện ích', 'assets/icons/ic_tienich.png', "", 8),
-  MenuListItem('Helpdesk', 'assets/icons/ic_helpdesk.png', "", 4),
+  MenuListItem('Không gian số', 'assets/icons/ic_kgs.png', "", 1,"4dc309c9-4091-4032-c2a9-08da96fb114d"),
+  MenuListItem('Hệ thống E-office', 'assets/icons/ic_eoffice.png', "", 2,"097cf497-b374-47ee-957f-08da97870319"),
+  MenuListItem('Dịch vụ công', 'assets/icons/ic_dichvucong.png', "", 5,"c7101788-690f-43df-d4dd-08da9ad94c09"),
+  MenuListItem('Báo cáo bộ', 'assets/icons/ic_report_bo.png', "", 7,"faabab32-2a15-490c-6aaf-08da9ad96ea2"),
+  MenuListItem('Thông tin nhân sự', 'assets/icons/ic_pmis.png', "", 3,"258fda3e-669a-4134-540c-08da9b7bdabe"),
+  MenuListItem('Phân tích hiển thị chỉ số', 'assets/icons/ic_phantich.png', "", 6,"f277e743-cd4b-408b-5400-08da9b7bdabe"),
+  MenuListItem('Tiện ích', 'assets/icons/ic_tienich.png', "", 8,"84849e1f-e7fa-4654-540e-08da9b7bdabe"),
+  MenuListItem('Helpdesk', 'assets/icons/ic_helpdesk.png', "", 4,"a12b42dd-b971-4e31-ac13-08da9bb8bee8"),
 ];
 
-List<MenuListItem> list = [
-  MenuListItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1),
-  MenuListItem('Báo cáo', 'assets/icons/ic_report.png', "", 2),
-  MenuListItem('Văn bản đến chưa xử lý', 'assets/icons/ic_doc.png', "", 3),
-  MenuListItem('Văn bản đến chưa bút phê', 'assets/icons/ic_doc_sign.png', "", 4),
-  MenuListItem('Văn bản đi chờ phát hành', 'assets/icons/ic_doc_push.png', "", 5),
-  MenuListItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 6),
-  MenuListItem('Lịch họp', 'assets/icons/ic_meet.png', "", 7),
-  MenuListItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 8),
-  MenuListItem('Sinh nhật', 'assets/icons/ic_birthday.png', "", 9),
-  MenuListItem('Thủ tục hành chính', 'assets/icons/ic_thutuc_hanhchinh.png', "", 10),
-  MenuListItem('Sổ tay công việc', 'assets/icons/ic_sotay.png', "", 11),
-];
-List<MenuListItem> listEOffice = [
-  MenuListItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1),
-  MenuListItem('Văn bản đến', 'assets/icons/ic_doc_in.png', "", 2),
-  MenuListItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 3),
-  MenuListItem('Hồ sơ công việc', 'assets/icons/ic_hoso_cv.png', "", 4),
-  MenuListItem('Bố trí phòng họp', 'assets/icons/ic_meeting.png', "", 5),
-  MenuListItem('Bố trí và điều động xe ô tô', 'assets/icons/ic_booking_car.png', "", 6),
-  MenuListItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 7),
-];
+
+
 
 void toScreen(int type, String? header, String? icon) {
   switch (type) {
@@ -298,13 +322,13 @@ void toScreen(int type, String? header, String? icon) {
   }
 }
 
-void menuToScreen(int type, String? header, String? icon) {
+void menuToScreen(int type, String? header, String? icon, List<Childrens> listChildren) {
   switch (type) {
     case 1:
       Get.to(() => const ListAllItemKGS());
       break;
     case 2:
-      Get.to(() => const ListAllItemEOffice());
+      Get.to(() => ListAllItemEOffice(listChildren: listChildren,));
       break;
       case 3:
       Get.to(() => PMisScreen());
@@ -327,35 +351,4 @@ void menuToScreen(int type, String? header, String? icon) {
   }
 }
 
-void toScreenEoffice(int type, String? header, String? icon) {
-  switch (type) {
-    case 6:
-      Get.to(() => BookingEOfficeCarList(
-          ));
-      break;
-    case 1:
-      Get.to(() => CalendarWorkEOfficeScreen());
-      break;
-    case 2:
-      Get.to(() => DocumentInEOfficeList(header: header));
-      break;
-    case 3:
-      Get.to(() => ProfileEOfficeList(
 
-          ));
-      break;
-    case 4:
-      Get.to(() => ProfileWorkEOfficeList(
-            header: header,
-          ));
-      break;
-    case 5:
-      Get.to(() => BookRoomEOfficeList(
-          ));
-      break;
-    case 7:
-      Get.to(() => MissionEOfficeList(
-          ));
-      break;
-  }
-}

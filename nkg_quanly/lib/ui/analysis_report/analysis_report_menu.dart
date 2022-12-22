@@ -75,22 +75,22 @@ class AnalysisReportMenu extends StatelessWidget {
 }
 
 List<MenuListItem> listMenuAnalysisReport = [
-  MenuListItem('Phổ cập giáo dục', 'assets/icons/ic_analy_report_1.png', "", 1),
-  MenuListItem('Giáo dục mầm non', 'assets/icons/ic_analy_report_3.png', "", 2),
+  MenuListItem('Phổ cập giáo dục', 'assets/icons/ic_analy_report_1.png', "", 1,""),
+  MenuListItem('Giáo dục mầm non', 'assets/icons/ic_analy_report_3.png', "", 2,""),
   MenuListItem(
-      'Giáo dục tiểu học', 'assets/icons/ic_analy_report_4.png', "", 3),
-  MenuListItem('Giáo dục THCS', 'assets/icons/ic_analy_report_5.png', "", 4),
-  MenuListItem('Giáo dục THPT', 'assets/icons/ic_analy_report_6.png', "", 5),
+      'Giáo dục tiểu học', 'assets/icons/ic_analy_report_4.png', "", 3,""),
+  MenuListItem('Giáo dục THCS', 'assets/icons/ic_analy_report_5.png', "", 4,""),
+  MenuListItem('Giáo dục THPT', 'assets/icons/ic_analy_report_6.png', "", 5,""),
   MenuListItem(
-      'Giáo dục khuyêt tật', 'assets/icons/ic_analy_report_7.png', "", 6),
+      'Giáo dục khuyêt tật', 'assets/icons/ic_analy_report_7.png', "", 6,""),
   MenuListItem(
-      'Giáo dục thường xuyên', 'assets/icons/ic_analy_report_8.png', "", 7),
+      'Giáo dục thường xuyên', 'assets/icons/ic_analy_report_8.png', "", 7,""),
   MenuListItem(
-      'Quản lý chất lượng GD', 'assets/icons/ic_analy_report_9.png', "", 8),
+      'Quản lý chất lượng GD', 'assets/icons/ic_analy_report_9.png', "", 8,""),
   MenuListItem('Hỗ trợ đối tượng chính sách',
-      'assets/icons/ic_analy_report_2.png', "", 9),
+      'assets/icons/ic_analy_report_2.png', "", 9,""),
   MenuListItem(
-      'Báo cáo cơ sở vật chất', 'assets/icons/ic_analy_report_10.png', "", 10),
+      'Báo cáo cơ sở vật chất', 'assets/icons/ic_analy_report_10.png', "", 10,""),
 ];
 
 void toAnalysisReportScreen(int type, String? header, String? icon) {

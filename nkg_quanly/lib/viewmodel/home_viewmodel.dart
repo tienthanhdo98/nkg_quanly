@@ -6,6 +6,7 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/model/document/document_statistic_model.dart';
 
 import '../const/const.dart';
+import '../model/MenuByUserModel.dart';
 import '../model/document_unprocess/document_filter.dart';
 import '../model/weather_model/weather_model.dart';
 
@@ -13,11 +14,13 @@ class HomeViewModel extends GetxController {
   Rx<int> selectedButton = 0.obs;
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   Rx<WeatherModel> rxWeatherModel = WeatherModel().obs;
-
+  RxList<MenuByUserModel> rxListMenuByUser= <MenuByUserModel>[].obs;
   @override
   void onInit() {
+    getListMenuByUser();
     getWeather();
     getFilterForChart(apiGetReportChart0);
+
     super.onInit();
   }
 
@@ -66,5 +69,20 @@ class HomeViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(url),headers: headers);
     
     return DocumentFilterModel.fromJson(jsonDecode(response.body));
+  }
+
+  getListMenuByUser() async {
+    var body = """
+    {
+      "appId": "EDD6E3EA-C4FC-40A1-AE83-EBE84D339D7E"
+     }
+    """;
+    http.Response response = await http.post(Uri.parse(apiGetListMenu),body: body,headers: headers);
+    var listMenu= <MenuByUserModel>[];
+    List a = json.decode(response.body) as List;
+    listMenu = a.map((e) => MenuByUserModel.fromJson(e)).toList();
+    listMenu.removeWhere((element) => element.id == "6fe5fab6-6e02-4c8a-6cd9-08dac87e041c" || element.id == "ec8c1097-fdd0-45e4-6cd8-08dac87e041c" || element.id =="29b38589-cbf7-4d87-fb32-08dac38ca11b" || element.id == "d4cc0019-29be-4286-fb31-08dac48ca11b" );
+    rxListMenuByUser.value = listMenu;
+    print("menu : ${listMenu.length}");
   }
 }

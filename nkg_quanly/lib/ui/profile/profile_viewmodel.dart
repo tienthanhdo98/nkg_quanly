@@ -86,7 +86,7 @@ class ProfileViewModel extends GetxController {
 
   Future<void> getFilterUnitEditor() async {
     http.Response response = await http
-        .get(Uri.parse("http://123.31.31.237:6002/api/profiles/unit-editor"));
+        .get(Uri.parse("http://123.31.31.237:6002/api/profiles/unit-editor"),headers: headers);
 
     List<dynamic> listRes = jsonDecode(response.body);
     List<String> listUnit = listRes.map((e) => e.toString()).toList();

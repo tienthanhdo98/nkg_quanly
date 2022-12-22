@@ -10,6 +10,7 @@ import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/viewmodel/login_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../model/MenuByUserModel.dart';
 import '../../model/event_model/event_model.dart';
 import '../../model/widget_item_model.dart';
 
@@ -17,6 +18,7 @@ import '../../model/widget_item_model.dart';
 class ChartViewModel extends GetxController {
   Rx<EventModel> rxEventDes = EventModel().obs;
   RxList<WidgetItemModel> rxListWidgetItem = <WidgetItemModel>[].obs;
+
   LoginViewModel loginViewModel = Get.find();
   Rx<bool> isShowCase = false.obs;
   Rx<double> positionWidget = 0.0.obs;
@@ -25,6 +27,7 @@ class ChartViewModel extends GetxController {
 
   @override
   void onInit() {
+
     super.onInit();
   }
 
@@ -71,9 +74,9 @@ class ChartViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(apiGetLatestEvent),headers: headers);
     EventModel eventModel = EventModel.fromJson(jsonDecode(response.body));
     rxEventDes.value = eventModel;
-    await getListWidget(token);
+    await getListWidgetKgs(token);
   }
-  getListWidget(String token) async {
+  getListWidgetKgs(String token) async {
     http.Response response = await http.get(Uri.parse(apiGetListWidget),headers: headers);
     var listSearch = <WidgetItemModel>[];
     List a = json.decode(response.body) as List;
@@ -90,4 +93,5 @@ class ChartViewModel extends GetxController {
       }
     }
   }
+
 }
