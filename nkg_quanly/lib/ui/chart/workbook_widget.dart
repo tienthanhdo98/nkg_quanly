@@ -62,7 +62,7 @@ class WorkBookWidget extends GetView {
                     return WorkBookItem(
                         index,
                         workBookViewModel.rxWorkBookListItems[index],
-                        workBookViewModel);
+                        workBookViewModel, []);
                   }) : loadingIcon())),
         ],
       ), context),

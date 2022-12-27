@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:nkg_quanly/const/style.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
+import '../model/MenuByUserModel.dart';
 import '../model/contact_model/department_model.dart';
 import '../model/contact_model/organ_model.dart';
 import 'const.dart';
@@ -16,6 +17,15 @@ export 'package:numberpicker/numberpicker.dart';
 export 'package:url_launcher/url_launcher.dart';
 
 DateTime dateNow = DateTime.now();
+
+bool checkPermission(List<MenuPermissions> list, String code){
+  for (var element in list) {
+    if(element.permission!.code == code){
+      return true;
+    }
+  }
+  return false;
+}
 
 String formatDate(String value) {
   try {

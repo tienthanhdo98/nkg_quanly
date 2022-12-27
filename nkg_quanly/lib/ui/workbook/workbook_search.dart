@@ -131,7 +131,7 @@ Widget searchResultWorkBookWidget(
                 child: WorkBookItem(
                     index,
                     item,
-                    workBookViewModel),
+                    workBookViewModel, []),
               );
             });
       } else {

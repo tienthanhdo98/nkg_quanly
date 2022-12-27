@@ -206,13 +206,14 @@ class Childrens {
     page = json['page'];
     isDecentralization = json['isDecentralization'];
     bullet = json['bullet'];
-    if(menuPermissions != null) {
-      if (json['menuPermissions'] != null) {
-        menuPermissions = <MenuPermissions>[];
-        json['menuPermissions'].forEach((v) {
+    print("element: ${name}");
+    if (json['menuPermissions'] != null) {
+      menuPermissions = <MenuPermissions>[];
+      json['menuPermissions'].forEach((v) {
+        if(v != null){
           menuPermissions!.add(MenuPermissions.fromJson(v));
-        });
-      }
+        }
+      });
     }
     if (json['submenu'] != null) {
       submenu = <MenuByUserModel>[];

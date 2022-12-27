@@ -5,6 +5,7 @@ import 'package:nkg_quanly/ui/utility/group_contacts/update_new_contact_screen.d
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
+import '../../../model/MenuByUserModel.dart';
 import '../../../model/contact_model/contact_model.dart';
 import '../../theme/theme_data.dart';
 import 'add_new_contact_screen.dart';
@@ -13,8 +14,9 @@ import 'organ_contact_search.dart';
 
 class GroupContactsList extends GetView {
   final contactOrganizationViewModel = Get.put(ContactOrganizationViewModel());
+  GroupContactsList({Key? key, this.listMenuPermissions}) : super(key: key);
 
-  GroupContactsList({Key? key}) : super(key: key);
+  List<MenuPermissions>? listMenuPermissions;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,7 @@ class GroupContactsList extends GetView {
                       ),
                     ),
                     const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                    ElevatedButton(
+                    if(checkPermission(listMenuPermissions!, "Add"))ElevatedButton(
                       onPressed: () {
                         Get.to(() => AddNewContactScreen());
                       },
@@ -127,7 +129,7 @@ class GroupContactsList extends GetView {
                       child: GroupContactsItem(
                           index,
                           item,
-                          contactOrganizationViewModel),
+                          contactOrganizationViewModel, listMenuPermissions),
                     );
                   }): loadingIcon())),
         ],
@@ -137,11 +139,12 @@ class GroupContactsList extends GetView {
 }
 
 class GroupContactsItem extends StatelessWidget {
-  GroupContactsItem(this.index, this.docModel, this.contactOrganizationViewModel);
+  GroupContactsItem(this.index, this.docModel, this.contactOrganizationViewModel, this.listMenuPermissions);
 
   final int? index;
   final ContactListItems? docModel;
   final ContactOrganizationViewModel? contactOrganizationViewModel;
+  List<MenuPermissions>? listMenuPermissions;
 
   @override
   Widget build(BuildContext context) {
@@ -172,9 +175,8 @@ class GroupContactsItem extends StatelessWidget {
                       return SizedBox(
                           height: 300,
                           child: ContactsActionBottomSheet(
-                            docModel: docModel,
-                            contactOrganizationViewModel:
-                                contactOrganizationViewModel,
+                            docModel, contactOrganizationViewModel,
+                              listMenuPermissions
                           ));
                     },
                   );
@@ -248,11 +250,11 @@ class GroupContactsItem extends StatelessWidget {
 }
 
 class ContactsActionBottomSheet extends StatelessWidget {
-  const ContactsActionBottomSheet(
-      {Key? key, this.docModel, this.contactOrganizationViewModel})
-      : super(key: key);
+  ContactsActionBottomSheet(this.docModel, this.contactOrganizationViewModel, this.listMenuPermissions);
+
   final ContactListItems? docModel;
   final ContactOrganizationViewModel? contactOrganizationViewModel;
+  final List<MenuPermissions>? listMenuPermissions;
 
   @override
   Widget build(BuildContext context) {
@@ -305,7 +307,7 @@ class ContactsActionBottomSheet extends StatelessWidget {
               const Divider(
                 thickness: 1,
               ),
-              InkWell(
+              if(checkPermission(listMenuPermissions!, "Edit"))InkWell(
                 onTap: () {
                   Get.back();
                   Get.to(() => UpdateNewContactScreen(docModel!));
@@ -331,7 +333,7 @@ class ContactsActionBottomSheet extends StatelessWidget {
               const Divider(
                 thickness: 1,
               ),
-              InkWell(
+    if(checkPermission(listMenuPermissions!, "Delete"))InkWell(
                 onTap: () {
                   Get.back();
                   showModalBottomSheet<void>(

@@ -144,7 +144,7 @@ Widget searchResultOranContactWidget(
                 child: GroupContactsItem(
                     index,
                     item,
-                    contactOrganizationViewModel),
+                    contactOrganizationViewModel, []),
               );
             });
       } else {

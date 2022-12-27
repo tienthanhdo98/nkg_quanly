@@ -8,6 +8,7 @@ import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
+import '../../model/MenuByUserModel.dart';
 import '../../model/workbook/workbook_model.dart';
 import '../theme/theme_data.dart';
 import 'add_new_work_screen.dart';
@@ -15,8 +16,8 @@ import 'add_new_work_screen.dart';
 class WorkBookList extends GetView {
   final workBookViewModel = Get.put(WorkBookViewModel());
 
-  WorkBookList({Key? key}) : super(key: key);
-
+  WorkBookList({Key? key, this.listMenuPermissions}) : super(key: key);
+  List<MenuPermissions>? listMenuPermissions;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,8 +125,8 @@ class WorkBookList extends GetView {
                             style: TextStyle(color: kVioletButton),
                           ),
                         )),
-                    Padding(padding: EdgeInsets.only(right: 10),),
-                    ElevatedButton(
+                    const Padding(padding: EdgeInsets.only(right: 10),),
+                    if(checkPermission(listMenuPermissions!, "Add")) ElevatedButton(
                       onPressed: () {
                         Get.to(() => AddNewWorkScreen());
                       },
@@ -163,7 +164,7 @@ class WorkBookList extends GetView {
                               id: item.id!,
                             ));
                           },
-                          child: WorkBookItem(index, item, workBookViewModel),
+                          child: WorkBookItem(index, item, workBookViewModel, listMenuPermissions),
                         );
                       })
                       : loadingIcon())),
@@ -174,13 +175,14 @@ class WorkBookList extends GetView {
 }
 
 class WorkBookItem extends StatelessWidget {
-  const WorkBookItem(this.index, this.docModel, this.workBookViewModel,
+  const WorkBookItem(this.index, this.docModel, this.workBookViewModel, this.listMenuPermissions,
       {Key? key})
       : super(key: key);
 
   final int? index;
   final WorkBookListItems? docModel;
   final WorkBookViewModel? workBookViewModel;
+  final List<MenuPermissions>? listMenuPermissions;
 
   @override
   Widget build(BuildContext context) {
@@ -213,6 +215,7 @@ class WorkBookItem extends StatelessWidget {
                           child: MenuItemWorkBookSheetBottomSheet(
                             docModel: docModel,
                             workBookViewModel: workBookViewModel,
+                            listMenuPermissions: listMenuPermissions,
                           ));
                     },
                   );
@@ -316,10 +319,11 @@ Widget signWidget(WorkBookListItems docModel) {
 
 class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
   const MenuItemWorkBookSheetBottomSheet(
-      {Key? key, this.docModel, this.workBookViewModel})
+      {Key? key, this.docModel, this.workBookViewModel, this.listMenuPermissions})
       : super(key: key);
   final WorkBookListItems? docModel;
   final WorkBookViewModel? workBookViewModel;
+  final List<MenuPermissions>? listMenuPermissions;
 
   @override
   Widget build(BuildContext context) {
@@ -359,7 +363,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
               const Divider(
                 thickness: 1,
               ),
-              InkWell(
+              if(checkPermission(listMenuPermissions!, "Edit")) InkWell(
                 onTap: () {
                   Get.back();
                   Get.to(() => UpdateWorkBookScreen(docModel!));
@@ -385,7 +389,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
               const Divider(
                 thickness: 1,
               ),
-              InkWell(
+              if(checkPermission(listMenuPermissions!, "Delete"))InkWell(
                 onTap: () {
                   Get.back();
                   showModalBottomSheet<void>(

@@ -161,8 +161,6 @@ class HomeScreen extends GetView {
                                 ),
                             ) : const SizedBox.shrink()),
                           ),
-
-
                         ],
                       )),
                 ),
@@ -187,7 +185,6 @@ void toMenuScreenById(String id,List<Childrens> listChildren)
 
 Widget getIconMenuWidget(MenuByUserModel menuItem,int index)
 {
-
   if (listMenuHome.firstWhereOrNull((element) => element.id! == menuItem.id!) != null)
   {
     return Image.asset(
@@ -227,7 +224,6 @@ Widget getIconMenuWidget(MenuByUserModel menuItem,int index)
               .error),
     );
   }
-
 }
 
 class MenuListItem {
@@ -250,9 +246,6 @@ List<MenuListItem> listMenuHome = [
   MenuListItem('Tiện ích', 'assets/icons/ic_tienich.png', "", 8,"84849e1f-e7fa-4654-540e-08da9b7bdabe"),
   MenuListItem('Helpdesk', 'assets/icons/ic_helpdesk.png', "", 4,"a12b42dd-b971-4e31-ac13-08da9bb8bee8"),
 ];
-
-
-
 
 void toScreen(int type, String? header, String? icon) {
   switch (type) {
@@ -337,16 +330,16 @@ void menuToScreen(int type, String? header, String? icon, List<Childrens> listCh
       Get.to(() => HelpDeskScreen(header: header,icon : icon));
       break;
       case 5:
-      Get.to(() => ProfileProcMenuScreen());
+      Get.to(() => ProfileProcMenuScreen(listChildren: listChildren));
       break;
       case 6:
-      Get.to(() => AnalysisReportMenu());
+      Get.to(() => AnalysisReportMenu(listChildren: listChildren));
       break;
       case 7:
       Get.to(() =>  ReportInMenuHomeList());
       break;
       case 8:
-      Get.to(() => const UtilityScreen());
+      Get.to(() => UtilityScreen(listChildren: listChildren));
       break;
   }
 }

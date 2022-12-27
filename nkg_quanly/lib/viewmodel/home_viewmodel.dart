@@ -33,7 +33,7 @@ class HomeViewModel extends GetxController {
         'http://123.31.31.237:6002/api/weather?Lat=21.028511&Lon=105.804817';
     print('loading');
     http.Response response = await http.get(Uri.parse(url),headers: headers);
-    
+
     WeatherModel weatherModel =
         WeatherModel.fromJson(jsonDecode(response.body));
     rxWeatherModel.value = weatherModel;
@@ -46,7 +46,7 @@ class HomeViewModel extends GetxController {
     http.Response response = await http.get(Uri.parse(url),headers: headers);
     DocumentFilterModel documentFilterModel =
         DocumentFilterModel.fromJson(jsonDecode(response.body));
-    
+
     rxDocumentFilterModel.update((val) {
       val!.totalRecords = documentFilterModel.totalRecords;
       val.items = documentFilterModel.items;
@@ -59,7 +59,7 @@ class HomeViewModel extends GetxController {
     final url = Uri.parse(apiGetDocumentStatistic);
     print('loading');
     http.Response response = await http.get(url,headers: headers);
-    
+
     return DocumentStatisticModel.fromJson(jsonDecode(response.body));
   }
 
@@ -67,7 +67,7 @@ class HomeViewModel extends GetxController {
   Future<DocumentFilterModel> getQuantityDocumentBuUrl(String url) async {
     print('loading');
     http.Response response = await http.get(Uri.parse(url),headers: headers);
-    
+
     return DocumentFilterModel.fromJson(jsonDecode(response.body));
   }
 
@@ -80,9 +80,24 @@ class HomeViewModel extends GetxController {
     http.Response response = await http.post(Uri.parse(apiGetListMenu),body: body,headers: headers);
     var listMenu= <MenuByUserModel>[];
     List a = json.decode(response.body) as List;
-    listMenu = a.map((e) => MenuByUserModel.fromJson(e)).toList();
+    // for (var element in a) {
+    //   if(element["childrens"].isNotEmpty){
+    //     for(var e2 in element["childrens"]){
+    //       for(int i = 0; i< e2["menuPermissions"].length; i++) {
+    //         if(e2["menuPermissions"][i] == null){
+    //           e2["menuPermissions"].removeAt(i);
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+    listMenu = a.map((e){
+      // print("element: ${e}");
+      return MenuByUserModel.fromJson(e);
+    }).toList();
+
     listMenu.removeWhere((element) => element.id == "6fe5fab6-6e02-4c8a-6cd9-08dac87e041c" || element.id == "ec8c1097-fdd0-45e4-6cd8-08dac87e041c" || element.id =="29b38589-cbf7-4d87-fb32-08dac38ca11b" || element.id == "d4cc0019-29be-4286-fb31-08dac48ca11b" );
+
     rxListMenuByUser.value = listMenu;
-    print("menu : ${listMenu.length}");
   }
 }
