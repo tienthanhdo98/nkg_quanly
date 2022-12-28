@@ -63,7 +63,10 @@ class UtilityScreen extends StatelessWidget {
 
 
 void toUitilityScreenById(String id,  List<MenuPermissions> listMenuPermissions) {
-  var type = listUtility.firstWhereOrNull((element) => element.id! == id)?.type!;
+  print(id);
+  var id2 = listUtility.firstWhereOrNull((element) => element.id! == id )!.id!;
+  print(id2);
+  var type = listUtility.firstWhereOrNull((element) => element.id! == id )?.type!;
   var img = listUtility.firstWhereOrNull((element) => element.id! == id)?.img!;
   var title = listUtility.firstWhereOrNull((element) => element.id! == id)?.title!;
   toUitilityScreen(type!, title, img, listMenuPermissions);

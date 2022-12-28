@@ -149,7 +149,7 @@ class Childrens {
   bool? root;
   String? svg;
   String? page;
-  Null? isDecentralization;
+  dynamic isDecentralization;
   String? bullet;
   List<MenuPermissions>? menuPermissions;
   List<MenuByUserModel>? submenu;
