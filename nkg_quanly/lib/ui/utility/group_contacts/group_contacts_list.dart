@@ -305,76 +305,88 @@ class ContactsActionBottomSheet extends StatelessWidget {
                   ),
                 ),
               ),
-              const Divider(
-                thickness: 1,
-              ),
-              if(checkPermission(listMenuPermissions!, "Edit"))InkWell(
-                onTap: () {
-                  Get.back();
-                  Get.to(() => UpdateNewContactScreen(docModel!));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "assets/icons/ic_modify.png",
-                        height: 20,
-                        width: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      ),
-                      Text("Chỉnh sửa liên hệ",
-                          style: Theme.of(context).textTheme.headline3)
-                    ],
+
+              if(checkPermission(listMenuPermissions!, "Edit"))Column(
+                children: [
+                  const Divider(
+                    thickness: 1,
                   ),
-                ),
-              ),
-              const Divider(
-                thickness: 1,
-              ),
-           if(checkPermission(listMenuPermissions!, "Delete"))InkWell(
-                onTap: () {
-                  Get.back();
-                  showModalBottomSheet<void>(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                      Get.to(() => UpdateNewContactScreen(docModel!));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/icons/ic_modify.png",
+                            height: 20,
+                            width: 20,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          ),
+                          Text("Chỉnh sửa liên hệ",
+                              style: Theme.of(context).textTheme.headline3)
+                        ],
                       ),
                     ),
-                    isScrollControlled: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SizedBox(
-                          height: 300,
-                          child: DeleteContactSheetBottomSheet(
-                            docModel: docModel,
-                            contactOrganizationViewModel:
-                                contactOrganizationViewModel,
-                          ));
-                    },
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "assets/icons/ic_trash_del.png",
-                        height: 20,
-                        width: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      ),
-                      Text("Xóa liên hệ",
-                          style: Theme.of(context).textTheme.headline3)
-                    ],
                   ),
-                ),
-              )
+                ],
+              ),
+
+           if(checkPermission(listMenuPermissions!, "Delete"))
+
+             Column(
+               children: [
+                 const Divider(
+                   thickness: 1,
+                 ),
+                 InkWell(
+                    onTap: () {
+                      Get.back();
+                      showModalBottomSheet<void>(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        isScrollControlled: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SizedBox(
+                              height: 300,
+                              child: DeleteContactSheetBottomSheet(
+                                docModel: docModel,
+                                contactOrganizationViewModel:
+                                    contactOrganizationViewModel,
+                              ));
+                        },
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/icons/ic_trash_del.png",
+                            height: 20,
+                            width: 20,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          ),
+                          Text("Xóa liên hệ",
+                              style: Theme.of(context).textTheme.headline3)
+                        ],
+                      ),
+                    ),
+                  ),
+               ],
+             )
             ],
           )),
     );

@@ -5,6 +5,7 @@ import 'package:nkg_quanly/ui/utility/group_workbook/workbook_detail.dart';
 
 import '../../../const/const.dart';
 import '../../../const/widget.dart';
+import '../../../model/MenuByUserModel.dart';
 import 'group_workbook_list.dart';
 import 'group_workbook_viewmodel.dart';
 
@@ -13,8 +14,8 @@ import 'group_workbook_viewmodel.dart';
 class GroupWorkbookSearch  extends GetView {
 
   final searchController = Get.put(SearchController());
-
-  GroupWorkbookSearch(this.groupWorkBookViewModel ,{Key? key})
+  List<MenuPermissions>? listMenuPermissions;
+  GroupWorkbookSearch(this.groupWorkBookViewModel ,this.listMenuPermissions,{Key? key})
       : super(key: key);
     final GroupWorkBookViewModel groupWorkBookViewModel;
   @override
@@ -103,7 +104,7 @@ class GroupWorkbookSearch  extends GetView {
                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: SizedBox(
                       height: 200,
-                      child: Obx(() => searchResultGroupWorkBooktWidget(searchController,groupWorkBookViewModel)),
+                      child: Obx(() => searchResultGroupWorkBooktWidget(searchController,groupWorkBookViewModel,listMenuPermissions)),
                     ),
                   ),
                 ),
@@ -116,7 +117,7 @@ class GroupWorkbookSearch  extends GetView {
   }
 }
 Widget searchResultGroupWorkBooktWidget(
-    SearchController searchController,GroupWorkBookViewModel groupWorkBookViewModel) {
+    SearchController searchController,GroupWorkBookViewModel groupWorkBookViewModel, List<MenuPermissions>? listMenuPermissions) {
   if (searchController.isHaveData.value == true) {
     if (searchController.isLoading.value == false) {
       if (searchController.rxListGroupWorkBookItems.isNotEmpty) {
@@ -129,12 +130,13 @@ Widget searchResultGroupWorkBooktWidget(
                 onTap: (){
                   Get.to(() => GroupWorkBookDetail(
                     id: item.id!,
+                    listMenuPermissions: listMenuPermissions,
                   ));
                 },
                 child: GroupWorkBookItem(
                     index,
                     item,
-                    groupWorkBookViewModel),
+                    groupWorkBookViewModel,listMenuPermissions),
               );
             });
       } else {

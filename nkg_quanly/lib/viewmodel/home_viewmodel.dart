@@ -99,5 +99,6 @@ class HomeViewModel extends GetxController {
     listMenu.removeWhere((element) => element.id == "6fe5fab6-6e02-4c8a-6cd9-08dac87e041c" || element.id == "ec8c1097-fdd0-45e4-6cd8-08dac87e041c" || element.id =="29b38589-cbf7-4d87-fb32-08dac38ca11b" || element.id == "d4cc0019-29be-4286-fb31-08dac48ca11b" );
 
     rxListMenuByUser.value = listMenu;
+    print(listMenu.length);
   }
 }

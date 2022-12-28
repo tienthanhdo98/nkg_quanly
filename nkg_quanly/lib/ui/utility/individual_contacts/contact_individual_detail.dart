@@ -6,6 +6,7 @@ import 'package:nkg_quanly/ui/utility/individual_contacts/update_individual_cont
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
+import '../../../model/MenuByUserModel.dart';
 import '../../../model/contact_model/contact_model.dart';
 import 'contact_individual_viewmodel.dart';
 
@@ -14,8 +15,8 @@ class ContactIndividualDetail extends GetView {
   final String? id;
 
   final contactIndividualViewModel = Get.put(ContactIndividualViewModel());
-
-  ContactIndividualDetail({Key? key, this.id}) : super(key: key);
+  List<MenuPermissions>? listMenuPermissions = [];
+  ContactIndividualDetail({Key? key, this.id,this.listMenuPermissions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +50,18 @@ class ContactIndividualDetail extends GetView {
                                 style: Theme.of(context).textTheme.headline1,
                               ),
                             ),
-                            InkWell(
-                              onTap: () {
-
-                              },
-                              child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Image.asset(
-                                    'assets/icons/ic_trash_del.png',
-                                    width: 20,
-                                    height: 20,
-                                  )),
-                            )
+                            // InkWell(
+                            //   onTap: () {
+                            //
+                            //   },
+                            //   child: Align(
+                            //       alignment: Alignment.centerRight,
+                            //       child: Image.asset(
+                            //         'assets/icons/ic_trash_del.png',
+                            //         width: 20,
+                            //         height: 20,
+                            //       )),
+                            // )
                           ],
                         ),
                       ),
@@ -161,7 +162,7 @@ class ContactIndividualDetail extends GetView {
                                           child: const Text('Đóng')),
                                     ),
                                   ),
-                                  Expanded(
+                                  if(checkPermission(listMenuPermissions!, "Edit")) Expanded(
                                     child: Padding(
                                       padding:
                                           const EdgeInsets.fromLTRB(10, 0, 10, 0),

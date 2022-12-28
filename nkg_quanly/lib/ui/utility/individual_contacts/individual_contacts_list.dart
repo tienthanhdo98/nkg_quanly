@@ -4,6 +4,7 @@ import 'package:nkg_quanly/ui/utility/individual_contacts/update_individual_cont
 import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/widget.dart';
+import '../../../model/MenuByUserModel.dart';
 import '../../../model/contact_model/contact_model.dart';
 import '../../theme/theme_data.dart';
 import 'add_new_contact_screen.dart';
@@ -14,8 +15,9 @@ import 'individual_contact_search.dart';
 class IndividualContactsList extends GetView {
 
   final contactIndividualViewModel = Get.put(ContactIndividualViewModel());
+  IndividualContactsList({Key? key,this.listMenuPermissions}) : super(key: key);
+  List<MenuPermissions>? listMenuPermissions = [];
 
-  IndividualContactsList({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +28,8 @@ class IndividualContactsList extends GetView {
               headerWidgetSearch(
                   "Danh bạ điện tử cá nhân",
                   IndividualContactsSearch(
-                      contactIndividualViewModel
+                      contactIndividualViewModel,
+                      listMenuPermissions
                   ),
                   context),
               //list
@@ -71,7 +74,7 @@ class IndividualContactsList extends GetView {
                           ),
                         ),
                         const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                        ElevatedButton(
+                        if(checkPermission(listMenuPermissions!, "Add")) ElevatedButton(
                           onPressed: () {
                             Get.to(() => AddNewContactScreen());
                           },
@@ -109,12 +112,15 @@ class IndividualContactsList extends GetView {
                           onTap: () {
                             Get.to(() => ContactIndividualDetail(
                               id: item.id!,
+                                listMenuPermissions: listMenuPermissions,
                             ));
                           },
                           child: IndividualContactsItem(
                               index,
                               item,
-                              contactIndividualViewModel),
+                              contactIndividualViewModel,
+                              listMenuPermissions
+                          ),
                         );
                       }) : loadingIcon() )),
             ],
@@ -124,12 +130,12 @@ class IndividualContactsList extends GetView {
 }
 
 class IndividualContactsItem extends StatelessWidget {
-  const IndividualContactsItem(this.index, this.docModel, this.contactIndividualViewModel, {Key? key}) : super(key: key);
+  IndividualContactsItem(this.index, this.docModel, this.contactIndividualViewModel,this.listMenuPermissions, {Key? key}) : super(key: key);
 
   final int? index;
   final ContactListItems? docModel;
   final ContactIndividualViewModel? contactIndividualViewModel;
-
+  List<MenuPermissions>? listMenuPermissions;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -161,7 +167,9 @@ class IndividualContactsItem extends StatelessWidget {
                           child: ContactsActionBottomSheet(
                               docModel: docModel,
                               contactIndividualViewModel:
-                                  contactIndividualViewModel));
+                                  contactIndividualViewModel,
+                          listMenuPermissions: listMenuPermissions,
+                          ));
                     },
                   );
                 },
@@ -234,12 +242,12 @@ class IndividualContactsItem extends StatelessWidget {
 }
 
 class ContactsActionBottomSheet extends StatelessWidget {
-  const ContactsActionBottomSheet(
-      {Key? key, this.docModel, this.contactIndividualViewModel})
+   ContactsActionBottomSheet(
+      {Key? key, this.docModel, this.contactIndividualViewModel,this.listMenuPermissions})
       : super(key: key);
   final ContactListItems? docModel;
   final ContactIndividualViewModel? contactIndividualViewModel;
-
+  List<MenuPermissions>? listMenuPermissions;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -275,75 +283,85 @@ class ContactsActionBottomSheet extends StatelessWidget {
                   ),
                 ),
               ),
-              const Divider(
-                thickness: 1,
-              ),
-              InkWell(
-                onTap: () {
-                  Get.back();
-                  Get.to(() => UpdateIndividualContactScreen(docModel!));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "assets/icons/ic_modify.png",
-                        height: 20,
-                        width: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      ),
-                      Text("Chỉnh sửa liên hệ",
-                          style: Theme.of(context).textTheme.headline3)
-                    ],
+
+              if(checkPermission(listMenuPermissions!, "Edit"))  Column(
+                children: [
+                  const Divider(
+                    thickness: 1,
                   ),
-                ),
-              ),
-              const Divider(
-                thickness: 1,
-              ),
-              InkWell(
-                onTap: () {
-                  Get.back();
-                  showModalBottomSheet<void>(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                      Get.to(() => UpdateIndividualContactScreen(docModel!));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/icons/ic_modify.png",
+                            height: 20,
+                            width: 20,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          ),
+                          Text("Chỉnh sửa liên hệ",
+                              style: Theme.of(context).textTheme.headline3)
+                        ],
                       ),
                     ),
-                    isScrollControlled: true,
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SizedBox(
-                          height: 300,
-                          child: DeleteContactSheetBottomSheet(
-                            docModel: docModel,
-                            contactIndividualViewModel:
-                                contactIndividualViewModel,
-                          ));
-                    },
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "assets/icons/ic_trash_del.png",
-                        height: 20,
-                        width: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      ),
-                      Text("Xóa liên hệ",
-                          style: Theme.of(context).textTheme.headline3)
-                    ],
                   ),
-                ),
+                ],
+              ),
+
+              if(checkPermission(listMenuPermissions!, "Delete")) Column(
+                children: [
+                  const Divider(
+                    thickness: 1,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                      showModalBottomSheet<void>(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        isScrollControlled: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SizedBox(
+                              height: 300,
+                              child: DeleteContactSheetBottomSheet(
+                                docModel: docModel,
+                                contactIndividualViewModel:
+                                    contactIndividualViewModel,
+                              ));
+                        },
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/icons/ic_trash_del.png",
+                            height: 20,
+                            width: 20,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          ),
+                          Text("Xóa liên hệ",
+                              style: Theme.of(context).textTheme.headline3)
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               )
             ],
           )),

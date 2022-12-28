@@ -4,6 +4,7 @@ import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../../const/const.dart';
 import '../../../const/widget.dart';
+import '../../../model/MenuByUserModel.dart';
 import '../individual_contacts/individual_contacts_list.dart';
 import 'contact_individual_detail.dart';
 import 'contact_individual_viewmodel.dart';
@@ -13,9 +14,10 @@ class IndividualContactsSearch  extends GetView {
 
   final searchController = Get.put(SearchController());
 
-  IndividualContactsSearch(this.contactIndividualViewModel,{Key? key})
+  IndividualContactsSearch(this.contactIndividualViewModel,this.listMenuPermissions,{Key? key})
       : super(key: key);
     final ContactIndividualViewModel contactIndividualViewModel;
+  List<MenuPermissions>? listMenuPermissions;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -101,7 +103,7 @@ class IndividualContactsSearch  extends GetView {
                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: SizedBox(
                       height: 200,
-                      child: Obx(() => searchResultIndividualContactWidget(searchController,contactIndividualViewModel)),
+                      child: Obx(() => searchResultIndividualContactWidget(searchController,contactIndividualViewModel,listMenuPermissions)),
                     ),
                   ),
                 ),
@@ -114,7 +116,7 @@ class IndividualContactsSearch  extends GetView {
   }
 }
 Widget searchResultIndividualContactWidget(
-    SearchController searchController,ContactIndividualViewModel contactIndividualViewModel) {
+    SearchController searchController,ContactIndividualViewModel contactIndividualViewModel, List<MenuPermissions>? listMenuPermissions) {
   if (searchController.isHaveData.value == true) {
     if (searchController.isLoading.value == false) {
       if (searchController.rxIndividualContactListItems.isNotEmpty) {
@@ -127,12 +129,13 @@ Widget searchResultIndividualContactWidget(
                 onTap: () {
                   Get.to(() => ContactIndividualDetail(
                     id: item.id!,
+                    listMenuPermissions: listMenuPermissions,
                   ));
                 },
                 child: IndividualContactsItem(
                     index,
                     item,
-                    contactIndividualViewModel),
+                    contactIndividualViewModel,listMenuPermissions),
               );
             });
       } else {

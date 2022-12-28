@@ -162,6 +162,7 @@ class WorkBookList extends GetView {
                           onTap: () {
                             Get.to(() => WorkBookDetail(
                               id: item.id!,
+                              listMenuPermissions: listMenuPermissions,
                             ));
                           },
                           child: WorkBookItem(index, item, workBookViewModel, listMenuPermissions),
@@ -338,6 +339,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
                   Get.back();
                   Get.to(() => WorkBookDetail(
                     id: docModel!.id!,
+                    listMenuPermissions: listMenuPermissions,
                   ));
                 },
                 child: Padding(
@@ -360,73 +362,83 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
                   ),
                 ),
               ),
-              const Divider(
-                thickness: 1,
-              ),
-              if(checkPermission(listMenuPermissions!, "Edit")) InkWell(
-                onTap: () {
-                  Get.back();
-                  Get.to(() => UpdateWorkBookScreen(docModel!));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "assets/icons/ic_modify.png",
-                        height: 20,
-                        width: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      ),
-                      Text("Chỉnh sửa công việc",
-                          style: Theme.of(context).textTheme.headline3)
-                    ],
+
+              if(checkPermission(listMenuPermissions!, "Edit")) Column(
+                children: [
+                  const Divider(
+                    thickness: 1,
                   ),
-                ),
-              ),
-              const Divider(
-                thickness: 1,
-              ),
-              if(checkPermission(listMenuPermissions!, "Delete"))InkWell(
-                onTap: () {
-                  Get.back();
-                  showModalBottomSheet<void>(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                      Get.to(() => UpdateWorkBookScreen(docModel!));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/icons/ic_modify.png",
+                            height: 20,
+                            width: 20,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          ),
+                          Text("Chỉnh sửa công việc",
+                              style: Theme.of(context).textTheme.headline3)
+                        ],
                       ),
                     ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SizedBox(
-                          height: 300,
-                          child: DeleteItemWorkBookSheetBottomSheet(
-                            docModel: docModel,
-                            workBookViewModel: workBookViewModel,
-                          ));
-                    },
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "assets/icons/ic_trash_del.png",
-                        height: 20,
-                        width: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      ),
-                      Text("Xóa công việc",
-                          style: Theme.of(context).textTheme.headline3)
-                    ],
                   ),
-                ),
+                ],
+              ),
+
+              if(checkPermission(listMenuPermissions!, "Delete"))Column(
+                children: [
+                  const Divider(
+                    thickness: 1,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                      showModalBottomSheet<void>(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SizedBox(
+                              height: 300,
+                              child: DeleteItemWorkBookSheetBottomSheet(
+                                docModel: docModel,
+                                workBookViewModel: workBookViewModel,
+                              ));
+                        },
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/icons/ic_trash_del.png",
+                            height: 20,
+                            width: 20,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          ),
+                          Text("Xóa công việc",
+                              style: Theme.of(context).textTheme.headline3)
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               )
             ],
           )),

@@ -115,16 +115,16 @@ void toUitilityScreen(int type, String? header, String? icon, List<MenuPermissio
       Get.to(() => GuidelineList());
       break;
     case 3:
-      Get.to(() => GroupContactsList(listMenuPermissions: []));
+      Get.to(() => GroupContactsList(listMenuPermissions: listMenuPermissions));
       break;
     case 4:
-      Get.to(() => IndividualContactsList());
+      Get.to(() => IndividualContactsList(listMenuPermissions:listMenuPermissions));
       break;
     case 5:
       Get.to(() => WorkBookList(listMenuPermissions: listMenuPermissions));
       break;
     case 6:
-      Get.to(() => GroupWorkBookList());
+      Get.to(() => GroupWorkBookList(listMenuPermissions : listMenuPermissions));
       break;
   }
 }

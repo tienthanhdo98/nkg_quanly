@@ -6,6 +6,8 @@ import 'package:nkg_quanly/ui/utility/group_workbook/workbook_detail.dart';
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
+import '../../../const/utils.dart';
+import '../../../model/MenuByUserModel.dart';
 import '../../../model/group_workbook/group_workbook_model.dart';
 import '../../../model/workbook/workbook_model.dart';
 import '../../theme/theme_data.dart';
@@ -17,7 +19,8 @@ class GroupWorkBookList extends GetView {
 
   final groupWorkBookViewModel = Get.put(GroupWorkBookViewModel());
 
-  GroupWorkBookList({Key? key}) : super(key: key);
+  GroupWorkBookList({Key? key,this.listMenuPermissions}) : super(key: key);
+  List<MenuPermissions>? listMenuPermissions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,8 @@ class GroupWorkBookList extends GetView {
           headerWidgetSearch(
               'Danh sách nhóm công việc',
               GroupWorkbookSearch(
-                  groupWorkBookViewModel
+                  groupWorkBookViewModel,
+                listMenuPermissions
               ),
               context),
           //list
@@ -44,7 +48,7 @@ class GroupWorkBookList extends GetView {
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 ),
-                Expanded(
+                if(checkPermission(listMenuPermissions!, "Add"))   Expanded(
                   child:
                       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     ElevatedButton(
@@ -84,12 +88,13 @@ class GroupWorkBookList extends GetView {
                       onTap: (){
                         Get.to(() => GroupWorkBookDetail(
                           id: item.id!,
+                          listMenuPermissions: listMenuPermissions,
                         ));
                       },
                       child: GroupWorkBookItem(
                           index,
                           item ,
-                          groupWorkBookViewModel),
+                          groupWorkBookViewModel,listMenuPermissions),
                     );
                   }) : loadingIcon())),
         ],
@@ -99,12 +104,12 @@ class GroupWorkBookList extends GetView {
 }
 
 class GroupWorkBookItem extends StatelessWidget {
-  const GroupWorkBookItem(this.index, this.docModel, this.groupWorkBookViewModel);
+   GroupWorkBookItem(this.index, this.docModel, this.groupWorkBookViewModel,this.listMenuPermissions);
 
   final int? index;
   final GroupWorkBookItems? docModel;
   final GroupWorkBookViewModel? groupWorkBookViewModel;
-
+  List<MenuPermissions>? listMenuPermissions = [];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -135,7 +140,7 @@ class GroupWorkBookItem extends StatelessWidget {
                           height: 300,
                           child: MenuItemWorkBookSheetBottomSheet(
                             docModel: docModel,
-                            groupWorkBookViewModel: groupWorkBookViewModel,
+                            groupWorkBookViewModel: groupWorkBookViewModel,listMenuPermissions: listMenuPermissions,
                           ));
                     },
                   );
@@ -192,12 +197,12 @@ Widget signWidget(WorkBookListItems docModel) {
 }
 
 class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
-  const MenuItemWorkBookSheetBottomSheet(
-      {Key? key, this.docModel, this.groupWorkBookViewModel})
+   MenuItemWorkBookSheetBottomSheet(
+      {Key? key, this.docModel, this.groupWorkBookViewModel,this.listMenuPermissions})
       : super(key: key);
   final GroupWorkBookItems? docModel;
   final GroupWorkBookViewModel? groupWorkBookViewModel;
-
+  List<MenuPermissions>? listMenuPermissions = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -211,6 +216,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
                   Get.back();
                   Get.to(() => GroupWorkBookDetail(
                         id: docModel!.id!,
+                    listMenuPermissions: listMenuPermissions,
                       ));
                 },
                 child: Padding(
@@ -233,73 +239,83 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
                   ),
                 ),
               ),
-              const Divider(
-                thickness: 1,
-              ),
-              InkWell(
-                onTap: () {
-                  Get.back();
-                  Get.to(() => UpdateGroupWorkBookScreen(docModel!));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "assets/icons/ic_modify.png",
-                        height: 20,
-                        width: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      ),
-                      Text("Chỉnh sửa nhóm công việc",
-                          style: Theme.of(context).textTheme.headline3)
-                    ],
+
+              if(checkPermission(listMenuPermissions!, "Edit")) Column(
+                children: [
+                  const Divider(
+                    thickness: 1,
                   ),
-                ),
-              ),
-              const Divider(
-                thickness: 1,
-              ),
-              InkWell(
-                onTap: () {
-                  Get.back();
-                  showModalBottomSheet<void>(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                      Get.to(() => UpdateGroupWorkBookScreen(docModel!));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/icons/ic_modify.png",
+                            height: 20,
+                            width: 20,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          ),
+                          Text("Chỉnh sửa nhóm công việc",
+                              style: Theme.of(context).textTheme.headline3)
+                        ],
                       ),
                     ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SizedBox(
-                          height: 300,
-                          child: DeleteItemWorkBookSheetBottomSheet(
-                            docModel: docModel,
-                            groupWorkBookViewModel: groupWorkBookViewModel,
-                          ));
-                    },
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "assets/icons/ic_trash_del.png",
-                        height: 20,
-                        width: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      ),
-                      Text("Xóa nhóm công việc",
-                          style: Theme.of(context).textTheme.headline3)
-                    ],
                   ),
-                ),
+                ],
+              ),
+
+              if(checkPermission(listMenuPermissions!, "Delete")) Column(
+                children: [
+                  const Divider(
+                    thickness: 1,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                      showModalBottomSheet<void>(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SizedBox(
+                              height: 300,
+                              child: DeleteItemWorkBookSheetBottomSheet(
+                                docModel: docModel,
+                                groupWorkBookViewModel: groupWorkBookViewModel,
+                              ));
+                        },
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/icons/ic_trash_del.png",
+                            height: 20,
+                            width: 20,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          ),
+                          Text("Xóa nhóm công việc",
+                              style: Theme.of(context).textTheme.headline3)
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               )
             ],
           )),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nkg_quanly/const/const.dart';
+import 'package:nkg_quanly/model/MenuByUserModel.dart';
 import 'package:nkg_quanly/ui/PMis/PMis_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/analysis_report_education_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_Infrastructure/report_infrastructure_screen.dart';
@@ -41,6 +42,7 @@ import 'package:nkg_quanly/ui/utility/guideline/guildline_list.dart';
 import 'package:nkg_quanly/ui/utility/individual_contacts/individual_contacts_list.dart';
 import 'package:nkg_quanly/ui/utility/lunar_calendar_screen.dart';
 import 'package:nkg_quanly/ui/workbook/workbook_list.dart';
+import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -114,6 +116,11 @@ class MainScreen extends StatefulWidget {
 class MainScreenStage extends State<MainScreen> {
   int _selectedIndex = 0;
   final notificationViewModel = Get.put(NotificationViewModel());
+
+
+
+
+
   static final List<Widget> _widgetOptions = <Widget>[
     ChartScreen(),
     HomeScreen(),
@@ -127,8 +134,11 @@ class MainScreenStage extends State<MainScreen> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       //body
       body: AnnotatedRegion<SystemUiOverlayStyle>(

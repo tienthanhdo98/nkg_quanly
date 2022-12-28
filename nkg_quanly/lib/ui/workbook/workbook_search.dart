@@ -7,14 +7,15 @@ import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
 import '../../../const/const.dart';
 import '../../const/widget.dart';
+import '../../model/MenuByUserModel.dart';
 
 
 
 class WorkbookSearch  extends GetView {
 
   final searchController = Get.put(SearchController());
-
-  WorkbookSearch(this.workBookViewModel,{Key? key})
+  List<MenuPermissions>? listMenuPermissions = [];
+  WorkbookSearch(this.workBookViewModel,{Key? key,this.listMenuPermissions})
       : super(key: key);
     final WorkBookViewModel workBookViewModel;
   @override
@@ -99,7 +100,7 @@ class WorkbookSearch  extends GetView {
                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: SizedBox(
                       height: 200,
-                      child: Obx(() => searchResultWorkBookWidget(searchController,searchController.rxWorkBookListItems,workBookViewModel)),
+                      child: Obx(() => searchResultWorkBookWidget(searchController,searchController.rxWorkBookListItems,workBookViewModel,listMenuPermissions)),
                     ),
                   ),
                 ),
@@ -113,7 +114,7 @@ class WorkbookSearch  extends GetView {
 }
 
 Widget searchResultWorkBookWidget(
-    SearchController searchController, List list,WorkBookViewModel workBookViewModel) {
+    SearchController searchController, List list,WorkBookViewModel workBookViewModel, List<MenuPermissions>? listMenuPermissions) {
   if (searchController.isHaveData.value == true) {
     if (searchController.isLoading.value == false) {
       if (list.isNotEmpty) {
@@ -126,6 +127,7 @@ Widget searchResultWorkBookWidget(
                 onTap: () {
                   Get.to(() => WorkBookDetail(
                     id: item.id!,
+                    listMenuPermissions: listMenuPermissions,
                   ));
                 },
                 child: WorkBookItem(

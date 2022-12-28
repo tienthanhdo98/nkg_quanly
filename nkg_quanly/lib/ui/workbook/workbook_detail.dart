@@ -5,14 +5,16 @@ import 'package:nkg_quanly/ui/workbook/workbook_viewmodel.dart';
 
 import '../../const/const.dart';
 import '../../const/style.dart';
+import '../../const/utils.dart';
+import '../../model/MenuByUserModel.dart';
 import '../../model/workbook/workbook_model.dart';
 
 class WorkBookDetail extends GetView {
   final String? id;
 
   final workBookViewModel = Get.put(WorkBookViewModel());
-
-  WorkBookDetail({Key? key, this.id}) : super(key: key);
+  List<MenuPermissions>? listMenuPermissions = [];
+  WorkBookDetail({Key? key, this.id,this.listMenuPermissions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +148,7 @@ class WorkBookDetail extends GetView {
                                               child: const Text('Đóng')),
                                         ),
                                       ),
-                                      Expanded(
+                                      if(checkPermission(listMenuPermissions!, "Edit")) Expanded(
                                         child: Padding(
                                           padding:
                                               const EdgeInsets.fromLTRB(10, 0, 10, 0),

@@ -4,6 +4,8 @@ import 'package:nkg_quanly/ui/utility/group_workbook/update_group_workbook_scree
 
 import '../../../const/const.dart';
 import '../../../const/style.dart';
+import '../../../const/utils.dart';
+import '../../../model/MenuByUserModel.dart';
 import '../../../model/group_workbook/group_workbook_model.dart';
 import 'group_workbook_viewmodel.dart';
 
@@ -11,8 +13,8 @@ class GroupWorkBookDetail extends GetView {
   final String? id;
 
   final groupWorkBookViewModel = Get.put(GroupWorkBookViewModel());
-
-  GroupWorkBookDetail({Key? key, this.id}) : super(key: key);
+  List<MenuPermissions>? listMenuPermissions = [];
+  GroupWorkBookDetail({Key? key, this.id,this.listMenuPermissions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +97,7 @@ class GroupWorkBookDetail extends GetView {
                                         child: const Text('Đóng')),
                                   ),
                                 ),
-                                Expanded(
+                                if(checkPermission(listMenuPermissions!, "Edit"))  Expanded(
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 0, 10, 0),
