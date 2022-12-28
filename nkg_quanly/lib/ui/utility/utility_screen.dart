@@ -115,7 +115,7 @@ void toUitilityScreen(int type, String? header, String? icon, List<MenuPermissio
       Get.to(() => GuidelineList());
       break;
     case 3:
-      Get.to(() => GroupContactsList(listMenuPermissions: listMenuPermissions));
+      Get.to(() => GroupContactsList(listMenuPermissions: []));
       break;
     case 4:
       Get.to(() => IndividualContactsList());

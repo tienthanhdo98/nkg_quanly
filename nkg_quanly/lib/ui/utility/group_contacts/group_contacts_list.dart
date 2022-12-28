@@ -16,7 +16,7 @@ class GroupContactsList extends GetView {
   final contactOrganizationViewModel = Get.put(ContactOrganizationViewModel());
   GroupContactsList({Key? key, this.listMenuPermissions}) : super(key: key);
 
-  List<MenuPermissions>? listMenuPermissions;
+  List<MenuPermissions>? listMenuPermissions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,8 @@ class GroupContactsList extends GetView {
           headerWidgetSearch(
               "Danh bạ điện tử tổ chức",
               OrganContactsSearch(
-                  contactOrganizationViewModel
+                  contactOrganizationViewModel,
+                  listMenuPermissions
               ),
               context),
           //list
@@ -122,7 +123,7 @@ class GroupContactsList extends GetView {
                             return SizedBox(
                                 height: 400,
                                 child: DetailOrganContactBottomSheet(
-                                    item, contactOrganizationViewModel));
+                                    item, contactOrganizationViewModel,listMenuPermissions,));
                           },
                         );
                       },
@@ -280,7 +281,7 @@ class ContactsActionBottomSheet extends StatelessWidget {
                       return SizedBox(
                           height: 400,
                           child: DetailOrganContactBottomSheet(
-                              docModel, contactOrganizationViewModel));
+                              docModel, contactOrganizationViewModel,listMenuPermissions ));
                     },
                   );
                 },
@@ -333,7 +334,7 @@ class ContactsActionBottomSheet extends StatelessWidget {
               const Divider(
                 thickness: 1,
               ),
-    if(checkPermission(listMenuPermissions!, "Delete"))InkWell(
+           if(checkPermission(listMenuPermissions!, "Delete"))InkWell(
                 onTap: () {
                   Get.back();
                   showModalBottomSheet<void>(
@@ -601,11 +602,12 @@ class FilterContactOrganBottomSheet extends StatelessWidget {
 
 class DetailOrganContactBottomSheet extends StatelessWidget {
   const DetailOrganContactBottomSheet(
-      this.docModel, this.contactOrganizationViewModel,
+      this.docModel, this.contactOrganizationViewModel,this.listMenuPermissions,
       {Key? key})
       : super(key: key);
   final ContactListItems? docModel;
   final ContactOrganizationViewModel? contactOrganizationViewModel;
+  final List<MenuPermissions>? listMenuPermissions;
 
   @override
   Widget build(BuildContext context) {
@@ -722,6 +724,7 @@ class DetailOrganContactBottomSheet extends StatelessWidget {
                         child: const Text('Đóng')),
                   ),
                 ),
+                if(checkPermission(listMenuPermissions!, "Edit"))
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(10),

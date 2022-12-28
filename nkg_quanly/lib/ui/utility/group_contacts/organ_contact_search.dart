@@ -4,6 +4,7 @@ import 'package:nkg_quanly/ui/document_out/search_controller.dart';
 
 import '../../../const/const.dart';
 import '../../../const/widget.dart';
+import '../../../model/MenuByUserModel.dart';
 import 'contact_organization_viewmodel.dart';
 import 'group_contacts_list.dart';
 
@@ -11,10 +12,11 @@ import 'group_contacts_list.dart';
 class OrganContactsSearch  extends GetView {
 
   final searchController = Get.put(SearchController());
-
-  OrganContactsSearch(this.contactOrganizationViewModel,{Key? key})
+  List<MenuPermissions>? listMenuPermissions;
+  OrganContactsSearch(this.contactOrganizationViewModel,this.listMenuPermissions,{Key? key})
       : super(key: key);
     final ContactOrganizationViewModel contactOrganizationViewModel;
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -100,7 +102,7 @@ class OrganContactsSearch  extends GetView {
                     padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
                     child: SizedBox(
                       height: 200,
-                      child: Obx(() => searchResultOranContactWidget(searchController,contactOrganizationViewModel)),
+                      child: Obx(() => searchResultOranContactWidget(searchController,contactOrganizationViewModel,listMenuPermissions)),
                     ),
                   ),
                 ),
@@ -113,7 +115,7 @@ class OrganContactsSearch  extends GetView {
   }
 }
 Widget searchResultOranContactWidget(
-    SearchController searchController,ContactOrganizationViewModel contactOrganizationViewModel) {
+    SearchController searchController,ContactOrganizationViewModel contactOrganizationViewModel, List<MenuPermissions>? listMenuPermissions) {
   if (searchController.isHaveData.value == true) {
     if (searchController.isLoading.value == false) {
       if (searchController.rxGroupContactListItems.isNotEmpty) {
@@ -137,14 +139,14 @@ Widget searchResultOranContactWidget(
                       return SizedBox(
                           height: 400,
                           child: DetailOrganContactBottomSheet(
-                              item, contactOrganizationViewModel));
+                              item, contactOrganizationViewModel,listMenuPermissions));
                     },
                   );
                 },
                 child: GroupContactsItem(
                     index,
                     item,
-                    contactOrganizationViewModel, []),
+                    contactOrganizationViewModel, listMenuPermissions),
               );
             });
       } else {
