@@ -117,7 +117,7 @@ class MainScreenStage extends State<MainScreen> {
   int _selectedIndex = 0;
   final notificationViewModel = Get.put(NotificationViewModel());
 
-
+  final homeController = Get.put(HomeViewModel());
 
 
 

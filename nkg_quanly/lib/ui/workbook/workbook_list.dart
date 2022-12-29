@@ -126,7 +126,7 @@ class WorkBookList extends GetView {
                           ),
                         )),
                     const Padding(padding: EdgeInsets.only(right: 10),),
-                    if(checkPermission(listMenuPermissions!, "Add")) ElevatedButton(
+                    if(checkPermission(listMenuPermissions, "Add")) ElevatedButton(
                       onPressed: () {
                         Get.to(() => AddNewWorkScreen());
                       },
@@ -363,7 +363,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
                 ),
               ),
 
-              if(checkPermission(listMenuPermissions!, "Edit")) Column(
+              if(checkPermission(listMenuPermissions, "Edit")) Column(
                 children: [
                   const Divider(
                     thickness: 1,
@@ -394,7 +394,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
                 ],
               ),
 
-              if(checkPermission(listMenuPermissions!, "Delete"))Column(
+              if(checkPermission(listMenuPermissions, "Delete"))Column(
                 children: [
                   const Divider(
                     thickness: 1,

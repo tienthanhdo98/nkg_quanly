@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../const/const.dart';
 import '../../const/utils.dart';
+import '../../model/MenuByUserModel.dart';
 import '../../model/notification_model/notification_model.dart';
 import '../workbook/workbook_detail.dart';
 import 'notification_viewmodel.dart';
@@ -13,6 +15,8 @@ class NotificationScreen extends GetView {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
+  HomeViewModel homeController = Get.find();
+
   void _onRefresh() async {
     await notificationViewModel.getNotificationList();
     _refreshController.refreshCompleted();
@@ -20,6 +24,8 @@ class NotificationScreen extends GetView {
 
   @override
   Widget build(BuildContext context) {
+    MenuByUserModel? childrenTienIch = homeController.rxListMenuByUser.firstWhereOrNull((element) => element.id == "84849e1f-e7fa-4654-540e-08da9b7bdabe");
+    List<MenuPermissions>? listMenuPermissionWorkbook = childrenTienIch?.childrens?.where((element) => element.id == "b2a7b093-b233-458f-ac14-08da9bb8bee8").first.menuPermissions;
     return Scaffold(
       body: SafeArea(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -76,7 +82,7 @@ class NotificationScreen extends GetView {
                             ),
                           ),
                           const Padding(padding: EdgeInsets.only(right: 5)),
-                          InkWell(
+                           InkWell(
                             onTap: () {
                               String listId = "";
                               notificationViewModel.rxListNotificationItems
@@ -131,6 +137,7 @@ class NotificationScreen extends GetView {
 
                               Get.to(() => WorkBookDetail(
                                     id: item.workbookId!,
+                                listMenuPermissions: listMenuPermissionWorkbook,
                                   ));
                             },
                             child: Container(
@@ -140,7 +147,7 @@ class NotificationScreen extends GetView {
                               child: Column(
                                 children: [
                                   NotificationWidgetItem(
-                                      item, notificationViewModel),
+                                      item, notificationViewModel,listMenuPermissionWorkbook),
                                   const Divider(height: 0.5, thickness: 1)
                                 ],
                               ),
@@ -162,10 +169,10 @@ class NotificationScreen extends GetView {
 }
 
 class NotificationWidgetItem extends StatelessWidget {
-  const NotificationWidgetItem(this.docModel, this.notificationViewModel,
+  NotificationWidgetItem(this.docModel, this.notificationViewModel,this.listMenuPermissions,
       {Key? key})
       : super(key: key);
-
+  List<MenuPermissions>? listMenuPermissions;
   final NotificationItems? docModel;
   final NotificationViewModel? notificationViewModel;
 
@@ -210,7 +217,7 @@ class NotificationWidgetItem extends StatelessWidget {
               ],
             ),
           ),
-          InkWell(
+           InkWell(
               onTap: () async {
                 var id = "\"${docModel!.id!}\"";
 

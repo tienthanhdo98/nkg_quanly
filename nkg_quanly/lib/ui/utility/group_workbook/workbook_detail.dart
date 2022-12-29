@@ -97,7 +97,7 @@ class GroupWorkBookDetail extends GetView {
                                         child: const Text('Đóng')),
                                   ),
                                 ),
-                                if(checkPermission(listMenuPermissions!, "Edit"))  Expanded(
+                                if(checkPermission(listMenuPermissions, "Edit"))  Expanded(
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 0, 10, 0),

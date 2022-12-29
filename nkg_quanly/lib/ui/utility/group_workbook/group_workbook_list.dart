@@ -48,7 +48,7 @@ class GroupWorkBookList extends GetView {
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 ),
-                if(checkPermission(listMenuPermissions!, "Add"))   Expanded(
+                if(checkPermission(listMenuPermissions, "Add"))   Expanded(
                   child:
                       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     ElevatedButton(
@@ -240,7 +240,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
                 ),
               ),
 
-              if(checkPermission(listMenuPermissions!, "Edit")) Column(
+              if(checkPermission(listMenuPermissions, "Edit")) Column(
                 children: [
                   const Divider(
                     thickness: 1,
@@ -271,7 +271,7 @@ class MenuItemWorkBookSheetBottomSheet extends StatelessWidget {
                 ],
               ),
 
-              if(checkPermission(listMenuPermissions!, "Delete")) Column(
+              if(checkPermission(listMenuPermissions, "Delete")) Column(
                 children: [
                   const Divider(
                     thickness: 1,

@@ -81,20 +81,20 @@ class MenuByUserModel {
       if (json['menuPermissions'] != null) {
         menuPermissions = <MenuPermissions>[];
         json['menuPermissions'].forEach((v) {
-          menuPermissions!.add(new MenuPermissions.fromJson(v));
+          menuPermissions!.add(MenuPermissions.fromJson(v));
         });
       }
     }
     if (json['submenu'] != null) {
       submenu = <MenuByUserModel>[];
       json['submenu'].forEach((v) {
-        submenu!.add(new MenuByUserModel.fromJson(v));
+        submenu!.add(MenuByUserModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data['url'] = url;
@@ -207,6 +207,8 @@ class Childrens {
     isDecentralization = json['isDecentralization'];
     bullet = json['bullet'];
     print("element: ${name}");
+    if(menuPermissions != null)
+      {
     if (json['menuPermissions'] != null) {
       menuPermissions = <MenuPermissions>[];
       json['menuPermissions'].forEach((v) {
@@ -214,7 +216,7 @@ class Childrens {
           menuPermissions!.add(MenuPermissions.fromJson(v));
         }
       });
-    }
+    }}
     if (json['submenu'] != null) {
       submenu = <MenuByUserModel>[];
       json['submenu'].forEach((v) {
@@ -224,7 +226,7 @@ class Childrens {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
     data['url'] = url;
@@ -267,13 +269,13 @@ class MenuPermissions {
 
   MenuPermissions.fromJson(Map<String, dynamic> json) {
     permission = json['permission'] != null
-        ? new Permission.fromJson(json['permission'])
+        ? Permission.fromJson(json['permission'])
         : null;
     isGranted = json['isGranted'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (permission != null) {
       data['permission'] = permission!.toJson();
     }
@@ -308,7 +310,7 @@ class Permission {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['code'] = code;
     data['name'] = name;

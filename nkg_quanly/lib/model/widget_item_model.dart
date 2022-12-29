@@ -5,6 +5,7 @@ class WidgetItemModel {
   String? description;
   bool? status;
   String? image;
+  int? orderNumber;
 
   WidgetItemModel(
       {this.id,
@@ -12,7 +13,8 @@ class WidgetItemModel {
         this.name,
         this.description,
         this.status,
-        this.image});
+        this.image,
+        this.orderNumber});
 
   WidgetItemModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -21,16 +23,18 @@ class WidgetItemModel {
     description = json['description'];
     status = json['status'];
     image = json['image'];
+    orderNumber = json['orderNumber'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['code'] = code;
-    data['name'] = name;
-    data['description'] = description;
-    data['status'] = status;
-    data['image'] = image;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['code'] = this.code;
+    data['name'] = this.name;
+    data['description'] = this.description;
+    data['status'] = this.status;
+    data['image'] = this.image;
+    data['orderNumber'] = this.orderNumber;
     return data;
   }
 }

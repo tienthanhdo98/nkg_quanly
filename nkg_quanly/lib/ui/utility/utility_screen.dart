@@ -37,7 +37,7 @@ class UtilityScreen extends StatelessWidget {
               children: List.generate(listChildren.length, (index) {
                 return InkWell(
                   onTap: () {
-                    toUitilityScreenById(listChildren[index].id!, listChildren[index].menuPermissions!);
+                    toUitilityScreenById(listChildren[index].id!, listChildren[index].menuPermissions);
                   },
                   child: Column(
                     children: [
@@ -62,7 +62,7 @@ class UtilityScreen extends StatelessWidget {
 }
 
 
-void toUitilityScreenById(String id,  List<MenuPermissions> listMenuPermissions) {
+void toUitilityScreenById(String id,  List<MenuPermissions>? listMenuPermissions) {
   print(id);
   var id2 = listUtility.firstWhereOrNull((element) => element.id! == id )!.id!;
   print(id2);
@@ -109,7 +109,7 @@ Widget getIconUitilityScreenWidget(Childrens menuItem, int index) {
   }
 }
 
-void toUitilityScreen(int type, String? header, String? icon, List<MenuPermissions> listMenuPermissions) {
+void toUitilityScreen(int type, String? header, String? icon, List<MenuPermissions>? listMenuPermissions) {
   switch (type) {
     case 1:
       Get.to(() => LunarCalendarScreen());

@@ -26,7 +26,7 @@ import 'list_all_item_e_office.dart';
 import 'list_all_item_kgs.dart';
 
 class HomeScreen extends GetView {
-  final homeController = Get.put(HomeViewModel());
+  HomeViewModel homeController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -245,6 +245,21 @@ List<MenuListItem> listMenuHome = [
   MenuListItem('Phân tích hiển thị chỉ số', 'assets/icons/ic_phantich.png', "", 6,"f277e743-cd4b-408b-5400-08da9b7bdabe"),
   MenuListItem('Tiện ích', 'assets/icons/ic_tienich.png', "", 8,"84849e1f-e7fa-4654-540e-08da9b7bdabe"),
   MenuListItem('Helpdesk', 'assets/icons/ic_helpdesk.png', "", 4,"a12b42dd-b971-4e31-ac13-08da9bb8bee8"),
+
+  MenuListItem('Lịch làm việc', 'assets/icons/ic_job.png', "", 1,
+      "e001e3de-0cdf-4e9a-9580-08da97870319"),
+  MenuListItem('Văn bản đến', 'assets/icons/ic_doc_in.png', "", 2,
+      "c58d8dd8-74d2-4abe-9581-08da97870319"),
+  MenuListItem('Hồ sơ trình', 'assets/icons/ic_doc_doc.png', "", 3,
+      "d49797df-e9b1-42ba-9582-08da97870319"),
+  MenuListItem('Hồ sơ công việc', 'assets/icons/ic_hoso_cv.png', "", 4,
+      "a0166eea-e9ed-468c-9583-08da97870319"),
+  MenuListItem('Bố trí phòng họp', 'assets/icons/ic_meeting.png', "", 5,
+      "908e233d-013d-4351-9584-08da97870319"),
+  MenuListItem('Bố trí và điều động xe ô tô', 'assets/icons/ic_booking_car.png',
+      "", 6, "90e22b1b-a263-441b-9585-08da97870319"),
+  MenuListItem('Nhiệm vụ', 'assets/icons/ic_mission.png', "", 7,
+      "2451f554-c887-4874-9586-08da97870319"),
 ];
 
 void toScreen(int type, String? header, String? icon) {

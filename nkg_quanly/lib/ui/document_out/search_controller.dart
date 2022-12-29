@@ -39,7 +39,7 @@ class SearchController extends GetxController {
       <ProfileProcedureListItems>[].obs;
   RxList<DocumentInListItems> listData = <DocumentInListItems>[].obs;
   RxList<HelpDeskListItems> rxHelpdeskListItems = <HelpDeskListItems>[].obs;
-  RxList<MenuListItem> rxListSearchHome = <MenuListItem>[].obs;
+  RxList<String> rxListSearchHome = <String>[].obs;
   Rx<bool> isLoading = false.obs;
   Rx<bool> isHaveData = false.obs;
 

@@ -79,8 +79,11 @@ class ChartViewModel extends GetxController {
   getListWidgetKgs(String token) async {
     http.Response response = await http.get(Uri.parse(apiGetListWidget),headers: headers);
     var listSearch = <WidgetItemModel>[];
-    List a = json.decode(response.body) as List;
+    List a = json.decode(response.body) ;
     listSearch = a.map((e) => WidgetItemModel.fromJson(e)).toList();
+
+
+
     rxListWidgetItem.value = listSearch;
     listBeforeClose.clear();
     for (var element in listSearch) {

@@ -74,7 +74,7 @@ class IndividualContactsList extends GetView {
                           ),
                         ),
                         const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                        if(checkPermission(listMenuPermissions!, "Add")) ElevatedButton(
+                        if(checkPermission(listMenuPermissions, "Add")) ElevatedButton(
                           onPressed: () {
                             Get.to(() => AddNewContactScreen());
                           },
@@ -284,7 +284,7 @@ class ContactsActionBottomSheet extends StatelessWidget {
                 ),
               ),
 
-              if(checkPermission(listMenuPermissions!, "Edit"))  Column(
+              if(checkPermission(listMenuPermissions, "Edit"))  Column(
                 children: [
                   const Divider(
                     thickness: 1,
@@ -315,7 +315,7 @@ class ContactsActionBottomSheet extends StatelessWidget {
                 ],
               ),
 
-              if(checkPermission(listMenuPermissions!, "Delete")) Column(
+              if(checkPermission(listMenuPermissions, "Delete")) Column(
                 children: [
                   const Divider(
                     thickness: 1,

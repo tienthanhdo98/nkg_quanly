@@ -18,11 +18,14 @@ export 'package:url_launcher/url_launcher.dart';
 
 DateTime dateNow = DateTime.now();
 
-bool checkPermission(List<MenuPermissions> list, String code){
-  for (var element in list) {
-    if(element.permission!.code == code){
-      return true;
+bool checkPermission(List<MenuPermissions>? list, String code){
+  if(list != null) {
+    for (var element in list) {
+      if (element.permission!.code == code) {
+        return true;
+      }
     }
+    return false;
   }
   return false;
 }

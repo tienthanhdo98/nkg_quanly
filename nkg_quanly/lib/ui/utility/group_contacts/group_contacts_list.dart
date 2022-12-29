@@ -74,7 +74,7 @@ class GroupContactsList extends GetView {
                       ),
                     ),
                     const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
-                    if(checkPermission(listMenuPermissions!, "Add"))ElevatedButton(
+                    if(checkPermission(listMenuPermissions, "Add"))ElevatedButton(
                       onPressed: () {
                         Get.to(() => AddNewContactScreen());
                       },
@@ -306,7 +306,7 @@ class ContactsActionBottomSheet extends StatelessWidget {
                 ),
               ),
 
-              if(checkPermission(listMenuPermissions!, "Edit"))Column(
+              if(checkPermission(listMenuPermissions, "Edit"))Column(
                 children: [
                   const Divider(
                     thickness: 1,
@@ -337,7 +337,7 @@ class ContactsActionBottomSheet extends StatelessWidget {
                 ],
               ),
 
-           if(checkPermission(listMenuPermissions!, "Delete"))
+           if(checkPermission(listMenuPermissions, "Delete"))
 
              Column(
                children: [
@@ -736,7 +736,7 @@ class DetailOrganContactBottomSheet extends StatelessWidget {
                         child: const Text('Đóng')),
                   ),
                 ),
-                if(checkPermission(listMenuPermissions!, "Edit"))
+                if(checkPermission(listMenuPermissions, "Edit"))
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(10),
