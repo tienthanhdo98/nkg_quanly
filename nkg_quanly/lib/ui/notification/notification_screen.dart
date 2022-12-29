@@ -24,8 +24,8 @@ class NotificationScreen extends GetView {
 
   @override
   Widget build(BuildContext context) {
-    MenuByUserModel? childrenTienIch = homeController.rxListMenuByUser.firstWhereOrNull((element) => element.id == "84849e1f-e7fa-4654-540e-08da9b7bdabe");
-    List<MenuPermissions>? listMenuPermissionWorkbook = childrenTienIch?.childrens?.where((element) => element.id == "b2a7b093-b233-458f-ac14-08da9bb8bee8").first.menuPermissions;
+    MenuByUserModel? childrenTienIch = homeController.rxListMenuByUserRole.firstWhereOrNull((element) => element.id == "84849e1f-e7fa-4654-540e-08da9b7bdabe");
+    List<MenuPermissions>? listMenuPermissionWorkbook = childrenTienIch?.childrens?.firstWhereOrNull((element) => element.id == "b2a7b093-b233-458f-ac14-08da9bb8bee8")?.menuPermissions;
     return Scaffold(
       body: SafeArea(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

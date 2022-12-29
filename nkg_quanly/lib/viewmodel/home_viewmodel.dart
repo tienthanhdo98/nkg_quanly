@@ -14,10 +14,11 @@ class HomeViewModel extends GetxController {
   Rx<int> selectedButton = 0.obs;
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   Rx<WeatherModel> rxWeatherModel = WeatherModel().obs;
-  RxList<MenuByUserModel> rxListMenuByUser= <MenuByUserModel>[].obs;
+  RxList<MenuByUserModel> rxListMenuByUserRole = <MenuByUserModel>[].obs;
+  RxList<MenuByUserModel> rxListMenuByUserForPermission = <MenuByUserModel>[].obs;
   @override
   void onInit() {
-    getListMenuByUser();
+    getListAllMenuByUserRole();
     getWeather();
     getFilterForChart(apiGetReportChart0);
 
@@ -71,26 +72,15 @@ class HomeViewModel extends GetxController {
     return DocumentFilterModel.fromJson(jsonDecode(response.body));
   }
 
-  getListMenuByUser() async {
+  getListAllMenuByUserRole() async {
     var body = """
     {
       "appId": "EDD6E3EA-C4FC-40A1-AE83-EBE84D339D7E"
      }
     """;
-    http.Response response = await http.post(Uri.parse(apiGetListMenu),body: body,headers: headers);
+    http.Response response = await http.post(Uri.parse(apiGetAllListMenu),body: body,headers: headers);
     var listMenu= <MenuByUserModel>[];
     List a = json.decode(response.body) as List;
-    // for (var element in a) {
-    //   if(element["childrens"].isNotEmpty){
-    //     for(var e2 in element["childrens"]){
-    //       for(int i = 0; i< e2["menuPermissions"].length; i++) {
-    //         if(e2["menuPermissions"][i] == null){
-    //           e2["menuPermissions"].removeAt(i);
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
     listMenu = a.map((e){
       // print("element: ${e}");
       return MenuByUserModel.fromJson(e);
@@ -98,7 +88,8 @@ class HomeViewModel extends GetxController {
 
     listMenu.removeWhere((element) => element.id == "6fe5fab6-6e02-4c8a-6cd9-08dac87e041c" || element.id == "ec8c1097-fdd0-45e4-6cd8-08dac87e041c" || element.id =="29b38589-cbf7-4d87-fb32-08dac38ca11b" || element.id == "d4cc0019-29be-4286-fb31-08dac48ca11b" );
 
-    rxListMenuByUser.value = listMenu;
+    rxListMenuByUserRole.value = listMenu;
     print("list menu ${listMenu.length}");
   }
+
 }

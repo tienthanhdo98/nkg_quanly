@@ -18,6 +18,7 @@ class WorkBookList extends GetView {
 
   WorkBookList({Key? key, this.listMenuPermissions}) : super(key: key);
   List<MenuPermissions>? listMenuPermissions;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

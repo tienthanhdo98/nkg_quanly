@@ -207,8 +207,7 @@ class Childrens {
     isDecentralization = json['isDecentralization'];
     bullet = json['bullet'];
     print("element: ${name}");
-    if(menuPermissions != null)
-      {
+
     if (json['menuPermissions'] != null) {
       menuPermissions = <MenuPermissions>[];
       json['menuPermissions'].forEach((v) {
@@ -216,7 +215,7 @@ class Childrens {
           menuPermissions!.add(MenuPermissions.fromJson(v));
         }
       });
-    }}
+    }
     if (json['submenu'] != null) {
       submenu = <MenuByUserModel>[];
       json['submenu'].forEach((v) {

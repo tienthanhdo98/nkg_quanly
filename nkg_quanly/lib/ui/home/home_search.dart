@@ -11,6 +11,8 @@ class HomeSearch extends GetView {
   final searchController = Get.put(SearchController());
   HomeViewModel homeController = Get.find();
 
+  HomeSearch({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var listMenu = getListMenuSearch(homeController);
@@ -66,7 +68,7 @@ class HomeSearch extends GetView {
 
                                   onChanged: (value) {
                                     //print(value);
-                                    searchByKeywork(value, searchController,listMenu);
+                                    searchByKeyword(value, searchController,listMenu);
                                   },
                                 ),
                               )
@@ -111,10 +113,10 @@ class HomeSearch extends GetView {
   }
 }
 
-void searchByKeywork(String keywork, SearchController searchController,List<String> listMenu) {
+void searchByKeyword(String keyword, SearchController searchController,List<String> listMenu) {
   List<String> listResult = [];
   listMenu.forEach((element) {
-    if (element.toLowerCase().contains(keywork.toLowerCase())) {
+    if (element.toLowerCase().contains(keyword.toLowerCase())) {
       listResult.add(element);
     }
   });
@@ -124,7 +126,7 @@ void searchByKeywork(String keywork, SearchController searchController,List<Stri
 List<String> getListMenuSearch(HomeViewModel homeViewModel)
 {
   List<String> listTitleMenu = [];
-  List<MenuByUserModel> listMenu = homeViewModel.rxListMenuByUser;
+  List<MenuByUserModel> listMenu = homeViewModel.rxListMenuByUserRole;
   for (var element in listMenu) {
     listTitleMenu.add(element.name!);
     for (var elementChildren in element.childrens!) {

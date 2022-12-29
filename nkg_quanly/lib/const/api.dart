@@ -218,7 +218,8 @@ const apiLogoutSSO = "https://dangnhap.moet.gov.vn/oidc/logout";
 const apiGetLatestEvent = "http://123.31.31.237:6002/api/events/event-latest";
 //list widget by user
 const apiGetListWidget = "http://123.31.31.237:6002/api/widget/get-by-user-role";
-const apiGetListMenu = "http://123.31.31.237:6002/api/menus/get-by-user-role";
+const apiGetAllListMenu = "http://123.31.31.237:6002/api/menus/get-by-user-role";
+
 //notification
 const apiPostGetNotificationList =
     'http://123.31.31.237:6002/api/notifications/search';

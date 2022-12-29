@@ -71,9 +71,9 @@ class HomeScreen extends GetView {
               shrinkWrap: true,
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               // Generate 100 widgets that display their index in the List.
-              itemCount: homeController.rxListMenuByUser.length,
+              itemCount: homeController.rxListMenuByUserRole.length,
               itemBuilder: (BuildContext context, int index){
-                var item = homeController.rxListMenuByUser[index];
+                var item = homeController.rxListMenuByUserRole[index];
                 return  InkWell(
                   onTap: () {
                     print(item.childrens!.length);

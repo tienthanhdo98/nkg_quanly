@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../const/const.dart';
 import '../../const/utils.dart';
 import '../../model/MenuByUserModel.dart';
+import '../../viewmodel/home_viewmodel.dart';
 import '../home/home_screen.dart';
 import '../workbook/workbook_list.dart';
 import 'group_contacts/group_contacts_list.dart';
@@ -35,6 +36,7 @@ class UtilityScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               // Generate 100 widgets that display their index in the List.
               children: List.generate(listChildren.length, (index) {
+                var item = listChildren[index];
                 return InkWell(
                   onTap: () {
                     toUitilityScreenById(listChildren[index].id!, listChildren[index].menuPermissions);
@@ -62,14 +64,14 @@ class UtilityScreen extends StatelessWidget {
 }
 
 
-void toUitilityScreenById(String id,  List<MenuPermissions>? listMenuPermissions) {
+void toUitilityScreenById(String id, List<MenuPermissions>? listMenuPermissions) {
   print(id);
   var id2 = listUtility.firstWhereOrNull((element) => element.id! == id )!.id!;
   print(id2);
   var type = listUtility.firstWhereOrNull((element) => element.id! == id )?.type!;
   var img = listUtility.firstWhereOrNull((element) => element.id! == id)?.img!;
   var title = listUtility.firstWhereOrNull((element) => element.id! == id)?.title!;
-  toUitilityScreen(type!, title, img, listMenuPermissions);
+  toUitilityScreen(type!, title, img, id,listMenuPermissions);
 }
 
 Widget getIconUitilityScreenWidget(Childrens menuItem, int index) {
@@ -109,7 +111,7 @@ Widget getIconUitilityScreenWidget(Childrens menuItem, int index) {
   }
 }
 
-void toUitilityScreen(int type, String? header, String? icon, List<MenuPermissions>? listMenuPermissions) {
+void toUitilityScreen(int type, String? header, String? icon, String id, List<MenuPermissions>? listMenuPermissions) {
   switch (type) {
     case 1:
       Get.to(() => LunarCalendarScreen());
@@ -145,3 +147,10 @@ List<MenuListItem> listUtility = [
   MenuListItem(
       'Quản lý nhóm sổ tay CV', 'assets/icons/ic_ql_nhomcv.png', "", 6,"bad3efae-1cc6-40ca-8655-08da9d04724c"),
 ];
+
+void getListMenuPermissionByIdMenu(String widgetId,String menuId,HomeViewModel homeViewModel)
+{
+  // MenuByUserModel? childrenTienIch = homeViewModel.rxListMenuByUser.firstWhereOrNull((element) => element.id == menuId);
+  // List<MenuPermissions>? listMenuPermission = childrenTienIch?.childrens?.where((element) => element.id == widgetId).first.menuPermissions;
+  // print(listMenuPermission);
+}
