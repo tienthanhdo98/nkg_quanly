@@ -125,7 +125,7 @@ class SettingScreen extends StatelessWidget {
                                   print("rxAccessToken ${loginViewModel.rxAccessTokenSSO.value}");
                                   print("rxAccessTokenIoc ${loginViewModel.rxAccessTokenIoc.value}");
                                   loginViewModel.changeValueLoading(true);
-                                  Get.off(() => LoginScreen(isLogout: true,));
+                                  Get.off(() => const LoginScreen(isLogout: true,));
                                 },
                                 child: Padding(
                                   padding:

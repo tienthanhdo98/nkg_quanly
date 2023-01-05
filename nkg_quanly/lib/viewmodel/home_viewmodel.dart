@@ -73,9 +73,22 @@ class HomeViewModel extends GetxController {
   }
 
   getListAllMenuByUserRole() async {
+    // print("app id ${loginViewModel.rxInfoLoginConfig.value.appId}");
+    // var as = "EDD6E3EA-C4FC-40A1-AE83-EBE84D339D7E";
+    // var b = loginViewModel.rxInfoLoginConfig.value.appId;
+    //
+    // if(as == b)
+    //   {
+    //     print("app id true");
+    //   }
+    // else
+    //   {
+    //     print("app id false");
+    //   }
+
     var body = """
     {
-      "appId": "EDD6E3EA-C4FC-40A1-AE83-EBE84D339D7E"
+      "appId": "${loginViewModel.rxInfoLoginConfig.value.appId}"
      }
     """;
     http.Response response = await http.post(Uri.parse(apiGetAllListMenu),body: body,headers: headers);
@@ -86,7 +99,7 @@ class HomeViewModel extends GetxController {
       return MenuByUserModel.fromJson(e);
     }).toList();
 
-    listMenu.removeWhere((element) => element.id == "6fe5fab6-6e02-4c8a-6cd9-08dac87e041c" || element.id == "ec8c1097-fdd0-45e4-6cd8-08dac87e041c" || element.id =="29b38589-cbf7-4d87-fb32-08dac38ca11b" || element.id == "d4cc0019-29be-4286-fb31-08dac48ca11b" );
+    listMenu.removeWhere((element) => element.id == "6fe5fab6-6e02-4c8a-6cd9-08dac87e041c" || element.id == "ec8c1097-fdd0-45e4-6cd8-08dac87e041c" || element.id =="29b38589-cbf7-4d87-fb32-08dac38ca11b" || element.id == "d4cc0019-29be-4286-fb31-08dac48ca11b"|| element.id == "326bbe12-4778-458e-5411-08da9b7bdabe" );
 
     rxListMenuByUserRole.value = listMenu;
     print("list menu ${listMenu.length}");

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
@@ -16,6 +17,7 @@ class ProfileWorkViewModel extends GetxController {
 
   RxList<ProfileWorkListItems> rxProfileWorkList = <ProfileWorkListItems>[].obs;
   Rx<ProfileWorkStatistic> rxProfileWorkStatistic = ProfileWorkStatistic().obs;
+  ScrollController controller = ScrollController();
 
   @override
   void onInit() {
@@ -61,6 +63,21 @@ class ProfileWorkViewModel extends GetxController {
     
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkStatistic.value = res.statistic!;
+    rxProfileWorkList.value = res.items!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10}';
+        http.Response response = await http.post(url, headers: headers, body: json);
+        res = ProfileWorkModel.fromJson(jsonDecode(response.body));
+        rxProfileWorkList.addAll(res.items!);
+      }
+    });
   }
 
 
@@ -74,6 +91,20 @@ class ProfileWorkViewModel extends GetxController {
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!;
     rxProfileWorkStatistic.value = res.statistic!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10,"dateFrom":"$datefrom","dateTo":"$dateTo"}';
+        http.Response response = await http.post(url, headers: headers, body: json);
+        res = ProfileWorkModel.fromJson(jsonDecode(response.body));
+        rxProfileWorkList.addAll(res.items!);
+      }
+    });
   }
 
   Future<void> postProfileWorkByDefault() async {
@@ -87,6 +118,20 @@ class ProfileWorkViewModel extends GetxController {
     rxProfileWorkList.value = res.items!;
     rxProfileWorkStatistic.value = res.statistic!;
     switchBottomButton(4);
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json =
+            '{"pageIndex":$page,"pageSize":10}';
+        http.Response response = await http.post(url, headers: headers, body: json);
+        res = ProfileWorkModel.fromJson(jsonDecode(response.body));
+        rxProfileWorkList.addAll(res.items!);
+      }
+    });
   }
 
 
@@ -99,5 +144,18 @@ class ProfileWorkViewModel extends GetxController {
     ProfileWorkModel res = ProfileWorkModel.fromJson(jsonDecode(response.body));
     rxProfileWorkList.value = res.items!;
     rxProfileWorkStatistic.value = res.statistic!;
+    //loadmore
+    var page = 1;
+    controller.dispose();
+    controller = ScrollController();
+    controller.addListener(() async {
+      if (controller.position.maxScrollExtent == controller.position.pixels) {
+        page++;
+        String json = '{"pageIndex":$page,"pageSize":10,"status":"$status"}';
+        http.Response response = await http.post(url, headers: headers, body: json);
+        res = ProfileWorkModel.fromJson(jsonDecode(response.body));
+        rxProfileWorkList.addAll(res.items!);
+      }
+    });
   }
 }

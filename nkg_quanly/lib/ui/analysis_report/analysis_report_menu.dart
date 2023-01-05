@@ -28,6 +28,7 @@ class AnalysisReportMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    listChildren.removeWhere((element) => element.id == "e8e57d75-1c6e-4798-5402-08da9b7bdabe" || element.id == "c04a436a-dc82-4772-7776-08daa2b4ddff" );
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -37,8 +38,6 @@ class AnalysisReportMenu extends StatelessWidget {
             child: GridView.count(
               physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
-              // Create a grid with 2 columns. If you change the scrollDirection to
-              // horizontal, this produces 2 rows.
               crossAxisCount: 4,
               childAspectRatio: 0.9,
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -53,10 +52,11 @@ class AnalysisReportMenu extends StatelessWidget {
                       getIconScreenWidget(
                           listMenuAnalysisReport, listChildren[index], index),
                       Flexible(
-                        child: Text(
-                          listMenuAnalysisReport[index].title!,
+                        child: Text(    ( listChildren[index].title?.isNotEmpty == true) ?
+                        listChildren[index].title! : "",
                           style: const TextStyle(fontSize: 12),
                           textAlign: TextAlign.center,
+                          maxLines: 3,overflow: TextOverflow.ellipsis,
                         ),
                       )
                     ],
@@ -77,11 +77,11 @@ List<MenuListItem> listMenuAnalysisReport = [
   MenuListItem('Giáo dục mầm non', 'assets/icons/ic_analy_report_3.png', "", 2,
       "61e72fce-fc2f-485a-5403-08da9b7bdabe"),
   MenuListItem(
-      'Giáo dục tiểu học', 'assets/icons/ic_analy_report_4.png', "", 3, ""),
+      'Giáo dục tiểu học', 'assets/icons/ic_analy_report_4.png', "", 3, "7b31bb6c-3553-4d3c-5404-08da9b7bdabe"),
   MenuListItem('Giáo dục THCS', 'assets/icons/ic_analy_report_5.png', "", 4,
       "bd3b9332-b615-4b98-5405-08da9b7bdabe"),
   MenuListItem(
-      'Giáo dục THPT', 'assets/icons/ic_analy_report_6.png', "", 5, ""),
+      'Giáo dục THPT', 'assets/icons/ic_analy_report_6.png', "", 5, "a0e4cff7-e733-4097-5406-08da9b7bdabe"),
   MenuListItem('Giáo dục khuyêt tật', 'assets/icons/ic_analy_report_7.png', "",
       6, "ede47203-5b92-4c3d-5407-08da9b7bdabe"),
   MenuListItem('Giáo dục thường xuyên', 'assets/icons/ic_analy_report_8.png',

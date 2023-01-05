@@ -5,7 +5,6 @@ import '../../../const/const.dart';
 import '../../../const/style.dart';
 import '../../../const/utils.dart';
 import '../../../const/widget.dart';
-import '../../mission/e_office/filter_mission_screen.dart';
 import '../../search_screen.dart';
 import '../../theme/theme_data.dart';
 import '../profile_work_viewmodel.dart';
@@ -73,7 +72,7 @@ class ProfileWorkEOfficeList extends GetView {
                   ),
                 ),
               ),
-            ) : SizedBox.shrink(),
+            ) : const SizedBox.shrink(),
         ),
           //list
           Padding(
@@ -613,7 +612,7 @@ class FilterProfileWorkEOfficeBottomSheet extends StatelessWidget {
           ),
 
           //bottom button
-          Spacer(),
+          const Spacer(),
           Row(
             children: [
               Expanded(
