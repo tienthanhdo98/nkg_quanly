@@ -116,14 +116,10 @@ class SettingScreen extends StatelessWidget {
                             } else {
                               return InkWell(
                                 onTap: () async {
-                                  loginViewModel.saveToShareFrefs("",keyTokebSSO);
-                                  print("rxAccessToken ${loginViewModel.rxAccessTokenSSO.value}");
-                                  print("rxAccessTokenIoc ${loginViewModel.rxAccessTokenIoc.value}");
-                                 await loginViewModel.revokeAccessToken(loginViewModel.rxAccessTokenSSO.value);
+                                  await loginViewModel.saveToShareFrefs("",keyTokebSSO);
+                                  await loginViewModel.revokeAccessToken(loginViewModel.rxAccessTokenSSO.value);
                                   await loginViewModel.revokeAccessTokenIoc(loginViewModel.rxAccessTokenIoc.value);
                                   print("clear");
-                                  print("rxAccessToken ${loginViewModel.rxAccessTokenSSO.value}");
-                                  print("rxAccessTokenIoc ${loginViewModel.rxAccessTokenIoc.value}");
                                   loginViewModel.changeValueLoading(true);
                                   Get.off(() => const LoginScreen(isLogout: true,));
                                 },
