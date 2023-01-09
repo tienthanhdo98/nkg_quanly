@@ -8,6 +8,7 @@ import 'package:nkg_quanly/const/const.dart';
 
 import '../../../model/contact_model/contact_model.dart';
 import '../../../model/contact_model/organ_model.dart';
+import '../../../viewmodel/home_viewmodel.dart';
 
 class ContactOrganizationViewModel extends GetxController {
   Rx<int> selectedButton = 0.obs;

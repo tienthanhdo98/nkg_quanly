@@ -8,6 +8,7 @@ import 'package:nkg_quanly/const/utils.dart';
 
 import '../../const/const.dart';
 import '../../model/birthday_model/birthday_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 class BirthDayViewModel extends GetxController {
   Rx<int> selectedBottomButton = 4.obs;

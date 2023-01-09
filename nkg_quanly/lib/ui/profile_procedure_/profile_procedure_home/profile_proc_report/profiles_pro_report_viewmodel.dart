@@ -8,6 +8,7 @@ import '../../../../const/const.dart';
 import '../../../../const/utils.dart';
 import '../../../../model/document_unprocess/document_filter.dart';
 import '../../../../model/profile_procedure_model/profile_proc_chart_model.dart';
+import '../../../../viewmodel/home_viewmodel.dart';
 
 class ProfilesProcReportViewModel extends GetxController {
   Rx<int> selectedChartButton = 0.obs;

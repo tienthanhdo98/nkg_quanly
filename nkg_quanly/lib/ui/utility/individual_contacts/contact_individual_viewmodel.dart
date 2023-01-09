@@ -8,6 +8,7 @@ import 'package:nkg_quanly/const/const.dart';
 
 import '../../../model/contact_model/contact_model.dart';
 import '../../../model/contact_model/department_model.dart';
+import '../../../viewmodel/home_viewmodel.dart';
 
 
 class ContactIndividualViewModel extends GetxController {

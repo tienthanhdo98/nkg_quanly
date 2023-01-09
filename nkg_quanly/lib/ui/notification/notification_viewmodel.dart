@@ -7,6 +7,7 @@ import 'package:nkg_quanly/const/const.dart';
 
 import '../../const/utils.dart';
 import '../../model/notification_model/notification_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
 import 'notification_model_db.dart';
 
 class NotificationViewModel extends GetxController {

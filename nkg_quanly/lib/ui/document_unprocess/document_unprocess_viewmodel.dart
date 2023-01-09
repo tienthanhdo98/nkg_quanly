@@ -8,6 +8,7 @@ import 'package:nkg_quanly/const/utils.dart';
 import '../../const/const.dart';
 import '../../model/document/document_model.dart';
 import '../../model/document_unprocess/document_filter.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 class DocumentUnprocessViewModel extends GetxController {
   Rx<int> selectedChartButton = 0.obs;

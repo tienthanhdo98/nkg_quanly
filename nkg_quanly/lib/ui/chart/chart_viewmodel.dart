@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/MenuByUserModel.dart';
 import '../../model/event_model/event_model.dart';
 import '../../model/widget_item_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 
 class ChartViewModel extends GetxController {

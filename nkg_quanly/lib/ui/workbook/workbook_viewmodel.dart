@@ -9,6 +9,7 @@ import '../../const/utils.dart';
 import '../../model/workbook/group_workbook_model.dart';
 import '../../model/workbook/workbook_model.dart';
 import '../../model/workbook/worker_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 class WorkBookViewModel extends GetxController {
 

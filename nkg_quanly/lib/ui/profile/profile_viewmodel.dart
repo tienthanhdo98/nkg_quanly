@@ -8,6 +8,7 @@ import 'package:nkg_quanly/const/utils.dart';
 
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/proflie_model/profile_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 class ProfileViewModel extends GetxController {
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;

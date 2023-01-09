@@ -15,6 +15,7 @@ import 'package:nkg_quanly/ui/analysis_report/report_secondaryschool/report_seco
 
 import '../../model/analysis_report/analysis_report_filter_model.dart';
 import '../../model/analysis_report/preschool_chart_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 class AnalysisReportViewModel extends GetxController {
   Rx<int> rxIndexItemRegion = 0.obs;

@@ -8,6 +8,7 @@ import '../../const/const.dart';
 import '../../const/utils.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/meeting_room/meeting_room_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 class RoomMeetingViewModel extends GetxController {
   Rx<int> selectedChartButton = 0.obs;

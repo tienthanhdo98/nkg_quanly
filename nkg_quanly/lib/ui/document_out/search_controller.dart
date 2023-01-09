@@ -23,6 +23,7 @@ import '../../model/profile_work/profile_work_model.dart';
 import '../../model/proflie_model/profile_model.dart';
 import '../../model/report_model/report_model.dart';
 import '../../model/workbook/workbook_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
 import '../home/home_screen.dart';
 
 class SearchController extends GetxController {

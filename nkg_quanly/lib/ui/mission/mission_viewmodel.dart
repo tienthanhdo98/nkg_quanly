@@ -9,6 +9,7 @@ import '../../const/utils.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/misstion/mission_detail.dart';
 import '../../model/misstion/mission_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 class MissionViewModel extends GetxController {
   Rx<int> selectedChartButton = 0.obs;

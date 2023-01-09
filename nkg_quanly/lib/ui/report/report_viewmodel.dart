@@ -9,6 +9,7 @@ import '../../const/const.dart';
 import '../../const/utils.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/report_model/report_model.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 class ReportViewModel extends GetxController {
   Rx<int> selectedChartButton = 0.obs;

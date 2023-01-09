@@ -8,6 +8,7 @@ import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/model/profile_work/profile_work_model.dart';
 
 import '../../const/const.dart';
+import '../../viewmodel/home_viewmodel.dart';
 
 class ProfileWorkViewModel extends GetxController {
 

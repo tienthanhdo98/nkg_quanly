@@ -8,6 +8,7 @@ import 'package:nkg_quanly/const/api.dart';
 
 import '../../../const/const.dart';
 import '../../../model/guildline_model/guildline_model.dart';
+import '../../../viewmodel/home_viewmodel.dart';
 
 
 class GuildlineViewModel extends GetxController {
