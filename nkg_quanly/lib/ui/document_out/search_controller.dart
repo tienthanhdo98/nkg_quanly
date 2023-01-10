@@ -7,6 +7,7 @@ import 'package:nkg_quanly/model/misstion/mission_model.dart';
 
 import '../../const/api.dart';
 import '../../const/const.dart';
+import '../../main.dart';
 import '../../model/birthday_model/birthday_model.dart';
 import '../../model/booking_car/booking_car_model;.dart';
 import '../../model/calendarwork_model/calendarwork_model.dart';
@@ -43,6 +44,16 @@ class SearchController extends GetxController {
   RxList<String> rxListSearchHome = <String>[].obs;
   Rx<bool> isLoading = false.obs;
   Rx<bool> isHaveData = false.obs;
+  Map<String,String> headers = {};
+  void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
+
+    super.onInit();
+  }
 
   void changeLoadingState(bool value) {
     isLoading.value = value;

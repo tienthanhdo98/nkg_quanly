@@ -6,6 +6,7 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
+import '../../main.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/proflie_model/profile_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
@@ -15,7 +16,7 @@ class ProfileViewModel extends GetxController {
   Rx<int> selectedChartButton = 0.obs;
   ScrollController controller = ScrollController();
   ProfileModel profileModel = ProfileModel();
-
+  Map<String,String> headers = {};
   void swtichChartButton(int button) {
     selectedChartButton.value = button;
   }
@@ -46,6 +47,11 @@ class ProfileViewModel extends GetxController {
 
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     getFilterForChart("${apiGetProfileFilter}0");
     getFilterUnitEditor();
     getFilterTypeSubmission();

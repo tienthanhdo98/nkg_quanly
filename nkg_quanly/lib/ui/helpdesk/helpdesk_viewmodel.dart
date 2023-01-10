@@ -7,6 +7,7 @@ import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/model/helpdesk_model/helpdesk_model.dart';
 
 import '../../const/const.dart';
+import '../../main.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/helpdesk_model/helpdesk_filter_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
@@ -22,7 +23,7 @@ class HelpdeskViewModel extends GetxController {
   ScrollController controller = ScrollController();
   HelpdeskModel helpdeskModel = HelpdeskModel();
   Rx<bool> rxIsLoadingScreen = true.obs;
-
+  Map<String,String> headers = {};
   Rx<String> rxStatusSelected = "".obs;
 
   void changeLoadingState(bool value)
@@ -38,6 +39,11 @@ class HelpdeskViewModel extends GetxController {
 
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     postHelpdeskListAndStatistic();
     getChartRecently();
     getListFilterStatus();

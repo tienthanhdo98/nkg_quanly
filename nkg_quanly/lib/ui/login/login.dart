@@ -23,6 +23,9 @@ class LoginScreenState extends State<LoginScreen> {
   InAppWebViewController? webViewController;
   double progress = 0;
   String? prefToken = "";
+
+
+
   @override
   void initState() {
     getPrefToken();
@@ -125,6 +128,13 @@ class LoginScreenState extends State<LoginScreen> {
                       return NavigationActionPolicy.CANCEL;
                     }
                     else if (url.contains("http://localhost:9090/?sp=Test-SSO&tenantDomain=carbon.super")) {
+                      print('blocking navigation to $url}');
+                      webViewController!.loadUrl(urlRequest: URLRequest(
+                          url: Uri.parse(loginViewModel.urlLogin)));
+                      loginViewModel.changeValueLoading(false);
+                      return NavigationActionPolicy.CANCEL;
+                    }
+                    else if (url.contains("https://dangnhap.moet.gov.vn:9443/authenticationendpoint/oauth2_logout.do?tenantDomain=carbon.super")) {
                       print('blocking navigation to $url}');
                       webViewController!.loadUrl(urlRequest: URLRequest(
                           url: Uri.parse(loginViewModel.urlLogin)));

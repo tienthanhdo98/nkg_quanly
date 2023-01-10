@@ -6,6 +6,7 @@ import 'package:nkg_quanly/const/api.dart';
 
 import '../../const/const.dart';
 import '../../const/utils.dart';
+import '../../main.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/profile_procedure_model/filter_profile_proc_model.dart';
 import '../../model/profile_procedure_model/profile_procedure_model.dart';
@@ -24,10 +25,15 @@ class ProfilesProcedureViewModel extends GetxController {
       ProfileProcedureStatistic().obs;
   ScrollController controller = ScrollController();
   ProfileProcedureModel profileProcedureModel = ProfileProcedureModel();
-
+  Map<String,String> headers = {};
 
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     getFilterForChart(apiGetProfileProcedureChart0);
     postProfileDefault();
     getAgenciesList();

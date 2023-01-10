@@ -6,6 +6,7 @@ import 'package:nkg_quanly/ui/profile_procedure_/profile_procedure_home/profile_
 
 import '../../../../const/const.dart';
 import '../../../../const/utils.dart';
+import '../../../../main.dart';
 import '../../../../model/document_unprocess/document_filter.dart';
 import '../../../../model/profile_procedure_model/profile_proc_chart_model.dart';
 import '../../../../viewmodel/home_viewmodel.dart';
@@ -18,8 +19,14 @@ RxList<ProfileProcChartModel> rxListProfileProcChartBranch = <ProfileProcChartMo
 RxList<ProfileProcChartModel> rxListProfileProcChartAgencies = <ProfileProcChartModel>[].obs;
 RxList<ProfileProcChartModel> rxListProfileProcChartReception = <ProfileProcChartModel>[].obs;
 RxList<ProfileProcChartModel> rxListProfileProcChartDate= <ProfileProcChartModel>[].obs;
+  Map<String,String> headers = {};
 @override
 void onInit() {
+  headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer $tokenIOC',
+  };
   postProfileProcCharStatusResolve("", "");
   postProfileProcCollumChart(apiPostChartByBranch,BY_BRANCH,"", "");
   postProfileProcCollumChart(apiPostChartByAgencies,BY_AGENCIES,"", "");
@@ -28,21 +35,20 @@ void onInit() {
   super.onInit();
 
 }
-  void swtichChartButton(int button) {
+  void switchChartButton(int button) {
     selectedChartButton.value = button;
   }
 
-Future<void> postProfileProcCharStatusResolve(String datefrom,
-    String dateto) async {
+Future<void> postProfileProcCharStatusResolve(String dateFrom,
+    String dateTo) async {
   final url = Uri.parse(apiPostChartStatusResolve);
   String json = "";
-  if (datefrom != "" && dateto != "") {
-    json = '{"dateFrom":"$datefrom","dateTo":"$dateto"}';
+  if (dateFrom != "" && dateTo != "") {
+    json = '{"dateFrom":"$dateFrom","dateTo":"$dateTo"}';
   } else {
     json = '{}';
   }
   http.Response response = await http.post(url, headers: headers, body: json);
-  print('${response.body}');
   DocumentFilterModel res =
   DocumentFilterModel.fromJson(jsonDecode(response.body));
   rxDataChart.value = res;
@@ -58,26 +64,28 @@ Future<void> postProfileProcCollumChart(String urlBase,String type,String dateFr
     bodyJson = '{}';
   }
   http.Response response = await http.post(url, headers: headers, body: bodyJson);
-  print('get collum chart ${response.body}');
-  List<ProfileProcChartModel> listChart = [];
-   List listRes = json.decode(response.body);
-  listChart = listRes.map((e) => ProfileProcChartModel.fromJson(e)).toList();
-  if(type == BY_BRANCH)
-    {
+  if(response.statusCode == 200) {
+    print('get collum chart ${response.body}');
+    List<ProfileProcChartModel> listChart = [];
+    List listRes = json.decode(response.body);
+    listChart = listRes.map((e) => ProfileProcChartModel.fromJson(e)).toList();
+    if (type == BY_BRANCH) {
       rxListProfileProcChartBranch.value = listChart;
     }
-  else if(type == BY_AGENCIES)
-    {
+    else if (type == BY_AGENCIES) {
       rxListProfileProcChartAgencies.value = listChart;
     }
-  else if(type == BY_RECEPTIONFORM)
-    {
+    else if (type == BY_RECEPTIONFORM) {
       rxListProfileProcChartReception.value = listChart;
     }
-  else if(type == BY_DATE)
-  {
-    rxListProfileProcChartDate.value = listChart;
+    else if (type == BY_DATE) {
+      rxListProfileProcChartDate.value = listChart;
+    }
   }
+  else
+    {
+      print("postProfileProcCollumChart errror ${response.statusCode}");
+    }
 
 }
 

@@ -26,6 +26,8 @@ class NotificationScreen extends GetView {
   Widget build(BuildContext context) {
     MenuByUserModel? childrenTienIch = homeController.rxListMenuByUserRole.firstWhereOrNull((element) => element.id == "84849e1f-e7fa-4654-540e-08da9b7bdabe");
     List<MenuPermissions>? listMenuPermissionWorkbook = childrenTienIch?.childrens?.firstWhereOrNull((element) => element.id == "b2a7b093-b233-458f-ac14-08da9bb8bee8")?.menuPermissions;
+
+    notificationViewModel.initDataHomeScreen();
     return Scaffold(
       body: SafeArea(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

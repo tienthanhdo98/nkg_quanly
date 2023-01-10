@@ -47,6 +47,7 @@ class DocumentOutItems {
   String? endDate;
   String? status;
   bool? released;
+  String? handler;
   String? dateDone;
   String? state;
   String? level;
@@ -64,7 +65,7 @@ class DocumentOutItems {
       this.dateDone,
       this.state,
       this.level,
-      this.detail});
+      this.detail,this.handler});
 
   DocumentOutItems.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -79,6 +80,7 @@ class DocumentOutItems {
     state = json['state'];
     level = json['level'];
     detail = json['detail'];
+    handler = json['handler'];
   }
 
   Map<String, dynamic> toJson() {
@@ -95,6 +97,7 @@ class DocumentOutItems {
     data['state'] = this.state;
     data['level'] = this.level;
     data['detail'] = this.detail;
+    data['handler'] = this.handler;
     return data;
   }
 }

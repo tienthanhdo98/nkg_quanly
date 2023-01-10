@@ -7,6 +7,7 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
 import '../../const/const.dart';
+import '../../main.dart';
 import '../../model/document_out_model/document_out_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
 
@@ -17,8 +18,14 @@ class DocumentOutViewModel extends GetxController {
 
   RxList<DocumentOutItems> rxDocumentOutItems = <DocumentOutItems>[].obs;
   ScrollController controller = ScrollController();
+  Map<String,String> headers = {};
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     getFilterDepartment();
     super.onInit();
   }
@@ -88,6 +95,13 @@ class DocumentOutViewModel extends GetxController {
   RxList<String> rxListDepartmentFilter = <String>[].obs;
 
   Rx<String> rxDepartmentSelected = "".obs;
+
+  Future<void> getDownload() async {
+    print('loading');
+    http.Response response = await http.get(
+        Uri.parse("http://123.31.31.237:6002/api/documentout/download-document?id=1"),headers: headers);
+    print(response.body);
+  }
 
   Future<void> getFilterDepartment() async {
     print('loading');

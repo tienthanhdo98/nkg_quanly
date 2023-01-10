@@ -6,6 +6,7 @@ import 'package:nkg_quanly/model/booking_car/booking_car_model;.dart';
 
 import '../../const/const.dart';
 import '../../const/utils.dart';
+import '../../main.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/meeting_room/meeting_room_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
@@ -17,10 +18,14 @@ class RoomMeetingViewModel extends GetxController {
   Rx<DocumentFilterModel> rxDocumentFilterModel = DocumentFilterModel().obs;
   RxList<MeetingRoomItems> rxMeetingRoomItems = <MeetingRoomItems>[].obs;
   Rx<BookingStatistic> rxMeetingRoomStatistic = BookingStatistic().obs;
-
+  Map<String,String> headers = {};
   @override
   void onInit() {
-
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     getMeetingRoomDefault();
     super.onInit();
   }

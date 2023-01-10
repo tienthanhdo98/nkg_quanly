@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/const/const.dart';
+import 'package:nkg_quanly/main.dart';
 import 'package:nkg_quanly/ui/chart/calendar_work_widget.dart';
 import 'package:nkg_quanly/ui/chart/procedure_profile_widget.dart';
 import 'package:nkg_quanly/ui/chart/profile%20_widget.dart';
@@ -31,10 +32,9 @@ class ChartScreen extends StatefulWidget {
 class _ChartScreenState extends State<ChartScreen> {
   final chartViewModel = Get.put(ChartViewModel());
   final GlobalKey _globalKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
-    chartViewModel.getLatestEvent(loginViewModel.rxAccessTokenIoc.value);
+    chartViewModel.initDataHomeScreen();
     return Scaffold(
       body: SafeArea(
         child: Container(

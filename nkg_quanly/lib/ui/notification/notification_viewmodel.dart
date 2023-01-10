@@ -6,6 +6,7 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/const.dart';
 
 import '../../const/utils.dart';
+import '../../main.dart';
 import '../../model/notification_model/notification_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
 import 'notification_model_db.dart';
@@ -18,13 +19,22 @@ class NotificationViewModel extends GetxController {
   ScrollController controller = ScrollController();
 
   Rx<bool> isShowNotificationAction = false.obs;
-
+  Map<String,String> headers = {};
   Rx<bool> isNewNotification = false.obs;
 
   @override
   void onInit() {
-    getNotificationList();
     super.onInit();
+  }
+  initDataHomeScreen() async
+  {
+    var token = await loginViewModel.loadFromShareFrefs(keyTokenIOC);
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    getNotificationList();
   }
 
   Future<void> getNotificationList() async {

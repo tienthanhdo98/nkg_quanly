@@ -6,6 +6,7 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/const.dart';
 
 import '../../const/utils.dart';
+import '../../main.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/misstion/mission_detail.dart';
 import '../../model/misstion/mission_model.dart';
@@ -22,10 +23,15 @@ class MissionViewModel extends GetxController {
   ScrollController controller = ScrollController();
   MissionModel missionModel = MissionModel();
 
-
+  Map<String,String> headers = {};
 
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     getDataInWidget();
 
     super.onInit();

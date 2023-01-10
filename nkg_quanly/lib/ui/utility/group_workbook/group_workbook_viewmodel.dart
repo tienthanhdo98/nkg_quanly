@@ -7,6 +7,7 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/const.dart';
 
 import '../../../const/utils.dart';
+import '../../../main.dart';
 import '../../../model/group_workbook/group_workbook_model.dart';
 import '../../../viewmodel/home_viewmodel.dart';
 
@@ -22,7 +23,7 @@ class GroupWorkBookViewModel extends GetxController {
 
   Rx<bool> showErrorTextNameWB = false.obs;
   Rx<bool> showErrorTextDesNameWB = false.obs;
-
+  Map<String,String> headers = {};
 
   clearTextField(){
     showErrorTextNameWB.value = false;
@@ -32,7 +33,11 @@ class GroupWorkBookViewModel extends GetxController {
 
   @override
   void onInit() {
-
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     postGroupWorkBookAll();
 
     super.onInit();

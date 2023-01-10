@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 
 import '../../../const/const.dart';
+import '../../../main.dart';
 import '../../../model/guildline_model/guildline_model.dart';
 import '../../../viewmodel/home_viewmodel.dart';
 
@@ -16,10 +17,14 @@ class GuildlineViewModel extends GetxController {
   ScrollController controller = ScrollController();
   GuidelineModel guidelineModel = GuidelineModel();
   RxList<GuidelineListItems> rxGuideLineListItems= <GuidelineListItems>[].obs;
-
+  Map<String,String> headers = {};
   @override
   void onInit() {
-
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     getGuidelineList();
     super.onInit();
   }

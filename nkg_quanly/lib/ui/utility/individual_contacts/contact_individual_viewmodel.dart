@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/const.dart';
 
+import '../../../main.dart';
 import '../../../model/contact_model/contact_model.dart';
 import '../../../model/contact_model/department_model.dart';
 import '../../../viewmodel/home_viewmodel.dart';
@@ -20,7 +21,7 @@ class ContactIndividualViewModel extends GetxController {
   RxList<String> rxListOrganFilter = <String>[].obs;
   final RxMap<int, String> rxMapDepartmentFilter = <int, String>{}.obs;
   final RxMap<int, String> mapAllFilter = <int, String>{}.obs;
-
+  Map<String,String> headers = {};
   Rx<bool> isValueNull = true.obs;
 
   Rx<bool> showErrorTextEmployeeName = false.obs;
@@ -44,6 +45,11 @@ class ContactIndividualViewModel extends GetxController {
 
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     getDepartmentList();
     getContactList();
     super.onInit();

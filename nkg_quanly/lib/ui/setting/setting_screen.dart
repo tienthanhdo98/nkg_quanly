@@ -117,6 +117,7 @@ class SettingScreen extends StatelessWidget {
                               return InkWell(
                                 onTap: () async {
                                   await loginViewModel.saveToShareFrefs("",keyTokebSSO);
+                                  await loginViewModel.saveToShareFrefs("",keyTokenIOC);
                                   await loginViewModel.revokeAccessToken(loginViewModel.rxAccessTokenSSO.value);
                                   await loginViewModel.revokeAccessTokenIoc(loginViewModel.rxAccessTokenIoc.value);
                                   print("clear");

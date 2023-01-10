@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/const.dart';
 
+import '../../../main.dart';
 import '../../../model/contact_model/contact_model.dart';
 import '../../../model/contact_model/organ_model.dart';
 import '../../../viewmodel/home_viewmodel.dart';
@@ -30,7 +31,7 @@ class ContactOrganizationViewModel extends GetxController {
   Rx<bool> showErrorTextEmail = false.obs;
   Rx<String> rxEmail = "".obs;
   Rx<bool> showErrorTextAddress = false.obs;
-
+  Map<String,String> headers = {};
   clearTextField() {
     showErrorTextEmployeeName.value = false;
     showErrorTextPosition.value = false;
@@ -44,6 +45,11 @@ class ContactOrganizationViewModel extends GetxController {
 
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     getOrganList();
     getContactList();
     super.onInit();

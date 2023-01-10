@@ -7,6 +7,7 @@ import 'package:nkg_quanly/const/api.dart';
 
 import '../../const/const.dart';
 import '../../const/utils.dart';
+import '../../main.dart';
 import '../../model/booking_car/booking_car_model;.dart';
 import '../../model/document_unprocess/document_filter.dart';
 import '../../model/meeting_room/meeting_room_model.dart';
@@ -22,10 +23,15 @@ class BookingCarViewModel extends GetxController {
   RxList<BookingCarListItems> rxBookingCarItems = <BookingCarListItems>[].obs;
   Rx<BookingStatistic> rxBookingCarStatistic = BookingStatistic().obs;
   ScrollController controller = ScrollController();
-
+  Map<String,String> headers = {};
 
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     getFilterForChart(apiGetReportChart0);
 
     postBookingCarStatistic();

@@ -5,6 +5,7 @@ import '../../const/const.dart';
 import '../../const/style.dart';
 import '../../const/utils.dart';
 import '../../const/widget.dart';
+import '../../main.dart';
 import '../../model/document_out_model/document_out_model.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
 import '../theme/theme_data.dart';
@@ -151,9 +152,23 @@ class DocumentOutList extends GetView {
                       itemBuilder: (context, index) {
                         return InkWell(
                             onTap: () {
-                              Get.to(() => DocumentnonapprovedDetail(
-                                  id: documentOutViewModel
-                                      .rxDocumentOutItems[index].id!));
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                      height: 340,
+                                      child: DetailDocOutBottomSheet(
+                                          index,
+                                          documentOutViewModel.rxDocumentOutItems[index],documentOutViewModel));
+                                },
+                              );
                             },
                             child: DocOutListItem(
                                 index,
@@ -286,7 +301,7 @@ class DocOutListItem extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.toDate!),
+                        child: Text(formatDate(docModel!.endDate!),
                             style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
@@ -297,7 +312,7 @@ class DocOutListItem extends StatelessWidget {
                         style: CustomTextStyle.grayColorTextStyle),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                        child: Text(formatDate(docModel!.endDate!),
+                        child: Text(formatDate(docModel!.toDate!),
                             style: Theme.of(context).textTheme.headline5))
                   ],
                 ),
@@ -487,6 +502,101 @@ Widget signWidget(DocumentOutItems docModel) {
         const Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0)),
         Text(docModel.status!, style: const TextStyle(color: kOrangeSign))
       ],
+    );
+  }
+}
+
+class DetailDocOutBottomSheet extends StatelessWidget {
+  const DetailDocOutBottomSheet(this.index, this.docModel,this.documentOutViewModel, {Key? key})
+      : super(key: key);
+  final int? index;
+  final DocumentOutItems? docModel;
+  final DocumentOutViewModel? documentOutViewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Thông tin văn bản đi',
+            style: TextStyle(
+                color: kBlueButton,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'Roboto',
+                fontSize: 16),
+          ),
+          const Divider(
+            thickness: 1,
+            color: kBlueButton,
+          ),
+          const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+          Row(
+            children: [
+              Expanded(
+                child:   sheetButtonDetailTitleItem(docModel!.name!,context),
+              ),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: priorityWidget(docModel!)),
+            ],
+          ),
+          Padding(
+              padding: const EdgeInsets.only(bottom: 5, top: 5),
+              child: textCodeStyle(docModel!.code!)),
+          signWidget(docModel!),
+          SizedBox(
+            height: 110,
+            child: GridView.count(
+              physics: const NeverScrollableScrollPhysics(),
+              primary: false,
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              childAspectRatio: 3.5 / 2,
+              crossAxisCount: 3,
+              children: <Widget>[
+                sheetDetailBottemItem(
+                    'Đơn vị ban hành', docModel!.departmentPublic!, context),
+                // sheetDetailBottemItem(
+                //     'Đơn vị xử lý', docModel!.departmentPublic!, context),
+                sheetDetailBottemItem(
+                    'Ngày khởi tạo',formatDate(docModel!.toDate!), context),
+                sheetDetailBottemItem(
+                    'Thời hạn phát hành', formatDate(docModel!.endDate!), context),
+                sheetDetailBottemItem(
+                    'Người xử lý', (docModel!.handler!), context),
+
+              ],
+            ),
+          ),
+          const Spacer(),
+          Row(
+            children: [
+              sheetButtonDetailButtonClose(),
+              sheetButtonDetailButtonOk(() async {
+                var urlFile =
+                    "http://123.31.31.237:6002/api/documentout/download-document?id=1";
+                if (await canLaunchUrl(Uri.parse(urlFile))) {
+
+                  documentOutViewModel!.getDownload();
+                  var  headers = {
+                    'Accept': '*/*',
+                    'Authorization': 'Bearer $tokenIOC',
+                  };
+                  launchUrl(
+                    Uri.parse(urlFile),
+                    webViewConfiguration: WebViewConfiguration(
+                        enableJavaScript: true, enableDomStorage: true,headers: headers),
+                    mode: LaunchMode.externalApplication,
+                  );
+
+                }
+              })
+            ],
+          )
+        ],
+      ),
     );
   }
 }

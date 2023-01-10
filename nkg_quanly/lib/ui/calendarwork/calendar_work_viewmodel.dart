@@ -7,6 +7,7 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
 import '../../const/const.dart';
+import '../../main.dart';
 import '../../model/calendarwork_model/calendarwork_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
 
@@ -21,11 +22,15 @@ class CalendarWorkViewModel extends GetxController {
       <CalendarWorkListItems>[].obs;
   RxList<CalendarWorkListItems> rxCalendarWorkListItemsInHome =
       <CalendarWorkListItems>[].obs;
-
+  Map<String,String> headers = {};
   @override
   void onInit() {
    // postCalendarWorkByDay(formatDateToString(dateNow));
-
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     super.onInit();
   }
 

@@ -11,13 +11,13 @@ import 'document_nonapproved_detail.dart';
 import 'document_nonapproved_search.dart';
 import 'document_nonapproved_viewmodel.dart';
 
-class DocumentNonapprovedList extends GetView {
+class DocumentNonApprovedList extends GetView {
 
   final documentNonApproveViewModel = Get.put(DocumentNonApproveViewModel());
 
-  final bool isNonapproved;
+  final bool isNonApproved;
 
-  DocumentNonapprovedList({ this.isNonapproved = true});
+  DocumentNonApprovedList({Key? key,  this.isNonApproved = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class DocumentNonapprovedList extends GetView {
           headerWidgetSearch(
               "Văn bản đến chưa bút phê",
               DocumentnonapprovedSearch(
-                isApprove: isNonapproved,
+                isApprove: isNonApproved,
               ),
               context),
           //date table
@@ -131,8 +131,6 @@ class DocumentNonapprovedList extends GetView {
                               dateNow.add(const Duration(days: 7));
                           String strdateFrom = formatDateToString(dateNow);
                           String strdateTo = formatDateToString(dateTo);
-                          print(strdateFrom);
-                          print(strdateTo);
                           documentNonApproveViewModel.getDocumentByWeek(
                               strdateFrom, strdateTo);
                           documentNonApproveViewModel.swtichBottomButton(1);
@@ -195,7 +193,7 @@ class DocumentNonApproveListItem extends StatelessWidget {
           SizedBox(
             height: 100,
             child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               primary: false,
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               crossAxisSpacing: 10,

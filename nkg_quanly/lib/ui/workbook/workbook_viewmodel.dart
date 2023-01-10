@@ -6,32 +6,29 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/const.dart';
 
 import '../../const/utils.dart';
+import '../../main.dart';
 import '../../model/workbook/group_workbook_model.dart';
 import '../../model/workbook/workbook_model.dart';
 import '../../model/workbook/worker_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
 
 class WorkBookViewModel extends GetxController {
-
-
   Rx<int> selectedBottomButton = 0.obs;
   Rx<DateTime> rxSelectedDay = dateNow.obs;
 
   RxList<WorkBookListItems> rxWorkBookListItems = <WorkBookListItems>[].obs;
   RxList<GroupWorkbookListItems> rxGroupWorkBookListItems =
       <GroupWorkbookListItems>[].obs;
-  RxList<WorkerModel> rxListWorkerModel =
-      <WorkerModel>[].obs;
+  RxList<WorkerModel> rxListWorkerModel = <WorkerModel>[].obs;
   Rx<bool> rxSwitchState = false.obs;
   ScrollController controller = ScrollController();
   Rx<bool> isValueNull = true.obs;
 
   Rx<bool> showErrorTextWorkName = false.obs;
   Rx<bool> showErrorTextDescription = false.obs;
+  Map<String, String> headers = {};
 
-
-
-  clearTextField(){
+  clearTextField() {
     showErrorTextWorkName.value = false;
     showErrorTextDescription.value = false;
     isValueNull.value = true;
@@ -39,6 +36,11 @@ class WorkBookViewModel extends GetxController {
 
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     postGroupWorkBook();
     postWorkBookAll();
     getListWorkerWorkBook();
@@ -53,8 +55,7 @@ class WorkBookViewModel extends GetxController {
     selectedBottomButton.value = button;
   }
 
-  void changeValidateValue(bool isNull,Rx<bool> rxIsValidate)
-  {
+  void changeValidateValue(bool isNull, Rx<bool> rxIsValidate) {
     rxIsValidate.value = isNull;
   }
 
@@ -62,38 +63,38 @@ class WorkBookViewModel extends GetxController {
 
   Future<void> postWorkBookAll() async {
     final url = Uri.parse(apiPostWorkBookSearch);
-    print('loading BookAll');
     String json = '{"pageIndex":1,"pageSize":10}';
     http.Response response;
     try {
-      response = await http.post(
-          url, headers: headers, body: json);
-    }
-    catch(_)
-    {
+      response = await http.post(url, headers: headers, body: json);
+    } catch (_) {
       print("reload");
-      response = await http.post(
-          url, headers: headers, body: json);
+      response = await http.post(url, headers: headers, body: json);
     }
-    WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
-    rxWorkBookListItems.value = res.items!;
-
-    //loadmore
-    var page = 1;
-    controller.dispose();
-    controller = ScrollController();
-    controller.addListener(() async {
-      if (controller.position.maxScrollExtent == controller.position.pixels) {
-        print("loadmore week");
-        page++;
-        String json = '{"pageIndex":$page,"pageSize":10}';
-        http.Response response =
-            await http.post(url, headers: headers, body: json);
-        res = WorkbookModel.fromJson(jsonDecode(response.body));
-        rxWorkBookListItems.addAll(res.items!);
-        print("loadmore w at $page");
+    if(response.statusCode == 200) {
+      WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
+      rxWorkBookListItems.value = res.items!;
+      //loadmore
+      var page = 1;
+      controller.dispose();
+      controller = ScrollController();
+      controller.addListener(() async {
+        if (controller.position.maxScrollExtent == controller.position.pixels) {
+          print("loadmore week");
+          page++;
+          String json = '{"pageIndex":$page,"pageSize":10}';
+          http.Response response =
+          await http.post(url, headers: headers, body: json);
+          res = WorkbookModel.fromJson(jsonDecode(response.body));
+          rxWorkBookListItems.addAll(res.items!);
+          print("loadmore w at $page");
+        }
+      });
+    }
+    else
+      {
+        print("postWorkBookAll ${response.statusCode}");
       }
-    });
   }
 
   Future<void> deleteWorkBookItem(String id) async {
@@ -101,7 +102,7 @@ class WorkBookViewModel extends GetxController {
     print('loading');
     http.Response response = await http.delete(url, headers: headers);
     print(id);
-    
+
     if (response.statusCode == 200) {
       postWorkBookAll();
       Get.snackbar(
@@ -131,7 +132,7 @@ class WorkBookViewModel extends GetxController {
       "important": $important
     }""";
     http.Response response = await http.post(url, headers: headers, body: json);
-    
+
     if (response.statusCode == 200) {
       postWorkBookAll();
       Get.snackbar(
@@ -171,7 +172,7 @@ class WorkBookViewModel extends GetxController {
       "important": $important
     }""";
     http.Response response = await http.put(url, headers: headers, body: json);
-    
+
     if (response.statusCode == 200) {
       postWorkBookAll();
       Get.snackbar(
@@ -185,7 +186,7 @@ class WorkBookViewModel extends GetxController {
 
   Future<WorkBookListItems> getWorkbookModelDetail(String id) async {
     final url = Uri.parse("$apiWorkBookDetail$id");
-    http.Response response = await http.get(url,headers: headers);
+    http.Response response = await http.get(url, headers: headers);
     return WorkBookListItems.fromJson(jsonDecode(response.body));
   }
 
@@ -196,32 +197,25 @@ class WorkBookViewModel extends GetxController {
   RxList<String> rxListLevelFilter = <String>[].obs;
   RxList<String> rxListStatusFilter = <String>[].obs;
 
-
   Rx<String> rxImportantSelected = "".obs;
   Rx<String> rxStatusSelected = "".obs;
 
   Future<void> postWorkBookByFilter(String important, String status) async {
-
     final url = Uri.parse(apiPostWorkBookSearch);
     var strImportant = "";
     print(important);
-    if(important == "Quan trọng;")
-      {
-        strImportant  = "true";
-      }
-    else if(important == "Không quan trọng;")
-      {
-        strImportant = "false";
-      }
-    else
-      {
-        strImportant = "";
-      }
+    if (important == "Quan trọng;") {
+      strImportant = "true";
+    } else if (important == "Không quan trọng;") {
+      strImportant = "false";
+    } else {
+      strImportant = "";
+    }
     print(strImportant);
     String json =
         '{"pageIndex":1,"pageSize":30, "important": "$strImportant","status":"$status"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    
+
     WorkbookModel res = WorkbookModel.fromJson(jsonDecode(response.body));
     rxWorkBookListItems.value = res.items!;
     // controller.dispose();
@@ -235,26 +229,23 @@ class WorkBookViewModel extends GetxController {
     http.Response response;
     response = await http.post(url, headers: headers, body: json);
 
-    
     GroupWorkbookModel res =
         GroupWorkbookModel.fromJson(jsonDecode(response.body));
     rxGroupWorkBookListItems.value = res.items!;
-    for(int i = 2; i < res.pageCount! ;i++)
-      {
-        String json = '{"pageIndex":$i,"pageSize":10}';
-        http.Response response = await http.post(url, headers: headers, body: json);
-        res =
-            GroupWorkbookModel.fromJson(jsonDecode(response.body));
-        rxGroupWorkBookListItems.addAll(res.items!);
-      }
+    for (int i = 2; i < res.pageCount!; i++) {
+      String json = '{"pageIndex":$i,"pageSize":10}';
+      http.Response response =
+          await http.post(url, headers: headers, body: json);
+      res = GroupWorkbookModel.fromJson(jsonDecode(response.body));
+      rxGroupWorkBookListItems.addAll(res.items!);
+    }
   }
+
   Future<void> getListWorkerWorkBook() async {
-    var tokenIOC = await loginViewModel.loadFromShareFrefs(keyTokenIOC);
-    print(tokenIOC);
     http.Response response =
-    await http.get(Uri.parse(apiGetListWorkerWorkBook), headers: headers);
+        await http.get(Uri.parse(apiGetListWorkerWorkBook), headers: headers);
     print(response.body);
-    var listWorkerModel= <WorkerModel>[];
+    var listWorkerModel = <WorkerModel>[];
     List listRes = json.decode(response.body) as List;
     listWorkerModel = listRes.map((e) => WorkerModel.fromJson(e)).toList();
     rxListWorkerModel.value = listWorkerModel;

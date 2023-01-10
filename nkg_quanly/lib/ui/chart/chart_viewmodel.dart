@@ -5,15 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/const/api.dart';
-import 'package:nkg_quanly/const/const.dart';
 import 'package:nkg_quanly/const/utils.dart';
 import 'package:nkg_quanly/viewmodel/login_viewmodel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../model/MenuByUserModel.dart';
+import '../../const/const.dart';
+import '../../main.dart';
 import '../../model/event_model/event_model.dart';
 import '../../model/widget_item_model.dart';
-import '../../viewmodel/home_viewmodel.dart';
 
 
 class ChartViewModel extends GetxController {
@@ -24,13 +22,7 @@ class ChartViewModel extends GetxController {
   Rx<bool> isShowCase = false.obs;
   Rx<double> positionWidget = 0.0.obs;
   RxList listBeforeClose = [].obs;
-
-
-  @override
-  void onInit() {
-
-    super.onInit();
-  }
+  Map<String,String> headers = {};
 
   setPositionWidget(GlobalKey key) {
     final RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
@@ -71,11 +63,30 @@ class ChartViewModel extends GetxController {
     }
   }
 
+  initDataHomeScreen() async
+  {
+    var token = await loginViewModel.loadFromShareFrefs(keyTokenIOC);
+    tokenIOC = token;
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    getLatestEvent(token);
+  }
+
   Future<void> getLatestEvent(String token) async {
+
     http.Response response = await http.get(Uri.parse(apiGetLatestEvent),headers: headers);
-    EventModel eventModel = EventModel.fromJson(jsonDecode(response.body));
-    rxEventDes.value = eventModel;
-    await getListWidgetKgs(token);
+    if(response.statusCode == 200) {
+      EventModel eventModel = EventModel.fromJson(jsonDecode(response.body));
+      rxEventDes.value = eventModel;
+      await getListWidgetKgs(token);
+    }
+    else
+      {
+        print("getLatestEvent err ${response.statusCode}");
+      }
   }
   getListWidgetKgs(String token) async {
     http.Response response = await http.get(Uri.parse(apiGetListWidget),headers: headers);

@@ -57,17 +57,17 @@ const apiGroupProcedure =
 const apiPostProfileProcedureDetail =
     "http://123.31.31.237:6002/api/procedureprofiles/get-by-id?maSoBienNhan=";
 const apiPostChartStatusResolve =
-    "http://123.31.31.237:6002/api/homes/procedureprofile-statistic-chart-status-resolve";
+    "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-status-resolve";
 const apiPostChartByBranch =
-    "http://123.31.31.237:6002/api/homes/procedureprofile-statistic-chart-branch";
+    "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-branch";
 const apiPostChartByAgencies =
-    "http://123.31.31.237:6002/api/homes/procedureprofile-statistic-chart-agencies";
+    "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-agencies";
 const apiPostChartByReceptionform =
-    "http://123.31.31.237:6002/api/homes/procedureprofile-statistic-chart-receptionform";
+    "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-receptionform";
 const apiPostChartByProceduce =
-    "http://123.31.31.237:6002/api/homes/procedureprofile-statistic-chart-procedure";
+    "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-procedure";
 const apiPostChartByDate =
-    "http://123.31.31.237:6002/api/homes/procedureprofile-statistic-chart-bydate";
+    "http://123.31.31.237:6002/api/procedureprofiles/get-statistic-chart-bydate";
 
 //doc out
 const apiGetDocumentOutFilter0 =
@@ -102,7 +102,7 @@ const apiGetDepartmentFilter =
 //birthday
 const apiPostBirthDay = "http://123.31.31.237:6002/api/homes/birthday";
 //workbook
-const apiPostWorkBookSearch = "http://123.31.31.237:6002/api/homes/workbook-search";
+const apiPostWorkBookSearch = "http://123.31.31.237:6002/api/workbook/search";
 const apiGroupBookList = "http://123.31.31.237:6002/api/groupworkbook/search";
 const apiAddWorkBook = "http://123.31.31.237:6002/api/workbook";
 const apiWorkBookDetail = "http://123.31.31.237:6002/api/workbook/"; //id

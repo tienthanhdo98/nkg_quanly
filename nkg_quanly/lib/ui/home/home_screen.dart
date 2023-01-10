@@ -26,10 +26,11 @@ import 'list_all_item_e_office.dart';
 import 'list_all_item_kgs.dart';
 
 class HomeScreen extends GetView {
-  HomeViewModel homeController = Get.find();
-
+  //HomeViewModel homeController = Get.find();
+  final homeController = Get.put(HomeViewModel());
   @override
   Widget build(BuildContext context) {
+    homeController.getInitDataHomeScreen();
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +63,7 @@ class HomeScreen extends GetView {
                 style: Theme.of(context).textTheme.headline2),
           ),
           SizedBox(
-            child: GridView.builder(
+            child: Obx(() => GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4,
                 childAspectRatio: 0.9,
@@ -93,7 +94,7 @@ class HomeScreen extends GetView {
                   ),
                 );
               },
-            ),
+            )),
           ),
           const Spacer(),
           Padding(

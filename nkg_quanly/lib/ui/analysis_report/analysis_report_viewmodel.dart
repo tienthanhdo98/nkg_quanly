@@ -13,6 +13,7 @@ import 'package:nkg_quanly/ui/analysis_report/report_preschool/report_pre_school
 import 'package:nkg_quanly/ui/analysis_report/report_primaryschool/report_primary_school_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_secondaryschool/report_secondary_school_screen.dart';
 
+import '../../main.dart';
 import '../../model/analysis_report/analysis_report_filter_model.dart';
 import '../../model/analysis_report/preschool_chart_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
@@ -71,9 +72,14 @@ class AnalysisReportViewModel extends GetxController {
 
   Rx<String> rxfilterType = "".obs;
   ScrollController? controller;
-
+  Map<String,String> headers = {};
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     controller = ScrollController();
     super.onInit();
   }

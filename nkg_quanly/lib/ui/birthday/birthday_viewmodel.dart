@@ -7,6 +7,7 @@ import 'package:nkg_quanly/const/api.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
 import '../../const/const.dart';
+import '../../main.dart';
 import '../../model/birthday_model/birthday_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
 
@@ -18,9 +19,14 @@ class BirthDayViewModel extends GetxController {
   RxList<BirthDayListItems> rxBirthDayListItemsInCurDay = <BirthDayListItems>[].obs;
   Rx<BirthDayModel> rxBirthDayModel = BirthDayModel().obs;
   ScrollController controller = ScrollController();
-
+  Map<String,String> headers = {};
   @override
   void onInit() {
+    headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $tokenIOC',
+    };
     super.onInit();
   }
 

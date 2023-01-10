@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nkg_quanly/const/const.dart';
-import 'package:nkg_quanly/model/MenuByUserModel.dart';
 import 'package:nkg_quanly/ui/PMis/PMis_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/analysis_report_education_screen.dart';
 import 'package:nkg_quanly/ui/analysis_report/report_Infrastructure/report_infrastructure_screen.dart';
@@ -18,7 +17,6 @@ import 'package:nkg_quanly/ui/analysis_report/report_secondaryschool/report_seco
 import 'package:nkg_quanly/ui/birthday/birthday_screen.dart';
 import 'package:nkg_quanly/ui/book_room_meet/e_office/book_room_e_office_list.dart';
 import 'package:nkg_quanly/ui/booking_car/e_office/booking_car_e_office_list.dart';
-import 'package:nkg_quanly/ui/calendarwork/calendar_work_screen.dart';
 import 'package:nkg_quanly/ui/calendarwork/e_office/calendar_work_e_office_screen.dart';
 import 'package:nkg_quanly/ui/chart/chart_screen.dart';
 import 'package:nkg_quanly/ui/document_out/document_out_list.dart';
@@ -113,13 +111,13 @@ class MainScreen extends StatefulWidget {
   State<StatefulWidget> createState() => MainScreenStage();
 }
 
+
+
+String? tokenIOC = "";
+
 class MainScreenStage extends State<MainScreen> {
   int _selectedIndex = 0;
   final notificationViewModel = Get.put(NotificationViewModel());
-
-  final homeController = Get.put(HomeViewModel());
-
-
 
   static final List<Widget> _widgetOptions = <Widget>[
     ChartScreen(),
@@ -134,11 +132,24 @@ class MainScreenStage extends State<MainScreen> {
     });
   }
 
+  @override
+  void initState() {
+    //getPrefTokenIOC();
+    print("main $tokenIOC");
+    super.initState();
+
+  }
+
+  void getPrefTokenIOC() async
+  {
+    var token = await loginViewModel.loadFromShareFrefs(keyTokenIOC);
+    tokenIOC = token;
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       //body
       body: AnnotatedRegion<SystemUiOverlayStyle>(
