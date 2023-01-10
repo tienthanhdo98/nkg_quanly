@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:nkg_quanly/ui/search_screen.dart';
 
@@ -10,7 +12,9 @@ import '../../model/document_out_model/document_out_model.dart';
 import '../document_nonapproved/document_nonapproved_detail.dart';
 import '../theme/theme_data.dart';
 import 'doc_out_viewmodel.dart';
+import 'package:dio/dio.dart';
 import 'document_out_search.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DocumentOutList extends GetView {
 
@@ -576,22 +580,22 @@ class DetailDocOutBottomSheet extends StatelessWidget {
               sheetButtonDetailButtonClose(),
               sheetButtonDetailButtonOk(() async {
                 var urlFile =
-                    "http://123.31.31.237:6002/api/documentout/download-document?id=1";
-                if (await canLaunchUrl(Uri.parse(urlFile))) {
-
-                  documentOutViewModel!.getDownload();
-                  var  headers = {
-                    'Accept': '*/*',
-                    'Authorization': 'Bearer $tokenIOC',
-                  };
-                  launchUrl(
-                    Uri.parse(urlFile),
-                    webViewConfiguration: WebViewConfiguration(
-                        enableJavaScript: true, enableDomStorage: true,headers: headers),
-                    mode: LaunchMode.externalApplication,
-                  );
-
-                }
+                    "http://123.31.31.237:6002/api/documentout/download-document?id=${docModel!.id}";
+               var headers = {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  'Authorization': 'Bearer $tokenIOC',
+                };
+               Directory dir = await getApplicationDocumentsDirectory();
+               var string = '/storage/emulated/0/Download';
+               var dio = Dio();
+               dio.options.headers = headers;
+               var res = await dio.download(urlFile, '$string/${docModel!.detail}');
+               if(res.statusCode == 200)
+                 {
+                   print(docModel!.detail);
+                   print("success");
+                 }
               })
             ],
           )
@@ -599,4 +603,20 @@ class DetailDocOutBottomSheet extends StatelessWidget {
       ),
     );
   }
+}
+Future<String> getDownloadPath() async {
+  Directory? directory;
+  try {
+    if (Platform.isIOS) {
+      directory = await getApplicationDocumentsDirectory();
+    } else {
+      directory = Directory('/storage/emulated/0/Download');
+      // Put file in global download folder, if for an unknown reason it didn't exist, we fallback
+      // ignore: avoid_slow_async_io
+      if (!await directory.exists()) directory = await getExternalStorageDirectory();
+    }
+  } catch (err, stack) {
+    print("Cannot get download folder path");
+  }
+  return directory!.path;
 }

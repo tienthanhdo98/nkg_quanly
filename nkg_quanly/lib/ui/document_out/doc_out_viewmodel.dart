@@ -96,12 +96,7 @@ class DocumentOutViewModel extends GetxController {
 
   Rx<String> rxDepartmentSelected = "".obs;
 
-  Future<void> getDownload() async {
-    print('loading');
-    http.Response response = await http.get(
-        Uri.parse("http://123.31.31.237:6002/api/documentout/download-document?id=1"),headers: headers);
-    print(response.body);
-  }
+
 
   Future<void> getFilterDepartment() async {
     print('loading');

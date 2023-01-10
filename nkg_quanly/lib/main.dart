@@ -43,7 +43,7 @@ import 'package:nkg_quanly/ui/workbook/workbook_list.dart';
 import 'package:nkg_quanly/viewmodel/home_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   initializeDateFormatting().then((_) => runApp(const MyApp()));
   // runApp(const MyApp());
 }
