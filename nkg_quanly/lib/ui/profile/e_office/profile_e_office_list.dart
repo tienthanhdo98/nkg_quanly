@@ -372,12 +372,10 @@ class ProfileEOfficeList extends GetView {
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return SizedBox(
-                                      height: 350,
-                                      child: DetailProfileBottomSheet(
-                                          index,
-                                          profileViewModel
-                                              .rxProfileItems[index]));
+                                  return DetailProfileBottomSheet(
+                                      index,
+                                      profileViewModel
+                                          .rxProfileItems[index]);
                                 },
                               );
                             },
@@ -566,8 +564,8 @@ class DetailProfileBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        shrinkWrap: true,
         children: [
           const Text(
             'Thông tin hồ sơ trình',
@@ -597,29 +595,27 @@ class DetailProfileBottomSheet extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 5, top: 5),
               child: textCodeStyle(docModel!.code!)),
           signWidget(docModel!),
-          SizedBox(
-            height: 110,
-            child: GridView.count(
-              physics: const NeverScrollableScrollPhysics(),
-              primary: false,
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              childAspectRatio: 3.5 / 2,
-              crossAxisCount: 3,
-              children: <Widget>[
-                sheetDetailBottemItem(
-                    'Đơn vị soạn thảo', docModel!.unitEditor!, context),
-                sheetDetailBottemItem('Ngày khởi tạo',
-                    formatDate(docModel!.innitiatedDate!), context),
-                sheetDetailBottemItem(
-                    'Thời hạn', formatDate(docModel!.deadline!), context),
-                sheetDetailBottemItem(
-                    'Người xử lý', docModel!.handler!, context),
-                sheetDetailBottemItem(
-                    'Ngày xử lý', formatDate(docModel!.dateProcess!), context),
-              ],
-            ),
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            primary: false,
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            childAspectRatio: 3.5 / 2,
+            crossAxisCount: 3,
+            children: <Widget>[
+              sheetDetailBottemItem(
+                  'Đơn vị soạn thảo', docModel!.unitEditor!, context),
+              sheetDetailBottemItem('Ngày khởi tạo',
+                  formatDate(docModel!.innitiatedDate!), context),
+              sheetDetailBottemItem(
+                  'Thời hạn', formatDate(docModel!.deadline!), context),
+              sheetDetailBottemItem(
+                  'Người xử lý', docModel!.handler!, context),
+              sheetDetailBottemItem(
+                  'Ngày xử lý', formatDate(docModel!.dateProcess!), context),
+            ],
           ),
-          const Spacer(),
+
           Row(
             children: [
               sheetButtonDetailButtonClose(),

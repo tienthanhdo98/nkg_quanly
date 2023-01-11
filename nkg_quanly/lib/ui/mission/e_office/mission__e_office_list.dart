@@ -10,6 +10,7 @@ import '../../theme/theme_data.dart';
 import '../mission_detail.dart';
 import '../mission_viewmodel.dart';
 import 'filter_mission_screen.dart';
+import 'package:sizer/sizer.dart';
 
 class MissionEOfficeList extends GetView {
   final missionViewModel = Get.put(MissionViewModel());
@@ -315,10 +316,8 @@ class MissionEOfficeList extends GetView {
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return SizedBox(
-                                      height: 340,
-                                      child: DetailMissionBottomSheet(
-                                           item));
+                                  return DetailMissionBottomSheet(
+                                       item);
                                 },
                               );
                             },
@@ -515,8 +514,8 @@ class DetailMissionBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        shrinkWrap: true,
         children: [
           const Text(
             'Thông tin nhiệm vụ',
@@ -545,27 +544,25 @@ class DetailMissionBottomSheet extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
               child: textCodeStyle(docModel!.code!)),
           signWidgetMission(docModel!),
-          SizedBox(
-            height: 110,
-            child: GridView.count(
-              physics: const NeverScrollableScrollPhysics(),
-              primary: false,
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              childAspectRatio: 3.5 / 2,
-              crossAxisCount: 3,
-              children: <Widget>[
-                sheetDetailBottemItem(
-                    'Đơn vị xử lý', docModel!.organizationName!, context),
-                sheetDetailBottemItem(
-                    'Hạn xử lý', formatDate(docModel!.deadline!), context),
-                sheetDetailBottemItem(
-                    'Tình trạng xử lý', docModel!.status!, context),
-                sheetDetailBottemItem('Ngày khởi tạo',
-                    formatDate(docModel!.innitiatedDate!), context),
-              ],
-            ),
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            primary: false,
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            childAspectRatio: 3.5 / 2,
+            crossAxisCount: 3,
+            children: <Widget>[
+              sheetDetailBottemItem(
+                  'Đơn vị xử lý', docModel!.organizationName!, context),
+              sheetDetailBottemItem(
+                  'Hạn xử lý', formatDate(docModel!.deadline!), context),
+              sheetDetailBottemItem(
+                  'Tình trạng xử lý', docModel!.status!, context),
+              sheetDetailBottemItem('Ngày khởi tạo',
+                  formatDate(docModel!.innitiatedDate!), context),
+            ],
           ),
-          const Spacer(),
+
           Align(
             child: Row(
               children: [

@@ -112,11 +112,9 @@ class DocumentInSearch extends GetView {
                                             clipBehavior: Clip.antiAliasWithSaveLayer,
                                             context: context,
                                             builder: (BuildContext context) {
-                                              return SizedBox(
-                                                  height: 340,
-                                                  child: DetailDocInBottomSheet(
-                                                      index,
-                                                      item));
+                                              return DetailDocInBottomSheet(
+                                                  index,
+                                                  item);
                                             },
                                           );
                                         },
@@ -154,11 +152,9 @@ Widget listDocInSearchResultWidget(SearchController searchController, List list)
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 context: context,
                 builder: (BuildContext context) {
-                  return SizedBox(
-                      height: 340,
-                      child: DetailDocInBottomSheet(
-                          index,
-                          item));
+                  return DetailDocInBottomSheet(
+                      index,
+                      item);
                 },
               );
             },

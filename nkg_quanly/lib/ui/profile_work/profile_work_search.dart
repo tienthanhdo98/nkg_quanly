@@ -158,11 +158,9 @@ Widget listProfileWorkSearchResultWidget(SearchController searchController, List
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 context: context,
                 builder: (BuildContext context) {
-                  return SizedBox(
-                      height: 340,
-                      child: DetailProfileWorkBottomSheet(
-                          index,
-                          item));
+                  return DetailProfileWorkBottomSheet(
+                      index,
+                      item);
                 },
               );
             },

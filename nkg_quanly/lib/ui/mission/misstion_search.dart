@@ -117,8 +117,7 @@ Widget listMissionSearchResultWidget(SearchController searchController, List lis
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 context: context,
                 builder: (BuildContext context) {
-                  return SizedBox(
-                      height: 340, child: DetailMissionBottomSheet(item));
+                  return DetailMissionBottomSheet(item);
                 },
               );
             },

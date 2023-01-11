@@ -291,12 +291,10 @@ class ProfileWorkEOfficeList extends GetView {
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                               context: context,
                               builder: (BuildContext context) {
-                                return SizedBox(
-                                    height: 340,
-                                    child: DetailProfileWorkBottomSheet(
-                                        index,
-                                        profileWorkViewModel
-                                            .rxProfileWorkList[index]));
+                                return DetailProfileWorkBottomSheet(
+                                    index,
+                                    profileWorkViewModel
+                                        .rxProfileWorkList[index]);
                               },
                             );
                           },
@@ -516,8 +514,8 @@ class DetailProfileWorkBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        shrinkWrap: true,
         children: [
           const Text(
             'Thông tin hồ sơ công việc',
@@ -537,26 +535,24 @@ class DetailProfileWorkBottomSheet extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
               child: textCodeStyle(docModel!.code!)),
           signWidgetProfileWork(docModel!),
-          SizedBox(
-            height: 110,
-            child: GridView.count(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              childAspectRatio: 3.5 / 2,
-              crossAxisCount: 3,
-              children: <Widget>[
-                sheetDetailBottemItem(
-                    'Người xử lý', docModel!.handler!, context),
-                sheetDetailBottemItem(
-                    'Thời hạn', formatDate(docModel!.endDate!), context),
-                sheetDetailBottemItem(
-                    'Ngày xử lý', formatDate(docModel!.toDate!), context),
-                sheetDetailBottemItem('Ngày khởi tạo',
-                    formatDate(docModel!.innitiatedDate!), context),
-              ],
-            ),
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            childAspectRatio: 3.5 / 2,
+            crossAxisCount: 3,
+            children: <Widget>[
+              sheetDetailBottemItem(
+                  'Người xử lý', docModel!.handler!, context),
+              sheetDetailBottemItem(
+                  'Thời hạn', formatDate(docModel!.endDate!), context),
+              sheetDetailBottemItem(
+                  'Ngày xử lý', formatDate(docModel!.toDate!), context),
+              sheetDetailBottemItem('Ngày khởi tạo',
+                  formatDate(docModel!.innitiatedDate!), context),
+            ],
           ),
-          const Spacer(),
+
           Row(
             children: [
               sheetButtonDetailButtonClose(),

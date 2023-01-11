@@ -474,12 +474,10 @@ class DocumentInEOfficeList extends GetView {
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return SizedBox(
-                                      height: 340,
-                                      child: DetailDocInBottomSheet(
-                                          index,
-                                          documentUnprocessViewModel
-                                              .rxItems[index]));
+                                  return DetailDocInBottomSheet(
+                                      index,
+                                      documentUnprocessViewModel
+                                          .rxItems[index]);
                                 },
                               );
                             },
@@ -635,8 +633,8 @@ class DetailDocInBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        shrinkWrap: true,
         children: [
           const Text(
             'Thông tin văn bản đến',
@@ -665,32 +663,29 @@ class DetailDocInBottomSheet extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 5, top: 5),
               child: textCodeStyle(docModel!.code!)),
           signWidget(docModel!),
-          SizedBox(
-            height: 110,
-            child: GridView.count(
-              physics: const NeverScrollableScrollPhysics(),
-              primary: false,
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              childAspectRatio: 3.5 / 2,
-              crossAxisCount: 3,
-              children: <Widget>[
-                sheetDetailBottemItem(
-                    'Đơn vị ban hành', docModel!.departmentPublic!, context),
-                // sheetDetailBottemItem(
-                //     'Đơn vị xử lý', docModel!.departmentPublic!, context),
-                sheetDetailBottemItem(
-                    'Ngày đến',formatDate(docModel!.toDate!), context),
-                sheetDetailBottemItem(
-                    'Hạn xử lý', formatDate(docModel!.endDate!), context),
-                sheetDetailBottemItem(
-                    'Tình trạng HT', docModel!.status!, context),
-                sheetDetailBottemItem(
-                    'Tình trạng VB', docModel!.state!, context),
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            primary: false,
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            childAspectRatio: 3.5 / 2,
+            crossAxisCount: 3,
+            children: <Widget>[
+              sheetDetailBottemItem(
+                  'Đơn vị ban hành', docModel!.departmentPublic!, context),
+              // sheetDetailBottemItem(
+              //     'Đơn vị xử lý', docModel!.departmentPublic!, context),
+              sheetDetailBottemItem(
+                  'Ngày đến',formatDate(docModel!.toDate!), context),
+              sheetDetailBottemItem(
+                  'Hạn xử lý', formatDate(docModel!.endDate!), context),
+              sheetDetailBottemItem(
+                  'Tình trạng HT', docModel!.status!, context),
+              sheetDetailBottemItem(
+                  'Tình trạng VB', docModel!.state!, context),
 
-              ],
-            ),
+            ],
           ),
-          const Spacer(),
           Row(
             children: [
               sheetButtonDetailButtonClose(),

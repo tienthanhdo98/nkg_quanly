@@ -590,11 +590,13 @@ class DetailDocOutBottomSheet extends StatelessWidget {
                var string = '/storage/emulated/0/Download';
                var dio = Dio();
                dio.options.headers = headers;
-               var res = await dio.download(urlFile, '$string/${docModel!.detail}');
+               var res = await dio.download(urlFile, '${dir.path}/${docModel!.detail}');
                if(res.statusCode == 200)
                  {
                    print(docModel!.detail);
                    print("success");
+                   print(dir.path);
+
                  }
               })
             ],

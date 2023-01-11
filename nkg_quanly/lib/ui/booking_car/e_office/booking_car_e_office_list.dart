@@ -149,12 +149,10 @@ class BookingEOfficeCarList extends GetView {
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             context: context,
                             builder: (BuildContext context) {
-                              return SizedBox(
-                                  height: 320,
-                                  child: DetailBookingCarsBottomSheet(
-                                      index,
-                                      bookCarViewModel
-                                          .rxBookingCarItems[index]));
+                              return DetailBookingCarsBottomSheet(
+                                  index,
+                                  bookCarViewModel
+                                      .rxBookingCarItems[index]);
                             },
                           );
                         },
@@ -307,8 +305,9 @@ class DetailBookingCarsBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 30, 25, 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+      shrinkWrap: true,
+
         children: [
           const Text(
             'Thông tin bố trí ô tô',
@@ -337,31 +336,29 @@ class DetailBookingCarsBottomSheet extends StatelessWidget {
           ),
           const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
           signWidget(docModel!),
-          SizedBox(
-            height: 120,
-            child: GridView.count(
-              physics: const NeverScrollableScrollPhysics(),
-              primary: false,
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-              childAspectRatio: 3.5 / 2,
-              crossAxisCount: 3,
-              children: <Widget>[
-                sheetDetailBottemItem('Người đăng ký',
-                    checkingStringNull(docModel!.registerUser), context),
-                sheetDetailBottemItem('Ngày đăng ký',
-                    formatDate(
-                        checkingStringNull(docModel!.registrationDate)), context),
-                sheetDetailBottemItem('Thời gian đăng ký',
-                    checkingStringNull(docModel!.registrationTime), context),
-                sheetDetailBottemItem('Ngày khởi tạo',
-                    formatDate(
-                        checkingStringNull(docModel!.innitiatedDate)), context),
-                sheetDetailBottemItem('Nội dung',
-                    checkingStringNull(docModel!.content), context),
-              ],
-            ),
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            primary: false,
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            childAspectRatio: 3.5 / 2,
+            crossAxisCount: 3,
+            children: <Widget>[
+              sheetDetailBottemItem('Người đăng ký',
+                  checkingStringNull(docModel!.registerUser), context),
+              sheetDetailBottemItem('Ngày đăng ký',
+                  formatDate(
+                      checkingStringNull(docModel!.registrationDate)), context),
+              sheetDetailBottemItem('Thời gian đăng ký',
+                  checkingStringNull(docModel!.registrationTime), context),
+              sheetDetailBottemItem('Ngày khởi tạo',
+                  formatDate(
+                      checkingStringNull(docModel!.innitiatedDate)), context),
+              sheetDetailBottemItem('Nội dung',
+                  checkingStringNull(docModel!.content), context),
+            ],
           ),
-          const Spacer(),
+
           Align(
             child: Row(
               children: [

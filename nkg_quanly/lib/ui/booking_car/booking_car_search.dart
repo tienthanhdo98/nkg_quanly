@@ -130,11 +130,9 @@ Widget listCarsSearchResultWidget(SearchController searchController, List list) 
               clipBehavior: Clip.antiAliasWithSaveLayer,
               context: context,
               builder: (BuildContext context) {
-                return SizedBox(
-                    height: 320,
-                    child: DetailBookingCarsBottomSheet(
-                        index,
-                        item));
+                return DetailBookingCarsBottomSheet(
+                    index,
+                    item);
               },
             );
           },
