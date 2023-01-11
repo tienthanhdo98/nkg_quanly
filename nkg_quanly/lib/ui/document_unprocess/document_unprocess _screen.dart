@@ -13,12 +13,10 @@ import 'document_unprocess_viewmodel.dart';
 import 'e_office/document_in_e_office_list.dart';
 
 class DocumentUnProcessScreen extends GetView {
-  final String? header;
-  final String? icon;
 
   final documentUnprocessViewModel = Get.put(DocumentUnprocessViewModel());
 
-  DocumentUnProcessScreen({Key? key, this.header, this.icon}) : super(key: key);
+  DocumentUnProcessScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,7 @@ class DocumentUnProcessScreen extends GetView {
             children: [
               Image.asset("assets/bgtophome.png",
                   height: 220, width: double.infinity, fit: BoxFit.cover),
-              headerWidget(header!, context),
+              headerWidget("Văn bản đến chưa xử lý", context),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
                 child: border(
@@ -57,7 +55,7 @@ class DocumentUnProcessScreen extends GetView {
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Image.asset(
-                                  icon!,
+                                 "assets/icons/ic_doc.png",
                                   width: 50,
                                   height: 50,
                                 ),
@@ -177,7 +175,7 @@ class DocumentUnProcessScreen extends GetView {
                   padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.to(() => DocumentInEOfficeList(header: header));
+                      Get.to(() => DocumentInEOfficeList());
                     },
                     child: buttonShowListScreen(
                         "Danh sách văn bản đến chưa xử lý"),

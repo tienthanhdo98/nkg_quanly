@@ -140,7 +140,7 @@ class GroupContactsList extends GetView {
 }
 
 class GroupContactsItem extends StatelessWidget {
-  GroupContactsItem(this.index, this.docModel, this.contactOrganizationViewModel, this.listMenuPermissions);
+  GroupContactsItem(this.index, this.docModel, this.contactOrganizationViewModel, this.listMenuPermissions, {Key? key}) : super(key: key);
 
   final int? index;
   final ContactListItems? docModel;
@@ -251,7 +251,7 @@ class GroupContactsItem extends StatelessWidget {
 }
 
 class ContactsActionBottomSheet extends StatelessWidget {
-  ContactsActionBottomSheet(this.docModel, this.contactOrganizationViewModel, this.listMenuPermissions);
+  const ContactsActionBottomSheet(this.docModel, this.contactOrganizationViewModel, this.listMenuPermissions, {Key? key}) : super(key: key);
 
   final ContactListItems? docModel;
   final ContactOrganizationViewModel? contactOrganizationViewModel;

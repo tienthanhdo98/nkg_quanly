@@ -13,12 +13,10 @@ import '../theme/theme_data.dart';
 import 'collum_chart_report.dart';
 
 class ReportScreen extends GetView {
-  String? header;
-  String? icon;
 
   final reportViewModel = Get.put(ReportViewModel());
 
-  ReportScreen({Key? key, this.header, this.icon}) : super(key: key);
+  ReportScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,7 @@ class ReportScreen extends GetView {
       body: SafeArea(
         child: Column(
           children: [
-            headerWidget(header!, context),
+            headerWidget("Báo cáo", context),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(children: [
@@ -68,7 +66,7 @@ class ReportScreen extends GetView {
                                           child: Align(
                                             alignment: Alignment.centerRight,
                                             child: Image.asset(
-                                              icon!,
+                                             "assets/icons/ic_report.png",
                                               width: 50,
                                               height: 50,
                                             ),
@@ -272,7 +270,7 @@ class ReportScreen extends GetView {
                             Get.to(() => ReportInMenuHomeList(
                                 ));
                           },
-                          child: Text('Xem danh sách $header'),
+                          child: Text('Xem danh sách báo cáo'),
                           style: bottomButtonStyle,
                         ),
                       ),

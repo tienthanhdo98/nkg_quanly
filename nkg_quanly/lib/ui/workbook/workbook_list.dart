@@ -16,7 +16,7 @@ import 'add_new_work_screen.dart';
 class WorkBookList extends GetView {
   final workBookViewModel = Get.put(WorkBookViewModel());
 
-  WorkBookList({Key? key, this.listMenuPermissions}) : super(key: key);
+  WorkBookList({Key? key,this.listMenuPermissions}) : super(key: key);
   List<MenuPermissions>? listMenuPermissions;
 
   @override

@@ -114,6 +114,7 @@ class MainScreen extends StatefulWidget {
 
 
 String? tokenIOC = "";
+String? isAdmin = "";
 
 class MainScreenStage extends State<MainScreen> {
   int _selectedIndex = 0;
@@ -134,7 +135,7 @@ class MainScreenStage extends State<MainScreen> {
 
   @override
   void initState() {
-    //getPrefTokenIOC();
+    getPrefTokenIOC();
     print("main $tokenIOC");
     super.initState();
 
@@ -142,8 +143,8 @@ class MainScreenStage extends State<MainScreen> {
 
   void getPrefTokenIOC() async
   {
-    var token = await loginViewModel.loadFromShareFrefs(keyTokenIOC);
-    tokenIOC = token;
+    var res = await loginViewModel.loadFromShareFrefs(keyRole);
+    isAdmin = res;
   }
 
 

@@ -12,12 +12,10 @@ import 'e_office/mission__e_office_list.dart';
 import 'mission_viewmodel.dart';
 
 class MissionScreen extends GetView {
-  String? header;
-  String? icon;
 
   final missionViewModel = Get.put(MissionViewModel());
 
-  MissionScreen({Key? key, this.header, this.icon}) : super(key: key);
+  MissionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,7 @@ class MissionScreen extends GetView {
             children: [
               Image.asset("assets/bgtophome.png",
                   height: 220, width: double.infinity, fit: BoxFit.cover),
-              headerWidget(header!, context),
+              headerWidget("Nhiệm vụ", context),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
                 child: border(
@@ -56,7 +54,7 @@ class MissionScreen extends GetView {
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Image.asset(
-                                  icon!,
+                                  "assets/icons/ic_mission.png",
                                   width: 50,
                                   height: 50,
                                 ),

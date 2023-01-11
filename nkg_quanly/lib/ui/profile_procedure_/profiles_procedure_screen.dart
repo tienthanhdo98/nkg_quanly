@@ -12,12 +12,10 @@ import '../../const/widget.dart';
 import '../theme/theme_data.dart';
 
 class ProfilesProcedureScreen extends GetView {
-  String? header;
-  String? icon;
 
   final profilesProcedureViewModel = Get.put(ProfilesProcedureViewModel());
 
-  ProfilesProcedureScreen({Key? key, this.header, this.icon}) : super(key: key);
+  ProfilesProcedureScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +24,7 @@ class ProfilesProcedureScreen extends GetView {
       body: SafeArea(
         child: Column(
           children: [
-            headerWidget(header!, context),
+            headerWidget("Hồ sơ thủ tục hành chính", context),
             Expanded(
                 child: SingleChildScrollView(
                   child: Column(children: [
@@ -64,7 +62,7 @@ class ProfilesProcedureScreen extends GetView {
                                         child: Align(
                                           alignment: Alignment.centerRight,
                                           child: Image.asset(
-                                            icon!,
+                                            "assets/icons/ic_thutuc_hanhchinh.png",
                                             width: 50,
                                             height: 50,
                                           ),
@@ -505,25 +503,6 @@ Widget ProfileProcChart(int selectedButtonIndex,ProfilesProcedureViewModel profi
     return res;
   }
   else {
-    return SizedBox(height: 200,);
+    return const SizedBox(height: 200,);
   }
 }
-
-List<String> listTitle = [
-  "Hồ sơ tiếp nhận trực tuyến",
-  "Hồ sơ tiếp nhận trực tiếp",
-  "Hồ sơ đúng hạn",
-  "Hồ sơ sớm hạn",
-  "Hồ sơ chưa đến hạn",
-  "Hồ sơ quá hạn",
-  "Hồ sơ chờ tiếp nhận",
-  "Hồ sơ chờ bổ sung",
-  "Hồ sơ chờ trả kết quả",
-  "Hồ sơ đã bổ sung",
-  "Hồ sơ đang xử lý",
-  "Hồ sơ đã xử lý",
-  "Hồ sơ chờ giải quyết",
-  "Hồ sơ đang trình ký",
-  "Hồ sơ đang được phân công",
-  "Hồ sơ chờ phân công thụ lý",
-];

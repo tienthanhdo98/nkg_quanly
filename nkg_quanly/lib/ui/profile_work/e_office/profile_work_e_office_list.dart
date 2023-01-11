@@ -10,11 +10,11 @@ import '../../theme/theme_data.dart';
 import '../profile_work_viewmodel.dart';
 
 class ProfileWorkEOfficeList extends GetView {
-  final String? header;
+
 
   final profileWorkViewModel = Get.put(ProfileWorkViewModel());
 
-  ProfileWorkEOfficeList({Key? key, this.header}) : super(key: key);
+  ProfileWorkEOfficeList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ProfileWorkEOfficeList extends GetView {
         children: [
           //header
           headerWidgetSearch(
-              header!,  SearchScreen(
+              "Hồ sơ công việc",  SearchScreen(
             hintText: 'Nhập mã hồ sơ',
             typeScreen: type_profile_work,
           ),context),

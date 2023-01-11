@@ -207,6 +207,7 @@ const apiRevokeAccessToken = "https://dangnhap.moet.gov.vn/oauth2/revoke";
 const apiRevokeAccessTokenIoc =
     "http://123.31.31.237:6002/api/authentications/access-tokens/revoke";
 const apiGetUserInfo = "https://dangnhap.moet.gov.vn/oauth2/userinfo";
+const apiGetUserInfoIOC = "http://123.31.31.237:6002/api/authentications/get-user-infor";
 const apiGetSignup = "http://123.31.31.237:6002/api/authentications/sign-up";
 const apiRefreshIocToken =
     "http://123.31.31.237:6002/api/authentications/refresh-access-tokens";

@@ -45,7 +45,7 @@ class DocumentUnProcessWidget extends GetView {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            DocumentInEOfficeList(header: "Văn bản đến chưa xử lý",)));
+                                            DocumentInEOfficeList()));
                               },
                               child: const Align(
                                   alignment: Alignment.topRight,

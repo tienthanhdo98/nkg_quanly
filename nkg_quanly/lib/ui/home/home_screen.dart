@@ -270,20 +270,17 @@ void toScreen(int type, String? header, String? icon) {
       break;
     case 2:
       Get.to(() => ReportScreen(
-            header: header,
-            icon: icon,
+
           ));
       break;
     case 3:
       Get.to(() => DocumentUnProcessScreen(
-            header: header,
-            icon: icon,
+
           ));
       break;
     case 4:
       Get.to(() => DocumentNonApprovedScreen(
-            header: header,
-            icon: icon,
+
           ));
       break;
     case 5:
@@ -291,37 +288,23 @@ void toScreen(int type, String? header, String? icon) {
       break;
     case 6:
       Get.to(() => ProfileScreen(
-            header: header,
-            icon: icon,
           ));
       break;
     case 7:
       Get.to(() => BookMeetingScreen(
-            header: header,
-            icon: icon,
           ));
       break;
     case 8:
       Get.to(() => MissionScreen(
-            header: header,
-            icon: icon,
           ));
       break;
     case 9:
       Get.to(() => BirthDayScreen(
           ));
       break;
-    case 16:
-      Get.to(() => BookMeetingScreen(
-            header: header,
-            icon: icon,
-          ));
-      break;
 
     case 10:
       Get.to(() => ProfilesProcedureScreen(
-            header: header,
-            icon: icon,
           ));
       break;
     case 11:

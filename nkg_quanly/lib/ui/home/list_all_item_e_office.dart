@@ -137,14 +137,13 @@ void toScreenEoffice(int type, String? header, String? icon) {
       Get.to(() => CalendarWorkEOfficeScreen());
       break;
     case 2:
-      Get.to(() => DocumentInEOfficeList(header: header));
+      Get.to(() => DocumentInEOfficeList());
       break;
     case 3:
       Get.to(() => ProfileEOfficeList());
       break;
     case 4:
       Get.to(() => ProfileWorkEOfficeList(
-            header: header,
           ));
       break;
     case 5:

@@ -11,6 +11,8 @@ import '../model/login/info_login_config.dart';
 import '../model/login/sign_up_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/login/user_info_model_ioc.dart';
+
 class LoginViewModel extends GetxController {
   Rx<String> rxAccessTokenSSO = "".obs;
   Rx<String> rxIdAccessToken = "".obs;
@@ -31,20 +33,26 @@ class LoginViewModel extends GetxController {
     getInfoLoginConfig();
     super.onInit();
   }
+
   initPrefs() async {
     pref ??= await SharedPreferences.getInstance();
   }
-  loadFromShareFrefs(String key) async {
-    print("key: ${key}");
+
+  Future<String> loadFromShareFrefs(String key) async {
     await initPrefs();
-    String res =  pref?.getString(key) ?? "";
-    print("res: $res");
-    return  res;
+    String res = pref?.getString(key) ?? "";
+    return res;
   }
 
   saveToShareFrefs(String value, String key) async {
     await initPrefs();
     await pref?.setString(key, value);
+  }
+  clearSharePref() async
+  {
+    await initPrefs();
+    await pref?.clear();
+
   }
 
   void changeValueLoading(bool value) {
@@ -52,6 +60,7 @@ class LoginViewModel extends GetxController {
   }
 
   Rx<AccessTokenModel> rxAccessTokenModel = AccessTokenModel().obs;
+
   Future<void> geAccessTokenSSO(String authCode) async {
     Map<String, dynamic> formMap = {
       "grant_type": "authorization_code",
@@ -62,14 +71,14 @@ class LoginViewModel extends GetxController {
     };
     http.Response response = await http.post(Uri.parse(apiGetAccessToken),
         headers: headers, body: formMap);
-    
+
     AccessTokenModel accessTokenModel =
         AccessTokenModel.fromJson(jsonDecode(response.body));
-    
+
     rxAccessTokenSSO.value = accessTokenModel.accessToken!;
     rxIdAccessToken.value = accessTokenModel.idToken!;
     rxAccessTokenModel.value = accessTokenModel;
-    saveToShareFrefs(rxAccessTokenSSO.value,keyTokebSSO);
+    saveToShareFrefs(rxAccessTokenSSO.value, keyTokenSSO);
     print("access token sso : ${rxAccessTokenSSO.value}");
     print("ex : ${accessTokenModel.expiresIn}");
     Timer(Duration(seconds: accessTokenModel.expiresIn! - 60), () {
@@ -90,13 +99,13 @@ class LoginViewModel extends GetxController {
         headers: headers, body: json);
     AccessTokenModel signUpModel =
         AccessTokenModel.fromJson(jsonDecode(response.body));
-    
+
     rxAccessTokenSSO.value = signUpModel.accessToken!;
     rxIdAccessToken.value = signUpModel.idToken!;
     print("New AccessToken sso ${rxAccessTokenSSO.value}");
     Timer(Duration(seconds: signUpModel.expiresIn! - 60), () {
       getRefreshAccessToken(signUpModel.refreshToken!);
-      saveToShareFrefs(rxAccessTokenSSO.value,keyTokebSSO);
+      saveToShareFrefs(rxAccessTokenSSO.value, keyTokenSSO);
       print("het han token sso ");
     });
   }
@@ -110,7 +119,7 @@ class LoginViewModel extends GetxController {
     };
     http.Response response = await http.post(Uri.parse(apiRevokeAccessToken),
         headers: headers, body: formMap);
-    
+
     if (response.statusCode == 200) {
       rxAccessTokenSSO.value = "";
     }
@@ -123,7 +132,7 @@ class LoginViewModel extends GetxController {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     });
-    
+
     if (response.statusCode == 200) {
       rxAccessTokenIoc.value = "";
     }
@@ -136,11 +145,27 @@ class LoginViewModel extends GetxController {
       'Accept': 'application/json',
       'Authorization': 'Bearer $accessToken',
     });
-    
+
     UserInfoModel userInfoModel =
         UserInfoModel.fromJson(jsonDecode(response.body));
-    
+
     rxUserInfoModel.value = userInfoModel;
+  }
+
+  Future<void> getUserInfoIOC(String accessTokenIOC) async {
+    http.Response response =
+        await http.get(Uri.parse(apiGetUserInfoIOC), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $accessTokenIOC',
+    });
+    if (response.statusCode == 200) {
+      UserInfoModelIOC userInfoModel =
+          UserInfoModelIOC.fromJson(jsonDecode(response.body));
+      await saveToShareFrefs(userInfoModel.isAdmin.toString(), keyRole);
+    } else {
+      print("getUserInfo errr ${response.statusCode}");
+    }
   }
 
   Future<void> getAccessTokenIoc(String username, String email) async {
@@ -150,12 +175,12 @@ class LoginViewModel extends GetxController {
     Map<String, String> headers = {"Content-type": "application/json"};
     http.Response response =
         await http.post(Uri.parse(apiGetSignup), headers: headers, body: json);
-    
+
     SignUpModel signUpModel = SignUpModel.fromJson(jsonDecode(response.body));
-    
+
     rxSignUpModel.value = signUpModel;
     rxAccessTokenIoc.value = signUpModel.accessToken!;
-    saveToShareFrefs(rxAccessTokenIoc.value,keyTokenIOC);
+    saveToShareFrefs(rxAccessTokenIoc.value, keyTokenIOC);
     print("AccessTokenIoc ${rxAccessTokenIoc.value}");
 
     Timer(Duration(seconds: signUpModel.expires! - 60), () {
@@ -170,10 +195,10 @@ class LoginViewModel extends GetxController {
     http.Response response = await http.post(Uri.parse(apiRefreshIocToken),
         headers: headers, body: json);
     SignUpModel signUpModel = SignUpModel.fromJson(jsonDecode(response.body));
-    
+
     rxSignUpModel.value = signUpModel;
     rxAccessTokenIoc.value = signUpModel.accessToken!;
-    saveToShareFrefs(rxAccessTokenIoc.value,keyTokenIOC);
+    saveToShareFrefs(rxAccessTokenIoc.value, keyTokenIOC);
     print("New AccessTokenIoc ${rxAccessTokenIoc.value}");
     Timer.periodic(Duration(seconds: signUpModel.expires! - 60), (_) {
       getRefreshAccessTokenIoc(signUpModel.refreshToken!);
@@ -183,10 +208,10 @@ class LoginViewModel extends GetxController {
 
   Future<void> getInfoLoginConfig() async {
     http.Response response = await http.get(Uri.parse(apiLoginConfig));
-    
+
     InfoLoginConfig infoLoginConfig =
         InfoLoginConfig.fromJson(jsonDecode(response.body));
-    
+
     rxInfoLoginConfig.value = infoLoginConfig;
     urlLogin =
         "${infoLoginConfig.baseUrl}/oauth2/authorize?response_type=${infoLoginConfig.responseType}&client_id=${infoLoginConfig.clientID}&redirect_uri=${infoLoginConfig.redirectUri}&scope=${infoLoginConfig.scope}";

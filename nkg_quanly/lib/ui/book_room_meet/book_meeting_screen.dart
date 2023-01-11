@@ -10,13 +10,10 @@ import 'book_room_list.dart';
 import 'e_office/book_room_e_office_list.dart';
 
 class BookMeetingScreen extends GetView {
-  final String? header;
-  final String? icon;
-
   final  roomMeetingViewModel =
       Get.put(RoomMeetingViewModel());
 
-  BookMeetingScreen({Key? key, this.header, this.icon}) : super(key: key);
+  BookMeetingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +25,7 @@ class BookMeetingScreen extends GetView {
             children: [
               Image.asset("assets/bgtophome.png",
                   height: 220, width: double.infinity, fit: BoxFit.cover),
-              headerWidget(header!, context),
+              headerWidget("Phòng họp", context),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
                 child: border(
@@ -55,7 +52,7 @@ class BookMeetingScreen extends GetView {
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Image.asset(
-                                  icon!,
+                                  "assets/icons/ic_meet.png",
                                   width: 50,
                                   height: 50,
                                 ),

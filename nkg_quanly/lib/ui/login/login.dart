@@ -34,7 +34,7 @@ class LoginScreenState extends State<LoginScreen> {
   }
   void getPrefToken() async
   {
-   var token = await loginViewModel.loadFromShareFrefs(keyTokebSSO);
+   var token = await loginViewModel.loadFromShareFrefs(keyTokenSSO);
    prefToken = token;
   }
 
@@ -85,6 +85,7 @@ class LoginScreenState extends State<LoginScreen> {
                             await loginViewModel.getAccessTokenIoc(
                                 loginViewModel.rxUserInfoModel.value.name!,
                                 loginViewModel.rxUserInfoModel.value.email!);
+                            await loginViewModel.getUserInfoIOC(loginViewModel.rxAccessTokenIoc.value);
                             loginViewModel.changeValueLoading(false);
                             print("AAA: login with token");
                             Get.off(() => const MainScreen());
@@ -121,6 +122,7 @@ class LoginScreenState extends State<LoginScreen> {
                           await loginViewModel.getAccessTokenIoc(
                               loginViewModel.rxUserInfoModel.value.name!,
                               loginViewModel.rxUserInfoModel.value.email!);
+                          await loginViewModel.getUserInfoIOC(loginViewModel.rxAccessTokenIoc.value);
                           loginViewModel.changeValueLoading(false);
                           Get.off(() => const MainScreen());
                         }

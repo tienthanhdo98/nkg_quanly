@@ -132,8 +132,9 @@ String jsonGetByMonth =
     '{"pageIndex":1,"pageSize":10,"isMonth": true,"dayInMonth":"${formatDateToString(dateNow)}"}';
 
 //key sharepref
-const String keyTokebSSO = "tokenSSO";
+const String keyTokenSSO = "tokenSSO";
 const String keyTokenIOC = "tokenIOC";
+const String keyRole = "roleAccount";
 
 //
 final DatePickerController menuController = Get.put(DatePickerController());

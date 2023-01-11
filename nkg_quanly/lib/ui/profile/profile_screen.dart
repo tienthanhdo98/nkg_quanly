@@ -11,12 +11,10 @@ import '../theme/theme_data.dart';
 import 'e_office/profile_e_office_list.dart';
 
 class ProfileScreen extends GetView {
-  String? header;
-  String? icon;
 
   final profileViewModel = Get.put(ProfileViewModel());
 
-  ProfileScreen({Key? key, this.header, this.icon}) : super(key: key);
+  ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +23,7 @@ class ProfileScreen extends GetView {
       body: SafeArea(
         child: Column(
           children: [
-            headerWidget(header!, context),
+            headerWidget("Hồ sơ trình", context),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(children: [
@@ -58,7 +56,7 @@ class ProfileScreen extends GetView {
                                       child: Align(
                                         alignment: Alignment.centerRight,
                                         child: Image.asset(
-                                          icon!,
+                                         "assets/icons/ic_doc_doc.png",
                                           width: 50,
                                           height: 50,
                                         ),

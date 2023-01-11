@@ -46,7 +46,7 @@ class DocumentNonapprovedWidget extends GetView {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            DocumentInEOfficeList(header: "Văn bản đến chưa bút phê",)));
+                                            DocumentInEOfficeList()));
                               },
                               child: const Align(
                                   alignment: Alignment.topRight,

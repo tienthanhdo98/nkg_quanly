@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:nkg_quanly/const/style.dart';
 import 'package:nkg_quanly/const/utils.dart';
 
+import '../main.dart';
 import '../model/MenuByUserModel.dart';
 import '../model/contact_model/department_model.dart';
 import '../model/contact_model/organ_model.dart';
@@ -18,16 +19,26 @@ export 'package:url_launcher/url_launcher.dart';
 
 DateTime dateNow = DateTime.now();
 
-bool checkPermission(List<MenuPermissions>? list, String code){
-  if(list != null) {
-    for (var element in list) {
-      if (element.permission!.code == code) {
-        return true;
-      }
-    }
-    return false;
+bool checkPermission(List<MenuPermissions>? listPermission, String code) {
+
+  if (isAdmin == "true") {
+    return true;
   }
-  return false;
+  else {
+    if (listPermission != null) {
+      for (var element in listPermission) {
+        if (element.isGranted == true && element.permission!.code == code) {
+          return true;
+        }
+      }
+      return false;
+    }
+    else
+      {
+        return false;
+      }
+  }
+
 }
 
 String formatDate(String value) {
@@ -41,6 +52,7 @@ String formatDate(String value) {
     return "";
   }
 }
+
 String formatStrDateToStrDate(String value) {
   try {
     var format = DateFormat("yyyy-MM-DD");
@@ -168,6 +180,7 @@ String convertDateToWeekDayFormat(DateTime value) {
     return "";
   }
 }
+
 String convertDateToWidget(DateTime value) {
   try {
     var thu = value.weekday;
@@ -196,6 +209,7 @@ String convertDateToWeekDayFormatWithoutWeeked(DateTime value) {
     return "";
   }
 }
+
 String displayTimeAgoFromTimestamp(String timestamp) {
   final year = int.parse(timestamp.substring(0, 4));
   final month = int.parse(timestamp.substring(5, 7));
@@ -534,13 +548,13 @@ class FilterItem extends StatelessWidget {
 
 class FilterAllItem extends StatelessWidget {
   const FilterAllItem(
-      this.title,
-      this.index,
-      this.mapAllFilter,
-      this.mapItem,
-      this.list, {
-        Key? key,
-      }) : super(key: key);
+    this.title,
+    this.index,
+    this.mapAllFilter,
+    this.mapItem,
+    this.list, {
+    Key? key,
+  }) : super(key: key);
   final String title;
   final int index;
   final RxMap mapAllFilter;
@@ -552,55 +566,53 @@ class FilterAllItem extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
         child: Obx(
-              () => (mapAllFilter.containsKey(index)
+          () => (mapAllFilter.containsKey(index)
               ? InkWell(
-            onTap: () {
-              checkboxFilterValue(false, index, "", mapAllFilter);
-              list.asMap().forEach((index,element) {
-                checkboxFilterValue(
-                    false, index, "", mapItem);
-              });
-            },
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: CustomTextStyle.roboto700TextStyle,
+                  onTap: () {
+                    checkboxFilterValue(false, index, "", mapAllFilter);
+                    list.asMap().forEach((index, element) {
+                      checkboxFilterValue(false, index, "", mapItem);
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: CustomTextStyle.roboto700TextStyle,
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/ic_checkbox_active.png',
+                        width: 30,
+                        height: 30,
+                      )
+                    ],
                   ),
-                ),
-                Image.asset(
-                  'assets/icons/ic_checkbox_active.png',
-                  width: 30,
-                  height: 30,
                 )
-              ],
-            ),
-          )
               : InkWell(
-            onTap: () {
-              checkboxFilterValue(true, index, "", mapAllFilter);
-              list.asMap().forEach((index,element) {
-                checkboxFilterValue(
-                    true, index, "", mapItem);
-              });
-            },
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: CustomTextStyle.roboto700TextStyle,
+                  onTap: () {
+                    checkboxFilterValue(true, index, "", mapAllFilter);
+                    list.asMap().forEach((index, element) {
+                      checkboxFilterValue(true, index, "", mapItem);
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: CustomTextStyle.roboto700TextStyle,
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/icons/ic_checkbox_unactive.png',
+                        width: 30,
+                        height: 30,
+                      )
+                    ],
                   ),
-                ),
-                Image.asset(
-                  'assets/icons/ic_checkbox_unactive.png',
-                  width: 30,
-                  height: 30,
-                )
-              ],
-            ),
-          )),
+                )),
         ));
   }
 }
@@ -612,15 +624,16 @@ void changeValueSelectedFilter(Rx<String> rxSelected, String value) {
 DateTime findFirstDateOfTheWeek(DateTime dateTime) {
   return dateTime.subtract(Duration(days: dateTime.weekday));
 }
+
 DateTime findLastDateOfTheWeek(DateTime dateTime) {
   return dateTime
       .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday - 1));
 }
+
 DateTime findLastDateOfTheMonth(DateTime dateTime) {
   return DateTime(dateTime.year, dateTime.month + 1, 0);
 }
+
 DateTime findFirstDateOfTheMonth(DateTime dateTime) {
   return DateTime(dateTime.year, dateTime.month, 1);
 }
-
-

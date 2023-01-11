@@ -104,6 +104,11 @@ class HomeViewModel extends GetxController {
           element.id == "29b38589-cbf7-4d87-fb32-08dac38ca11b" ||
           element.id == "d4cc0019-29be-4286-fb31-08dac48ca11b" ||
           element.id == "326bbe12-4778-458e-5411-08da9b7bdabe");
+
+   listMenu.forEach((element) {
+     element.childrens!.removeWhere((element) => element.id == "37869c39-4d28-482c-53ff-08da9b7bdabe" || element.id == "fb893cf2-df11-495a-e396-08da9d3dd945"
+         || element.id == "ae5158c1-7d87-4739-0b4d-08da9f722a1d"|| element.id == "880a0251-cb0f-4ed5-e394-08da9d3dd945"|| element.id == "e8e57d75-1c6e-4798-5402-08da9b7bdabe");
+   });
       rxListMenuByUserRole.clear();
       rxListMenuByUserRole.value = listMenu;
       rxListMenuByUserRole.refresh();
@@ -111,3 +116,9 @@ class HomeViewModel extends GetxController {
     }
   }
 }
+//37869c39-4d28-482c-53ff-08da9b7bdabe
+//fb893cf2-df11-495a-e396-08da9d3dd945
+//ae5158c1-7d87-4739-0b4d-08da9f722a1d
+//880a0251-cb0f-4ed5-e394-08da9d3dd945
+//e8e57d75-1c6e-4798-5402-08da9b7bdabe
+

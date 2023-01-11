@@ -12,12 +12,11 @@ import '../theme/theme_data.dart';
 import 'document_nonapproved_viewmodel.dart';
 
 class DocumentNonApprovedScreen extends GetView {
-  final String? header;
-  final String? icon;
+
 
   final documentNonApproveViewModel = Get.put(DocumentNonApproveViewModel());
 
-  DocumentNonApprovedScreen({Key? key, this.header, this.icon})
+  DocumentNonApprovedScreen({Key? key})
       : super(key: key);
 //CircularProgressIndicator
   @override
@@ -31,7 +30,7 @@ class DocumentNonApprovedScreen extends GetView {
             children: [
               Image.asset("assets/bgtophome.png",
                   height: 220, width: double.infinity, fit: BoxFit.cover),
-              headerWidget(header!, context),
+              headerWidget("Văn bản đến chưa bút phê", context),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 80, 20, 0),
                 child: border(
@@ -56,7 +55,7 @@ class DocumentNonApprovedScreen extends GetView {
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Image.asset(
-                                  icon!,
+                                  "assets/icons/ic_doc_sign.png",
                                   width: 50,
                                   height: 50,
                                 ),
@@ -169,7 +168,7 @@ class DocumentNonApprovedScreen extends GetView {
                   child: ElevatedButton(
                     onPressed: () {
                       Get.to(() => DocumentInEOfficeList(
-                        header: header,
+
                       ));
                     },
                     child: buttonShowListScreen(

@@ -10,11 +10,10 @@ import '../document_unprocess_viewmodel.dart';
 import 'filter_doc_in_screen.dart';
 
 class DocumentInEOfficeList extends GetView {
-  final String? header;
 
   final documentUnprocessViewModel = Get.put(DocumentUnprocessViewModel());
 
-  DocumentInEOfficeList({Key? key, this.header}) : super(key: key);
+  DocumentInEOfficeList({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class DocumentInEOfficeList extends GetView {
             children: [
               //header
               headerWidgetSearch(
-                  header!,
+                  "Văn bản đến",
                   SearchScreen(
                     hintText: 'Nhập mã văn bản, tên văn bản',
                     typeScreen: type_document_in,

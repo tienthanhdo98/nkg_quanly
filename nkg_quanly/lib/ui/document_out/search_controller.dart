@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:nkg_quanly/model/misstion/mission_model.dart';
 
 import '../../const/api.dart';
-import '../../const/const.dart';
 import '../../main.dart';
 import '../../model/birthday_model/birthday_model.dart';
 import '../../model/booking_car/booking_car_model;.dart';
@@ -25,7 +24,7 @@ import '../../model/proflie_model/profile_model.dart';
 import '../../model/report_model/report_model.dart';
 import '../../model/workbook/workbook_model.dart';
 import '../../viewmodel/home_viewmodel.dart';
-import '../home/home_screen.dart';
+import '../home/home_search.dart';
 
 class SearchController extends GetxController {
   ScrollController controller = ScrollController();
@@ -41,18 +40,26 @@ class SearchController extends GetxController {
       <ProfileProcedureListItems>[].obs;
   RxList<DocumentInListItems> listData = <DocumentInListItems>[].obs;
   RxList<HelpDeskListItems> rxHelpdeskListItems = <HelpDeskListItems>[].obs;
-  RxList<String> rxListSearchHome = <String>[].obs;
+  RxList<SearchMenuItem> rxListSearchHome = <SearchMenuItem>[].obs;
   Rx<bool> isLoading = false.obs;
   Rx<bool> isHaveData = false.obs;
   Map<String,String> headers = {};
+  HomeViewModel homeController = Get.put(HomeViewModel());
   void onInit() {
     headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $tokenIOC',
     };
-
+    getListItemSearch();
     super.onInit();
+  }
+
+  getListItemSearch() async
+  {
+    await  homeController.getListAllMenuByUserRole();
+    var listMenu = getListSearchMenu(homeController);
+    rxListSearchHome.value = listMenu;
   }
 
   void changeLoadingState(bool value) {
